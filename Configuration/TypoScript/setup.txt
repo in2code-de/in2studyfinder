@@ -1,0 +1,57 @@
+
+plugin.tx_in2studyfinder_studycourse {
+	view {
+		templateRootPaths.0 = {$plugin.tx_in2studyfinder_studycourse.view.templateRootPath}
+		partialRootPaths.0 = {$plugin.tx_in2studyfinder_studycourse.view.partialRootPath}
+		layoutRootPaths.0 = {$plugin.tx_in2studyfinder_studycourse.view.layoutRootPath}
+	}
+	persistence {
+		storagePid = {$plugin.tx_in2studyfinder_studycourse.persistence.storagePid}
+	}
+}
+
+plugin.tx_in2studyfinder._CSS_DEFAULT_STYLE (
+	textarea.f3-form-error {
+		background-color:#FF9F9F;
+		border: 1px #FF0000 solid;
+	}
+
+	input.f3-form-error {
+		background-color:#FF9F9F;
+		border: 1px #FF0000 solid;
+	}
+
+	.tx-in2studyfinder table {
+		border-collapse:separate;
+		border-spacing:10px;
+	}
+
+	.tx-in2studyfinder table th {
+		font-weight:bold;
+	}
+
+	.tx-in2studyfinder table td {
+		vertical-align:top;
+	}
+
+	.typo3-messages .message-error {
+		color:red;
+	}
+
+	.typo3-messages .message-ok {
+		color:green;
+	}
+
+)
+
+ # Module configuration
+module.tx_in2studyfinder_web_in2studyfinderstudyfinder {
+	persistence {
+		storagePid = {$module.tx_in2studyfinder_studyfinder.persistence.storagePid}
+	}
+	view {
+		templateRootPaths.0 = {$module.tx_in2studyfinder_studyfinder.view.templateRootPath}
+		partialRootPaths.0 = {$module.tx_in2studyfinder_studyfinder.view.partialRootPath}
+		layoutRootPaths.0 = {$module.tx_in2studyfinder_studyfinder.view.layoutRootPath}
+	}
+}

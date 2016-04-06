@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-04-05T17:43:35Z" product-name="in2studyfinder">
+		<header/>
+		<body>
+			<trans-unit id="tx_in2studyfinder_domain_model_studycourse">
+				<source>Study Course</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.standard_period_of_study">
+				<source>Standard Period Of Study</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.ects_credits">
+				<source>Ects Credits</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.tuition_fee">
+				<source>Tuition Fee</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.teaser">
+				<source>Teaser</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.description">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.university_place">
+				<source>University Place</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.content_elements">
+				<source>Content Elements</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.academic_degree">
+				<source>Academic Degree</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.department">
+				<source>Department</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.faculty">
+				<source>Faculty</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.type_of_study">
+				<source>Type Of Study</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.course_language">
+				<source>Course Language</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.admission_requirements">
+				<source>Admission Requirements</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.start_of_study">
+				<source>Start Of Study</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_ttcontent">
+				<source>Tt Content</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_ttcontent.studycourse">
+				<source>Studycourse</source>
+			</trans-unit>
+			<trans-unit id="tt_content.tx_extbase_type.Tx_In2studyfinder_TtContent">
+				<source>in2studyfinder TtContent</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_academicdegree">
+				<source>Academic Degree</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_academicdegree.degree">
+				<source>Degree</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_department">
+				<source>Department</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_department.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_faculty">
+				<source>Faculty</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_faculty.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_typeofstudy">
+				<source>Type Of Study</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_typeofstudy.type">
+				<source>Type</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_courselanguage">
+				<source>Course Language</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_courselanguage.language">
+				<source>Language</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_admissionrequirements">
+				<source>Admission Requirements</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_admissionrequirements.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_startofstudy">
+				<source>Start Of Study</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_startofstudy.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_startofstudy.start_date">
+				<source>Start Date</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

@@ -1,0 +1,82 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+
+<f:layout name="Default"/>
+
+This Template is responsible for creating a table of domain objects.
+
+If you modify this template, do not forget to change the overwrite settings
+in /Configuration/ExtensionBuilder/settings.yaml:
+Resources:
+Private:
+Templates:
+List.html: keep
+
+Otherwise your changes will be overwritten the next time you save the extension in the extension builder
+
+<f:section name="content">
+	<h1>Listing for StudyCourse</h1>
+
+	<f:flashMessages/>
+
+	<table class="tx_in2studyfinder">
+		<tr>
+			<th>
+				<f:translate key="tx_in2studyfinder_domain_model_studycourse.title"/>
+			</th>
+			<th>
+				<f:translate key="tx_in2studyfinder_domain_model_studycourse.standard_period_of_study"/>
+			</th>
+			<th>
+				<f:translate key="tx_in2studyfinder_domain_model_studycourse.ects_credits"/>
+			</th>
+			<th>
+				<f:translate key="tx_in2studyfinder_domain_model_studycourse.tuition_fee"/>
+			</th>
+			<th>
+				<f:translate key="tx_in2studyfinder_domain_model_studycourse.teaser"/>
+			</th>
+			<th>
+				<f:translate key="tx_in2studyfinder_domain_model_studycourse.description"/>
+			</th>
+			<th>
+				<f:translate key="tx_in2studyfinder_domain_model_studycourse.university_place"/>
+			</th>
+			<th></th>
+			<th></th>
+		</tr>
+
+		<f:for each="{studyCourses}" as="studyCourse">
+			<tr>
+				<td>
+					<f:link.action action="show" arguments="{studyCourse : studyCourse}"> {studyCourse.title}</f:link.action>
+				</td>
+				<td>
+					<f:link.action action="show" arguments="{studyCourse : studyCourse}"> {studyCourse.standardPeriodOfStudy}</f:link.action>
+				</td>
+				<td>
+					<f:link.action action="show" arguments="{studyCourse : studyCourse}"> {studyCourse.ectsCredits}</f:link.action>
+				</td>
+				<td>
+					<f:link.action action="show" arguments="{studyCourse : studyCourse}"> {studyCourse.tuitionFee}</f:link.action>
+				</td>
+				<td>
+					<f:link.action action="show" arguments="{studyCourse : studyCourse}"> {studyCourse.teaser}</f:link.action>
+				</td>
+				<td>
+					<f:link.action action="show" arguments="{studyCourse : studyCourse}"> {studyCourse.description}</f:link.action>
+				</td>
+				<td>
+					<f:link.action action="show" arguments="{studyCourse : studyCourse}"> {studyCourse.universityPlace}</f:link.action>
+				</td>
+				<td>
+					<f:link.action action="edit" arguments="{studyCourse : studyCourse}">Edit</f:link.action>
+				</td>
+				<td>
+					<f:link.action action="delete" arguments="{studyCourse : studyCourse}">Delete</f:link.action>
+				</td>
+			</tr>
+		</f:for>
+	</table>
+
+	<f:link.action action="new">New StudyCourse</f:link.action>
+</f:section>

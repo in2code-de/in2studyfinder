@@ -1,0 +1,30 @@
+
+plugin.tx_in2studyfinder_studycourse {
+	view {
+		# cat=plugin.tx_in2studyfinder_studycourse/file; type=string; label=Path to template root (FE)
+		templateRootPath = EXT:in2studyfinder/Resources/Private/Templates/
+		# cat=plugin.tx_in2studyfinder_studycourse/file; type=string; label=Path to template partials (FE)
+		partialRootPath = EXT:in2studyfinder/Resources/Private/Partials/
+		# cat=plugin.tx_in2studyfinder_studycourse/file; type=string; label=Path to template layouts (FE)
+		layoutRootPath = EXT:in2studyfinder/Resources/Private/Layouts/
+	}
+	persistence {
+		# cat=plugin.tx_in2studyfinder_studycourse//a; type=string; label=Default storage PID
+		storagePid = 6
+	}
+}
+
+module.tx_in2studyfinder_studyfinder {
+	view {
+		# cat=module.tx_in2studyfinder_studyfinder/file; type=string; label=Path to template root (BE)
+		templateRootPath = EXT:in2studyfinder/Resources/Private/Backend/Templates/
+		# cat=module.tx_in2studyfinder_studyfinder/file; type=string; label=Path to template partials (BE)
+		partialRootPath = EXT:in2studyfinder/Resources/Private/Backend/Partials/
+		# cat=module.tx_in2studyfinder_studyfinder/file; type=string; label=Path to template layouts (BE)
+		layoutRootPath = EXT:in2studyfinder/Resources/Private/Backend/Layouts/
+	}
+	persistence {
+		# cat=module.tx_in2studyfinder_studyfinder//a; type=string; label=Default storage PID
+		storagePid = 6
+	}
+}

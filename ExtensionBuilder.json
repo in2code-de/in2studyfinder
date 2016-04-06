@@ -1,0 +1,759 @@
+{
+    "modules": [
+        {
+            "config": {
+                "position": [
+                    372,
+                    65
+                ]
+            },
+            "name": "New Model Object",
+            "value": {
+                "actionGroup": {
+                    "_default0_list": true,
+                    "_default1_show": true,
+                    "_default2_new_create": false,
+                    "_default3_edit_update": false,
+                    "_default4_delete": false,
+                    "customActions": []
+                },
+                "name": "StudyCourse",
+                "objectsettings": {
+                    "addDeletedField": true,
+                    "addHiddenField": true,
+                    "addStarttimeEndtimeFields": true,
+                    "aggregateRoot": true,
+                    "categorizable": true,
+                    "description": "",
+                    "mapToTable": "",
+                    "parentClass": "",
+                    "sorting": true,
+                    "type": "Entity",
+                    "uid": "155877216223"
+                },
+                "propertyGroup": {
+                    "properties": [
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": true,
+                            "propertyIsRequired": true,
+                            "propertyName": "title",
+                            "propertyType": "String",
+                            "uid": "1169740721834"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": true,
+                            "propertyIsRequired": false,
+                            "propertyName": "standardPeriodOfStudy",
+                            "propertyType": "Integer",
+                            "uid": "209695988940"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": true,
+                            "propertyIsRequired": false,
+                            "propertyName": "ectsCredits",
+                            "propertyType": "Integer",
+                            "uid": "193365533420"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": true,
+                            "propertyIsRequired": false,
+                            "propertyName": "tuitionFee",
+                            "propertyType": "Float",
+                            "uid": "633088204473"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": true,
+                            "propertyIsRequired": false,
+                            "propertyName": "teaser",
+                            "propertyType": "RichText",
+                            "uid": "1151165275373"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": true,
+                            "propertyIsRequired": false,
+                            "propertyName": "description",
+                            "propertyType": "RichText",
+                            "uid": "191268982208"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": true,
+                            "propertyIsRequired": false,
+                            "propertyName": "universityPlace",
+                            "propertyType": "Integer",
+                            "uid": "793945467081"
+                        }
+                    ]
+                },
+                "relationGroup": {
+                    "relations": [
+                        {
+                            "foreignRelationClass": "",
+                            "lazyLoading": false,
+                            "propertyIsExcludeField": true,
+                            "relationDescription": "",
+                            "relationName": "contentElements",
+                            "relationType": "manyToMany",
+                            "relationWire": "[wired]",
+                            "uid": "20155688205"
+                        },
+                        {
+                            "foreignRelationClass": "",
+                            "lazyLoading": false,
+                            "propertyIsExcludeField": true,
+                            "relationDescription": "",
+                            "relationName": "academicDegree",
+                            "relationType": "manyToOne",
+                            "relationWire": "[wired]",
+                            "uid": "1281421412031"
+                        },
+                        {
+                            "foreignRelationClass": "",
+                            "lazyLoading": false,
+                            "propertyIsExcludeField": true,
+                            "relationDescription": "",
+                            "relationName": "department",
+                            "relationType": "manyToOne",
+                            "relationWire": "[wired]",
+                            "uid": "915596476506"
+                        },
+                        {
+                            "foreignRelationClass": "",
+                            "lazyLoading": false,
+                            "propertyIsExcludeField": true,
+                            "relationDescription": "",
+                            "relationName": "faculty",
+                            "relationType": "manyToOne",
+                            "relationWire": "[wired]",
+                            "uid": "466409789793"
+                        },
+                        {
+                            "foreignRelationClass": "",
+                            "lazyLoading": false,
+                            "propertyIsExcludeField": true,
+                            "relationDescription": "",
+                            "relationName": "typeOfStudy",
+                            "relationType": "manyToOne",
+                            "relationWire": "[wired]",
+                            "uid": "1114693029834"
+                        },
+                        {
+                            "foreignRelationClass": "",
+                            "lazyLoading": false,
+                            "propertyIsExcludeField": true,
+                            "relationDescription": "",
+                            "relationName": "courseLanguage",
+                            "relationType": "manyToOne",
+                            "relationWire": "[wired]",
+                            "uid": "1125707231784"
+                        },
+                        {
+                            "foreignRelationClass": "",
+                            "lazyLoading": false,
+                            "propertyIsExcludeField": true,
+                            "relationDescription": "",
+                            "relationName": "admissionRequirements",
+                            "relationType": "manyToOne",
+                            "relationWire": "[wired]",
+                            "uid": "1071626242693"
+                        },
+                        {
+                            "foreignRelationClass": "",
+                            "lazyLoading": false,
+                            "propertyIsExcludeField": true,
+                            "relationDescription": "",
+                            "relationName": "startOfStudy",
+                            "relationType": "manyToOne",
+                            "relationWire": "[wired]",
+                            "uid": "557144176174"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "config": {
+                "position": [
+                    28,
+                    57
+                ]
+            },
+            "name": "New Model Object",
+            "value": {
+                "actionGroup": {
+                    "_default0_list": false,
+                    "_default1_show": false,
+                    "_default2_new_create": false,
+                    "_default3_edit_update": false,
+                    "_default4_delete": false,
+                    "customActions": []
+                },
+                "name": "TtContent",
+                "objectsettings": {
+                    "addDeletedField": true,
+                    "addHiddenField": true,
+                    "addStarttimeEndtimeFields": true,
+                    "aggregateRoot": false,
+                    "categorizable": false,
+                    "description": "",
+                    "mapToTable": "tt_content",
+                    "parentClass": "",
+                    "sorting": true,
+                    "type": "Entity",
+                    "uid": "1062157959834"
+                },
+                "propertyGroup": {
+                    "properties": [
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": true,
+                            "propertyIsRequired": false,
+                            "propertyName": "studycourse",
+                            "propertyType": "Integer",
+                            "uid": "772680352325"
+                        }
+                    ]
+                },
+                "relationGroup": {
+                    "relations": []
+                }
+            }
+        },
+        {
+            "config": {
+                "position": [
+                    669,
+                    13
+                ]
+            },
+            "name": "New Model Object",
+            "value": {
+                "actionGroup": {
+                    "_default0_list": false,
+                    "_default1_show": false,
+                    "_default2_new_create": false,
+                    "_default3_edit_update": false,
+                    "_default4_delete": false,
+                    "customActions": []
+                },
+                "name": "AcademicDegree",
+                "objectsettings": {
+                    "addDeletedField": true,
+                    "addHiddenField": true,
+                    "addStarttimeEndtimeFields": true,
+                    "aggregateRoot": false,
+                    "categorizable": false,
+                    "description": "",
+                    "mapToTable": "",
+                    "parentClass": "",
+                    "sorting": false,
+                    "type": "Entity",
+                    "uid": "742755445956"
+                },
+                "propertyGroup": {
+                    "properties": [
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": true,
+                            "propertyIsRequired": true,
+                            "propertyName": "degree",
+                            "propertyType": "String",
+                            "uid": "1352502718655"
+                        }
+                    ]
+                },
+                "relationGroup": {
+                    "relations": []
+                }
+            }
+        },
+        {
+            "config": {
+                "position": [
+                    667,
+                    167
+                ]
+            },
+            "name": "New Model Object",
+            "value": {
+                "actionGroup": {
+                    "_default0_list": false,
+                    "_default1_show": false,
+                    "_default2_new_create": false,
+                    "_default3_edit_update": false,
+                    "_default4_delete": false,
+                    "customActions": []
+                },
+                "name": "Department",
+                "objectsettings": {
+                    "addDeletedField": true,
+                    "addHiddenField": true,
+                    "addStarttimeEndtimeFields": true,
+                    "aggregateRoot": false,
+                    "categorizable": false,
+                    "description": "",
+                    "mapToTable": "",
+                    "parentClass": "",
+                    "sorting": false,
+                    "type": "Entity",
+                    "uid": "691667681852"
+                },
+                "propertyGroup": {
+                    "properties": [
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": true,
+                            "propertyIsRequired": true,
+                            "propertyName": "title",
+                            "propertyType": "String",
+                            "uid": "1312971283770"
+                        }
+                    ]
+                },
+                "relationGroup": {
+                    "relations": []
+                }
+            }
+        },
+        {
+            "config": {
+                "position": [
+                    665,
+                    326
+                ]
+            },
+            "name": "New Model Object",
+            "value": {
+                "actionGroup": {
+                    "_default0_list": false,
+                    "_default1_show": false,
+                    "_default2_new_create": false,
+                    "_default3_edit_update": false,
+                    "_default4_delete": false,
+                    "customActions": []
+                },
+                "name": "Faculty",
+                "objectsettings": {
+                    "addDeletedField": true,
+                    "addHiddenField": true,
+                    "addStarttimeEndtimeFields": true,
+                    "aggregateRoot": false,
+                    "categorizable": false,
+                    "description": "",
+                    "mapToTable": "",
+                    "parentClass": "",
+                    "sorting": false,
+                    "type": "Entity",
+                    "uid": "508456323747"
+                },
+                "propertyGroup": {
+                    "properties": [
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": true,
+                            "propertyIsRequired": true,
+                            "propertyName": "title",
+                            "propertyType": "String",
+                            "uid": "996582932307"
+                        }
+                    ]
+                },
+                "relationGroup": {
+                    "relations": []
+                }
+            }
+        },
+        {
+            "config": {
+                "position": [
+                    908,
+                    15
+                ]
+            },
+            "name": "New Model Object",
+            "value": {
+                "actionGroup": {
+                    "_default0_list": false,
+                    "_default1_show": false,
+                    "_default2_new_create": false,
+                    "_default3_edit_update": false,
+                    "_default4_delete": false,
+                    "customActions": []
+                },
+                "name": "TypeOfStudy",
+                "objectsettings": {
+                    "addDeletedField": true,
+                    "addHiddenField": true,
+                    "addStarttimeEndtimeFields": true,
+                    "aggregateRoot": false,
+                    "categorizable": false,
+                    "description": "",
+                    "mapToTable": "",
+                    "parentClass": "",
+                    "sorting": false,
+                    "type": "Entity",
+                    "uid": "829733114212"
+                },
+                "propertyGroup": {
+                    "properties": [
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": true,
+                            "propertyIsRequired": true,
+                            "propertyName": "type",
+                            "propertyType": "String",
+                            "uid": "112186329243"
+                        }
+                    ]
+                },
+                "relationGroup": {
+                    "relations": []
+                }
+            }
+        },
+        {
+            "config": {
+                "position": [
+                    905,
+                    171
+                ]
+            },
+            "name": "New Model Object",
+            "value": {
+                "actionGroup": {
+                    "_default0_list": false,
+                    "_default1_show": false,
+                    "_default2_new_create": false,
+                    "_default3_edit_update": false,
+                    "_default4_delete": false,
+                    "customActions": []
+                },
+                "name": "CourseLanguage",
+                "objectsettings": {
+                    "addDeletedField": true,
+                    "addHiddenField": true,
+                    "addStarttimeEndtimeFields": true,
+                    "aggregateRoot": false,
+                    "categorizable": false,
+                    "description": "",
+                    "mapToTable": "",
+                    "parentClass": "",
+                    "sorting": false,
+                    "type": "Entity",
+                    "uid": "1000769509031"
+                },
+                "propertyGroup": {
+                    "properties": [
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": true,
+                            "propertyIsRequired": true,
+                            "propertyName": "language",
+                            "propertyType": "String",
+                            "uid": "1161593434329"
+                        }
+                    ]
+                },
+                "relationGroup": {
+                    "relations": []
+                }
+            }
+        },
+        {
+            "config": {
+                "position": [
+                    907,
+                    329
+                ]
+            },
+            "name": "New Model Object",
+            "value": {
+                "actionGroup": {
+                    "_default0_list": false,
+                    "_default1_show": false,
+                    "_default2_new_create": false,
+                    "_default3_edit_update": false,
+                    "_default4_delete": false,
+                    "customActions": []
+                },
+                "name": "AdmissionRequirements",
+                "objectsettings": {
+                    "addDeletedField": true,
+                    "addHiddenField": true,
+                    "addStarttimeEndtimeFields": true,
+                    "aggregateRoot": false,
+                    "categorizable": false,
+                    "description": "",
+                    "mapToTable": "",
+                    "parentClass": "",
+                    "sorting": false,
+                    "type": "Entity",
+                    "uid": "827347288685"
+                },
+                "propertyGroup": {
+                    "properties": [
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": true,
+                            "propertyIsRequired": true,
+                            "propertyName": "title",
+                            "propertyType": "String",
+                            "uid": "1035532509698"
+                        }
+                    ]
+                },
+                "relationGroup": {
+                    "relations": []
+                }
+            }
+        },
+        {
+            "config": {
+                "position": [
+                    663,
+                    487
+                ]
+            },
+            "name": "New Model Object",
+            "value": {
+                "actionGroup": {
+                    "_default0_list": false,
+                    "_default1_show": false,
+                    "_default2_new_create": false,
+                    "_default3_edit_update": false,
+                    "_default4_delete": false,
+                    "customActions": []
+                },
+                "name": "StartOfStudy",
+                "objectsettings": {
+                    "addDeletedField": true,
+                    "addHiddenField": true,
+                    "addStarttimeEndtimeFields": true,
+                    "aggregateRoot": false,
+                    "categorizable": false,
+                    "description": "",
+                    "mapToTable": "",
+                    "parentClass": "",
+                    "sorting": false,
+                    "type": "Entity",
+                    "uid": "737499847183"
+                },
+                "propertyGroup": {
+                    "properties": [
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": true,
+                            "propertyIsRequired": true,
+                            "propertyName": "title",
+                            "propertyType": "String",
+                            "uid": "1163542871137"
+                        },
+                        {
+                            "allowedFileTypes": "",
+                            "maxItems": "1",
+                            "propertyDescription": "",
+                            "propertyIsExcludeField": true,
+                            "propertyIsRequired": false,
+                            "propertyName": "startDate",
+                            "propertyType": "String",
+                            "uid": "1224545089859"
+                        }
+                    ]
+                },
+                "relationGroup": {
+                    "relations": []
+                }
+            }
+        }
+    ],
+    "properties": {
+        "backendModules": [
+            {
+                "actions": {
+                    "controllerActionCombinations": ""
+                },
+                "description": "",
+                "key": "studyfinder",
+                "mainModule": "web",
+                "name": "Studyfinder",
+                "tabLabel": ""
+            }
+        ],
+        "description": "",
+        "emConf": {
+            "category": "plugin",
+            "custom_category": "",
+            "dependsOn": "typo3 => 7.6.0-7.6.99\n",
+            "disableLocalization": false,
+            "disableVersioning": false,
+            "skipGenerateDocumentationTemplate": false,
+            "sourceLanguage": "en",
+            "state": "alpha",
+            "targetVersion": "7.6.0-7.6.99",
+            "version": "0.0.1"
+        },
+        "extensionKey": "in2studyfinder",
+        "name": "in2studyfinder",
+        "originalExtensionKey": "in2studyfinder",
+        "originalVendorName": "In2code",
+        "persons": [
+            {
+                "company": "In2code GmbH",
+                "email": "sebastian.stein@in2code.de",
+                "name": "Sebastian Stein",
+                "role": "Developer"
+            }
+        ],
+        "plugins": [
+            {
+                "actions": {
+                    "controllerActionCombinations": "StudyCourse => list, show",
+                    "noncacheableActions": "StudyCourse => list, show",
+                    "switchableActions": ""
+                },
+                "key": "studycourse",
+                "name": "StudyCourse"
+            }
+        ],
+        "vendorName": "In2code"
+    },
+    "wires": [
+        {
+            "src": {
+                "moduleId": 0,
+                "terminal": "relationWire_0",
+                "uid": "20155688205"
+            },
+            "tgt": {
+                "moduleId": 1,
+                "terminal": "SOURCES",
+                "uid": "1062157959834"
+            }
+        },
+        {
+            "src": {
+                "moduleId": 0,
+                "terminal": "relationWire_1",
+                "uid": "1281421412031"
+            },
+            "tgt": {
+                "moduleId": 2,
+                "terminal": "SOURCES",
+                "uid": "742755445956"
+            }
+        },
+        {
+            "src": {
+                "moduleId": 0,
+                "terminal": "relationWire_2",
+                "uid": "915596476506"
+            },
+            "tgt": {
+                "moduleId": 3,
+                "terminal": "SOURCES",
+                "uid": "691667681852"
+            }
+        },
+        {
+            "src": {
+                "moduleId": 0,
+                "terminal": "relationWire_3",
+                "uid": "466409789793"
+            },
+            "tgt": {
+                "moduleId": 4,
+                "terminal": "SOURCES",
+                "uid": "508456323747"
+            }
+        },
+        {
+            "src": {
+                "moduleId": 0,
+                "terminal": "relationWire_4",
+                "uid": "1114693029834"
+            },
+            "tgt": {
+                "moduleId": 5,
+                "terminal": "SOURCES",
+                "uid": "829733114212"
+            }
+        },
+        {
+            "src": {
+                "moduleId": 0,
+                "terminal": "relationWire_5",
+                "uid": "1125707231784"
+            },
+            "tgt": {
+                "moduleId": 6,
+                "terminal": "SOURCES",
+                "uid": "1000769509031"
+            }
+        },
+        {
+            "src": {
+                "moduleId": 0,
+                "terminal": "relationWire_6",
+                "uid": "1071626242693"
+            },
+            "tgt": {
+                "moduleId": 7,
+                "terminal": "SOURCES",
+                "uid": "827347288685"
+            }
+        },
+        {
+            "src": {
+                "moduleId": 0,
+                "terminal": "relationWire_7",
+                "uid": "557144176174"
+            },
+            "tgt": {
+                "moduleId": 8,
+                "terminal": "SOURCES",
+                "uid": "737499847183"
+            }
+        }
+    ],
+    "log": {
+        "last_modified": "2016-04-05 05:43",
+        "extension_builder_version": "7.6.0",
+        "be_user": " (1)"
+    }
+}
