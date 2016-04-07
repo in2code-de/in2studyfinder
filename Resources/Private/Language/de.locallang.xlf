@@ -57,9 +57,6 @@
 			<trans-unit id="tx_in2studyfinder_domain_model_ttcontent.studycourse">
 				<source>Studycourse</source>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_extbase_type.Tx_In2studyfinder_TtContent">
-				<source>in2studyfinder TtContent</source>
-			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_academicdegree">
 				<source>Academic Degree</source>
 			</trans-unit>
@@ -104,18 +101,6 @@
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_startofstudy.start_date">
 				<source>Start Date</source>
-			</trans-unit>
-			<trans-unit id="keyData">
-				<source>Key Data</source>
-			</trans-unit>
-			<trans-unit id="tx_in2studyfinder_domain_model_graduation">
-				<source>Graduations</source>
-			</trans-unit>
-			<trans-unit id="tx_in2studyfinder_domain_model_graduation.title">
-				<source>Graduation</source>
-			</trans-unit>
-			<trans-unit id="tca.select.please_choose">
-				<source>Please choose ...</source>
 			</trans-unit>
 		</body>
 	</file>

@@ -5,117 +5,150 @@
 		<body>
 			<trans-unit id="tx_in2studyfinder_domain_model_studycourse">
 				<source>Study Course</source>
+				<target>Studiengang</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.title">
 				<source>Title</source>
+				<target>Titel</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.standard_period_of_study">
 				<source>Standard Period Of Study</source>
+				<target>Regelstudienzeit (in Semestern)</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.ects_credits">
-				<source>Ects Credits</source>
+				<source>ECTS Credits</source>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.tuition_fee">
 				<source>Tuition Fee</source>
+				<target>Studiengebühr</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.teaser">
 				<source>Teaser</source>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.description">
 				<source>Description</source>
+				<target>Beschreibung</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.university_place">
 				<source>University Place</source>
+				<target>Studienplätze</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.content_elements">
 				<source>Content Elements</source>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.academic_degree">
 				<source>Academic Degree</source>
+				<target>Akademischer Grad</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.department">
 				<source>Department</source>
+				<target>Fachbereich</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.faculty">
 				<source>Faculty</source>
+				<target>Fakultät</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.type_of_study">
 				<source>Type Of Study</source>
+				<target>Studienart</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.course_language">
 				<source>Course Language</source>
+				<target>Unterrichtssprache</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.admission_requirements">
 				<source>Admission Requirements</source>
+				<target>Zulassungsvoraussetzungen</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.start_of_study">
 				<source>Start Of Study</source>
+				<target>Studienbeginn</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_ttcontent">
 				<source>Tt Content</source>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_ttcontent.studycourse">
 				<source>Studycourse</source>
+				<target>Studiengang</target>
 			</trans-unit>
 			<trans-unit id="tt_content.tx_extbase_type.Tx_In2studyfinder_TtContent">
 				<source>in2studyfinder TtContent</source>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_academicdegree">
 				<source>Academic Degree</source>
+				<target>Akademischer Grad</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_academicdegree.degree">
 				<source>Degree</source>
+				<target>Abschluss</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_department">
 				<source>Department</source>
+				<target>Fachbereich</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_department.title">
 				<source>Title</source>
+				<target>Titel</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_faculty">
 				<source>Faculty</source>
+				<target>Fakultät</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_faculty.title">
 				<source>Title</source>
+				<target>Titel</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_typeofstudy">
 				<source>Type Of Study</source>
+				<target>Studienart</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_typeofstudy.type">
 				<source>Type</source>
+				<target>Typ</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_courselanguage">
 				<source>Course Language</source>
+				<target>Unterrichtssprache</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_courselanguage.language">
 				<source>Language</source>
+				<target>Sprache</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_admissionrequirements">
 				<source>Admission Requirements</source>
+				<target>Zulassungsvoraussetzungen</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_admissionrequirements.title">
 				<source>Title</source>
+				<target>Titel</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_startofstudy">
 				<source>Start Of Study</source>
+				<target>Studienbeginn</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_startofstudy.title">
 				<source>Title</source>
+				<target>Titel</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_startofstudy.start_date">
 				<source>Start Date</source>
+				<target>Start Datum</target>
 			</trans-unit>
 			<trans-unit id="keyData">
 				<source>Key Data</source>
+				<target>Eckdaten</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_graduation">
 				<source>Graduations</source>
+				<target>Abschlussarten</target>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_graduation.title">
 				<source>Graduation</source>
+				<target>Abschlussart</target>
 			</trans-unit>
 			<trans-unit id="tca.select.please_choose">
 				<source>Please choose ...</source>
+				<target>Bitte wählen ...</target>
 			</trans-unit>
 		</body>
 	</file>

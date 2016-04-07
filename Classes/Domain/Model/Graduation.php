@@ -29,65 +29,38 @@ namespace In2code\In2studyfinder\Domain\Model;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
- * AcademicDegree
+ * CourseLanguage
  */
-class AcademicDegree extends AbstractEntity
+class Graduation extends AbstractEntity
 {
 
     /**
-     * degree
+     * language
      *
      * @var string
      * @validate NotEmpty
      */
-    protected $degree = '';
-
-    /**
-     * graduation
-     *
-     * @var \In2code\In2studyfinder\Domain\Model\Graduation
-     */
-    protected $graduation = '';
-
-    /**
-     * Returns the degree
-     *
-     * @return string degree
-     */
-    public function getDegree()
-    {
-        return $this->degree;
-    }
-    
-    /**
-     * Sets the degree
-     *
-     * @param string $degree
-     * @return void
-     */
-    public function setDegree($degree)
-    {
-        $this->degree = $degree;
-    }
+    protected $title = '';
 
     /**
      * Returns the graduation
      *
-     * @return \In2code\In2studyfinder\Domain\Model\Graduation $graduation
+     * @return string graduation
      */
-    public function getGraduation()
+    public function getTitle()
     {
-        return $this->graduation;
+        return $this->title;
     }
-
+    
     /**
-     * Sets the graduation
+     * Sets the language
      *
-     * @param \In2code\In2studyfinder\Domain\Model\Graduation $graduation
+     * @param string $title
      * @return void
      */
-    public function setGraduation(Graduation $graduation)
+    public function setTitle($title)
     {
-        $this->graduation = $graduation;
+        $this->title = $title;
     }
+
 }
