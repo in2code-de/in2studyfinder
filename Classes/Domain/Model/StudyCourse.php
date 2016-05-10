@@ -131,7 +131,7 @@ class StudyCourse extends AbstractEntity
     /**
      * admissionRequirements
      *
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\AdmissionRequirements>
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\AdmissionRequirement>
      */
     protected $admissionRequirements = null;
     
@@ -309,10 +309,22 @@ class StudyCourse extends AbstractEntity
     protected function initStorageObjects()
     {
         $this->contentElements = new ObjectStorage();
+
         $this->courseLanguages = new ObjectStorage();
+        $this->addCourseLanguage(new CourseLanguage());
+
         $this->startsOfStudy = new ObjectStorage();
+        $this->addStartOfStudy(new StartOfStudy());
+
         $this->typesOfStudy = new ObjectStorage();
+        $this->addTypeOfStudy(new TypeOfStudy());
+
         $this->admissionRequirements = new ObjectStorage();
+        $this->addAdmissionRequirement(new AdmissionRequirement());
+
+        $this->academicDegree = new AcademicDegree();
+        $this->department = new Department();
+        $this->faculty = new Faculty();
     }
     
     /**
@@ -510,7 +522,7 @@ class StudyCourse extends AbstractEntity
     /**
      * Returns the admissionRequirements
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\AdmissionRequirements> $admissionRequirements
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\AdmissionRequirement> $admissionRequirements
      */
     public function getAdmissionRequirements()
     {
@@ -520,7 +532,7 @@ class StudyCourse extends AbstractEntity
     /**
      * Sets the admissionRequirements
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\AdmissionRequirements> $admissionRequirements
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\AdmissionRequirement> $admissionRequirements
      * @return void
      */
     public function setAdmissionRequirements(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $admissionRequirements)
@@ -531,7 +543,7 @@ class StudyCourse extends AbstractEntity
     /**
      * Adds a admissionRequirement
      *
-     * @param \In2code\In2studyfinder\Domain\Model\AdmissionRequirements $admissionRequirement
+     * @param \In2code\In2studyfinder\Domain\Model\AdmissionRequirement $admissionRequirement
      * @return void
      */
     public function addAdmissionRequirement($admissionRequirement)
@@ -542,7 +554,7 @@ class StudyCourse extends AbstractEntity
     /**
      * Removes a admissionRequirement
      *
-     * @param \In2code\In2studyfinder\Domain\Model\AdmissionRequirements $admissionRequirementToRemove The type of study to be removed
+     * @param \In2code\In2studyfinder\Domain\Model\AdmissionRequirement $admissionRequirementToRemove The type of study to be removed
      * @return void
      */
     public function removeAdmissionRequirement($admissionRequirementToRemove)

@@ -259,9 +259,9 @@ CREATE TABLE tx_in2studyfinder_domain_model_courselanguage (
 );
 
 #
-# Table structure for table 'tx_in2studyfinder_domain_model_admissionrequirements'
+# Table structure for table 'tx_in2studyfinder_domain_model_admissionrequirement'
 #
-CREATE TABLE tx_in2studyfinder_domain_model_admissionrequirements (
+CREATE TABLE tx_in2studyfinder_domain_model_admissionrequirement (
 
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
@@ -428,9 +428,9 @@ CREATE TABLE tx_in2studyfinder_studycourse_typeofstudy_mm (
 );
 
 #
-# Table structure for table 'tx_in2studyfinder_studycourse_admissionrequirements_mm'
+# Table structure for table 'tx_in2studyfinder_studycourse_admissionrequirement_mm'
 #
-CREATE TABLE tx_in2studyfinder_studycourse_admissionrequirements_mm (
+CREATE TABLE tx_in2studyfinder_studycourse_admissionrequirement_mm (
 	uid_local int(11) unsigned DEFAULT '0' NOT NULL,
 	uid_foreign int(11) unsigned DEFAULT '0' NOT NULL,
 	sorting int(11) unsigned DEFAULT '0' NOT NULL,

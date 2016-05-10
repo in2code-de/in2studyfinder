@@ -102,6 +102,38 @@
 			<trans-unit id="tx_in2studyfinder_domain_model_startofstudy.start_date">
 				<source>Start Date</source>
 			</trans-unit>
+			<trans-unit id="filter_option.academicDegree">
+				<source>Academic Degree</source>
+				<target>Akademischer Grad</target>
+			</trans-unit>
+			<trans-unit id="filter_option.admissionRequirement">
+				<source>Admission Requirement</source>
+				<target>Zulassungsvoraussetzungen</target>
+			</trans-unit>
+			<trans-unit id="filter_option.courseLanguage">
+				<source>Course Language</source>
+				<target>Unterrichtssprache</target>
+			</trans-unit>
+			<trans-unit id="filter_option.department">
+				<source>Department</source>
+				<target>Fachbereich</target>
+			</trans-unit>
+			<trans-unit id="filter_option.faculty">
+				<source>Faculty</source>
+				<target>Fakultät</target>
+			</trans-unit>
+			<trans-unit id="filter_option.graduation">
+				<source>Graduation</source>
+				<target>Abschlussart</target>
+			</trans-unit>
+			<trans-unit id="filter_option.startOfStudy">
+				<source>Start of Study</source>
+				<target>Studienbeginn</target>
+			</trans-unit>
+			<trans-unit id="filter_option.typeOfStudy">
+				<source>Type of Study</source>
+				<target>Studienart</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

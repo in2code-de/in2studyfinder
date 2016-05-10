@@ -61,4 +61,13 @@ class CourseLanguage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $this->language = $language;
     }
 
+    /**
+     * Returns the option Field
+     *
+     * @return string title
+     */
+    public function getOptionField()
+    {
+        return $this->getLanguage();
+    }
 }

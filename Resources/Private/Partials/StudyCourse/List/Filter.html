@@ -1,0 +1,30 @@
+{namespace in2studyfinder=In2code\In2studyfinder\ViewHelpers}
+<f:debug>{_all}</f:debug>
+<f:form action="filter" class="in2studyfinder__filter in2studyfinder-js-filter">
+	<div class="in2studyfinder__option-header">
+		<span class="in2studyfinder__option-button in2studyfinder-js-show-filter-options">Show Filtermöglichkeiten</span>
+		<span class="studienberater_optionsheader_hide hide in2studyfinder-js-reset-filter-options">Reset all Filter</span>
+	</div>
+	<f:for each="{filterTypes}" as="filterType" key="filterTypeName">
+		<fieldset class="in2studyfinder__option-section hide" data-filtergroup="{filterTypeName}">
+			<legend class="in2studyfinder__option-title in2studyfinder-js-option-legend">
+				<f:translate key="filter_option.{filterTypeName}"/>
+			</legend>
+			<div class="in2studyfinder__accordion hide">
+				<f:form.checkbox name="searchOptions[{filterTypeName}][{filterType.uid}]" id="{filterTypeName}_alle"
+												 class="in2studyfinder__checkbox--all in2studyfinder-js-checkbox-all" checked="checked" disabled="disabled" value="{filterTypeName}_alle"/>
+				<label for="{filterTypeName}_alle" class="studienberater_label">
+					<f:translate key="tx_tumstudycourses.show_all"/>
+				</label>
+				<f:for each="{filterType}" as="option">
+					<in2studyfinder:form.checkbox name="searchOptions[{filterTypeName}][]" id="{filterTypeName}_{option.uid}"
+															 class="in2studyfinder__checkbox in2studyfinder-js-checkbox" value="{option.uid}"
+															 searchedOptions="{searchedOptions}"
+															 possibleFilters="{availableFilterOptions}"
+							/>
+					<label for="{filterTypeName}_{option.uid}" class="studienberater_label">{option.optionField}</label>
+				</f:for>
+			</div>
+		</fieldset>
+	</f:for>
+</f:form>

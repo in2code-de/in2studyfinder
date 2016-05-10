@@ -1,12 +1,37 @@
-
-plugin.tx_in2studyfinder_studycourse {
+plugin.tx_in2studyfinder {
 	view {
-		templateRootPaths.0 = {$plugin.tx_in2studyfinder_studycourse.view.templateRootPath}
-		partialRootPaths.0 = {$plugin.tx_in2studyfinder_studycourse.view.partialRootPath}
-		layoutRootPaths.0 = {$plugin.tx_in2studyfinder_studycourse.view.layoutRootPath}
+		templateRootPaths.0 = {$plugin.tx_in2studyfinder.view.templateRootPath}
+		partialRootPaths.0 = {$plugin.tx_in2studyfinder.view.partialRootPath}
+		layoutRootPaths.0 = {$plugin.tx_in2studyfinder.view.layoutRootPath}
 	}
+
+	settings {
+		storagePid = {$plugin.tx_in2studyfinder.persistence.storagePid}
+
+		filter {
+			allowedFilterTypes {
+				0 = In2code\In2studyfinder\Domain\Repository\AcademicDegree
+				1 = In2code\In2studyfinder\Domain\Repository\AdmissionRequirement
+				2 = In2code\In2studyfinder\Domain\Repository\CourseLanguage
+				3 = In2code\In2studyfinder\Domain\Repository\Department
+				4 = In2code\In2studyfinder\Domain\Repository\Faculty
+				5 = In2code\In2studyfinder\Domain\Repository\StartOfStudy
+				6 = In2code\In2studyfinder\Domain\Repository\TypeOfStudy
+			}
+			filterTypeLabelField {
+				academicDegree = degree
+				admissionRequirement = title
+				courseLanguage = language
+				department = title
+				faculty = title
+				startOfStudy = title
+				typeOfStudy = type
+			}
+		}
+	}
+
 	persistence {
-		storagePid = {$plugin.tx_in2studyfinder_studycourse.persistence.storagePid}
+		storagePid = {$plugin.tx_in2studyfinder.persistence.storagePid}
 	}
 }
 
@@ -44,14 +69,52 @@ plugin.tx_in2studyfinder._CSS_DEFAULT_STYLE (
 
 )
 
- # Module configuration
+# Module configuration
 module.tx_in2studyfinder_web_in2studyfinderstudyfinder {
 	persistence {
-		storagePid = {$module.tx_in2studyfinder_studyfinder.persistence.storagePid}
+		storagePid = {$module.tx_in2studyfinder.persistence.storagePid}
 	}
+
+	settings {
+		storagePid = {$module.tx_in2studyfinder.persistence.storagePid}
+	}
+
 	view {
-		templateRootPaths.0 = {$module.tx_in2studyfinder_studyfinder.view.templateRootPath}
-		partialRootPaths.0 = {$module.tx_in2studyfinder_studyfinder.view.partialRootPath}
-		layoutRootPaths.0 = {$module.tx_in2studyfinder_studyfinder.view.layoutRootPath}
+		templateRootPaths.0 = {$module.tx_in2studyfinder.view.templateRootPath}
+		partialRootPaths.0 = {$module.tx_in2studyfinder.view.partialRootPath}
+		layoutRootPaths.0 = {$module.tx_in2studyfinder.view.layoutRootPath}
 	}
 }
+
+############################
+# JavaScript and CSS section
+############################
+
+# add jQuery if it was turned on in the constants
+
+[globalVar = LIT:0 < {$plugin.tx_in2studyfinder.settings.javascript.addJQueryFromGoogle}]
+	#page.includeJSFooterlibs.in2studyfinderJQuery = {$plugin.tx_in2studyfinder.settings.javascript.in2studyfinderJQuery}
+	page.includeJSFooterlibs.in2studyfinderJQuery = EXT:in2studyfinder/Resources/Public/JavaScript/jquery-1.9.1.min.js
+
+	#page.includeJSFooterlibs.in2studyfinderJQuery.external = 1
+[end]
+
+page.includeJSFooterlibs.in2studyfinderJQuery = EXT:in2studyfinder/Resources/Public/JavaScript/jquery-1.9.1.min.js
+
+page.includeCSS.in2studyfinderChosenCss = {$plugin.tx_in2studyfinder.settings.css.in2studyfinderChosenCss}
+
+# add In2studyfinder JavaScripts
+page {
+	includeJSFooter {
+
+		in2studyfinderChosen = {$plugin.tx_in2studyfinder.settings.javascript.in2studyfinderChosen}
+		in2studyfinderJavaScriptBasic = EXT:in2studyfinder/Resources/Public/JavaScript/In2studyfinder.js
+
+		in2studyfinderJavaScriptModulesChosen = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/Chosen.js
+		in2studyfinderJavaScriptModulesFilterHandling = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/FilterHandling.js
+		in2studyfinderJavaScriptModulesUrlHandling = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/UrlHandling.js
+		in2studyfinderJavaScriptModulesUiBehaviour = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/UiBehaviour.js
+	}
+}
+
+

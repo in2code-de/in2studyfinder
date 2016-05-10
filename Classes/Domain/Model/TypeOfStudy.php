@@ -49,7 +49,7 @@ class TypeOfStudy extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         return $this->type;
     }
-    
+
     /**
      * Sets the type
      *
@@ -59,6 +59,16 @@ class TypeOfStudy extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setType($type)
     {
         $this->type = $type;
+    }
+
+    /**
+     * Returns the option Field
+     *
+     * @return string type
+     */
+    public function getOptionField()
+    {
+        return $this->getType();
     }
 
 }

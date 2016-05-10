@@ -150,6 +150,10 @@
 				<source>Please choose ...</source>
 				<target>Bitte wählen ...</target>
 			</trans-unit>
+			<trans-unit id="in2studyfinder.fast_selection">
+				<source>Quick selection: All degree programs in alphabetic order</source>
+				<target>Schnellauswahl: Alle Studiengänge in alphabetischer Reihenfolge</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

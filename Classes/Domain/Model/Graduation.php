@@ -63,4 +63,13 @@ class Graduation extends AbstractEntity
         $this->title = $title;
     }
 
+    /**
+     * Returns the option Field
+     *
+     * @return string title
+     */
+    public function getOptionField()
+    {
+        return $this->getTitle();
+    }
 }

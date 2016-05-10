@@ -1,0 +1,65 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+
+<table class="table table-striped table-hover">
+	<tr>
+		<th>
+			<f:translate key="tx_in2studyfinder_domain_model_studycourse.title"/>
+		</th>
+		<th>
+			<f:translate key="tx_in2studyfinder_domain_model_studycourse.standard_period_of_study"/>
+		</th>
+		<th>
+			<f:translate key="tx_in2studyfinder_domain_model_studycourse.ects_credits"/>
+		</th>
+		<th>
+			<f:translate key="tx_in2studyfinder_domain_model_studycourse.tuition_fee"/>
+		</th>
+		<th>
+			<f:translate key="tx_in2studyfinder_domain_model_studycourse.teaser"/>
+		</th>
+		<th>
+			<f:translate key="tx_in2studyfinder_domain_model_studycourse.description"/>
+		</th>
+		<th>
+			<f:translate key="tx_in2studyfinder_domain_model_studycourse.university_place"/>
+		</th>
+		<th></th>
+		<th></th>
+	</tr>
+
+	<f:for each="{studyCourses}" as="studyCourse">
+		<tr>
+			<td>
+				<f:link.action action="show" arguments="{studyCourse : studyCourse}"> {studyCourse.title}</f:link.action>
+			</td>
+			<td>
+				<f:link.action action="show" arguments="{studyCourse : studyCourse}"> {studyCourse.standardPeriodOfStudy}</f:link.action>
+			</td>
+			<td>
+				<f:link.action action="show" arguments="{studyCourse : studyCourse}"> {studyCourse.ectsCredits}</f:link.action>
+			</td>
+			<td>
+				<f:link.action action="show" arguments="{studyCourse : studyCourse}"> {studyCourse.tuitionFee}</f:link.action>
+			</td>
+			<td>
+				<f:link.action action="show" arguments="{studyCourse : studyCourse}"> {studyCourse.teaser}</f:link.action>
+			</td>
+			<td>
+				<f:link.action action="show" arguments="{studyCourse : studyCourse}"> {studyCourse.description}</f:link.action>
+			</td>
+			<td>
+				<f:link.action action="show" arguments="{studyCourse : studyCourse}"> {studyCourse.universityPlace}</f:link.action>
+			</td>
+			<td>
+				<f:link.action class="btn btn-default" action="edit" arguments="{studyCourse : studyCourse}">
+					<core:icon identifier="actions-document-open"/>
+				</f:link.action>
+			</td>
+			<td>
+				<f:link.action class="btn btn-default" action="delete" arguments="{studyCourse : studyCourse}">
+					<core:icon identifier="actions-edit-delete"/>
+				</f:link.action>
+			</td>
+		</tr>
+	</f:for>
+</table>

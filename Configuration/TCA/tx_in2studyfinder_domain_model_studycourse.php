@@ -203,9 +203,9 @@ return [
             'tx_in2studyfinder_studycourse_courselanguage_mm'
         ),
         'admission_requirements' => TcaGenerator::getFullTcaForSelectSideBySide(
-            $ll . $table . '.admission_requirements',
-            'tx_in2studyfinder_domain_model_admissionrequirements',
-            'tx_in2studyfinder_studycourse_admissionrequirements_mm'
+            $ll . $table . '.admission_requirement',
+            'tx_in2studyfinder_domain_model_admissionrequirement',
+            'tx_in2studyfinder_studycourse_admissionrequirement_mm'
         ),
         'starts_of_study' => TcaGenerator::getFullTcaForSelectCheckBox(
             $ll . $table . '.start_of_study',

@@ -47,7 +47,24 @@ class AcademicDegree extends AbstractEntity
      *
      * @var \In2code\In2studyfinder\Domain\Model\Graduation
      */
-    protected $graduation = '';
+    protected $graduation;
+
+    /**
+     * __construct
+     */
+    public function __construct()
+    {
+        //Do not remove the next line: It would break the functionality
+        $this->initStorageObjects();
+    }
+
+    /**
+     * @return void
+     */
+    protected function initStorageObjects()
+    {
+        $this->graduation = new Graduation();
+    }
 
     /**
      * Returns the degree
@@ -89,5 +106,15 @@ class AcademicDegree extends AbstractEntity
     public function setGraduation(Graduation $graduation)
     {
         $this->graduation = $graduation;
+    }
+
+    /**
+     * Returns the option Field
+     *
+     * @return string title
+     */
+    public function getOptionField()
+    {
+        return $this->getDegree();
     }
 }

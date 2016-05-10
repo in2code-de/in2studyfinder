@@ -1,0 +1,15 @@
+<f:render partial="StudyCourse/List/ItemCount" arguments="{studyCourseCount : studyCourseCount}"/>
+
+<f:widget.paginate objects="{studyCoursesLetterArray}" as="studyCoursesArray"
+									 configuration="{itemsPerPage:1}">
+	<ul class="in2studyfinder__list">
+		<f:for each="{studyCoursesArray}" as="studyCoursesByLetter" key="key" iteration="iterator">
+			<div class="in2studyfinder__letter">
+				{key}
+			</div>
+			<f:for each="{studyCoursesByLetter}" as="studyCourse">
+				<f:render partial="StudyCourse/List/Item" arguments="{studyCourse : studyCourse}"/>
+			</f:for>
+		</f:for>
+	</ul>
+</f:widget.paginate>

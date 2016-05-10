@@ -26,15 +26,89 @@ namespace In2code\In2studyfinder\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+
 /**
  * The repository for StudyCourses
  */
-class StudyCourseRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class StudyCourseRepository extends AbstractRepository
 {
+    protected $defaultOrderings = [
+        'title' => QueryInterface::ORDER_ASCENDING,
+    ];
+
+    protected $filterToStudyCoursePropertyMappingArray = [
+        'academicDegree' => 'academicDegree',
+        'admissionRequirement' => 'admissionRequirements',
+        'courseLanguage' => 'courseLanguages',
+        'department' => 'department',
+        'faculty' => 'faculty',
+        'startOfStudy' => 'startsOfStudy',
+        'typeOfStudy' => 'typesOfStudy',
+    ];
+
     /**
-     * @var array
+     * @param $options
+     * @return array
      */
-    protected $defaultOrderings = array(
-        'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
-    );
+    protected function mapOptionsToStudyCourseProperties($options)
+    {
+        $mappedOptions = [];
+
+        foreach ($options as $key => $value) {
+            $mappedOptions[$this->filterToStudyCoursePropertyMappingArray[$key]] = $value;
+        }
+
+        return $mappedOptions;
+    }
+
+    /**
+     * @param $options
+     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     */
+    public function findAllFilteredByOptions($options)
+    {
+        $query = $this->createQuery();
+
+        /*
+         * Workaround für Extbase Language handling.
+         *
+         * Das Problem:
+         * Übersetzte Datensätze werden über die Filterung nicht gefunden weil Extbase
+         * die Werte wie academic_degree usw. zwar im übersetzten Datensatz sucht,
+         * aber nicht findet, da sie dort nicht gepflegt werden (l10n_mode:exclude)
+         *
+         * Die Lösung:
+         * setRespectSysLanguage(FALSE) sorgt dafür, dass alle Datensätze gefunden
+         * werden, die diese Eigenschaften haben. In diesem Falle eigentlich nur
+         * die Originalsprachigen. Diese werden später von
+         * doWorkspaceAndLanguageOverlay() in die übersetzen Datensätze umgewandelt.
+         * Damit keine Originalsprachigen Datensätze angezeigt werden, wird der
+         * LanguageOverlayMode auf strict gesetzt. Dadurch verwirft
+         * doWorkspaceAndLanguageOverlay() originalsprachige Datensätze die keine
+         * Übersetzung haben.
+         *
+         * Gut zu wissen:
+         * Es ist grundsätzlich egal, welcher Wert bei dem übersetzten Datensatz
+         * eingetragen ist, wenn der Originalsprachige Datensatz den Suchwerten
+         * entspricht.
+         * Wenn der Übersetzte Datensatz den Suchwerten entspricht, der
+         * Originalsprachige aber nicht, dann wird er trotzdem gefunden.
+         * Die meisten dieser Werte sind aber nicht im Backend pflegbar und sollten
+         * immer auf 0 (null) stehen.
+         *
+         */
+        $query->getQuerySettings()->setRespectSysLanguage(false);
+        $query->getQuerySettings()->setLanguageOverlayMode('strict');
+
+        $mappedOptions = $this->mapOptionsToStudyCourseProperties($options);
+
+        $constraints = $this->optionsToConstraints($mappedOptions);
+
+        if (!empty($constraints)) {
+            $query->matching($query->logicalAnd($constraints));
+        }
+
+        return $query->execute();
+    }
 }

@@ -89,4 +89,14 @@ class StartOfStudy extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $this->startDate = $startDate;
     }
 
+    /**
+     * Returns the option Field
+     *
+     * @return string title
+     */
+    public function getOptionField()
+    {
+        return $this->getTitle();
+    }
+
 }

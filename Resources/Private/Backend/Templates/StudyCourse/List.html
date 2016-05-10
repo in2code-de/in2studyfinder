@@ -18,65 +18,7 @@ Otherwise your changes will be overwritten the next time you save the extension 
 
 	<f:flashMessages/>
 
-	<table class="tx_in2studyfinder">
-		<tr>
-			<th>
-				<f:translate key="tx_in2studyfinder_domain_model_studycourse.title"/>
-			</th>
-			<th>
-				<f:translate key="tx_in2studyfinder_domain_model_studycourse.standard_period_of_study"/>
-			</th>
-			<th>
-				<f:translate key="tx_in2studyfinder_domain_model_studycourse.ects_credits"/>
-			</th>
-			<th>
-				<f:translate key="tx_in2studyfinder_domain_model_studycourse.tuition_fee"/>
-			</th>
-			<th>
-				<f:translate key="tx_in2studyfinder_domain_model_studycourse.teaser"/>
-			</th>
-			<th>
-				<f:translate key="tx_in2studyfinder_domain_model_studycourse.description"/>
-			</th>
-			<th>
-				<f:translate key="tx_in2studyfinder_domain_model_studycourse.university_place"/>
-			</th>
-			<th></th>
-			<th></th>
-		</tr>
-
-		<f:for each="{studyCourses}" as="studyCourse">
-			<tr>
-				<td>
-					<f:link.action action="show" arguments="{studyCourse : studyCourse}"> {studyCourse.title}</f:link.action>
-				</td>
-				<td>
-					<f:link.action action="show" arguments="{studyCourse : studyCourse}"> {studyCourse.standardPeriodOfStudy}</f:link.action>
-				</td>
-				<td>
-					<f:link.action action="show" arguments="{studyCourse : studyCourse}"> {studyCourse.ectsCredits}</f:link.action>
-				</td>
-				<td>
-					<f:link.action action="show" arguments="{studyCourse : studyCourse}"> {studyCourse.tuitionFee}</f:link.action>
-				</td>
-				<td>
-					<f:link.action action="show" arguments="{studyCourse : studyCourse}"> {studyCourse.teaser}</f:link.action>
-				</td>
-				<td>
-					<f:link.action action="show" arguments="{studyCourse : studyCourse}"> {studyCourse.description}</f:link.action>
-				</td>
-				<td>
-					<f:link.action action="show" arguments="{studyCourse : studyCourse}"> {studyCourse.universityPlace}</f:link.action>
-				</td>
-				<td>
-					<f:link.action action="edit" arguments="{studyCourse : studyCourse}">Edit</f:link.action>
-				</td>
-				<td>
-					<f:link.action action="delete" arguments="{studyCourse : studyCourse}">Delete</f:link.action>
-				</td>
-			</tr>
-		</f:for>
-	</table>
+	<f:link.action action="list" controller="BackendModule">Generate Dummy</f:link.action>
 
 	<f:link.action action="new">New StudyCourse</f:link.action>
 </f:section>
