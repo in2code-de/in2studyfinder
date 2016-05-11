@@ -16,15 +16,17 @@
 		/**
 		 * initialize stuff
 		 */
-		this.Init = function() {
+		this.init = function() {
 
 			var chosen = new window.In2studyfinder.Chosen(dom);
 			var filterHandling = new window.In2studyfinder.FilterHandling(dom);
 			var urlHandling = new window.In2studyfinder.UrlHandling(dom);
 			var uiBehaviour = new window.In2studyfinder.UiBehaviour(dom);
+			var paginationHandling = new window.In2studyfinder.PaginationHandling(dom);
 
 			chosen.initializeChosen();
 			filterHandling.init();
+			paginationHandling.init();
 			uiBehaviour.checkboxHandling();
 
 			if (readFilterFromUrl) {
@@ -47,5 +49,5 @@
 
 jQuery(document).ready(function() {
 	var start = new window.In2studyfinder.Start();
-	start.Init();
+	start.init();
 });

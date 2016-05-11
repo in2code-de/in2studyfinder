@@ -49,7 +49,7 @@
 					//}
 				},
 				complete: function () {
-					start.Init();
+					start.init();
 					uiBehaviour.openPreviouslyOpenedFilterSections();
 					uiBehaviour.disbaleLoading();
 				},

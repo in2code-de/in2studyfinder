@@ -116,6 +116,7 @@ page {
 		in2studyfinderJavaScriptModulesFilterHandling = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/FilterHandling.min.js
 		in2studyfinderJavaScriptModulesUrlHandling = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/UrlHandling.min.js
 		in2studyfinderJavaScriptModulesUiBehaviour = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/UiBehaviour.min.js
+		in2studyfinderJavaScriptModulesPaginationHandling = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/PaginationHandling.min.js
 	}
 }
 
