@@ -16,25 +16,29 @@ if (TYPO3_MODE === 'BE') {
     /**
      * Registers a Backend Module
      */
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        'In2code.' . $extKey,
-        'web',
-        'studyfinder',
-        '',
-        array(
-            'BackendModule' => 'list, generateDummyData',
-        ),
-        array(
-            'access' => 'user,group',
-            'icon' => 'EXT:' . $extKey . '/ext_icon.png',
-            'labels' => 'LLL:EXT    :' . $extKey . '/Resources/Private/Language/locallang_studyfinder.xlf',
-        )
-    );
+//    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+//        'In2code.' . $extKey,
+//        'web',
+//        'studyfinder',
+//        '',
+//        array(
+//            'BackendModule' => 'list, generateDummyData',
+//        ),
+//        array(
+//            'access' => 'user,group',
+//            'icon' => 'EXT:' . $extKey . '/ext_icon.png',
+//            'labels' => 'LLL:EXT    :' . $extKey . '/Resources/Private/Language/locallang_studyfinder.xlf',
+//        )
+//    );
 
 }
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
-    $extKey, 'Configuration/TypoScript', 'in2studyfinder'
+    $extKey, 'Configuration/TypoScript/Main', 'In2studyfinder Basic Template'
+);
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
+    $extKey, 'Configuration/TypoScript/Css', 'In2studyfinder Demo CSS Template'
 );
 
 $tables = [

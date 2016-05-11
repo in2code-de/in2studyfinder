@@ -4,11 +4,11 @@
 		var uiBehaviour = this;
 
 		this.enableLoading = function() {
-			$(dom).find('.in2studyfinder').addClass('in2studyfinder--loading');
+			$(dom).addClass('in2studyfinder__loading');
 		};
 
 		this.disbaleLoading = function() {
-			$(dom).find('.in2studyfinder').removeClass('in2studyfinder--loading');
+			$(dom).removeClass('in2studyfinder__loading');
 		};
 
 		this.toggleOptionFormVisibility = function() {

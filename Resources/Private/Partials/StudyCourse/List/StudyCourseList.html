@@ -1,7 +1,7 @@
 <f:render partial="StudyCourse/List/ItemCount" arguments="{studyCourseCount : studyCourseCount}"/>
 
 <f:widget.paginate objects="{studyCoursesLetterArray}" as="studyCoursesArray"
-									 configuration="{itemsPerPage:1}">
+									 configuration="{itemsPerPage:25}">
 	<ul class="in2studyfinder__list">
 		<f:for each="{studyCoursesArray}" as="studyCoursesByLetter" key="key" iteration="iterator">
 			<li>

@@ -14,18 +14,6 @@ plugin.tx_in2studyfinder {
 	}
 
 	settings {
-#		filter {
-#			allowedFilterOptions {
-#				0 = AcademicDegree
-#				1 = AdmissionRequirement
-#				2 = CourseLanguage
-#				3 = Department
-#				4 = Faculty
-#				5 = Graduation
-#				6 = StartOfStudy
-#				7 = TypeOfStudy
-#			}
-#		}
 
 		javascript {
 			# cat=plugin.tx_in2studyfinder//a; type=boolean; label= Include jQuery From Google: Add jQuery JavaScript (will be loaded from ajax.googleapis.com)
@@ -40,7 +28,7 @@ plugin.tx_in2studyfinder {
 
 		css {
 			# cat=plugin.tx_in2studyfinder//a; type=text; label= Css Source from In2studyfinder
-			in2studyfinderCss = EXT:in2studyfinder/Resources/Public/Css/in2studyfinder.css
+			in2studyfinderCss = EXT:in2studyfinder/Resources/Public/Css/basic.css
 		}
 	}
 }

@@ -1,8 +1,8 @@
 {namespace in2studyfinder=In2code\In2studyfinder\ViewHelpers}
 <f:form action="filter" class="in2studyfinder__filter in2studyfinder-js-filter">
 	<div class="in2studyfinder__filter-header">
-		<span class="in2studyfinder__button in2studyfinder__button--show in2studyfinder-js-show-filter-options">Show Filtermöglichkeiten</span>
-		<span class="in2studyfinder__button in2studyfinder__button--reset hide in2studyfinder-js-reset-filter-options">Reset all Filter</span>
+		<span class="in2studyfinder__button right in2studyfinder__button--show in2studyfinder-js-show-filter-options">Show Filtermöglichkeiten</span>
+		<span class="in2studyfinder__button right in2studyfinder__button--reset hide in2studyfinder-js-reset-filter-options">Reset all Filter</span>
 	</div>
 	<f:for each="{filterTypes}" as="filterType" key="filterTypeName">
 		<fieldset class="in2studyfinder__filter-section in2studyfinder-js-option-section hide" data-filtergroup="{filterTypeName}">
