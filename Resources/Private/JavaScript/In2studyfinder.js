@@ -9,7 +9,7 @@
 	 * @type {*|jQuery|HTMLElement}
 	 */
 	var dom = $('.in2studyfinder');
-	var readFilterFromUrl = false;
+	var readFilterFromUrl = true;
 
 	function Start() {
 
@@ -29,8 +29,10 @@
 
 			if (readFilterFromUrl) {
 				readFilterFromUrl = false;
-				var paginationPage = urlHandling.loadSelectedOptionsFromUrl();
-				filterHandling.filterChanged(paginationPage);
+				if (window.location.hash) {
+					var paginationPage = urlHandling.loadSelectedOptionsFromUrl();
+					filterHandling.filterChanged(paginationPage);
+				}
 			}
 		};
 	}

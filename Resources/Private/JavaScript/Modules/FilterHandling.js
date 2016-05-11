@@ -12,13 +12,13 @@
 			// "Alle" Checkbox unchecken wenn eine andere geklickt wird
 			// und wieder checken, wenn keine mehr markiert ist
 			$('.in2studyfinder-js-checkbox').change(function () {
-				uiBehaviour.uncheckAllCheckbox();
+				uiBehaviour.uncheckAllCheckbox($(this));
 				filterHandling.filterChanged();
 			});
 
 			//alle Checkboxen unchecken, wenn "Alle" geklickt wird
-			$('.checkbox-all').change(function () {
-				uiBehaviour.uncheckOtherCheckboxes();
+			$('.in2studyfinder-js-checkbox-all').change(function () {
+				uiBehaviour.uncheckOtherCheckboxes($(this));
 				filterHandling.filterChanged();
 			});
 		};
@@ -49,8 +49,9 @@
 					//}
 				},
 				complete: function () {
-					uiBehaviour.disbaleLoading();
 					start.Init();
+					uiBehaviour.openPreviouslyOpenedFilterSections();
+					uiBehaviour.disbaleLoading();
 				},
 				cache: false
 			});

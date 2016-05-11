@@ -30,14 +30,12 @@
 		this.saveSelectedOptionsToUrl = function(paginationPage) {
 			var selectionValues = {};
 			var selectionString = '';
-			var selectedOptions = $('.in2studyfinder-js-filter').find('input.checkbox-option:checked');
-			console.log(selectedOptions);
+			var selectedOptions = $('.in2studyfinder-js-filter').find('input.in2studyfinder-js-checkbox:checked');
 			$(selectedOptions).each(function() {
 				var filterGroupAbbreviation = $(this).closest('fieldset').data('filtergroup');
 				if (selectionValues[filterGroupAbbreviation] === undefined) {
 					selectionValues[filterGroupAbbreviation] = [];
 				}
-				console.log($(this).closest('fieldset').data('filtergroup'));
 				selectionValues[filterGroupAbbreviation].push($(this).val());
 			});
 

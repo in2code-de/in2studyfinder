@@ -4,9 +4,11 @@
 									 configuration="{itemsPerPage:1}">
 	<ul class="in2studyfinder__list">
 		<f:for each="{studyCoursesArray}" as="studyCoursesByLetter" key="key" iteration="iterator">
-			<div class="in2studyfinder__letter">
-				{key}
-			</div>
+			<li>
+				<div class="in2studyfinder__letter">
+					<span>{key}</span>
+				</div>
+			</li>
 			<f:for each="{studyCoursesByLetter}" as="studyCourse">
 				<f:render partial="StudyCourse/List/Item" arguments="{studyCourse : studyCourse}"/>
 			</f:for>

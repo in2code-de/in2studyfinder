@@ -1,26 +1,89 @@
 <f:layout name="Default"/>
 
-This Template is responsible for displaying a single view for a domain object
-
-If you modify this template, do not forget to change the overwrite settings
-in /Configuration/ExtensionBuilder/settings.yaml:
-Resources:
-Private:
-Templates:
-Show.html: keep
-
-Otherwise your changes will be overwritten the next time you save the extension in the extension builder
-
 <f:section name="main">
-	<h1>Single View for StudyCourse</h1>
-
-	<f:flashMessages/>
-	<f:debug>{studyCourse}</f:debug>
-
 	<div class="in2studyfinder__detail">
+		<f:flashMessages/>
 
+		<div class="in2studyfinder__column">
+			<h1>{studyCourse.academicDegree.degree} {studyCourse.title}</h1>
+
+			<h3>
+				Fakultät {studyCourse.faculty.title}
+			</h3>
+
+			<p>{studyCourse.teaser}</p>
+
+			<div class="in2studyfinder__content-box">
+				<div class="in2studyfinder__content-box__head">
+					<h3>Eckdaten</h3>
+				</div>
+				<div class="in2studyfinder__column in2studyfinder__column--half">
+					<strong>Art des Studiums</strong>
+
+					<p>{studyCourse.academicDegree.degree}</p>
+
+					<strong>Studientyp</strong>
+					<ul>
+						<f:for each="{studyCourse.typesOfStudy}" as="typeOfStudy">
+							<li>{typeOfStudy.type}</li>
+						</f:for>
+					</ul>
+
+					<strong>ECTS Credits</strong>
+
+					<p>{studyCourse.ectsCredits}</p>
+
+					<strong>Studiengebühren</strong>
+
+					<p>
+						<f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{studyCourse.tuitionFee}</f:format.currency>
+					</p>
+
+				</div>
+				<div class="in2studyfinder__column in2studyfinder__column--half">
+					<strong>Zulassungsbeschränkungen</strong>
+					<ul>
+						<f:for each="{studyCourse.admissionRequirements}" as="admissionRequirement">
+							<li>{admissionRequirement.title}</li>
+						</f:for>
+					</ul>
+
+					<strong>Studienbeginn</strong>
+					<ul>
+						<f:for each="{studyCourse.startsOfStudy}" as="startOfStudy">
+							<li>{startOfStudy.title}:
+								<f:format.date date="{startOfStudy.startDate}" format="d.m"/>
+							</li>
+						</f:for>
+					</ul>
+
+					<strong>Regelstudienzeit (in Semestern)</strong>
+
+					<p>{studyCourse.standardPeriodOfStudy}</p>
+
+					<strong>Studienplätze</strong>
+
+					<p>{studyCourse.universityPlace}</p>
+				</div>
+
+			</div>
+
+			<div class="in2studyfinder__content-box">
+				<div class="in2studyfinder__content-box__head">
+					<h3>Worum geht es in diesem Studiengang?</h3>
+				</div>
+				<p>{studyCourse.description}</p>
+			</div>
+
+			<f:render partial="StudyCourse/Detail/contentElements" arguments="{_all}" />
+
+			<div class="in2studyfinder__column in2studyfinder__column--right">
+
+			</div>
+
+			<f:link.action action="list">Back to list</f:link.action>
+			<br/>
+			<f:link.action action="new">New StudyCourse</f:link.action>
+		</div>
 	</div>
-	<f:link.action action="list">Back to list</f:link.action>
-	<br/>
-	<f:link.action action="new">New StudyCourse</f:link.action>
 </f:section>

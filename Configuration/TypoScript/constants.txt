@@ -35,12 +35,12 @@ plugin.tx_in2studyfinder {
 			in2studyfinderJQuery = //ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js
 
 			# cat=plugin.tx_in2studyfinder//a; type=text; label= Chosen Source
-			in2studyfinderChosen = EXT:in2studyfinder/Resources/Public/JavaScript/Chosen.jquery.min.js
+			in2studyfinderChosen = EXT:in2studyfinder/Resources/Public/JavaScript/chosen.jquery.min.js
 		}
 
 		css {
-			# cat=plugin.tx_in2studyfinder//a; type=text; label= Css Source from Chosen
-			in2studyfinderChosenCss = EXT:in2studyfinder/Resources/Public/Css/Chosen.min.css
+			# cat=plugin.tx_in2studyfinder//a; type=text; label= Css Source from In2studyfinder
+			in2studyfinderCss = EXT:in2studyfinder/Resources/Public/Css/in2studyfinder.css
 		}
 	}
 }

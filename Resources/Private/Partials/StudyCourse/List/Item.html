@@ -1,6 +1,6 @@
 <li class="in2studyfinder__item">
-	<p class="in2studyfinder__item-title">{studyCourse.title}</p>
+	<p class="in2studyfinder__item-title"><f:link.action action="detail" arguments="{studyCourse : studyCourse}" class="in2studyfinder__item-link">{studyCourse.title}</f:link.action> - {studyCourse.academicDegree.degree}</p>
 
 	<p class="in2studyfinder__item-teaser">{studyCourse.teaser}</p>
-	<f:link.action action="detail" arguments="{studyCourse : studyCourse}" class="in2studyfinder__item-link">Link</f:link.action>
+	<f:link.action action="detail" arguments="{studyCourse : studyCourse}" class="in2studyfinder__item-link">weiterlesen</f:link.action>
 </li>

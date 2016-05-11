@@ -29,11 +29,13 @@ return [
         'iconfile' => $icon
     ],
     'interface' => [
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title',
+        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, start_date',
     ],
     'types' => [
-        '1' => ['showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, ' .
-            '--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'],
+        '1' => [
+            'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, start_date, ' .
+                '--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'
+        ],
     ],
     'palettes' => [
         '1' => ['showitem' => ''],
@@ -47,7 +49,6 @@ return [
         'hidden' => TcaGenerator::getFullTcaForHidden(),
         'starttime' => TcaGenerator::getFullTcaForStartTime(),
         'endtime' => TcaGenerator::getFullTcaForEndTime(),
-
         'title' => [
             'exclude' => 1,
             'label' => $ll . $table . '.title',
@@ -55,6 +56,22 @@ return [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'trim,required'
+            ],
+        ],
+        'start_date' => [
+            'exclude' => 1,
+            'l10n_mode' => 'exclude',
+            'label' => 'Start Zeitpunkt',
+            'config' => [
+                'type' => 'input',
+                'size' => 13,
+                'max' => 20,
+                'eval' => 'date',
+                'checkbox' => 0,
+                'default' => 0,
+                'range' => [
+                    'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y'))
+                ],
             ],
         ],
     ],

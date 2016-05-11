@@ -3,6 +3,12 @@ plugin.tx_in2studyfinder {
 		templateRootPaths.0 = {$plugin.tx_in2studyfinder.view.templateRootPath}
 		partialRootPaths.0 = {$plugin.tx_in2studyfinder.view.partialRootPath}
 		layoutRootPaths.0 = {$plugin.tx_in2studyfinder.view.layoutRootPath}
+
+		widget {
+			TYPO3\CMS\Fluid\ViewHelpers\Widget\PaginateViewHelper {
+				templateRootPath = EXT:in2studyfinder/Resources/Private/Templates/
+			}
+		}
 	}
 
 	settings {
@@ -18,6 +24,7 @@ plugin.tx_in2studyfinder {
 				5 = In2code\In2studyfinder\Domain\Repository\StartOfStudy
 				6 = In2code\In2studyfinder\Domain\Repository\TypeOfStudy
 			}
+
 			filterTypeLabelField {
 				academicDegree = degree
 				admissionRequirement = title
@@ -93,27 +100,22 @@ module.tx_in2studyfinder_web_in2studyfinderstudyfinder {
 # add jQuery if it was turned on in the constants
 
 [globalVar = LIT:0 < {$plugin.tx_in2studyfinder.settings.javascript.addJQueryFromGoogle}]
-	#page.includeJSFooterlibs.in2studyfinderJQuery = {$plugin.tx_in2studyfinder.settings.javascript.in2studyfinderJQuery}
-	page.includeJSFooterlibs.in2studyfinderJQuery = EXT:in2studyfinder/Resources/Public/JavaScript/jquery-1.9.1.min.js
-
-	#page.includeJSFooterlibs.in2studyfinderJQuery.external = 1
+	page.includeJSFooterlibs.in2studyfinderJQuery = {$plugin.tx_in2studyfinder.settings.javascript.in2studyfinderJQuery}
+	page.includeJSFooterlibs.in2studyfinderJQuery.external = 1
 [end]
 
-page.includeJSFooterlibs.in2studyfinderJQuery = EXT:in2studyfinder/Resources/Public/JavaScript/jquery-1.9.1.min.js
-
-page.includeCSS.in2studyfinderChosenCss = {$plugin.tx_in2studyfinder.settings.css.in2studyfinderChosenCss}
+page.includeCSS.in2studyfinderCss = {$plugin.tx_in2studyfinder.settings.css.in2studyfinderCss}
 
 # add In2studyfinder JavaScripts
 page {
 	includeJSFooter {
-
 		in2studyfinderChosen = {$plugin.tx_in2studyfinder.settings.javascript.in2studyfinderChosen}
-		in2studyfinderJavaScriptBasic = EXT:in2studyfinder/Resources/Public/JavaScript/In2studyfinder.js
+		in2studyfinderJavaScriptBasic = EXT:in2studyfinder/Resources/Public/JavaScript/In2studyfinder.min.js
 
-		in2studyfinderJavaScriptModulesChosen = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/Chosen.js
-		in2studyfinderJavaScriptModulesFilterHandling = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/FilterHandling.js
-		in2studyfinderJavaScriptModulesUrlHandling = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/UrlHandling.js
-		in2studyfinderJavaScriptModulesUiBehaviour = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/UiBehaviour.js
+		in2studyfinderJavaScriptModulesChosen = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/Chosen.min.js
+		in2studyfinderJavaScriptModulesFilterHandling = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/FilterHandling.min.js
+		in2studyfinderJavaScriptModulesUrlHandling = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/UrlHandling.min.js
+		in2studyfinderJavaScriptModulesUiBehaviour = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/UiBehaviour.min.js
 	}
 }
 
