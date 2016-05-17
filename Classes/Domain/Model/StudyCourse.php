@@ -141,7 +141,28 @@ class StudyCourse extends AbstractEntity
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\StartOfStudy>
      */
     protected $startsOfStudy = null;
-    
+
+    /**
+     * Meta Pagetitle
+     *
+     * @var string
+     */
+    protected $metaPagetitle = '';
+
+    /**
+     * Meta Keywords
+     *
+     * @var string
+     */
+    protected $metaKeywords = '';
+
+    /**
+     * Meta Description
+     *
+     * @var string
+     */
+    protected $metaDescription = '';
+
     /**
      * Returns the title
      *
@@ -603,6 +624,54 @@ class StudyCourse extends AbstractEntity
     public function removeStartOfStudy($startOfStudyToRemove)
     {
         $this->startsOfStudy->detach($startOfStudyToRemove);
+    }
+
+    /**
+     * @return string
+     */
+    public function getMetaPagetitle()
+    {
+        return $this->metaPagetitle;
+    }
+
+    /**
+     * @param string $metaPagetitle
+     */
+    public function setMetaPagetitle($metaPagetitle)
+    {
+        $this->metaPagetitle = $metaPagetitle;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMetaKeywords()
+    {
+        return $this->metaKeywords;
+    }
+
+    /**
+     * @param string $metaKeywords
+     */
+    public function setMetaKeywords($metaKeywords)
+    {
+        $this->metaKeywords = $metaKeywords;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMetaDescription()
+    {
+        return $this->metaDescription;
+    }
+
+    /**
+     * @param string $metaDescription
+     */
+    public function setMetaDescription($metaDescription)
+    {
+        $this->metaDescription = $metaDescription;
     }
 
 }

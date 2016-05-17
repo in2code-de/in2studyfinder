@@ -147,9 +147,30 @@ class StudyCourseController extends AbstractController
 
         if ($getData['studyCourse'] && $getData['studyCourse'] !== '') {
             $studyCourse = $this->studyCourseRepository->findByUid($getData['studyCourse']);
+
+            $this->writePageMetadata($studyCourse);
+
             $this->view->assign('studyCourse', $studyCourse);
         } else {
             $this->redirect('list');
+        }
+    }
+
+    /**
+     * @param $studyCourse
+     */
+    protected function writePageMetadata($studyCourse) {
+
+        if (!empty($studyCourse->getMetaPagetitle())) {
+            $GLOBALS['TSFE']->page['title'] = $studyCourse->getMetaPagetitle();
+        }
+        if (!empty($studyCourse->getMetaDescription())) {
+            $metaDescription = '<meta name="description" content="' . $studyCourse->getMetaDescription() . '">';
+            $this->response->addAdditionalHeaderData($metaDescription);
+        }
+        if (!empty($studyCourse->getMetaKeywords())) {
+            $metaKeywords = '<meta name="keywords" content="' . $studyCourse->getMetaKeywords() . '">';
+            $this->response->addAdditionalHeaderData($metaKeywords);
         }
     }
 

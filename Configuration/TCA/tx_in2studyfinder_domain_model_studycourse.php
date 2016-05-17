@@ -35,15 +35,16 @@ return [
         'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, ' .
             'standard_period_of_study, ects_credits, teaser, description, tuition_fee, university_place, ' .
             'content_elements, academic_degree, department, faculty, types_of_study, course_languages, ' .
-            'admission_requirements, starts_of_study',
+            'admission_requirements, starts_of_study, meta_pagetitles, meta_keywordss, meta_description',
     ],
     'types' => [
         '0' => [
             'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title,  ' .
                 '--palette--;' . $ll . 'keyData;keyData,' .
                 'teaser;;;richtext:rte_transform[mode=ts_links], description;;;richtext:rte_transform[mode=ts_links], '
-                .
-                'content_elements,  --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'
+                . 'content_elements, ' .
+                '--div--;' . $ll . 'metadata, --palette--;' . $ll . 'metadata;metadata,
+                --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'
         ],
     ],
     'palettes' => [
@@ -54,6 +55,9 @@ return [
                 'academic_degree, starts_of_study, --linebreak--,' .
                 'types_of_study, --linebreak--, admission_requirements, --linebreak--,' .
                 'course_languages,'
+        ],
+        'metadata' => [
+            'showitem' => 'meta_pagetitle, --linebreak--, meta_keywords, --linebreak--, meta_description'
         ],
     ],
     'columns' => [
@@ -212,5 +216,35 @@ return [
             'tx_in2studyfinder_domain_model_startofstudy',
             'tx_in2studyfinder_studycourse_startofstudy_mm'
         ),
+        'meta_pagetitle' => [
+            'exclude' => 1,
+            'label' => $ll . $table . '.meta_pagetitle',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'trim,required',
+                'max' => 100,
+            ],
+        ],
+        'meta_keywords' => [
+            'exclude' => 1,
+            'label' => $ll . $table . '.meta_keywords',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'trim,required',
+                'max' => 255,
+            ],
+        ],
+        'meta_description' => [
+            'exclude' => 1,
+            'label' => $ll . $table . '.meta_description',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'trim,required',
+                'max' => 255,
+            ],
+        ],
     ],
 ];

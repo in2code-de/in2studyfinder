@@ -21,6 +21,10 @@ CREATE TABLE tx_in2studyfinder_domain_model_studycourse (
 	course_languages int(11) unsigned DEFAULT '0',
 	admission_requirements int(11) unsigned DEFAULT '0',
 	starts_of_study int(11) unsigned DEFAULT '0',
+	meta_pagetitle varchar(100) DEFAULT '' NOT NULL,
+	meta_keywords varchar(255) DEFAULT '' NOT NULL,
+	meta_description varchar(255) DEFAULT '' NOT NULL,
+
 	categories int(11) unsigned DEFAULT '0' NOT NULL,
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,

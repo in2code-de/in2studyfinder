@@ -9,6 +9,15 @@
 			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.title">
 				<source>Title</source>
 			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.meta_pagetitle">
+				<source>Page Title Tag</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.meta_keywords">
+				<source>Meta Keywords</source>
+			</trans-unit>
+			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.meta_description">
+				<source>Meta Description</source>
+			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_studycourse.standard_period_of_study">
 				<source>Standard Period Of Study</source>
 			</trans-unit>
@@ -107,6 +116,9 @@
 			</trans-unit>
 			<trans-unit id="keyData">
 				<source>Key Data</source>
+			</trans-unit>
+			<trans-unit id="metadata">
+				<source>Metadata</source>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_graduation">
 				<source>Graduations</source>
