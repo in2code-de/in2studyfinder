@@ -58,7 +58,6 @@ class StudyCourseRepository extends AbstractRepository
         foreach ($options as $key => $value) {
             $mappedOptions[$this->filterToStudyCoursePropertyMappingArray[$key]] = $value;
         }
-
         return $mappedOptions;
     }
 

@@ -63,20 +63,17 @@ class StudyCourseController extends AbstractController
     /**
      *
      */
-    public function __construct()
-    {
-        parent::__construct();
-
-        /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-        $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-        $this->settings = ExtensionUtility::getExtensionConfiguration('in2studyfinder');
-
+    protected function initializeAction() {
         foreach ($this->settings['filter']['filterTypeLabelField'] as $key => $value) {
             $this->allowedSearchFields[] = $key;
         }
 
         $this->setFilterTypesAndRepositories();
 
+
+        if(ExtensionUtility::isIn2studycoursesExtendLoaded()) {
+            $this->studyCourseRepository = $this->objectManager->get('In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository');
+        }
     }
 
     /**
@@ -84,6 +81,7 @@ class StudyCourseController extends AbstractController
      */
     protected function setFilterTypesAndRepositories()
     {
+
         foreach ($this->settings['filter']['allowedFilterTypes'] as $filterType) {
 
             $this->filterTypeRepositories[$filterType] = $this->objectManager->get(
@@ -164,6 +162,7 @@ class StudyCourseController extends AbstractController
         if ($this->request->hasArgument('searchOptions')) {
             // filter empty options
             $sanitizedSearchOptions = array_filter($this->request->getArgument('searchOptions'));
+
             // remove not allowed keys (prevents SQL Injection, too)
             foreach (array_keys($sanitizedSearchOptions) as $studyCoursePropertyName) {
                 if (!in_array($studyCoursePropertyName, $this->allowedSearchFields)) {
@@ -187,6 +186,7 @@ class StudyCourseController extends AbstractController
         }
         if (!empty($searchOptions)) {
             $this->view->assign('searchedOptions', $searchOptions);
+
 
             $foundStudyCourses = $this->processSearch($searchOptions);
 

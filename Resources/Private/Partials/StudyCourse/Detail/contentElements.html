@@ -1,10 +1,4 @@
+{namespace in2studyfinder=In2code\In2studyfinder\ViewHelpers}
 <f:for each="{studyCourse.contentElements}" as="contentElement">
-	<div class="in2studyfinder__content-box">
-		<div class="in2studyfinder__content-box-head">
-			<h3>{contentElement.header}</h3>
-		</div>
-		<div class="in2studyfinder__content-box-content">
-			<p>{contentElement.bodytext}</p>
-		</div>
-	</div>
+	<in2studyfinder:renderContentElement uid="{contentElement.uid}" />
 </f:for>
