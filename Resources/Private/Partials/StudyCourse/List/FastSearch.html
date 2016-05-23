@@ -1,15 +1,5 @@
 <f:form action="detail">
-	<f:form.select options="{studyCourses}"
-								 optionLabelField="title"
-								 additionalAttributes="{data-placeholder:'{f:translate(key:\'in2studyfinder.fast_selection\')}'}"
-								 prependOptionLabel=""
-								 prependOptionValue=""
-								 name="studyCourse"
-								 class="in2studyfinder-js-fast-select"/>
-</f:form>
-
-<f:form action="detail">
-	<select data-placeholder="{data-placeholder:'{f:translate(key:\'in2studyfinder.fast_selection\')}'}" class="select2" style="width: 100%" name="tx_in2studyfinder_studycourse[studyCourse]" tabindex="-1">
+	<select data-placeholder="Select an Option..." class="select2" style="width: 100%" name="tx_in2studyfinder_studycourse[studyCourse]" tabindex="-1">
 		<option value="">
 			<f:for each="{studyCourses}" as="studyCourse">
 				<option value="{studyCourse.uid}" alt="{studyCourse.metaKeywords}">{studyCourse.title}</option>

@@ -99,10 +99,10 @@
 			<trans-unit id="tx_in2studyfinder_domain_model_courselanguage.language">
 				<source>Language</source>
 			</trans-unit>
-			<trans-unit id="tx_in2studyfinder_domain_model_admissionrequirements">
+			<trans-unit id="tx_in2studyfinder_domain_model_admissionrequirement">
 				<source>Admission Requirements</source>
 			</trans-unit>
-			<trans-unit id="tx_in2studyfinder_domain_model_admissionrequirements.title">
+			<trans-unit id="tx_in2studyfinder_domain_model_admissionrequirement.title">
 				<source>Title</source>
 			</trans-unit>
 			<trans-unit id="tx_in2studyfinder_domain_model_startofstudy">
