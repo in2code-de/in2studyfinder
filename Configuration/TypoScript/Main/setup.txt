@@ -110,6 +110,7 @@ page.includeCSS.in2studyfinderCss = {$plugin.tx_in2studyfinder.settings.css.in2s
 page {
 	includeJSFooter {
 		in2studyfinderChosen = {$plugin.tx_in2studyfinder.settings.javascript.in2studyfinderChosen}
+		in2studyfinderSelect2 = {$plugin.tx_in2studyfinder.settings.javascript.in2studyfinderSelect2}
 		in2studyfinderJavaScriptBasic = EXT:in2studyfinder/Resources/Public/JavaScript/In2studyfinder.min.js
 
 		in2studyfinderJavaScriptModulesChosen = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/Chosen.min.js

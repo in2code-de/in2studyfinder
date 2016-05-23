@@ -24,6 +24,8 @@ plugin.tx_in2studyfinder {
 
 			# cat=plugin.tx_in2studyfinder//a; type=text; label= Chosen Source
 			in2studyfinderChosen = EXT:in2studyfinder/Resources/Public/JavaScript/chosen.jquery.min.js
+
+			in2studyfinderSelect2 = EXT:in2studyfinder/Resources/Public/JavaScript/select2.min.js
 		}
 
 		css {
