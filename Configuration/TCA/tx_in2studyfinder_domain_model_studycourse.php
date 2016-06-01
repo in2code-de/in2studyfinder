@@ -77,7 +77,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim,required'
+                'eval' => 'trim,required',
+                'max' => 255,
             ],
         ],
         'standard_period_of_study' => [
@@ -224,7 +225,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim,required',
+                'eval' => 'trim',
                 'max' => 100,
             ],
         ],
@@ -234,7 +235,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim,required',
+                'eval' => 'trim',
                 'max' => 255,
             ],
         ],
@@ -244,7 +245,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim,required',
+                'eval' => 'trim',
                 'max' => 255,
             ],
         ],

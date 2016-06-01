@@ -163,6 +163,8 @@ class StudyCourseController extends AbstractController
 
         if (!empty($studyCourse->getMetaPagetitle())) {
             $GLOBALS['TSFE']->page['title'] = $studyCourse->getMetaPagetitle();
+        } else {
+            $GLOBALS['TSFE']->page['title'] = $studyCourse->getTitle() . ' - ' . $studyCourse->getAcademicDegree()->getDegree();
         }
         if (!empty($studyCourse->getMetaDescription())) {
             $metaDescription = '<meta name="description" content="' . $studyCourse->getMetaDescription() . '">';
