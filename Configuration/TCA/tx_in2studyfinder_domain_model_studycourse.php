@@ -10,6 +10,8 @@ return [
     'ctrl' => [
         'title' => $ll . $table,
         'label' => 'title',
+        'label_alt' => 'academic_degree',
+        'label_alt_force' => 1,
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
