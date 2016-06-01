@@ -22,10 +22,9 @@ plugin.tx_in2studyfinder {
 			# cat=plugin.tx_in2studyfinder//a; type=text; label= jQuery Source: Change jQuery Source - per default it will be loaded from googleapis.com
 			in2studyfinderJQuery = //ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js
 
-			# cat=plugin.tx_in2studyfinder//a; type=text; label= Chosen Source
-			in2studyfinderChosen = EXT:in2studyfinder/Resources/Public/JavaScript/chosen.jquery.min.js
-
+			# cat=plugin.tx_in2studyfinder//a; type=text; label= Select2 Source
 			in2studyfinderSelect2 = EXT:in2studyfinder/Resources/Public/JavaScript/select2.min.js
+
 		}
 
 		css {

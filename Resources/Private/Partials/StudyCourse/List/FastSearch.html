@@ -1,8 +1,8 @@
 <f:form action="detail">
-	<select data-placeholder="Select an Option..." class="select2" style="width: 100%" name="tx_in2studyfinder_studycourse[studyCourse]" tabindex="-1">
+	<select data-placeholder="Select an Option..." class="in2studyfinder-js-fast-select" style="width: 100%" name="tx_in2studyfinder_studycourse[studyCourse]" tabindex="-1">
 		<option value="">
 			<f:for each="{studyCourses}" as="studyCourse">
-				<option value="{studyCourse.uid}" alt="{studyCourse.metaKeywords}">{studyCourse.title}</option>
+				<option value="{studyCourse.uid}" alt="{studyCourse.metaKeywords}">{studyCourse.title} - {studyCourse.academicDegree.degree}</option>
 			</f:for>
 		</option>
 	</select>

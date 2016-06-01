@@ -18,13 +18,13 @@
 		 */
 		this.init = function() {
 
-			var chosen = new window.In2studyfinder.Chosen(dom);
+			var select = new window.In2studyfinder.Select(dom);
 			var filterHandling = new window.In2studyfinder.FilterHandling(dom);
 			var urlHandling = new window.In2studyfinder.UrlHandling(dom);
 			var uiBehaviour = new window.In2studyfinder.UiBehaviour(dom);
 			var paginationHandling = new window.In2studyfinder.PaginationHandling(dom);
 
-			chosen.initializeChosen();
+			select.initializeSelect();
 			filterHandling.init();
 			paginationHandling.init();
 			uiBehaviour.checkboxHandling();
@@ -37,44 +37,7 @@
 				}
 			}
 
-			$('.select2').select2({
-					matcher: function(params, data) {
-						var status = false;
-						var term = params.term;
-						var text = data.text;
 
-						if ($.trim(term) === '') {
-							status = true;
-						}
-
-						if (data.id !== '' && $.trim(term) !== '') {
-							var element = data.element;
-							var keywords = $(element).attr('alt');
-							var keywordArray = keywords.split(',');
-
-							$.each(keywordArray, function(index, keyword) {
-								keyword = keyword.trim();
-								if (
-									text.toUpperCase().indexOf(term.toUpperCase()) > -1 ||
-									keyword.toUpperCase().indexOf(term.toUpperCase()) > -1
-								) {
-									status = true
-								}
-							});
-						}
-
-						if (status) {
-							return data;
-						} else {
-							return null;
-						}
-
-					},
-					placeholder: "Select an Studycourse",
-					allowClear: true
-				}
-			)
-			;
 
 		};
 	}
