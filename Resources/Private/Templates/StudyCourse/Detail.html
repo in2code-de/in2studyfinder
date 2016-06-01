@@ -1,7 +1,6 @@
 <f:layout name="Default"/>
 
 <f:section name="main">
-	<f:debug>{_all}</f:debug>
 	<div class="in2studyfinder__detail">
 		<f:flashMessages/>
 
@@ -14,7 +13,7 @@
 						Fakultät {studyCourse.faculty.title}
 					</h3>
 
-					<p>{studyCourse.teaser}</p>
+					<f:format.html>{studyCourse.teaser}</f:format.html>
 				</div>
 			</div>
 
@@ -80,7 +79,7 @@
 					<h3>Worum geht es in diesem Studiengang?</h3>
 				</div>
 				<div class="in2studyfinder__content-box-content">
-					<p>{studyCourse.description}</p>
+					<f:format.html>{studyCourse.description}</f:format.html>
 				</div>
 			</div>
 
