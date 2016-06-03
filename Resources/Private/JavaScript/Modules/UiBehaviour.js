@@ -15,7 +15,7 @@
 			$('.in2studyfinder-js-show-filter-options').on('click', function() {
 				$(this).toggleClass('hide');
 				$(this).siblings().toggleClass('hide');
-				$(this).parent().siblings('fieldset').toggleClass('hide');
+				$('.in2studyfinder-js-filter-options').children('.in2studyfinder-js-option-section').toggleClass('hide');
 			});
 		};
 
