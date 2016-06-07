@@ -10,11 +10,12 @@ plugin.tx_in2studyfinder {
 
 	persistence {
 		# cat=plugin.tx_in2studyfinder//a; type=string; label=Default storage PID
-		storagePid = 6
+		storagePid =
+		# cat=plugin.tx_in2studyfinder//a; type=string; label=Recursion level of the storagePid
+		recursive = 1
 	}
 
 	settings {
-
 		pagination {
 			itemsPerPage = 25
 		}
@@ -35,21 +36,5 @@ plugin.tx_in2studyfinder {
 			# cat=plugin.tx_in2studyfinder//a; type=text; label= Css Source from In2studyfinder
 			in2studyfinderCss = EXT:in2studyfinder/Resources/Public/Css/basic.css
 		}
-	}
-}
-
-module.tx_in2studyfinder {
-	view {
-		# cat=module.tx_in2studyfinder/file; type=string; label=Path to template root (BE)
-		templateRootPath = EXT:in2studyfinder/Resources/Private/Backend/Templates/
-		# cat=module.tx_in2studyfinder/file; type=string; label=Path to template partials (BE)
-		partialRootPath = EXT:in2studyfinder/Resources/Private/Backend/Partials/
-		# cat=module.tx_in2studyfinder/file; type=string; label=Path to template layouts (BE)
-		layoutRootPath = EXT:in2studyfinder/Resources/Private/Backend/Layouts/
-	}
-
-	persistence {
-		# cat=module.tx_in2studyfinder//a; type=string; label=Default storage PID
-		storagePid = 6
 	}
 }
