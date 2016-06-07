@@ -15,6 +15,10 @@ plugin.tx_in2studyfinder {
 
 	settings {
 
+		pagination {
+			itemsPerPage = 25
+		}
+
 		javascript {
 			# cat=plugin.tx_in2studyfinder//a; type=boolean; label= Include jQuery From Google: Add jQuery JavaScript (will be loaded from ajax.googleapis.com)
 			addJQueryFromGoogle = 1

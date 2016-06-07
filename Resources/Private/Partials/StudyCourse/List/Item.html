@@ -1,6 +1,6 @@
 <li class="in2studyfinder__item">
 	<p class="in2studyfinder__item-title">
-		<f:link.action action="detail" arguments="{studyCourse : studyCourse}" class="in2studyfinder__item-link">
+		<f:link.action action="detail" pageUid="{settings.flexform.studyCourseDetailPage}" arguments="{studyCourse : studyCourse}" class="in2studyfinder__item-link">
 			{studyCourse.title} - {studyCourse.academicDegree.degree}
 		</f:link.action>
 	</p>
@@ -8,5 +8,5 @@
 	<p class="in2studyfinder__item-teaser">
 		<f:format.html>{studyCourse.teaser}</f:format.html>
 	</p>
-	<f:link.action action="detail" arguments="{studyCourse : studyCourse}" class="in2studyfinder__item-link">weiterlesen</f:link.action>
+	<f:link.action action="detail" pageUid="{settings.flexform.studyCourseDetailPage}" arguments="{studyCourse : studyCourse}" class="in2studyfinder__item-link">weiterlesen</f:link.action>
 </li>

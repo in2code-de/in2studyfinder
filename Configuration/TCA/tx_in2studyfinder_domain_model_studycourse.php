@@ -115,7 +115,7 @@ return [
                 'type' => 'text',
                 'cols' => 40,
                 'rows' => 15,
-                'eval' => 'trim',
+                'eval' => 'trim,required',
                 'wizards' => [
                     'RTE' => [
                         'icon' => 'wizard_rte2.gif',
@@ -189,7 +189,9 @@ return [
         ],
         'academic_degree' => TcaGenerator::getFullTcaForSingleSelect(
             $ll . $table . '.academic_degree',
-            'tx_in2studyfinder_domain_model_academicdegree'
+            'tx_in2studyfinder_domain_model_academicdegree',
+            1,
+            1
         ),
         'department' => TcaGenerator::getFullTcaForSingleSelect(
             $ll . $table . '.department',
@@ -202,22 +204,30 @@ return [
         'types_of_study' => TcaGenerator::getFullTcaForSelectSideBySide(
             $ll . $table . '.type_of_study',
             'tx_in2studyfinder_domain_model_typeofstudy',
-            'tx_in2studyfinder_studycourse_typeofstudy_mm'
+            'tx_in2studyfinder_studycourse_typeofstudy_mm',
+            1,
+            1
         ),
         'course_languages' => TcaGenerator::getFullTcaForSelectSideBySide(
             $ll . $table . '.course_language',
             'tx_in2studyfinder_domain_model_courselanguage',
-            'tx_in2studyfinder_studycourse_courselanguage_mm'
+            'tx_in2studyfinder_studycourse_courselanguage_mm',
+            1,
+            1
         ),
         'admission_requirements' => TcaGenerator::getFullTcaForSelectSideBySide(
             $ll . $table . '.admission_requirement',
             'tx_in2studyfinder_domain_model_admissionrequirement',
-            'tx_in2studyfinder_studycourse_admissionrequirement_mm'
+            'tx_in2studyfinder_studycourse_admissionrequirement_mm',
+            1,
+            1
         ),
         'starts_of_study' => TcaGenerator::getFullTcaForSelectCheckBox(
             $ll . $table . '.start_of_study',
             'tx_in2studyfinder_domain_model_startofstudy',
-            'tx_in2studyfinder_studycourse_startofstudy_mm'
+            'tx_in2studyfinder_studycourse_startofstudy_mm',
+            1,
+            1
         ),
         'meta_pagetitle' => [
             'exclude' => 1,

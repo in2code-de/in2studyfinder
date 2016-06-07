@@ -61,9 +61,10 @@ class StudyCourseController extends AbstractController
     protected $allowedSearchFields = [];
 
     /**
-     *
+     * initialize action
      */
-    protected function initializeAction() {
+    protected function initializeAction()
+    {
         foreach ($this->settings['filter']['filterTypeLabelField'] as $key => $value) {
             $this->allowedSearchFields[] = $key;
         }
@@ -71,13 +72,15 @@ class StudyCourseController extends AbstractController
         $this->setFilterTypesAndRepositories();
 
 
-        if(ExtensionUtility::isIn2studycoursesExtendLoaded()) {
-            $this->studyCourseRepository = $this->objectManager->get('In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository');
+        if (ExtensionUtility::isIn2studycoursesExtendLoaded()) {
+            $this->studyCourseRepository = $this->objectManager->get(
+                'In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository'
+            );
         }
     }
 
     /**
-     *
+     * set the Models and the Repositories
      */
     protected function setFilterTypesAndRepositories()
     {
@@ -104,13 +107,17 @@ class StudyCourseController extends AbstractController
      */
     public function listAction()
     {
-        $this->assignAllStudyCourses();
+
+        $this->assignStudyCourses();
+
     }
 
-    protected function assignAllStudyCourses()
+    /**
+     * assign StudyCourses to the view
+     */
+    protected function assignStudyCourses()
     {
-        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult $studyCourses */
-        $studyCourses = $this->studyCourseRepository->findAll();
+        $studyCourses = $this->getStudyCourses();
 
         $this->view->assign('filterTypes', $this->filterTypes);
         $this->view->assign('availableFilterOptions', $this->getAvailableFilterOptionsFromQueryResult($studyCourses));
@@ -118,6 +125,26 @@ class StudyCourseController extends AbstractController
         $this->view->assign('studyCourses', $studyCourses);
         $studyCoursesSortedByLettersArray = $this->getStudyCoursesLetterArray($studyCourses);
         $this->view->assign('studyCoursesLetterArray', $studyCoursesSortedByLettersArray);
+    }
+
+    /**
+     * @return QueryResult
+     */
+    protected function getStudyCourses() {
+        $options = null;
+        foreach ($this->settings['flexform']['select'] as $filterType => $uid) {
+            if ($uid !== '') {
+                $options[$filterType] = GeneralUtility::intExplode(',', $uid, true);
+            }
+        }
+
+        if ($options !== null) {
+            $studyCourses = $this->processSearch($options);
+        } else {
+            $studyCourses = $this->studyCourseRepository->findAll();
+        }
+
+        return $studyCourses;
     }
 
     /**
@@ -143,7 +170,7 @@ class StudyCourseController extends AbstractController
      */
     public function detailAction()
     {
-        $getData = GeneralUtility::_GET('tx_in2studyfinder_studycourse');
+        $getData = GeneralUtility::_GET('tx_in2studyfinder_pi2');
 
         if ($getData['studyCourse'] && $getData['studyCourse'] !== '') {
             $studyCourse = $this->studyCourseRepository->findByUid($getData['studyCourse']);
@@ -159,12 +186,14 @@ class StudyCourseController extends AbstractController
     /**
      * @param $studyCourse
      */
-    protected function writePageMetadata($studyCourse) {
+    protected function writePageMetadata($studyCourse)
+    {
 
         if (!empty($studyCourse->getMetaPagetitle())) {
             $GLOBALS['TSFE']->page['title'] = $studyCourse->getMetaPagetitle();
         } else {
-            $GLOBALS['TSFE']->page['title'] = $studyCourse->getTitle() . ' - ' . $studyCourse->getAcademicDegree()->getDegree();
+            $GLOBALS['TSFE']->page['title'] = $studyCourse->getTitle() . ' - ' . $studyCourse->getAcademicDegree(
+                )->getDegree();
         }
         if (!empty($studyCourse->getMetaDescription())) {
             $metaDescription = '<meta name="description" content="' . $studyCourse->getMetaDescription() . '">';
@@ -222,7 +251,7 @@ class StudyCourseController extends AbstractController
             $this->view->assign('studyCourses', $foundStudyCourses);
             $this->sessionUtility->set('searchOptions', $searchOptions);
         } else {
-            $this->assignAllStudyCourses();
+            $this->assignStudyCourses();
         }
     }
 

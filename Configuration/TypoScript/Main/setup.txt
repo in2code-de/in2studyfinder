@@ -14,6 +14,11 @@ plugin.tx_in2studyfinder {
 	settings {
 		storagePid = {$plugin.tx_in2studyfinder.persistence.storagePid}
 
+		pagination {
+			itemsPerPage = {$plugin.tx_in2studyfinder.settings.pagination.itemsPerPage}
+		}
+
+
 		filter {
 			allowedFilterTypes {
 				0 = In2code\In2studyfinder\Domain\Repository\AcademicDegree

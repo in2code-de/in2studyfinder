@@ -7,7 +7,7 @@
 		<div class="in2studyfinder__column">
 			<div class="in2studyfinder__content-box">
 				<div class="in2studyfinder__content-box-content">
-					<h1>{studyCourse.academicDegree.degree} {studyCourse.title}</h1>
+					<h1>{studyCourse.title} - {studyCourse.academicDegree.degree}</h1>
 
 					<h3>
 						Fakultät {studyCourse.faculty.title}
@@ -86,9 +86,7 @@
 			<f:render partial="StudyCourse/Detail/contentElements" arguments="{_all}"/>
 
 			<div class="in2studyfinder__content-box">
-			<span class="in2studyfinder__button" onclick="window.history.back()">
-					Zurück zur Liste
-				</span>
+				<f:link.page pageUid="{settings.flexform.studyCourseListPage}" class="in2studyfinder__button">Zurück zur Liste</f:link.page>
 			</div>
 
 		</div>

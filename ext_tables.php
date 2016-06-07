@@ -5,33 +5,39 @@ if (!defined('TYPO3_MODE')) {
 
 $extKey = 'in2studyfinder';
 
+
+/**
+ * Include Plugins
+ */
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
     'In2code.' . $extKey,
-    'Studycourse',
-    'StudyCourse'
+    'Pi1',
+    'Studiengangsfinder Listenansicht [TODO] Übersetzung'
 );
 
-if (TYPO3_MODE === 'BE') {
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+    'In2code.' . $extKey,
+    'Pi2',
+    'Studiengangsfinder Detailansicht [TODO] Übersetzung'
+);
 
-    /**
-     * Registers a Backend Module
-     */
-//    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-//        'In2code.' . $extKey,
-//        'web',
-//        'studyfinder',
-//        '',
-//        array(
-//            'BackendModule' => 'list, generateDummyData',
-//        ),
-//        array(
-//            'access' => 'user,group',
-//            'icon' => 'EXT:' . $extKey . '/ext_icon.png',
-//            'labels' => 'LLL:EXT    :' . $extKey . '/Resources/Private/Language/locallang_studyfinder.xlf',
-//        )
-//    );
+/**
+ * Include Flexform
+ */
+$pluginSignature = str_replace('_', '', $extKey) . '_pi1';
+$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
+    $pluginSignature,
+    'FILE:EXT:' . $extKey . '/Configuration/FlexForms/FlexformStudyfinderList.xml'
+);
 
-}
+$pluginSignature = str_replace('_', '', $extKey) . '_pi2';
+$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
+    $pluginSignature,
+    'FILE:EXT:' . $extKey . '/Configuration/FlexForms/FlexformStudyfinderDetail.xml'
+);
+
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
     $extKey, 'Configuration/TypoScript/Main', 'In2studyfinder Basic Template'

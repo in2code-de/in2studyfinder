@@ -7,12 +7,24 @@ $extKey = 'in2studyfinder';
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     'In2code.' . $extKey,
-    'Studycourse',
+    'Pi1',
     array(
-        'StudyCourse' => 'list, detail, filter',
+        'StudyCourse' => 'list, filter',
     ),
     // non-cacheable actions
     array(
-        'StudyCourse' => 'list, detail, filter',
+        'StudyCourse' => 'list, filter',
+    )
+);
+
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+    'In2code.' . $extKey,
+    'Pi2',
+    array(
+        'StudyCourse' => 'detail',
+    ),
+    // non-cacheable actions
+    array(
+        'StudyCourse' => 'detail',
     )
 );

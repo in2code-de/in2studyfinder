@@ -45,6 +45,7 @@ class StudyCourseRepository extends AbstractRepository
         'faculty' => 'faculty',
         'startOfStudy' => 'startsOfStudy',
         'typeOfStudy' => 'typesOfStudy',
+        'graduation' => 'academicDegree.graduation',
     ];
 
     /**
