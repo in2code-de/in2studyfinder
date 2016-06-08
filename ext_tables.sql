@@ -23,7 +23,7 @@ CREATE TABLE tx_in2studyfinder_domain_model_studycourse (
 	starts_of_study int(11) unsigned DEFAULT '0',
 	meta_pagetitle varchar(100) DEFAULT '' NOT NULL,
 	meta_keywords varchar(255) DEFAULT '' NOT NULL,
-	meta_description varchar(255) DEFAULT '' NOT NULL,
+	meta_description varchar(750) DEFAULT '' NOT NULL,
 
 	categories int(11) unsigned DEFAULT '0' NOT NULL,
 
@@ -54,15 +54,6 @@ CREATE TABLE tx_in2studyfinder_domain_model_studycourse (
 	KEY parent (pid),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
  KEY language (l10n_parent,sys_language_uid)
-
-);
-
-#
-# Table structure for table 'tt_content'
-#
-CREATE TABLE tt_content (
-
-	studycourse int(11) DEFAULT '0' NOT NULL,
 
 );
 

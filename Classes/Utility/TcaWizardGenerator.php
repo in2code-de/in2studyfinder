@@ -13,7 +13,7 @@ class TcaWizardGenerator
      * Gets the Suggest Wizard
      * @return array
      */
-    static public function getSuggestWizard()
+    public static function getSuggestWizard()
     {
         return [
             'suggest' => [

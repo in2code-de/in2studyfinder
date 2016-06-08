@@ -15,7 +15,7 @@ class TcaGenerator
      * Gets full Tca Array for Sys Language Uid
      * @return array
      */
-    static public function getFullTcaForSysLanguageUid()
+    public static function getFullTcaForSysLanguageUid()
     {
         return [
             'exclude' => 1,
@@ -37,7 +37,7 @@ class TcaGenerator
      * @param $table
      * @return array
      */
-    static public function getFullTcaForL10nParent($table)
+    public static function getFullTcaForL10nParent($table)
     {
         return [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
@@ -59,7 +59,7 @@ class TcaGenerator
     /**
      * @return array
      */
-    static public function getFullTcaForL10nDiffsource()
+    public static function getFullTcaForL10nDiffsource()
     {
         return [
             'config' => [
@@ -71,7 +71,7 @@ class TcaGenerator
     /**
      * @return array
      */
-    static public function getFullTcaForT3verLabel()
+    public static function getFullTcaForT3verLabel()
     {
         return [
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',
@@ -86,7 +86,7 @@ class TcaGenerator
     /**
      * @return array
      */
-    static public function getFullTcaForHidden()
+    public static function getFullTcaForHidden()
     {
         return [
             'exclude' => 1,
@@ -100,7 +100,7 @@ class TcaGenerator
     /**
      * @return array
      */
-    static public function getFullTcaForStartTime()
+    public static function getFullTcaForStartTime()
     {
         return [
             'exclude' => 1,
@@ -123,7 +123,7 @@ class TcaGenerator
     /**
      * @return array
      */
-    static public function getFullTcaForEndTime()
+    public static function getFullTcaForEndTime()
     {
         return [
             'exclude' => 1,
@@ -147,7 +147,7 @@ class TcaGenerator
      * @param string $table
      * @return array
      */
-    static public function getPleaseChooseOption($table = '')
+    public static function getPleaseChooseOption($table = '')
     {
         $icon = '';
 
@@ -170,7 +170,7 @@ class TcaGenerator
      * @param int $exclude
      * @return array
      */
-    static public function getFullTcaForSingleSelect($label, $table, $exclude = 1, $minItems = 0) {
+    public static function getFullTcaForSingleSelect($label, $table, $exclude = 1, $minItems = 0) {
         return [
             'exclude' => $exclude,
             'label' => $label,
@@ -185,7 +185,7 @@ class TcaGenerator
         ];
     }
 
-    static public function getFullTcaForSelectCheckBox($label, $table, $mmTable, $exclude = 1, $minItems = 0, $maxItems = 5) {
+    public static function getFullTcaForSelectCheckBox($label, $table, $mmTable, $exclude = 1, $minItems = 0, $maxItems = 5) {
         return [
             'exclude' => $exclude,
             'label' => $label,
@@ -201,7 +201,7 @@ class TcaGenerator
         ];
     }
 
-    static public function getFullTcaForSelectSideBySide($label, $table, $mmTable, $exclude = 1, $minItems = 0, $maxItems = 9999) {
+    public static function getFullTcaForSelectSideBySide($label, $table, $mmTable, $exclude = 1, $minItems = 0, $maxItems = 9999) {
         return [
             'exclude' => $exclude,
             'label' => $label,
