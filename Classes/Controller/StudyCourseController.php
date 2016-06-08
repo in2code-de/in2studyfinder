@@ -71,10 +71,15 @@ class StudyCourseController extends AbstractController
 
         $this->setFilterTypesAndRepositories();
 
+        $extendedStudyCourseClassName = 'In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository';
 
-        if (ExtensionUtility::isIn2studycoursesExtendLoaded()) {
+        if (ExtensionUtility::isIn2studycoursesExtendLoaded()
+            && class_exists($extendedStudyCourseClassName
+
+            )
+        ) {
             $this->studyCourseRepository = $this->objectManager->get(
-                'In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository'
+                $extendedStudyCourseClassName
             );
         }
     }
@@ -130,7 +135,8 @@ class StudyCourseController extends AbstractController
     /**
      * @return QueryResult
      */
-    protected function getStudyCourses() {
+    protected function getStudyCourses()
+    {
         $options = null;
         foreach ($this->settings['flexform']['select'] as $filterType => $uid) {
             if ($uid !== '') {
