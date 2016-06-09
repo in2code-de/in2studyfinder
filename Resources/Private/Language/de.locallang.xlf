@@ -127,6 +127,37 @@
 				<source>Studycourse Detailview</source>
 				<target>Studiengangs Detailansicht</target>
 			</trans-unit>
+			<trans-unit id="filter">
+				<source>Filter</source>
+			</trans-unit>
+			<trans-unit id="filter.reset">
+				<source>reset Filter</source>
+				<target>Filter zurücksetzen</target>
+			</trans-unit>
+			<trans-unit id="all">
+				<source>all</source>
+				<target>Alle</target>
+			</trans-unit>
+			<trans-unit id="studycourses">
+				<source>Study Courses</source>
+				<target>Studiengänge</target>
+			</trans-unit>
+			<trans-unit id="admissionRequirement">
+				<source>Admission Requirement</source>
+				<target>Zulassungsvoraussetzung</target>
+			</trans-unit>
+			<trans-unit id="backToList">
+				<source>back to List</source>
+				<target>zurück zur Liste</target>
+			</trans-unit>
+			<trans-unit id="moreAbout">
+				<source>more about the Course</source>
+				<target>Worum geht es in diesem Studiengang?</target>
+			</trans-unit>
+			<trans-unit id="readMore">
+				<source>read more...</source>
+				<target>weiterlesen...</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

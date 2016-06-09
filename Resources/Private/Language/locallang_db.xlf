@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2016-04-05T17:43:35Z" product-name="in2studyfinder">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-04-05T17:43:35Z"
+				product-name="in2studyfinder">
 		<header/>
 		<body>
 			<trans-unit id="studycourse">
@@ -92,6 +93,36 @@
 			</trans-unit>
 			<trans-unit id="fastSelection">
 				<source>Quick selection: All degree programs in alphabetic order</source>
+			</trans-unit>
+			<trans-unit id="listView">
+				<source>Studycourse Listview</source>
+			</trans-unit>
+			<trans-unit id="detailView">
+				<source>Studycourse Detailview</source>
+			</trans-unit>
+			<trans-unit id="filter">
+				<source>Filter</source>
+			</trans-unit>
+			<trans-unit id="filter.reset">
+				<source>reset Filter</source>
+			</trans-unit>
+			<trans-unit id="all">
+				<source>all</source>
+			</trans-unit>
+			<trans-unit id="studycourses">
+				<source>Study Courses</source>
+			</trans-unit>
+			<trans-unit id="admissionRequirement">
+				<source>Admission Requirement</source>
+			</trans-unit>
+			<trans-unit id="backToList">
+				<source>back to List</source>
+			</trans-unit>
+			<trans-unit id="moreAbout">
+				<source>more about the Course</source>
+			</trans-unit>
+			<trans-unit id="readMore">
+				<source>read more...</source>
 			</trans-unit>
 		</body>
 	</file>

@@ -31,14 +31,18 @@
 							<p>{studyCourse.academicDegree.degree}</p>
 						</f:if>
 
-						<strong><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:typeOfStudy"/></strong>
+						<strong>
+							<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:typeOfStudy"/>
+						</strong>
 						<ul>
 							<f:for each="{studyCourse.typesOfStudy}" as="typeOfStudy">
 								<li>{typeOfStudy.type}</li>
 							</f:for>
 						</ul>
 
-						<strong><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:startOfStudy"/></strong>
+						<strong>
+							<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:startOfStudy"/>
+						</strong>
 						<ul>
 							<f:for each="{studyCourse.startsOfStudy}" as="startOfStudy">
 								<li>{startOfStudy.title}:
@@ -48,7 +52,9 @@
 						</ul>
 
 						<f:if condition="{studyCourse.tuitionFee}">
-							<strong><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:tuitionFee"/></strong>
+							<strong>
+								<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:tuitionFee"/>
+							</strong>
 
 							<p>
 								<f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{studyCourse.tuitionFee}</f:format.currency>
@@ -56,21 +62,27 @@
 						</f:if>
 
 						<f:if condition="{studyCourse.universityPlace}">
-							<strong><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:universityPlace"/></strong>
+							<strong>
+								<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:universityPlace"/>
+							</strong>
 
 							<p>{studyCourse.universityPlace}</p>
 						</f:if>
 					</div>
 					<div class="in2studyfinder__column in2studyfinder__column--half">
 
-						<strong><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:courseLanguage"/></strong>
+						<strong>
+							<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:courseLanguage"/>
+						</strong>
 						<ul>
 							<f:for each="{studyCourse.courseLanguages}" as="courseLanguage">
 								<li>{courseLanguage.language}</li>
 							</f:for>
 						</ul>
 
-						<strong><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:admissionRequirements"/></strong>
+						<strong>
+							<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:admissionRequirements"/>
+						</strong>
 						<ul>
 							<f:for each="{studyCourse.admissionRequirements}" as="admissionRequirement">
 								<li>{admissionRequirement.title}</li>
@@ -78,13 +90,17 @@
 						</ul>
 
 						<f:if condition="{studyCourse.ectsCredits}">
-							<strong><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:ectsCredits"/></strong>
+							<strong>
+								<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:ectsCredits"/>
+							</strong>
 
 							<p>{studyCourse.ectsCredits}</p>
 						</f:if>
 
 						<f:if condition="{studyCourse.standardPeriodOfStudy}">
-							<strong><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:standardPeriodOfStudy"/></strong>
+							<strong>
+								<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:standardPeriodOfStudy"/>
+							</strong>
 
 							<p>{studyCourse.standardPeriodOfStudy}</p>
 						</f:if>
@@ -94,7 +110,7 @@
 
 			<div class="in2studyfinder__content-box">
 				<div class="in2studyfinder__content-box-head">
-					<h3>Worum geht es in diesem Studiengang? [TODO] Übersetzen</h3>
+					<h3><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:moreAbout"/></h3>
 				</div>
 				<div class="in2studyfinder__content-box-content">
 					<f:format.html>{studyCourse.description}</f:format.html>
@@ -104,7 +120,9 @@
 			<f:render partial="StudyCourse/Detail/contentElements" arguments="{_all}"/>
 
 			<div class="in2studyfinder__content-box">
-				<f:link.page pageUid="{settings.flexform.studyCourseListPage}" class="in2studyfinder__button">Zurück zur Liste [TODO] Übersetzen</f:link.page>
+				<f:link.page pageUid="{settings.flexform.studyCourseListPage}" class="in2studyfinder__button">
+					<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:backToList"/>
+				</f:link.page>
 			</div>
 
 		</div>
