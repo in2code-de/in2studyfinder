@@ -9,10 +9,6 @@
 				<div class="in2studyfinder__content-box-content">
 					<h1>{studyCourse.title} - {studyCourse.academicDegree.degree}</h1>
 
-					<h3>
-						Fakultät {studyCourse.faculty.title}
-					</h3>
-
 					<f:format.html>{studyCourse.teaser}</f:format.html>
 				</div>
 			</div>
@@ -20,63 +16,85 @@
 
 			<div class="in2studyfinder__content-box">
 				<div class="in2studyfinder__content-box-head">
-					<h3>Eckdaten</h3>
+					<h3>
+						<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:keyData"/>
+					</h3>
 				</div>
 				<div class="in2studyfinder__content-box-content">
 					<div class="in2studyfinder__column in2studyfinder__column--half">
-						<strong>Art des Studiums</strong>
 
-						<p>{studyCourse.academicDegree.degree}</p>
+						<f:if condition="{studyCourse.academicDegree.degree}">
+							<strong>
+								<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:typeOfStudy"/>
+							</strong>
 
-						<strong>Studientyp</strong>
+							<p>{studyCourse.academicDegree.degree}</p>
+						</f:if>
+
+						<strong><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:typeOfStudy"/></strong>
 						<ul>
 							<f:for each="{studyCourse.typesOfStudy}" as="typeOfStudy">
 								<li>{typeOfStudy.type}</li>
 							</f:for>
 						</ul>
 
-						<strong>ECTS Credits</strong>
+						<strong><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:startOfStudy"/></strong>
+						<ul>
+							<f:for each="{studyCourse.startsOfStudy}" as="startOfStudy">
+								<li>{startOfStudy.title}:
+									<f:format.date date="{startOfStudy.startDate}" format="d.m.Y"/>
+								</li>
+							</f:for>
+						</ul>
 
-						<p>{studyCourse.ectsCredits}</p>
+						<f:if condition="{studyCourse.tuitionFee}">
+							<strong><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:tuitionFee"/></strong>
 
-						<strong>Studiengebühren</strong>
+							<p>
+								<f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{studyCourse.tuitionFee}</f:format.currency>
+							</p>
+						</f:if>
 
-						<p>
-							<f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{studyCourse.tuitionFee}</f:format.currency>
-						</p>
+						<f:if condition="{studyCourse.universityPlace}">
+							<strong><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:universityPlace"/></strong>
 
+							<p>{studyCourse.universityPlace}</p>
+						</f:if>
 					</div>
 					<div class="in2studyfinder__column in2studyfinder__column--half">
-						<strong>Zulassungsbeschränkungen</strong>
+
+						<strong><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:courseLanguage"/></strong>
+						<ul>
+							<f:for each="{studyCourse.courseLanguages}" as="courseLanguage">
+								<li>{courseLanguage.language}</li>
+							</f:for>
+						</ul>
+
+						<strong><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:admissionRequirements"/></strong>
 						<ul>
 							<f:for each="{studyCourse.admissionRequirements}" as="admissionRequirement">
 								<li>{admissionRequirement.title}</li>
 							</f:for>
 						</ul>
 
-						<strong>Studienbeginn</strong>
-						<ul>
-							<f:for each="{studyCourse.startsOfStudy}" as="startOfStudy">
-								<li>{startOfStudy.title}:
-									<f:format.date date="{startOfStudy.startDate}" format="d.m"/>
-								</li>
-							</f:for>
-						</ul>
+						<f:if condition="{studyCourse.ectsCredits}">
+							<strong><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:ectsCredits"/></strong>
 
-						<strong>Regelstudienzeit (in Semestern)</strong>
+							<p>{studyCourse.ectsCredits}</p>
+						</f:if>
 
-						<p>{studyCourse.standardPeriodOfStudy}</p>
+						<f:if condition="{studyCourse.standardPeriodOfStudy}">
+							<strong><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:standardPeriodOfStudy"/></strong>
 
-						<strong>Studienplätze</strong>
-
-						<p>{studyCourse.universityPlace}</p>
+							<p>{studyCourse.standardPeriodOfStudy}</p>
+						</f:if>
 					</div>
 				</div>
 			</div>
 
 			<div class="in2studyfinder__content-box">
 				<div class="in2studyfinder__content-box-head">
-					<h3>Worum geht es in diesem Studiengang?</h3>
+					<h3>Worum geht es in diesem Studiengang? [TODO] Übersetzen</h3>
 				</div>
 				<div class="in2studyfinder__content-box-content">
 					<f:format.html>{studyCourse.description}</f:format.html>
@@ -86,7 +104,7 @@
 			<f:render partial="StudyCourse/Detail/contentElements" arguments="{_all}"/>
 
 			<div class="in2studyfinder__content-box">
-				<f:link.page pageUid="{settings.flexform.studyCourseListPage}" class="in2studyfinder__button">Zurück zur Liste</f:link.page>
+				<f:link.page pageUid="{settings.flexform.studyCourseListPage}" class="in2studyfinder__button">Zurück zur Liste [TODO] Übersetzen</f:link.page>
 			</div>
 
 		</div>

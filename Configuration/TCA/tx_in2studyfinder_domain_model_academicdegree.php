@@ -8,7 +8,7 @@ $icon = ExtensionManagementUtility::extRelPath('in2studyfinder') . 'Resources/Pu
 
 return [
     'ctrl' => [
-        'title' => $ll . $table,
+        'title' => $ll . 'academicDegree',
         'label' => 'degree',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -51,7 +51,7 @@ return [
         'endtime' => TcaGenerator::getFullTcaForEndTime(),
         'degree' => [
             'exclude' => 1,
-            'label' => $ll . $table . '.degree',
+            'label' => $ll . 'academicDegree.degree',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -61,7 +61,7 @@ return [
         ],
         'graduation' => [
             'exclude' => 1,
-            'label' => $ll . 'tx_in2studyfinder_domain_model_graduation.title',
+            'label' => $ll . 'graduation.title',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',

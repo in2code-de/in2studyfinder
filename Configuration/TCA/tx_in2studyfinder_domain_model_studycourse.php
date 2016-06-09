@@ -8,7 +8,7 @@ $icon = ExtensionManagementUtility::extRelPath('in2studyfinder') . 'Resources/Pu
 
 return [
     'ctrl' => [
-        'title' => $ll . $table,
+        'title' => $ll . 'studycourse',
         'label' => 'title',
         'label_alt' => 'academic_degree',
         'label_alt_force' => 1,
@@ -73,7 +73,7 @@ return [
         'endtime' => TcaGenerator::getFullTcaForEndTime(),
         'title' => [
             'exclude' => 1,
-            'label' => $ll . $table . '.title',
+            'label' => $ll . 'title',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -83,7 +83,7 @@ return [
         ],
         'standard_period_of_study' => [
             'exclude' => 1,
-            'label' => $ll . $table . '.standard_period_of_study',
+            'label' => $ll . 'standardPeriodOfStudy',
             'config' => [
                 'type' => 'input',
                 'size' => 4,
@@ -92,7 +92,7 @@ return [
         ],
         'ects_credits' => [
             'exclude' => 1,
-            'label' => $ll . $table . '.ects_credits',
+            'label' => $ll . 'ectsCredits',
             'config' => [
                 'type' => 'input',
                 'size' => 4,
@@ -101,7 +101,7 @@ return [
         ],
         'tuition_fee' => [
             'exclude' => 1,
-            'label' => $ll . $table . '.tuition_fee',
+            'label' => $ll . 'tuitionFee',
             'config' => [
                 'type' => 'input',
                 'size' => 4,
@@ -110,7 +110,7 @@ return [
         ],
         'teaser' => [
             'exclude' => 1,
-            'label' => $ll . $table . '.teaser',
+            'label' => $ll . 'teaser',
             'config' => [
                 'type' => 'text',
                 'cols' => 40,
@@ -136,7 +136,7 @@ return [
         ],
         'description' => [
             'exclude' => 1,
-            'label' => $ll . $table . '.description',
+            'label' => $ll . 'description',
             'config' => [
                 'type' => 'text',
                 'cols' => 40,
@@ -162,7 +162,7 @@ return [
         ],
         'university_place' => [
             'exclude' => 1,
-            'label' => $ll . $table . '.university_place',
+            'label' => $ll . 'universityPlace',
             'config' => [
                 'type' => 'input',
                 'size' => 4,
@@ -171,7 +171,7 @@ return [
         ],
         'content_elements' => [
             'exclude' => 1,
-            'label' => $ll . $table . '.content_elements',
+            'label' => $ll . 'contentElements',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
@@ -188,42 +188,42 @@ return [
             ],
         ],
         'academic_degree' => TcaGenerator::getFullTcaForSingleSelect(
-            $ll . $table . '.academic_degree',
+            $ll . 'academicDegree',
             'tx_in2studyfinder_domain_model_academicdegree',
             1,
             1
         ),
         'department' => TcaGenerator::getFullTcaForSingleSelect(
-            $ll . $table . '.department',
+            $ll . 'department',
             'tx_in2studyfinder_domain_model_department'
         ),
         'faculty' => TcaGenerator::getFullTcaForSingleSelect(
-            $ll . $table . '.faculty',
+            $ll . 'faculty',
             'tx_in2studyfinder_domain_model_faculty'
         ),
         'types_of_study' => TcaGenerator::getFullTcaForSelectSideBySide(
-            $ll . $table . '.type_of_study',
+            $ll . 'typeOfStudy',
             'tx_in2studyfinder_domain_model_typeofstudy',
             'tx_in2studyfinder_studycourse_typeofstudy_mm',
             1,
             1
         ),
         'course_languages' => TcaGenerator::getFullTcaForSelectSideBySide(
-            $ll . $table . '.course_language',
+            $ll . 'courseLanguage',
             'tx_in2studyfinder_domain_model_courselanguage',
             'tx_in2studyfinder_studycourse_courselanguage_mm',
             1,
             1
         ),
         'admission_requirements' => TcaGenerator::getFullTcaForSelectSideBySide(
-            $ll . $table . '.admission_requirement',
+            $ll . 'admissionRequirements',
             'tx_in2studyfinder_domain_model_admissionrequirement',
             'tx_in2studyfinder_studycourse_admissionrequirement_mm',
             1,
             1
         ),
         'starts_of_study' => TcaGenerator::getFullTcaForSelectCheckBox(
-            $ll . $table . '.start_of_study',
+            $ll . 'startOfStudy',
             'tx_in2studyfinder_domain_model_startofstudy',
             'tx_in2studyfinder_studycourse_startofstudy_mm',
             1,
@@ -231,7 +231,7 @@ return [
         ),
         'meta_pagetitle' => [
             'exclude' => 1,
-            'label' => $ll . $table . '.meta_pagetitle',
+            'label' => $ll . 'metaPageTitle',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -241,7 +241,7 @@ return [
         ],
         'meta_keywords' => [
             'exclude' => 1,
-            'label' => $ll . $table . '.meta_keywords',
+            'label' => $ll . 'metaKeywords',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -251,7 +251,7 @@ return [
         ],
         'meta_description' => [
             'exclude' => 1,
-            'label' => $ll . $table . '.meta_description',
+            'label' => $ll . 'metaDescription',
             'config' => [
                 'type' => 'text',
                 'cols' => '40',

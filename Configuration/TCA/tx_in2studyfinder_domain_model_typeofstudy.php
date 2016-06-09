@@ -8,7 +8,7 @@ $icon = ExtensionManagementUtility::extRelPath('in2studyfinder') . 'Resources/Pu
 
 return [
     'ctrl' => [
-        'title' => $ll . $table,
+        'title' => $ll . 'typeOfStudy',
         'label' => 'type',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -49,7 +49,7 @@ return [
         'endtime' => TcaGenerator::getFullTcaForEndTime(),
         'type' => [
             'exclude' => 1,
-            'label' => $ll . $table . '.type',
+            'label' => $ll . 'typeOfStudy.type',
             'config' => [
                 'type' => 'input',
                 'size' => 30,

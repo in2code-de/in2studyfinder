@@ -36,7 +36,7 @@
 
 					},
 					placeholder: 'select degree program or enter keyword',
-					allowClear: true,
+					allowClear: false,
 					language: 'de'
 				});
 			}

@@ -12,13 +12,13 @@ $extKey = 'in2studyfinder';
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
     'In2code.' . $extKey,
     'Pi1',
-    'Studiengangsfinder Listenansicht [TODO] Übersetzung'
+    'Studiengangsfinder Listenansicht'
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
     'In2code.' . $extKey,
     'Pi2',
-    'Studiengangsfinder Detailansicht [TODO] Übersetzung'
+    'Studiengangsfinder Detailansicht'
 );
 
 /**

@@ -6,14 +6,14 @@
 		<main>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>List [TODO] Übersetzung</sheetTitle>
+					<sheetTitle>LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:listView</sheetTitle>
 				</TCEforms>
 				<type>array</type>
 				<el>
 					<settings.flexform.studyCourseDetailPage>
 						<TCEforms>
 							<exclude>1</exclude>
-							<label>Studiengangs Detailseite [TODO] Übersetzung</label>
+							<label>LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:detailView</label>
 							<config>
 								<type>group</type>
 								<internal_type>db</internal_type>
@@ -32,7 +32,7 @@
 					</settings.flexform.studyCourseDetailPage>
 					<settings.flexform.select.department>
 						<TCEforms>
-							<label>Fachbereich [TODO] Übersetzung</label>
+							<label>LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:department</label>
 							<config>
 								<type>select</type>
 								<renderType>selectCheckBox</renderType>
@@ -46,7 +46,7 @@
 					</settings.flexform.select.department>
 					<settings.flexform.select.faculty>
 						<TCEforms>
-							<label>Fakultät [TODO] Übersetzung</label>
+							<label>LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:faculty</label>
 							<config>
 								<type>select</type>
 								<renderType>selectCheckBox</renderType>
@@ -60,7 +60,7 @@
 					</settings.flexform.select.faculty>
 					<settings.flexform.select.graduation>
 						<TCEforms>
-							<label>Art des Studiums [TODO] Übersetzung</label>
+							<label>LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:academicDegree</label>
 							<config>
 								<type>select</type>
 								<renderType>selectCheckBox</renderType>

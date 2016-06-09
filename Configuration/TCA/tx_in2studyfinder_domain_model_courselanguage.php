@@ -8,7 +8,7 @@ $icon = ExtensionManagementUtility::extRelPath('in2studyfinder') . 'Resources/Pu
 
 return [
     'ctrl' => [
-        'title' => $ll . $table,
+        'title' => $ll . 'courseLanguage',
         'label' => 'language',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -51,7 +51,7 @@ return [
         'endtime' => TcaGenerator::getFullTcaForEndTime(),
         'language' => [
             'exclude' => 1,
-            'label' => $ll . $table . '.language',
+            'label' => $ll . 'courseLanguage.language',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
