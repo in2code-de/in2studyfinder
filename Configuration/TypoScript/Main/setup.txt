@@ -72,7 +72,12 @@ page {
 		in2studyfinderJavaScriptModulesUrlHandling = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/UrlHandling.min.js
 		in2studyfinderJavaScriptModulesUiBehaviour = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/UiBehaviour.min.js
 		in2studyfinderJavaScriptModulesPaginationHandling = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/PaginationHandling.min.js
+
+		in2studyfinderJavaScriptSelect2Language = EXT:in2studyfinder/Resources/Public/JavaScript/i18n/de.min.js
 	}
 }
 
 
+[globalVar = GP:L = 1]
+	page.includeJSFooter.in2studyfinderJavaScriptSelect2Language = EXT:in2studyfinder/Resources/Public/JavaScript/i18n/en.min.js
+[end]

@@ -35,9 +35,17 @@
 						}
 
 					},
-					placeholder: "Select an Studycourse",
-					allowClear: true
+					placeholder: 'select degree program or enter keyword',
+					allowClear: true,
+					language: 'de'
 				});
+			}
+
+			/** @todo better language handling */
+			if ($('html').attr('lang') === 'de') {
+				$('.in2studyfinder-js-fast-select').attr("data-placeholder", "Studiengang wählen oder Suchbegriff eingeben");
+			} else {
+				$('.in2studyfinder-js-fast-select').attr("data-placeholder", "select degree program or enter keyword");
 			}
 		}
 
