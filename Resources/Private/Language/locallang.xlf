@@ -101,6 +101,7 @@
 			</trans-unit>
 			<trans-unit id="filter">
 				<source>Filter</source>
+			</trans-unit>
 			<trans-unit id="filter.reset">
 				<source>reset Filter</source>
 			</trans-unit>
