@@ -155,8 +155,8 @@
 				<target>Worum geht es in diesem Studiengang?</target>
 			</trans-unit>
 			<trans-unit id="readMore">
-				<source>read more...</source>
-				<target>weiterlesen...</target>
+				<source>to the Course</source>
+				<target>zum Studiengang</target>
 			</trans-unit>
 		</body>
 	</file>
