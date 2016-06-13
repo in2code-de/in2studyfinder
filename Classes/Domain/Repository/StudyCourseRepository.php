@@ -29,6 +29,7 @@ namespace In2code\In2studyfinder\Domain\Repository;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
+use In2code\In2studyfinderExtend\Domain\Model\StudyCourse as StudyCourseExtend;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
@@ -91,7 +92,11 @@ class StudyCourseRepository extends AbstractRepository
     protected function mapOptionsToStudyCourseProperties($options)
     {
 
-        $studyCourse = new StudyCourse();
+        if (ExtensionUtility::isIn2studycoursesExtendLoaded()) {
+            $studyCourse = new StudyCourseExtend();
+        } else {
+            $studyCourse = new StudyCourse();
+        }
         $filterToStudyCoursePropertyMappingArray = [];
 
         $this->getPropertyMapping($studyCourse->_getProperties(), $filterToStudyCoursePropertyMappingArray);
