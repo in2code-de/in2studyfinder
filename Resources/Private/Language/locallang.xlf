@@ -123,6 +123,12 @@
 			<trans-unit id="readMore">
 				<source>to the Course</source>
 			</trans-unit>
+			<trans-unit id="isSet">
+				<source>is set</source>
+			</trans-unit>
+			<trans-unit id="isUnset">
+				<source>is unset</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

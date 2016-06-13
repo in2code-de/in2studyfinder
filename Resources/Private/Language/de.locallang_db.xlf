@@ -158,6 +158,14 @@
 				<source>to the Course</source>
 				<target>zum Studiengang</target>
 			</trans-unit>
+			<trans-unit id="isSet">
+				<source>is set</source>
+				<target>ist gesetzt</target>
+			</trans-unit>
+			<trans-unit id="isUnset">
+				<source>is unset</source>
+				<target>ist nicht gesetzt</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

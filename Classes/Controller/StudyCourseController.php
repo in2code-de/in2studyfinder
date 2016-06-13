@@ -74,7 +74,8 @@ class StudyCourseController extends AbstractController
         $extendedStudyCourseClassName = 'In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository';
 
         if (ExtensionUtility::isIn2studycoursesExtendLoaded()
-            && class_exists($extendedStudyCourseClassName
+            && class_exists(
+                $extendedStudyCourseClassName
 
             )
         ) {
@@ -92,16 +93,22 @@ class StudyCourseController extends AbstractController
 
         foreach ($this->settings['filter']['allowedFilterTypes'] as $filterType) {
 
-            $this->filterTypeRepositories[$filterType] = $this->objectManager->get(
-                $filterType . 'Repository'
-            );
+            if (class_exists($filterType . 'Repository')) {
+                $this->filterTypeRepositories[$filterType] = $this->objectManager->get(
+                    $filterType . 'Repository'
+                );
 
-            $filterTypeTitle = substr(
-                $filterType,
-                strripos($filterType, '\\') + 1
-            );
+                $filterTypeTitle = substr(
+                    $filterType,
+                    strripos($filterType, '\\') + 1
+                );
 
-            $this->filterTypes[lcfirst($filterTypeTitle)] = $this->filterTypeRepositories[$filterType]->findAll();
+                $this->filterTypes[lcfirst($filterTypeTitle)] = $this->filterTypeRepositories[$filterType]->findAll();
+            } else {
+                $this->filterTypes[lcfirst($filterType)] = ['isSet', 'isUnset'];
+            }
+
+
         }
     }
 
@@ -281,53 +288,51 @@ class StudyCourseController extends AbstractController
         foreach ($queryResult as $studyCourse) {
             $properties = $studyCourse->_getProperties();
 
-            foreach ($properties as $property) {
-                try {
-                    if (is_object($property)) {
-
-                        $fullQualifiedClassName = get_class($property);
-                        $propertyName = lcfirst(
-                            substr(
-                                $fullQualifiedClassName,
-                                strripos($fullQualifiedClassName, "\\") + 1
-                            )
-                        );
-
-                        if ($property instanceof ObjectStorage) {
-                            foreach ($property as $groupedProperty) {
-                                if ($groupedProperty instanceof AbstractDomainObject) {
-                                    $fullQualifiedClassName = get_class($groupedProperty);
-                                    $propertyName = lcfirst(
-                                        substr(
-                                            $fullQualifiedClassName,
-                                            strripos($fullQualifiedClassName, "\\") + 1
-                                        )
-                                    );
-
-                                    if ($propertyName !== 'TtContent') {
-                                        $availableOptions[$propertyName][] = $groupedProperty->getUid();
-                                    }
-                                }
-                            }
-                        } elseif ($property instanceof AbstractDomainObject) {
-                            $availableOptions[$propertyName][] = $property->getUid();
-                        }
-                    }
-                    $availableOptions[$propertyName] = array_unique($availableOptions[$propertyName]);
-                } catch (\Exception $e) {
-                    GeneralUtility::devLog(
-                        'Unexpected exception thrown in "' . __METHOD__ . '". ',
-                        'in2studyfinder',
-                        AbstractMessage::ERROR,
-                        array(
-                            'Exception' => $e,
-                            'studyCourse' => $studyCourse,
-                            'propertyName' => $propertyName,
-                        )
-                    );
-                }
-            }
+            $this->getAvailableFilterOptionsFromProperties(
+                $properties, $availableOptions
+            );
         }
+
         return $availableOptions;
     }
+
+    protected function getAvailableFilterOptionsFromProperties(
+        $properties,
+        &$availableOptions,
+        $currentLevel = 0
+    ) {
+        if ($currentLevel < $this->settings['filter']['recursive']) {
+            foreach ($properties as $name => $property) {
+                if (is_object($property)) {
+                    if ($property instanceof ObjectStorage) {
+                        $this->getAvailableFilterOptionsFromProperties($property, $availableOptions, $currentLevel);
+                    } elseif ($property instanceof AbstractDomainObject) {
+
+                        $this->getAvailableFilterOptionsFromProperties(
+                            $property->_getProperties(), $availableOptions, $currentLevel + 1
+                        );
+
+                        $className = ExtensionUtility::getClassName($property);
+
+                        if ($className !== 'ttContent') {
+                            $availableOptions[$className][] = $property->getUid();
+                        }
+                    }
+                } else {
+                    if (array_key_exists($name,$this->filterTypes)) {
+                        if ($property !== '' && $property !== 0 && $property !== false) {
+                            $availableOptions[$name][] = 'isSet';
+                        } else {
+                            $availableOptions[$name][] = 'isUnset';
+                        }
+
+                    }
+
+
+                }
+
+            }
+        }
+    }
+
 }

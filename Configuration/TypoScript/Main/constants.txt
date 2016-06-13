@@ -16,6 +16,12 @@ plugin.tx_in2studyfinder {
 	}
 
 	settings {
+
+		filter {
+			# cat=plugin.tx_in2studyfinder//a; type=string; label=Recursion level for the Filter Options
+			recursive = 1
+		}
+
 		pagination {
 			itemsPerPage = 25
 		}

@@ -28,6 +28,7 @@ plugin.tx_in2studyfinder {
 				4 = In2code\In2studyfinder\Domain\Repository\Faculty
 				5 = In2code\In2studyfinder\Domain\Repository\StartOfStudy
 				6 = In2code\In2studyfinder\Domain\Repository\TypeOfStudy
+				//7 = standardPeriodOfStudy
 			}
 
 			filterTypeLabelField {
@@ -38,8 +39,12 @@ plugin.tx_in2studyfinder {
 				faculty = title
 				startOfStudy = title
 				typeOfStudy = type
+				//standardPeriodOfStudy = standardPeriodOfStudy
 			}
+
+			recursive = {$plugin.tx_in2studyfinder.settings.filter.recursive}
 		}
+
 	}
 
 	persistence {

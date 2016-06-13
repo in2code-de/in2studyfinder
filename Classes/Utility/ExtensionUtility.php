@@ -66,6 +66,21 @@ class ExtensionUtility
 
         return $isLoaded;
     }
+
+    /**
+     * @param $object
+     * @return string
+     */
+    public static function getClassName($object)
+    {
+        $fullQualifiedClassName = get_class($object);
+        return lcfirst(
+            substr(
+                $fullQualifiedClassName,
+                strripos($fullQualifiedClassName, "\\") + 1
+            )
+        );
+    }
 }
 
 ?>
