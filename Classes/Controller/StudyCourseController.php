@@ -183,7 +183,12 @@ class StudyCourseController extends AbstractController
      */
     public function detailAction()
     {
+
         $getData = GeneralUtility::_GET('tx_in2studyfinder_pi2');
+
+        if (GeneralUtility::_POST('tx_in2studyfinder_studycourse')) {
+            $getData['studyCourse'] = GeneralUtility::_POST('tx_in2studyfinder_studycourse')['studyCourse'];
+        }
 
         if ($getData['studyCourse'] && $getData['studyCourse'] !== '') {
             $studyCourse = $this->studyCourseRepository->findByUid($getData['studyCourse']);

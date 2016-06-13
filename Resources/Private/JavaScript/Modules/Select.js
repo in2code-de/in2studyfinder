@@ -39,7 +39,11 @@
 					allowClear: false,
 					language: 'de'
 				});
-			}
+			};
+
+			$('.in2studyfinder-js-fast-select').on('change', function() {
+				$(this).parent('form').submit();
+			});
 
 			/** @todo better language handling */
 			if ($('html').attr('lang') === 'de') {

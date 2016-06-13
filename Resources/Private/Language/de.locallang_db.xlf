@@ -160,11 +160,11 @@
 			</trans-unit>
 			<trans-unit id="isSet">
 				<source>is set</source>
-				<target>ist gesetzt</target>
+				<target>ist vorhanden</target>
 			</trans-unit>
 			<trans-unit id="isUnset">
 				<source>is unset</source>
-				<target>ist nicht gesetzt</target>
+				<target>ist nicht vorhanden</target>
 			</trans-unit>
 		</body>
 	</file>

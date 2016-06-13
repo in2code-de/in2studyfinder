@@ -51,12 +51,10 @@ return [
     ],
     'palettes' => [
         'keyData' => [
-            'showitem' => 'standard_period_of_study, ects_credits, --linebreak--, ' .
-                'tuition_fee, university_place, --linebreak--,' .
-                'faculty, department, --linebreak--, ' .
-                'academic_degree, starts_of_study, --linebreak--,' .
-                'types_of_study, --linebreak--, admission_requirements, --linebreak--,' .
-                'course_languages,'
+            'showitem' => 'academic_degree, --linebreak--, course_languages, --linebreak--, types_of_study,' .
+                ' --linebreak--, admission_requirements, --linebreak--,  starts_of_study, --linebreak--,' .
+                ' ects_credits, --linebreak--, tuition_fee, standard_period_of_study, --linebreak--, ' .
+                'university_place, faculty, --linebreak--, department'
         ],
         'metadata' => [
             'showitem' => 'meta_pagetitle, --linebreak--, meta_keywords, --linebreak--, meta_description'
