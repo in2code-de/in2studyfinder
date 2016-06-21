@@ -1,5 +1,5 @@
 <?php
-use In2code\In2studyfinder\Utility\TcaGenerator;
+use In2code\In2studyfinder\Utility\TcaUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 $ll = 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:';
@@ -62,13 +62,13 @@ return [
     ],
     'columns' => [
 
-        'sys_language_uid' => TcaGenerator::getFullTcaForSysLanguageUid(),
-        'l10n_parent' => TcaGenerator::getFullTcaForL10nParent($table),
-        'l10n_diffsource' => TcaGenerator::getFullTcaForL10nDiffsource(),
-        't3ver_label' => TcaGenerator::getFullTcaForT3verLabel(),
-        'hidden' => TcaGenerator::getFullTcaForHidden(),
-        'starttime' => TcaGenerator::getFullTcaForStartTime(),
-        'endtime' => TcaGenerator::getFullTcaForEndTime(),
+        'sys_language_uid' => TcaUtility::getFullTcaForSysLanguageUid(),
+        'l10n_parent' => TcaUtility::getFullTcaForL10nParent($table),
+        'l10n_diffsource' => TcaUtility::getFullTcaForL10nDiffsource(),
+        't3ver_label' => TcaUtility::getFullTcaForT3verLabel(),
+        'hidden' => TcaUtility::getFullTcaForHidden(),
+        'starttime' => TcaUtility::getFullTcaForStartTime(),
+        'endtime' => TcaUtility::getFullTcaForEndTime(),
         'title' => [
             'exclude' => 1,
             'label' => $ll . 'title',
@@ -185,42 +185,42 @@ return [
                 ],
             ],
         ],
-        'academic_degree' => TcaGenerator::getFullTcaForSingleSelect(
+        'academic_degree' => TcaUtility::getFullTcaForSingleSelect(
             $ll . 'academicDegree',
             'tx_in2studyfinder_domain_model_academicdegree',
             1,
             1
         ),
-        'department' => TcaGenerator::getFullTcaForSingleSelect(
+        'department' => TcaUtility::getFullTcaForSingleSelect(
             $ll . 'department',
             'tx_in2studyfinder_domain_model_department'
         ),
-        'faculty' => TcaGenerator::getFullTcaForSingleSelect(
+        'faculty' => TcaUtility::getFullTcaForSingleSelect(
             $ll . 'faculty',
             'tx_in2studyfinder_domain_model_faculty'
         ),
-        'types_of_study' => TcaGenerator::getFullTcaForSelectSideBySide(
+        'types_of_study' => TcaUtility::getFullTcaForSelectSideBySide(
             $ll . 'typeOfStudy',
             'tx_in2studyfinder_domain_model_typeofstudy',
             'tx_in2studyfinder_studycourse_typeofstudy_mm',
             1,
             1
         ),
-        'course_languages' => TcaGenerator::getFullTcaForSelectSideBySide(
+        'course_languages' => TcaUtility::getFullTcaForSelectSideBySide(
             $ll . 'courseLanguage',
             'tx_in2studyfinder_domain_model_courselanguage',
             'tx_in2studyfinder_studycourse_courselanguage_mm',
             1,
             1
         ),
-        'admission_requirements' => TcaGenerator::getFullTcaForSelectSideBySide(
+        'admission_requirements' => TcaUtility::getFullTcaForSelectSideBySide(
             $ll . 'admissionRequirements',
             'tx_in2studyfinder_domain_model_admissionrequirement',
             'tx_in2studyfinder_studycourse_admissionrequirement_mm',
             1,
             1
         ),
-        'starts_of_study' => TcaGenerator::getFullTcaForSelectCheckBox(
+        'starts_of_study' => TcaUtility::getFullTcaForSelectCheckBox(
             $ll . 'startOfStudy',
             'tx_in2studyfinder_domain_model_startofstudy',
             'tx_in2studyfinder_studycourse_startofstudy_mm',

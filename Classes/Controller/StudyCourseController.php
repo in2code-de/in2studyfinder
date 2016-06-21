@@ -330,12 +330,8 @@ class StudyCourseController extends AbstractController
                         } else {
                             $availableOptions[$name][] = 'isUnset';
                         }
-
                     }
-
-
                 }
-
             }
         }
     }
