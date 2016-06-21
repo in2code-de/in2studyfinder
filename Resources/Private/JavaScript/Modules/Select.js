@@ -35,7 +35,6 @@
 						}
 
 					},
-					placeholder: 'select degree program or enter keyword',
 					allowClear: false,
 					language: 'de'
 				});
@@ -45,12 +44,12 @@
 				$(this).parent('form').submit();
 			});
 
-			/** @todo better language handling */
-			if ($('html').attr('lang') === 'de') {
-				$('.in2studyfinder-js-fast-select').attr("data-placeholder", "Studiengang wählen oder Suchbegriff eingeben");
-			} else {
-				$('.in2studyfinder-js-fast-select').attr("data-placeholder", "select degree program or enter keyword");
-			}
+			/** @todo better language handling for Placeholder */
+			//if ($('html').attr('lang') === 'de') {
+			//	$('.in2studyfinder-js-fast-select').attr("data-placeholder", "Studiengang wählen oder Suchbegriff eingeben");
+			//} else {
+			//	$('.in2studyfinder-js-fast-select').attr("data-placeholder", "select degree program or enter keyword");
+			//}
 		}
 
 		// export to global scope

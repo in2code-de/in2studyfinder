@@ -19,6 +19,8 @@
 				return "Keine Übereinstimmungen gefunden"
 			}, searching: function() {
 				return "Suche…"
+			}, placeholder: function() {
+				return "Studiengang wählen oder Suchbegriff eingeben"
 			}
 		}
 	}), {define: e.define, require: e.require}

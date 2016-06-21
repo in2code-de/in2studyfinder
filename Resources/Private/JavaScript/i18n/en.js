@@ -21,6 +21,8 @@
 				return "No results found"
 			}, searching: function() {
 				return "Searching…"
+			}, placeholder: function() {
+				return "select degree program or enter keyword"
 			}
 		}
 	}), {define: e.define, require: e.require}
