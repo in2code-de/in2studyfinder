@@ -1,5 +1,5 @@
 .in2studyfinder {
-  
+
   .hide {
     display: none;
   }
@@ -79,16 +79,24 @@
   }
 
   &__filter {
+    padding: {
+      bottom: 20px;
+    }
     overflow: hidden;
   }
 
   &__filter-header {
+    background-color: $white;
     overflow: hidden;
   }
 
   &__filter-section {
     margin: 0;
     padding: 15px 15px 15px 15px;
+  }
+
+  &__filter-options {
+    background-color: $gray;
   }
 
   &__filter-section-title {
