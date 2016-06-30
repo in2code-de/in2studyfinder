@@ -2,6 +2,7 @@
 namespace In2code\In2studyfinder\Utility;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
  * Class TcaUtility
@@ -12,6 +13,7 @@ class TcaUtility
 {
     /**
      * Gets full Tca Array for Sys Language Uid
+     *
      * @return array
      */
     public static function getFullTcaForSysLanguageUid()
@@ -26,7 +28,7 @@ class TcaUtility
                 'foreign_table_where' => 'ORDER BY sys_language.title',
                 'items' => [
                     ['LLL:EXT:lang/locallang_general.xlf:LGL.allLanguages', -1],
-                    ['LLL:EXT:lang/locallang_general.xlf:LGL.default_value', 0]
+                    ['LLL:EXT:lang/locallang_general.xlf:LGL.default_value', 0],
                 ],
             ],
         ];
@@ -50,7 +52,7 @@ class TcaUtility
                 ],
                 'foreign_table' => $table,
                 'foreign_table_where' => 'AND ' . $table . '.pid=###CURRENT_PID### AND ' . $table
-                    . '.sys_language_uid IN (-1,0)',
+                                         . '.sys_language_uid IN (-1,0)',
             ],
         ];
     }
@@ -78,7 +80,7 @@ class TcaUtility
                 'type' => 'input',
                 'size' => 30,
                 'max' => 255,
-            ]
+            ],
         ];
     }
 
@@ -113,7 +115,7 @@ class TcaUtility
                 'checkbox' => 0,
                 'default' => 0,
                 'range' => array(
-                    'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y'))
+                    'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y')),
                 ),
             ),
         ];
@@ -136,7 +138,7 @@ class TcaUtility
                 'checkbox' => 0,
                 'default' => 0,
                 'range' => array(
-                    'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y'))
+                    'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y')),
                 ),
             ),
         ];
@@ -152,7 +154,7 @@ class TcaUtility
 
         if ($table !== '') {
             $icon = ExtensionManagementUtility::extRelPath('in2studyfinder') .
-                'Resources/Public/Icons/' . $table . '.png';
+                    'Resources/Public/Icons/' . $table . '.png';
         }
 
         return [
@@ -197,19 +199,23 @@ class TcaUtility
         $minItems = 0,
         $maxItems = 5
     ) {
-        return [
-            'exclude' => $exclude,
-            'label' => $label,
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectCheckBox',
-                'foreign_table' => $table,
-                'MM' => $mmTable,
-                'foreign_table_where' => 'AND sys_language_uid in (-1, 0)',
-                'minitems' => $minItems,
-                'maxitems' => $maxItems,
-            ],
-        ];
+        if (ExtensionUtility::isTypo3MajorVersionBelow(7)) {
+            return self::getFullTcaForSelectSideBySide($label, $table, $mmTable);
+        } else {
+            return [
+                'exclude' => $exclude,
+                'label' => $label,
+                'config' => [
+                    'type' => 'select',
+                    'renderType' => 'selectCheckBox',
+                    'foreign_table' => $table,
+                    'MM' => $mmTable,
+                    'foreign_table_where' => 'AND sys_language_uid in (-1, 0)',
+                    'minitems' => $minItems,
+                    'maxitems' => $maxItems,
+                ],
+            ];
+        }
     }
 
     public static function getFullTcaForSelectSideBySide(
@@ -220,28 +226,50 @@ class TcaUtility
         $minItems = 0,
         $maxItems = 9999
     ) {
-        return [
-            'exclude' => $exclude,
-            'label' => $label,
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectMultipleSideBySide',
-                'foreign_table' => $table,
-                'MM' => $mmTable,
-                'foreign_table_where' => 'AND sys_language_uid in (-1, 0)',
-                'minitems' => $minItems,
-                'maxitems' => $maxItems,
-                'wizards' => [
-                    'suggest' => [
-                        'type' => 'suggest',
+        if (ExtensionUtility::isTypo3MajorVersionBelow(7)) {
+            return [
+                'exclude' => $exclude,
+                'label' => $label,
+                'config' => [
+                    'type' => 'select',
+                    'foreign_table' => $table,
+                    'foreign_table_where' => 'AND sys_language_uid in (-1, 0)',
+                    'size' => 5,
+                    'autoSizeMax' => 30,
+                    'maxitems' => 9999,
+                    'multiple' => 0,
+                    'wizards' => [
+                        'suggest' => [
+                            'type' => 'suggest',
+                        ],
                     ],
                 ],
-            ],
-        ];
+            ];
+        } else {
+            return [
+                'exclude' => $exclude,
+                'label' => $label,
+                'config' => [
+                    'type' => 'select',
+                    'renderType' => 'selectMultipleSideBySide',
+                    'foreign_table' => $table,
+                    'MM' => $mmTable,
+                    'foreign_table_where' => 'AND sys_language_uid in (-1, 0)',
+                    'minitems' => $minItems,
+                    'maxitems' => $maxItems,
+                    'wizards' => [
+                        'suggest' => [
+                            'type' => 'suggest',
+                        ],
+                    ],
+                ],
+            ];
+        }
     }
 
     /**
      * Gets the Suggest Wizard
+     *
      * @return array
      */
     public static function getSuggestWizard()
@@ -274,12 +302,12 @@ class TcaUtility
                     'renderType' => 'selectSingle',
                     'items' => [
                         ['Erweiterter Studiengang [TODO] Übersetzen', $extbaseTypeValue],
-                        ['Standard Studiengang [TODO] Übersetzen', '']
+                        ['Standard Studiengang [TODO] Übersetzen', ''],
                     ],
                     'default' => $extbaseTypeValue,
                     'size' => 1,
                     'maxitems' => 1,
-                ]
+                ],
             ];
 
             ExtensionManagementUtility::addTCAcolumns(
@@ -355,7 +383,6 @@ class TcaUtility
             $insertArray[2] = '--linebreak--';
         }
 
-
         array_walk($fieldArray, [self::class, 'trimValue']);
 
         if (in_array($insertAfter, $fieldArray)) {
@@ -391,7 +418,6 @@ class TcaUtility
         $tab = ', --div--;' . $localLangPath . ':' . $localLangId . ',' . $fieldString . ',';
 
         ExtensionManagementUtility::addToAllTCAtypes($table, $tab, '', 'after:' . $insertAfter);
-
     }
 
     /**
@@ -413,7 +439,6 @@ class TcaUtility
         }
 
         $GLOBALS['TCA'][$table]['palettes'][$palette]['showitem'] = implode(',', $showItemArray);
-
     }
 
     /**
@@ -444,5 +469,4 @@ class TcaUtility
     {
         $value = trim($value);
     }
-
 }
