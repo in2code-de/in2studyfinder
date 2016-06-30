@@ -1,5 +1,5 @@
 <f:form action="detail" pluginName="Pi2" pageUid="{settings.flexform.studyCourseDetailPage}">
-	<select data-placeholder="Select an Option..." class="in2studyfinder-js-fast-select" style="width: 100%" name="tx_in2studyfinder_studycourse[studyCourse]" tabindex="-1">
+	<select class="in2studyfinder-js-fast-select" style="width: 100%" name="tx_in2studyfinder_studycourse[studyCourse]" tabindex="-1">
 		<option value="">
 			<f:for each="{studyCourses}" as="studyCourse">
 				<option value="{studyCourse.uid}" alt="{studyCourse.metaKeywords}">{studyCourse.title} - {studyCourse.academicDegree.degree}</option>
