@@ -1,0 +1,13 @@
+mod.wizards.newContentElement.wizardItems.plugins {
+	elements {
+		in2studyfinderList {
+			iconIdentifier = in2studyfinder-plugin-icon
+			title = Studiengangsfinder [TODO] Übersetzen
+			description = Plugin zum strukturierten erfassen und verwalten von Studiengängen[TODO] Übersetzen
+			tt_content_defValues {
+				CType = list
+				list_type = in2studyfinder_pi1
+			}
+		}
+	}
+}

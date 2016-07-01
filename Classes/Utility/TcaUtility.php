@@ -199,6 +199,9 @@ class TcaUtility
         $minItems = 0,
         $maxItems = 5
     ) {
+        /**
+         * Compatibility for Typo3 6.2 LTS
+         */
         if (ExtensionUtility::isTypo3MajorVersionBelow(7)) {
             return self::getFullTcaForSelectSideBySide($label, $table, $mmTable);
         } else {

@@ -21,6 +21,35 @@ $extKey = 'in2studyfinder';
     'Studiengangsfinder Detailansicht'
 );
 
+if (TYPO3_MODE === 'BE') {
+
+    /**
+     * Register Icons
+     */
+
+    /**
+     * Compatibility for Typo3 6.2 LTS
+     *
+     * @todo set Icon for Typo3 6.2
+     */
+    if (\In2code\In2studyfinder\Utility\ExtensionUtility::isTypo3MajorVersionAbove(6)) {
+        /** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
+        $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+        $iconRegistry->registerIcon(
+            'in2studyfinder-plugin-icon',
+            \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+            ['source' => 'EXT:in2studyfinder/ext_icon.png']
+        );
+    }
+}
+
+/**
+ * Add ContentElementWizard for ListView and DetailView
+ */
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
+    '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:in2studyfinder/Configuration/TSConfig/ContentElementWizard.typoscript">'
+);
+
 /**
  * Include Flexform
  */
