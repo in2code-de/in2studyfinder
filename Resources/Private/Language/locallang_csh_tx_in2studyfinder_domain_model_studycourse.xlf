@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-04-05T17:43:35Z" product-name="in2studyfinder">
+		<header/>
+		<body>
+			<trans-unit id="title.description">
+				<source>title</source>
+			</trans-unit>
+			<trans-unit id="standard_period_of_study.description">
+				<source>standardPeriodOfStudy</source>
+			</trans-unit>
+			<trans-unit id="ects_credits.description">
+				<source>ectsCredits</source>
+			</trans-unit>
+			<trans-unit id="tuition_fee.description">
+				<source>tuitionFee</source>
+			</trans-unit>
+			<trans-unit id="teaser.description">
+				<source>teaser</source>
+			</trans-unit>
+			<trans-unit id="description.description">
+				<source>description</source>
+			</trans-unit>
+			<trans-unit id="university_place.description">
+				<source>universityPlace</source>
+			</trans-unit>
+			<trans-unit id="content_elements.description">
+				<source>contentElements</source>
+			</trans-unit>
+			<trans-unit id="academic_degree.description">
+				<source>academicDegree</source>
+			</trans-unit>
+			<trans-unit id="department.description">
+				<source>department</source>
+			</trans-unit>
+			<trans-unit id="faculty.description">
+				<source>faculty</source>
+			</trans-unit>
+			<trans-unit id="type_of_study.description">
+				<source>typeOfStudy</source>
+			</trans-unit>
+			<trans-unit id="course_language.description">
+				<source>courseLanguage</source>
+			</trans-unit>
+			<trans-unit id="admission_requirements.description">
+				<source>admissionRequirements</source>
+			</trans-unit>
+			<trans-unit id="start_of_study.description">
+				<source>startOfStudy</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

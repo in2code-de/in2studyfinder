@@ -1,0 +1,88 @@
+plugin.tx_in2studyfinder {
+	view {
+		templateRootPaths.0 = {$plugin.tx_in2studyfinder.view.templateRootPath}
+		partialRootPaths.0 = {$plugin.tx_in2studyfinder.view.partialRootPath}
+		layoutRootPaths.0 = {$plugin.tx_in2studyfinder.view.layoutRootPath}
+
+		widget {
+			TYPO3\CMS\Fluid\ViewHelpers\Widget\PaginateViewHelper {
+				templateRootPath = EXT:in2studyfinder/Resources/Private/Templates/
+			}
+		}
+	}
+
+	settings {
+		storagePid = {$plugin.tx_in2studyfinder.persistence.storagePid}
+
+		pagination {
+			itemsPerPage = {$plugin.tx_in2studyfinder.settings.pagination.itemsPerPage}
+		}
+
+
+		filter {
+			allowedFilterTypes {
+				0 = In2code\In2studyfinder\Domain\Repository\AcademicDegree
+				1 = In2code\In2studyfinder\Domain\Repository\AdmissionRequirement
+				2 = In2code\In2studyfinder\Domain\Repository\CourseLanguage
+				3 = In2code\In2studyfinder\Domain\Repository\Department
+				4 = In2code\In2studyfinder\Domain\Repository\Faculty
+				5 = In2code\In2studyfinder\Domain\Repository\StartOfStudy
+				6 = In2code\In2studyfinder\Domain\Repository\TypeOfStudy
+				//7 = standardPeriodOfStudy
+			}
+
+			filterTypeLabelField {
+				academicDegree = degree
+				admissionRequirement = title
+				courseLanguage = language
+				department = title
+				faculty = title
+				startOfStudy = title
+				typeOfStudy = type
+				//standardPeriodOfStudy = standardPeriodOfStudy
+			}
+
+			recursive = {$plugin.tx_in2studyfinder.settings.filter.recursive}
+		}
+
+	}
+
+	persistence {
+		storagePid = {$plugin.tx_in2studyfinder.persistence.storagePid}
+		recursive = {$plugin.tx_in2studyfinder.persistence.recursive}
+	}
+}
+
+############################
+# JavaScript and CSS section
+############################
+
+# add jQuery if it was turned on in the constants
+
+[globalVar = LIT:0 < {$plugin.tx_in2studyfinder.settings.javascript.addJQueryFromGoogle}]
+	page.includeJSFooterlibs.in2studyfinderJQuery = {$plugin.tx_in2studyfinder.settings.javascript.in2studyfinderJQuery}
+	page.includeJSFooterlibs.in2studyfinderJQuery.external = 1
+[end]
+
+page.includeCSS.in2studyfinderCss = {$plugin.tx_in2studyfinder.settings.css.in2studyfinderCss}
+
+# add In2studyfinder JavaScripts
+page {
+	includeJSFooter {
+		in2studyfinderSelect2 = {$plugin.tx_in2studyfinder.settings.javascript.in2studyfinderSelect2}
+		in2studyfinderJavaScriptBasic = EXT:in2studyfinder/Resources/Public/JavaScript/In2studyfinder.min.js
+
+		in2studyfinderJavaScriptModulesSelect = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/Select.min.js
+		in2studyfinderJavaScriptModulesFilterHandling = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/FilterHandling.min.js
+		in2studyfinderJavaScriptModulesUrlHandling = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/UrlHandling.min.js
+		in2studyfinderJavaScriptModulesUiBehaviour = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/UiBehaviour.min.js
+		in2studyfinderJavaScriptModulesPaginationHandling = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/PaginationHandling.min.js
+
+		in2studyfinderJavaScriptSelect2Language = EXT:in2studyfinder/Resources/Public/JavaScript/i18n/de.min.js
+	}
+}
+
+
+[globalVar = GP:L = 1]
+	page.includeJSFooter.in2studyfinderJavaScriptSelect2Language = EXT:in2studyfinder/Resources/Public/JavaScript/i18n/en.min.js
+[end]

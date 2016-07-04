@@ -1,0 +1,47 @@
+plugin.tx_in2studyfinder {
+	view {
+		# cat=plugin.tx_in2studyfinder/file; type=string; label=Path to template root (FE)
+		templateRootPath = EXT:in2studyfinder/Resources/Private/Templates/
+		# cat=plugin.tx_in2studyfinder/file; type=string; label=Path to template partials (FE)
+		partialRootPath = EXT:in2studyfinder/Resources/Private/Partials/
+		# cat=plugin.tx_in2studyfinder/file; type=string; label=Path to template layouts (FE)
+		layoutRootPath = EXT:in2studyfinder/Resources/Private/Layouts/
+	}
+
+	persistence {
+		# cat=plugin.tx_in2studyfinder//a; type=string; label=Default storage PID
+		storagePid =
+		# cat=plugin.tx_in2studyfinder//a; type=string; label=Recursion level of the storagePid
+		recursive = 1
+	}
+
+	settings {
+
+		filter {
+			# cat=plugin.tx_in2studyfinder//a; type=string; label=Recursion level for the Filter Options
+			recursive = 1
+		}
+
+		pagination {
+			itemsPerPage = 25
+		}
+
+		javascript {
+			# cat=plugin.tx_in2studyfinder//a; type=boolean; label= Include jQuery From Google: Add jQuery JavaScript (will be loaded from ajax.googleapis.com)
+			addJQueryFromGoogle = 0
+
+			# cat=plugin.tx_in2studyfinder//a; type=text; label= jQuery Source: Change jQuery Source - per default it will be loaded from googleapis.com
+			//in2studyfinderJQuery = //ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js
+			in2studyfinderJQuery = EXT:in2studyfinder/Resources/Public/JavaScript/jquery-2.1.3.min.js
+
+			# cat=plugin.tx_in2studyfinder//a; type=text; label= Select2 Source
+			in2studyfinderSelect2 = EXT:in2studyfinder/Resources/Public/JavaScript/select2.min.js
+
+		}
+
+		css {
+			# cat=plugin.tx_in2studyfinder//a; type=text; label= Css Source from In2studyfinder
+			in2studyfinderCss = EXT:in2studyfinder/Resources/Public/Css/basic.css
+		}
+	}
+}

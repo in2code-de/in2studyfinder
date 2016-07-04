@@ -1,0 +1,252 @@
+.in2studyfinder {
+
+  .hide {
+    display: none;
+  }
+
+  //
+  // Listenansicht
+  //
+
+  &__loading {
+    > * {
+      opacity: 0.1;
+    }
+    position: relative;
+    top: 0;
+    left: 0;
+    &:after {
+      content: '';
+      opacity: 1;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: block;
+      background: url($iconPath + 'loading.gif') no-repeat center;
+    }
+  }
+
+  &__button {
+    cursor: pointer;
+    margin: {
+      bottom: 9px;
+      top: 9px;
+    };
+    padding: {
+      bottom: $boxpadding;
+      left: 20px;
+      right: 25px;
+      top: $boxpadding;
+    };
+    &--show {
+      &:after {
+        background: url($iconPath + "open-white.png") no-repeat;
+        content: "";
+        display: block;
+        height: 5px;
+        width: 10px;
+        float: right;
+        position: relative;
+        top: 6px;
+        left: 10px;
+      }
+    }
+    &--reset {
+      &:after {
+        background: url($iconPath + "closex.png") no-repeat;
+        content: "";
+        display: block;
+        height: 13px;
+        width: 13px;
+        float: right;
+        position: relative;
+        top: 2px;
+        left: 10px;
+      }
+    }
+  }
+
+  &__fast-select {
+    padding: {
+      top: $boxpadding;
+      bottom: $boxpadding;
+    };
+  }
+
+  &__filter {
+    padding: {
+      bottom: 20px;
+    }
+    overflow: hidden;
+  }
+
+  &__filter-header {
+    background-color: $white;
+    overflow: hidden;
+  }
+
+  &__filter-section {
+    margin: 0;
+    padding: 15px 15px 15px 15px;
+  }
+
+  &__filter-options {
+    background-color: $gray;
+  }
+
+  &__filter-section-title {
+    cursor: pointer;
+    margin: 0;
+    position: relative;
+    top: 15px;
+    padding: {
+      left: 20px;
+    }
+    width: 100%;
+    &:before {
+      background: url($iconPath + "open.png") no-repeat;
+      content: "";
+      display: block;
+      height: 5px;
+      width: 10px;
+      position: relative;
+      top: 12px;
+      left: -20px;
+    }
+  }
+
+  &__accordion {
+    margin-top: 15px;
+    -moz-columns: auto 4;
+    -webkit-columns: auto 4;
+    columns: auto 4;
+    -moz-column-gap: 15px;
+    -webkit-column-gap: 15px;
+    column-gap: 15px;
+
+    input {
+      display: none;
+      &:checked + .in2studyfinder__checkbox-label {
+        background-image: url($iconPath + "checked.png");
+        background-repeat: no-repeat;
+      }
+      &:disabled + .in2studyfinder__checkbox-label {
+        opacity: .5;
+      }
+
+      &:disabled:checked + .in2studyfinder__checkbox-label {
+        opacity: .5;
+      }
+    }
+  }
+
+  &__checkbox-label {
+    cursor: pointer;
+    padding-left: 25px;
+    margin: 1em 0 0.5em 0;
+    background-image: url($iconPath + "unchecked.png");
+    background-repeat: no-repeat;
+    -moz-page-break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+    &__item {
+      padding: 20px;
+    }
+
+    &__letter {
+      margin-left: 20px;
+      margin-top: 20px;
+      margin-bottom: 0;
+
+      span {
+        margin-left: -20px;
+      }
+    }
+
+
+  //
+  // Pagebrowser
+  //
+
+  &__pagebrowser {
+    text-align: center;
+    margin: 20px 0;
+    a {
+      margin-right: 15px;
+    }
+  }
+
+    &__pagebrowser-page {
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+
+  //
+  // Detailansicht
+  //
+
+  &__detail {
+    ul {
+      list-style: none;
+      margin: {
+        bottom: 1em;
+        left: 0;
+        top: 0;
+        right: 0;
+      }
+      padding: 0;
+    }
+
+    p {
+      margin: {
+        bottom: 1em;
+      }
+    }
+  }
+
+  &__column {
+    float: left;
+    &--half {
+      width: 47.8%;
+      &:last-child {
+        margin-left: 4.4%;
+      }
+    }
+  }
+
+  &__content-box {
+    margin: {
+      bottom: 40px;
+    }
+  }
+
+  &__content-box-content {
+    margin: {
+      bottom: 24px;
+      left: 12px;
+      right: 12px;
+      top: 12px;
+    }
+    @include clearfix;
+  }
+
+    &__content-box-head {
+      padding: 6px 0px 4px 4px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+
+}
+

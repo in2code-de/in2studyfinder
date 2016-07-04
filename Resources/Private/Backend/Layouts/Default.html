@@ -1,0 +1,39 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+
+<f:be.container>
+	<div class="typo3-fullDoc">
+		<div id="typo3-docheader">
+			<div class="typo3-docheader-buttons" style="border-bottom: none; height: 35px;">
+				<div class="left">
+					<ul class="nav nav-tabs t3js-tabs" role="tablist" id="tabs-DTM-67217d8b40" data-store-last-tab="1">
+						<li role="presentation" class="t3js-tabmenu-item" style="margin-bottom: 0px;">
+							<a href="#DTM-67217d8b40-1" title="" class="btn btn-link" aria-controls="DTM-67217d8b40-1" role="tab" data-toggle="tab">
+								Studiengänge
+							</a>
+						</li>
+						<li role="presentation" class="t3js-tabmenu-item" style="margin-bottom: 0px;">
+							<a href="#DTM-67217d8b40-2" title="" aria-controls="DTM-67217d8b40-2" role="tab" data-toggle="tab"> Import / Export </a>
+						</li>
+						<li role="presentation" class="t3js-tabmenu-item" style="margin-bottom: 0px;">
+							<a href="#DTM-67217d8b40-3" title="" aria-controls="DTM-67217d8b40-3" role="tab" data-toggle="tab"> Dummy Data </a>
+						</li>
+						<li role="presentation" class="t3js-tabmenu-item" style="margin-bottom: 0px;">
+							<a href="#DTM-67217d8b40-4" title="" aria-controls="DTM-67217d8b40-3" role="tab" data-toggle="tab">  </a>
+						</li>
+					</ul>
+				</div>
+				<div class="right">
+					<a href="#" class="btn btn-default">
+						<core:icon identifier="actions-system-extension-configure"/>
+					</a>
+				</div>
+			</div>
+		</div>
+		<div id="typo3-docbody">
+			<div id="typo3-inner-docbody">
+				<f:flashMessages/>
+				<f:render section="content"/>
+			</div>
+		</div>
+	</div>
+</f:be.container>

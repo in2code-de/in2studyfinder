@@ -1,0 +1,1 @@
+page.includeCSS.in2studyfinderDemoCss = EXT:in2studyfinder/Resources/Public/Css/demo.css
