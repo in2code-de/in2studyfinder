@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * StudyCourseController
@@ -119,7 +120,6 @@ class StudyCourseController extends AbstractController
      */
     public function listAction()
     {
-
         $this->assignStudyCourses();
 
     }
@@ -301,34 +301,39 @@ class StudyCourseController extends AbstractController
         return $availableOptions;
     }
 
+    /**
+     * @param array $propertyArray
+     * @param array $availableOptionArray
+     * @param int $currentLevel
+     */
     protected function getAvailableFilterOptionsFromProperties(
-        $properties,
-        &$availableOptions,
+        $propertyArray,
+        &$availableOptionArray,
         $currentLevel = 0
     ) {
         if ($currentLevel < $this->settings['filter']['recursive']) {
-            foreach ($properties as $name => $property) {
+            foreach ($propertyArray as $name => $property) {
                 if (is_object($property)) {
                     if ($property instanceof ObjectStorage) {
-                        $this->getAvailableFilterOptionsFromProperties($property, $availableOptions, $currentLevel);
+                        $this->getAvailableFilterOptionsFromProperties($property, $availableOptionArray, $currentLevel);
                     } elseif ($property instanceof AbstractDomainObject) {
 
                         $this->getAvailableFilterOptionsFromProperties(
-                            $property->_getProperties(), $availableOptions, $currentLevel + 1
+                            $property->_getProperties(), $availableOptionArray, $currentLevel + 1
                         );
 
                         $className = ExtensionUtility::getClassName($property);
 
                         if ($className !== 'ttContent') {
-                            $availableOptions[$className][] = $property->getUid();
+                            $availableOptionArray[$className][] = $property->getUid();
                         }
                     }
                 } else {
                     if (array_key_exists($name,$this->filterTypes)) {
                         if ($property !== '' && $property !== 0 && $property !== false) {
-                            $availableOptions[$name][] = 'isSet';
+                            $availableOptionArray[$name][] = 'isSet';
                         } else {
-                            $availableOptions[$name][] = 'isUnset';
+                            $availableOptionArray[$name][] = 'isUnset';
                         }
                     }
                 }

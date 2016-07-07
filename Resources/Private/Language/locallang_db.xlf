@@ -130,6 +130,12 @@
 			<trans-unit id="isUnset">
 				<source>is unset</source>
 			</trans-unit>
+			<trans-unit id="extendedStudycourse">
+				<source>extend StudyCourse</source>
+			</trans-unit>
+			<trans-unit id="defaultStudycourse">
+				<source>default StudyCourse</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
