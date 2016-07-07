@@ -104,7 +104,7 @@ class ExtensionUtility
      */
     public static function isTypo3MajorVersionAbove($typo3Version)
     {
-        return self::getCurrentTypo3MajorVersion() >= $typo3Version;
+        return self::getCurrentTypo3MajorVersion() > $typo3Version;
     }
 
     /**
@@ -115,7 +115,7 @@ class ExtensionUtility
      */
     public static function isTypo3MajorVersionBelow($typo3Version)
     {
-        return self::getCurrentTypo3MajorVersion() <= $typo3Version;
+        return self::getCurrentTypo3MajorVersion() < $typo3Version;
     }
 }
 

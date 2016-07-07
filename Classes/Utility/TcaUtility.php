@@ -199,6 +199,9 @@ class TcaUtility
         $minItems = 0,
         $maxItems = 5
     ) {
+        /**
+         * Compatibility for Typo3 6.2 LTS
+         */
         if (ExtensionUtility::isTypo3MajorVersionBelow(7)) {
             return self::getFullTcaForSelectSideBySide($label, $table, $mmTable);
         } else {
@@ -296,15 +299,21 @@ class TcaUtility
             $extbaseType = [];
             $extbaseType['tx_extbase_type'] = [
                 'exclude' => 1,
-                'label' => 'LLL:EXT:in2studyfinder_extend/Resources/Private/Language/locallang_db.xlf:tx_in2studyfinder_domain_model_studycourse.tx_extbase_type.Tx_In2studyfinderExtend_StudyCourse',
+                'label' => 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:extendedStudycourse',
                 'config' => [
                     'type' => 'select',
                     'renderType' => 'selectSingle',
                     'items' => [
+<<<<<<< HEAD
+                        ['LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:extendedStudycourse', $extbaseTypeValue],
+                        ['LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:defaultStudycourse', '']
+=======
                         ['Erweiterter Studiengang [TODO] Übersetzen', $extbaseTypeValue],
                         ['Standard Studiengang [TODO] Übersetzen', ''],
+>>>>>>> eed2daf8ceae3458ddc6528aea88c171b9a2ec40
                     ],
                     'default' => $extbaseTypeValue,
+                    'readOnly' =>1,
                     'size' => 1,
                     'maxitems' => 1,
                 ],

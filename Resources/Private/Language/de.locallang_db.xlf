@@ -166,6 +166,14 @@
 				<source>is unset</source>
 				<target>ist nicht vorhanden</target>
 			</trans-unit>
+			<trans-unit id="extendedStudycourse">
+				<source>extend StudyCourse</source>
+				<target>erweiterter Studiengang</target>
+			</trans-unit>
+			<trans-unit id="defaultStudycourse">
+				<source>default StudyCourse</source>
+				<target>normaler Studiengang</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
