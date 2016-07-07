@@ -9,7 +9,7 @@
     color: $nightrider;
   }
 
-  h1, h2, {
+  h1, h2 {
     font-size: 24px;
   }
 
@@ -30,6 +30,7 @@
 
   &__filter-section-title {
     font-weight: bold;
+    border: none;
   }
 
   &__item-count {
@@ -45,13 +46,8 @@
     }
   }
 
-  &__filter {
-    background-color: $whitesmoke;
-  }
-
   &__filter-header {
     background-color: $white;
-    text-align: right;
   }
 
   &__filter-section {
