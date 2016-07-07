@@ -268,15 +268,16 @@ class TcaUtility
             $extbaseType = [];
             $extbaseType['tx_extbase_type'] = [
                 'exclude' => 1,
-                'label' => 'LLL:EXT:in2studyfinder_extend/Resources/Private/Language/locallang_db.xlf:tx_in2studyfinder_domain_model_studycourse.tx_extbase_type.Tx_In2studyfinderExtend_StudyCourse',
+                'label' => 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:extendedStudycourse',
                 'config' => [
                     'type' => 'select',
                     'renderType' => 'selectSingle',
                     'items' => [
-                        ['Erweiterter Studiengang [TODO] Übersetzen', $extbaseTypeValue],
-                        ['Standard Studiengang [TODO] Übersetzen', '']
+                        ['LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:extendedStudycourse', $extbaseTypeValue],
+                        ['LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:defaultStudycourse', '']
                     ],
                     'default' => $extbaseTypeValue,
+                    'readOnly' =>1,
                     'size' => 1,
                     'maxitems' => 1,
                 ]
