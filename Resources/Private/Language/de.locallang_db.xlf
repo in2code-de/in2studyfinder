@@ -170,6 +170,10 @@
 				<source>extend StudyCourse</source>
 				<target>erweiterter Studiengang</target>
 			</trans-unit>
+			<trans-unit id="extendedStudycourseLabel">
+				<source>StudyCourse Type</source>
+				<target>Studiengangs Typ</target>
+			</trans-unit>
 			<trans-unit id="defaultStudycourse">
 				<source>default StudyCourse</source>
 				<target>normaler Studiengang</target>
