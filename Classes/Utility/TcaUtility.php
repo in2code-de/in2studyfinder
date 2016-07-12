@@ -52,7 +52,7 @@ class TcaUtility
                 ],
                 'foreign_table' => $table,
                 'foreign_table_where' => 'AND ' . $table . '.pid=###CURRENT_PID### AND ' . $table
-                                         . '.sys_language_uid IN (-1,0)',
+                    . '.sys_language_uid IN (-1,0)',
             ],
         ];
     }
