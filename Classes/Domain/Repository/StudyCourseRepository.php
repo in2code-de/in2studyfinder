@@ -32,6 +32,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use In2code\In2studyfinderExtend\Domain\Model\StudyCourse as StudyCourseExtend;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Lang\Domain\Model\Extension;
 
 /**
  * The repository for StudyCourses
@@ -149,6 +150,14 @@ class StudyCourseRepository extends AbstractRepository
         $query->getQuerySettings()->setRespectSysLanguage(false);
         $query->getQuerySettings()->setLanguageOverlayMode('strict');
 
+        /**
+         * Add the Storage Pid für Settings
+         */
+        $storagePids = $query->getQuerySettings()->getStoragePageIds();
+        $settings = ExtensionUtility::getExtensionConfiguration('in2studyfinder');
+        array_push($storagePids, $settings['settingsPid']);
+        $query->getQuerySettings()->setStoragePageIds($storagePids);
+
         $mappedOptions = $this->mapOptionsToStudyCourseProperties($options);
 
         $constraints = array();
@@ -167,7 +176,6 @@ class StudyCourseRepository extends AbstractRepository
             } else {
                 $constraints[] = $query->in($name . '.uid', $array);
             }
-
         }
 
         if (!empty($constraints)) {

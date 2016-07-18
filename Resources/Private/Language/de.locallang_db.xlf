@@ -186,6 +186,12 @@
 				<source>default StudyCourse</source>
 				<target>normaler Studiengang</target>
 			</trans-unit>
+			<trans-unit id="wizardItemTitle">
+				<source>Studyfinder</source>
+			</trans-unit>
+			<trans-unit id="wizardItemDescription">
+				<source>Plugin for Studycourses</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
