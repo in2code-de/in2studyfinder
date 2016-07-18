@@ -26,11 +26,13 @@ namespace In2code\In2studyfinder\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use In2code\In2studyfinder\Domain\Repository\AcademicDegreeRepository;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
+use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
@@ -92,6 +94,8 @@ class StudyCourseController extends AbstractController
     protected function setFilterTypesAndRepositories()
     {
 
+        $settingsStorageUid = $this->settings['settingsPid'];
+
         foreach ($this->settings['filter']['allowedFilterTypes'] as $filterType) {
 
             if (class_exists($filterType . 'Repository')) {
@@ -103,6 +107,13 @@ class StudyCourseController extends AbstractController
                     $filterType,
                     strripos($filterType, '\\') + 1
                 );
+
+                /** @var QuerySettingsInterface $defaultQuerySettings */
+                $defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
+
+                $defaultQuerySettings->setStoragePageIds([$settingsStorageUid]);
+
+                $this->filterTypeRepositories[$filterType]->setDefaultQuerySettings($defaultQuerySettings);
 
                 $this->filterTypes[lcfirst($filterTypeTitle)] = $this->filterTypeRepositories[$filterType]->findAll();
             } else {
@@ -129,6 +140,7 @@ class StudyCourseController extends AbstractController
      */
     protected function assignStudyCourses()
     {
+
         $studyCourses = $this->getStudyCourses();
 
         $this->view->assign('filterTypes', $this->filterTypes);
@@ -249,6 +261,7 @@ class StudyCourseController extends AbstractController
      */
     public function filterAction($searchOptions = array())
     {
+
         if (empty($searchOptions) && $this->request->getMethod() === 'GET') {
             if ($this->sessionUtility->has('searchOptions')) {
                 $searchOptions = $this->sessionUtility->get('searchOptions');

@@ -145,6 +145,14 @@
 			<trans-unit id="defaultStudycourse">
 				<source>default StudyCourse</source>
 			</trans-unit>
+			<trans-unit id="wizardItemTitle">
+				<source>Studyfinder</source>
+				<target>Studiengangsfinder</target>
+			</trans-unit>
+			<trans-unit id="wizardItemDescription">
+				<source>Plugin for Studycourses</source>
+				<target>Plugin zum strukturierten erfassen und verwalten von Studiengängen</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
