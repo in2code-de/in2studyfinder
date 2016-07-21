@@ -17,7 +17,8 @@ plugin.tx_in2studyfinder {
 	}
 
 	settings {
-
+		# cat=plugin.tx_in2studyfinder//a; type=string; label=Default storage PID
+		storagePid =
 		# cat=plugin.tx_in2studyfinder//a; type=string; label=Settings storage PID
 		settingsPid =
 

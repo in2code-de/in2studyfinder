@@ -12,7 +12,7 @@ plugin.tx_in2studyfinder {
 	}
 
 	settings {
-		storagePid = {$plugin.tx_in2studyfinder.persistence.storagePid}
+		storagePid = {$plugin.tx_in2studyfinder.settings.storagePid}
 		settingsPid = {$plugin.tx_in2studyfinder.settings.settingsPid}
 
 		pagination {
