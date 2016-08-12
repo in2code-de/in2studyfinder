@@ -34,7 +34,7 @@
 						<strong>
 							<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:typeOfStudy"/>
 						</strong>
-						<ul>
+						<ul class="in2studyfinder__list">
 							<f:for each="{studyCourse.typesOfStudy}" as="typeOfStudy">
 								<li>{typeOfStudy.type}</li>
 							</f:for>
@@ -43,7 +43,7 @@
 						<strong>
 							<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:startOfStudy"/>
 						</strong>
-						<ul>
+						<ul class="in2studyfinder__list">
 							<f:for each="{studyCourse.startsOfStudy}" as="startOfStudy">
 								<li>{startOfStudy.title}:
 									<f:format.date date="{startOfStudy.startDate}" format="d.m.Y"/>
@@ -74,7 +74,7 @@
 						<strong>
 							<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:courseLanguage"/>
 						</strong>
-						<ul>
+						<ul class="in2studyfinder__list">
 							<f:for each="{studyCourse.courseLanguages}" as="courseLanguage">
 								<li>{courseLanguage.language}</li>
 							</f:for>
@@ -83,7 +83,7 @@
 						<strong>
 							<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:admissionRequirements"/>
 						</strong>
-						<ul>
+						<ul class="in2studyfinder__list">
 							<f:for each="{studyCourse.admissionRequirements}" as="admissionRequirement">
 								<li>{admissionRequirement.title}</li>
 							</f:for>
