@@ -42,49 +42,49 @@ class StudyCourse extends AbstractEntity
      * @validate NotEmpty
      */
     protected $title = '';
-    
+
     /**
      * standardPeriodOfStudy
      *
      * @var int
      */
     protected $standardPeriodOfStudy = 0;
-    
+
     /**
      * ectsCredits
      *
      * @var int
      */
     protected $ectsCredits = 0;
-    
+
     /**
      * tuitionFee
      *
      * @var float
      */
     protected $tuitionFee = 0.0;
-    
+
     /**
      * teaser
      *
      * @var string
      */
     protected $teaser = '';
-    
+
     /**
      * description
      *
      * @var string
      */
     protected $description = '';
-    
+
     /**
      * universityPlace
      *
      * @var int
      */
     protected $universityPlace = 0;
-    
+
     /**
      * contentElements
      *
@@ -92,49 +92,49 @@ class StudyCourse extends AbstractEntity
      * @cascade remove
      */
     protected $contentElements = null;
-    
+
     /**
      * academicDegree
      *
      * @var \In2code\In2studyfinder\Domain\Model\AcademicDegree
      */
     protected $academicDegree = null;
-    
+
     /**
      * department
      *
      * @var \In2code\In2studyfinder\Domain\Model\Department
      */
     protected $department = null;
-    
+
     /**
      * faculty
      *
      * @var \In2code\In2studyfinder\Domain\Model\Faculty
      */
     protected $faculty = null;
-    
+
     /**
      * typeOfStudy
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\TypeOfStudy>
      */
     protected $typesOfStudy = null;
-    
+
     /**
      * courseLanguages
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\CourseLanguage>
      */
     protected $courseLanguages = null;
-    
+
     /**
      * admissionRequirements
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\AdmissionRequirement>
      */
     protected $admissionRequirements = null;
-    
+
     /**
      * startOfStudy
      *
@@ -172,7 +172,7 @@ class StudyCourse extends AbstractEntity
     {
         return $this->title;
     }
-    
+
     /**
      * Sets the title
      *
@@ -183,7 +183,7 @@ class StudyCourse extends AbstractEntity
     {
         $this->title = $title;
     }
-    
+
     /**
      * Returns the standardPeriodOfStudy
      *
@@ -193,7 +193,7 @@ class StudyCourse extends AbstractEntity
     {
         return $this->standardPeriodOfStudy;
     }
-    
+
     /**
      * Sets the standardPeriodOfStudy
      *
@@ -204,7 +204,7 @@ class StudyCourse extends AbstractEntity
     {
         $this->standardPeriodOfStudy = $standardPeriodOfStudy;
     }
-    
+
     /**
      * Returns the ectsCredits
      *
@@ -214,7 +214,7 @@ class StudyCourse extends AbstractEntity
     {
         return $this->ectsCredits;
     }
-    
+
     /**
      * Sets the ectsCredits
      *
@@ -225,7 +225,7 @@ class StudyCourse extends AbstractEntity
     {
         $this->ectsCredits = $ectsCredits;
     }
-    
+
     /**
      * Returns the tuitionFee
      *
@@ -235,7 +235,7 @@ class StudyCourse extends AbstractEntity
     {
         return $this->tuitionFee;
     }
-    
+
     /**
      * Sets the tuitionFee
      *
@@ -246,7 +246,7 @@ class StudyCourse extends AbstractEntity
     {
         $this->tuitionFee = $tuitionFee;
     }
-    
+
     /**
      * Returns the teaser
      *
@@ -256,7 +256,7 @@ class StudyCourse extends AbstractEntity
     {
         return $this->teaser;
     }
-    
+
     /**
      * Sets the teaser
      *
@@ -267,7 +267,7 @@ class StudyCourse extends AbstractEntity
     {
         $this->teaser = $teaser;
     }
-    
+
     /**
      * Returns the description
      *
@@ -277,7 +277,7 @@ class StudyCourse extends AbstractEntity
     {
         return $this->description;
     }
-    
+
     /**
      * Sets the description
      *
@@ -288,7 +288,7 @@ class StudyCourse extends AbstractEntity
     {
         $this->description = $description;
     }
-    
+
     /**
      * Returns the universityPlace
      *
@@ -298,7 +298,7 @@ class StudyCourse extends AbstractEntity
     {
         return $this->universityPlace;
     }
-    
+
     /**
      * Sets the universityPlace
      *
@@ -309,7 +309,7 @@ class StudyCourse extends AbstractEntity
     {
         $this->universityPlace = $universityPlace;
     }
-    
+
     /**
      * __construct
      */
@@ -318,7 +318,7 @@ class StudyCourse extends AbstractEntity
         //Do not remove the next line: It would break the functionality
         $this->initStorageObjects();
     }
-    
+
     /**
      * Initializes all ObjectStorage properties
      * Do not modify this method!
@@ -347,7 +347,7 @@ class StudyCourse extends AbstractEntity
         $this->department = new Department();
         $this->faculty = new Faculty();
     }
-    
+
     /**
      * Adds a ContentElement
      *
@@ -358,7 +358,7 @@ class StudyCourse extends AbstractEntity
     {
         $this->contentElements->attach($contentElement);
     }
-    
+
     /**
      * Removes a ContentElement
      *
@@ -369,7 +369,7 @@ class StudyCourse extends AbstractEntity
     {
         $this->contentElements->detach($contentElementToRemove);
     }
-    
+
     /**
      * Returns the contentElements
      *
@@ -379,7 +379,7 @@ class StudyCourse extends AbstractEntity
     {
         return $this->contentElements;
     }
-    
+
     /**
      * Sets the contentElements
      *
@@ -390,7 +390,7 @@ class StudyCourse extends AbstractEntity
     {
         $this->contentElements = $contentElements;
     }
-    
+
     /**
      * Returns the academicDegree
      *
@@ -400,7 +400,7 @@ class StudyCourse extends AbstractEntity
     {
         return $this->academicDegree;
     }
-    
+
     /**
      * Sets the academicDegree
      *
@@ -411,7 +411,7 @@ class StudyCourse extends AbstractEntity
     {
         $this->academicDegree = $academicDegree;
     }
-    
+
     /**
      * Returns the department
      *
@@ -421,7 +421,7 @@ class StudyCourse extends AbstractEntity
     {
         return $this->department;
     }
-    
+
     /**
      * Sets the department
      *
@@ -432,7 +432,7 @@ class StudyCourse extends AbstractEntity
     {
         $this->department = $department;
     }
-    
+
     /**
      * Returns the faculty
      *
@@ -442,7 +442,7 @@ class StudyCourse extends AbstractEntity
     {
         return $this->faculty;
     }
-    
+
     /**
      * Sets the faculty
      *
@@ -453,7 +453,7 @@ class StudyCourse extends AbstractEntity
     {
         $this->faculty = $faculty;
     }
-    
+
     /**
      * Returns the typesOfStudy
      *
@@ -463,7 +463,7 @@ class StudyCourse extends AbstractEntity
     {
         return $this->typesOfStudy;
     }
-    
+
     /**
      * Sets the typeOfStudy
      *
@@ -506,7 +506,7 @@ class StudyCourse extends AbstractEntity
     {
         return $this->courseLanguages;
     }
-    
+
     /**
      * Sets the courseLanguages
      *
@@ -549,7 +549,7 @@ class StudyCourse extends AbstractEntity
     {
         return $this->admissionRequirements;
     }
-    
+
     /**
      * Sets the admissionRequirements
      *
@@ -592,7 +592,7 @@ class StudyCourse extends AbstractEntity
     {
         return $this->startsOfStudy;
     }
-    
+
     /**
      * Sets the startsOfStudy
      *

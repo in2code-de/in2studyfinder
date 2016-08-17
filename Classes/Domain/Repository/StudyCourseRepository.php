@@ -119,36 +119,8 @@ class StudyCourseRepository extends AbstractRepository
     {
         $query = $this->createQuery();
 
-        /*
-         * Workaround für Extbase Language handling.
-         *
-         * Das Problem:
-         * Übersetzte Datensätze werden über die Filterung nicht gefunden weil Extbase
-         * die Werte wie academic_degree usw. zwar im übersetzten Datensatz sucht,
-         * aber nicht findet, da sie dort nicht gepflegt werden (l10n_mode:exclude)
-         *
-         * Die Lösung:
-         * setRespectSysLanguage(FALSE) sorgt dafür, dass alle Datensätze gefunden
-         * werden, die diese Eigenschaften haben. In diesem Falle eigentlich nur
-         * die Originalsprachigen. Diese werden später von
-         * doWorkspaceAndLanguageOverlay() in die übersetzen Datensätze umgewandelt.
-         * Damit keine Originalsprachigen Datensätze angezeigt werden, wird der
-         * LanguageOverlayMode auf strict gesetzt. Dadurch verwirft
-         * doWorkspaceAndLanguageOverlay() originalsprachige Datensätze die keine
-         * Übersetzung haben.
-         *
-         * Gut zu wissen:
-         * Es ist grundsätzlich egal, welcher Wert bei dem übersetzten Datensatz
-         * eingetragen ist, wenn der Originalsprachige Datensatz den Suchwerten
-         * entspricht.
-         * Wenn der Übersetzte Datensatz den Suchwerten entspricht, der
-         * Originalsprachige aber nicht, dann wird er trotzdem gefunden.
-         * Die meisten dieser Werte sind aber nicht im Backend pflegbar und sollten
-         * immer auf 0 (null) stehen.
-         *
-         */
-        $query->getQuerySettings()->setRespectSysLanguage(false);
-        $query->getQuerySettings()->setLanguageOverlayMode('strict');
+        $query->getQuerySettings()->setRespectSysLanguage(true);
+        $query->getQuerySettings()->setLanguageOverlayMode(true);
 
         /**
          * Add the Storage Pid für Settings
@@ -181,6 +153,8 @@ class StudyCourseRepository extends AbstractRepository
         if (!empty($constraints)) {
             $query->matching($query->logicalAnd($constraints));
         }
+
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($query, __CLASS__ . ' in der Zeile ' . __LINE__);
 
         return $query->execute();
     }
