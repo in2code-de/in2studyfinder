@@ -23,14 +23,14 @@
 				filterHandling.init();
 				paginationHandling.init();
 				uiBehaviour.checkboxHandling();
-
-				if (readFilterFromUrl) {
-					readFilterFromUrl = false;
-					if (window.location.hash) {
-						var paginationPage = urlHandling.loadSelectedOptionsFromUrl();
-						filterHandling.filterChanged(paginationPage);
-					}
-				}
+				//if (readFilterFromUrl) {
+				//	readFilterFromUrl = false;
+				//	if (window.location.hash) {
+				//		console.log('URL');
+				//		var paginationPage = urlHandling.loadSelectedOptionsFromUrl();
+				//		filterHandling.filterChanged(paginationPage);
+				//	}
+				//}
 			}
 		};
 	}
