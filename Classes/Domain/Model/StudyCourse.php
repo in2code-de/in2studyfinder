@@ -164,6 +164,13 @@ class StudyCourse extends AbstractEntity
     protected $metaDescription = '';
 
     /**
+     * sysLanguageUid
+     *
+     * @var integer
+     */
+    protected $sysLanguageUid = 0;
+
+    /**
      * Returns the title
      *
      * @return string $title
@@ -182,6 +189,27 @@ class StudyCourse extends AbstractEntity
     public function setTitle($title)
     {
         $this->title = $title;
+    }
+
+    /**
+     * Returns the title
+     *
+     * @return string $sysLanguageUid
+     */
+    public function getSysLanguageUid()
+    {
+        return $this->sysLanguageUid;
+    }
+
+    /**
+     * Sets the title
+     *
+     * @param string $sysLanguageUid
+     * @return void
+     */
+    public function setSysLanguageUid($sysLanguageUid)
+    {
+        $this->sysLanguageUid = $sysLanguageUid;
     }
 
     /**
