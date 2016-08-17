@@ -28,3 +28,9 @@ $extKey = 'in2studyfinder';
         'StudyCourse' => 'detail',
     )
 );
+
+/**
+ * Hook to show PluginInformation under a tt_content element in page module of type powermail
+ */
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'][$extKey] =
+    \In2code\In2studyfinder\Hooks\PluginPreview::class;

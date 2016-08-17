@@ -102,3 +102,40 @@ foreach ($tables as $table) {
     $extKey,
     'tx_in2studyfinder_domain_model_studycourse'
 );
+
+$importExportActions = '
+		9000 = DIVIDER
+
+		9100 = ITEM
+		9100 {
+			name = exportT3d
+			label = T3imex Export
+			iconName = actions-document-export-t3d
+			callbackAction = exportT3d
+		}
+
+		9200 = ITEM
+		9200 {
+			name = importT3d
+			label = T3imex Import
+			iconName = actions-document-import-t3d
+			callbackAction = importT3d
+		}
+	';
+
+// Context menu user default configuration
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('
+		options.contextMenu.table {
+			virtual_root.items {
+				' . $importExportActions . '
+			}
+
+			pages_root.items {
+				' . $importExportActions . '
+			}
+
+			pages.items.1000 {
+				' . $importExportActions . '
+			}
+		}
+	');
