@@ -179,6 +179,7 @@ class TcaUtility
     ) {
         return [
             'exclude' => $exclude,
+            'l10n_mode' => 'exclude',
             'label' => $label,
             'config' => [
                 'type' => 'select',
@@ -207,6 +208,7 @@ class TcaUtility
         } else {
             return [
                 'exclude' => $exclude,
+                'l10n_mode' => 'exclude',
                 'label' => $label,
                 'config' => [
                     'type' => 'select',
@@ -232,6 +234,7 @@ class TcaUtility
         if (ExtensionUtility::isTypo3MajorVersionBelow(7)) {
             return [
                 'exclude' => $exclude,
+                'l10n_mode' => 'exclude',
                 'label' => $label,
                 'config' => [
                     'type' => 'select',
@@ -251,6 +254,7 @@ class TcaUtility
         } else {
             return [
                 'exclude' => $exclude,
+                'l10n_mode' => 'exclude',
                 'label' => $label,
                 'config' => [
                     'type' => 'select',

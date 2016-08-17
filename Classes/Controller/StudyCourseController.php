@@ -268,6 +268,7 @@ class StudyCourseController extends AbstractController
             $this->view->assign('searchedOptions', $searchOptions);
 
 
+
             $foundStudyCourses = $this->processSearch($searchOptions);
 
             $this->view->assign('studyCoursesLetterArray', $this->getStudyCoursesLetterArray($foundStudyCourses));

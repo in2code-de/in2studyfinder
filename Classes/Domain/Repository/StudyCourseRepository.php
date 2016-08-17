@@ -119,7 +119,7 @@ class StudyCourseRepository extends AbstractRepository
     {
         $query = $this->createQuery();
 
-        $query->getQuerySettings()->setRespectSysLanguage(true);
+        $query->getQuerySettings()->setRespectSysLanguage(false);
         $query->getQuerySettings()->setLanguageOverlayMode(true);
 
         /**
@@ -150,11 +150,11 @@ class StudyCourseRepository extends AbstractRepository
             }
         }
 
+        $constraints[] = $query->equals('sysLanguageUid', $GLOBALS['TSFE']->sys_language_uid);
+
         if (!empty($constraints)) {
             $query->matching($query->logicalAnd($constraints));
         }
-
-        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($query, __CLASS__ . ' in der Zeile ' . __LINE__);
 
         return $query->execute();
     }
