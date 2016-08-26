@@ -31,6 +31,7 @@ use In2code\Powermail\Utility\ArrayUtility;
 use In2code\Powermail\Utility\ConfigurationUtility;
 use In2code\Powermail\Utility\ObjectUtility;
 use In2code\Powermail\Utility\TemplateUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -56,7 +57,7 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
     /**
      * @var string
      */
-    protected $templatePathAndFile = 'EXT:powermail/Resources/Private/Templates/Hook/PluginPreview.html';
+    protected $templatePathAndFile = 'EXT:in2studyfinder/Resources/Private/Templates/StudyCourse/Hook/PluginPreview.html';
 
     /**
      * Preprocesses the preview rendering of a content element
@@ -76,23 +77,20 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
         array &$row
     ) {
 
-       // \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump(func_get_args(), __CLASS__ . ' in der Zeile ' . __LINE__);
-
-        if (!ConfigurationUtility::isDisablePluginInformationActive()) {
-            $this->initialize($row);
-            switch ($this->row['list_type']) {
-                case 'powermail_pi1':
-                    $drawItem = false;
-                    $headerContent = '';
-                    $itemContent = $this->getPluginInformation('Pi1');
-                    break;
-                case 'powermail_pi2':
-                    $drawItem = false;
-                    $headerContent = '';
-                    $itemContent = $this->getPluginInformation('Pi2');
-                    break;
-                default:
-            }
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump(func_get_args(), __CLASS__ . ' in der Zeile ' . __LINE__);
+        $this->initialize($row);
+        switch ($this->row['list_type']) {
+            case 'in2studyfinder_pi1':
+                $drawItem = false;
+                $headerContent = '';
+                $itemContent = $this->getPluginInformation('Pi1');
+                break;
+            case 'in2studyfinder_pi2':
+                $drawItem = false;
+                $headerContent = '';
+                $itemContent = $this->getPluginInformation('Pi2');
+                break;
+            default:
         }
     }
 
@@ -108,111 +106,20 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
             [
                 'row' => $this->row,
                 'flexFormData' => $this->flexFormData,
-                'formUid' => $this->getLocalizedFormUid($this->getFormUid(), $this->getSysLanguageUid()),
-                'receiverEmail' => $this->getReceiverEmail(),
-                'receiverEmailDevelopmentContext' => ConfigurationUtility::getDevelopmentContextEmail(),
-                'mails' => $this->getLatestMails(),
                 'pluginName' => $pluginName,
-                'enableMailPreview' => !ConfigurationUtility::isDisablePluginInformationMailPreviewActive(),
-                'form' => $this->getFormTitleByUid(
-                    ArrayUtility::getValueByPath($this->flexFormData, 'settings.flexform.main.form')
-                )
             ]
         );
+
+        switch ($pluginName) {
+            case 'Pi1':
+                $detailPageRecord = BackendUtility::getRecord('pages', $this->flexFormData['settings']['flexform']['studyCourseDetailPage']);
+                $standaloneView->assign('detailPage', $detailPageRecord);
+                break;
+            case 'Pi2':
+                break;
+        }
+
         return $standaloneView->render();
-    }
-
-    /**
-     * Get latest three emails to this form
-     *
-     * @return QueryResult
-     */
-    protected function getLatestMails()
-    {
-        /** @var MailRepository $mailRepository */
-        $mailRepository = ObjectUtility::getObjectManager()->get(MailRepository::class);
-        return $mailRepository->findLatestByForm(
-            ArrayUtility::getValueByPath($this->flexFormData, 'settings.flexform.main.form')
-        );
-    }
-
-    /**
-     * Get receiver mail
-     *
-     * @return string
-     */
-    protected function getReceiverEmail()
-    {
-        $receiver = ArrayUtility::getValueByPath($this->flexFormData, 'settings.flexform.receiver.email');
-        if ((int)ArrayUtility::getValueByPath($this->flexFormData, 'settings.flexform.receiver.type') === 1) {
-            $receiver = 'Frontenduser Group '
-                . ArrayUtility::getValueByPath($this->flexFormData, 'settings.flexform.receiver.fe_group');
-        }
-        if ((int)ArrayUtility::getValueByPath($this->flexFormData, 'settings.flexform.receiver.type') === 2) {
-            $receiver = 'Predefined "' .
-                ArrayUtility::getValueByPath($this->flexFormData, 'settings.flexform.receiver.predefinedemail') . '"';
-        }
-        return $receiver;
-    }
-
-    /**
-     * Get form title from uid
-     *
-     * @param int $uid Form uid
-     * @return string
-     */
-    protected function getFormTitleByUid($uid)
-    {
-        $uid = $this->getLocalizedFormUid($uid, $this->getSysLanguageUid());
-        $select = 'title';
-        $from = Form::TABLE_NAME;
-        $where = 'uid=' . (int)$uid;
-        $row = ObjectUtility::getDatabaseConnection()->exec_SELECTgetSingleRow($select, $from, $where);
-        return $row['title'];
-    }
-
-    /**
-     * Get form uid of a localized form
-     *
-     * @param int $uid
-     * @param int $sysLanguageUid
-     * @return int
-     */
-    protected function getLocalizedFormUid($uid, $sysLanguageUid)
-    {
-        if ($sysLanguageUid > 0) {
-            $select = 'uid';
-            $from = Form::TABLE_NAME;
-            $where = 'sys_language_uid=' . (int)$sysLanguageUid . ' and l10n_parent=' . (int)$uid;
-            $row = ObjectUtility::getDatabaseConnection()->exec_SELECTgetSingleRow($select, $from, $where);
-            if (!empty($row['uid'])) {
-                $uid = (int)$row['uid'];
-            }
-        }
-        return $uid;
-    }
-
-    /**
-     * Get form uid
-     *
-     * @return int
-     */
-    protected function getFormUid()
-    {
-        return (int)$this->flexFormData['settings']['flexform']['main']['form'];
-    }
-
-    /**
-     * Get current sys_language_uid from page content
-     *
-     * @return int
-     */
-    protected function getSysLanguageUid()
-    {
-        if (!empty($this->row['sys_language_uid'])) {
-            return (int)$this->row['sys_language_uid'];
-        }
-        return 0;
     }
 
     /**

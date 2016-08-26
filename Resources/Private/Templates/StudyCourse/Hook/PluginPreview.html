@@ -1,0 +1,61 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+
+<f:debug>{_all}</f:debug>
+
+<f:if condition="{pluginName} == 'Pi1'">
+	<f:then>
+		<f:render section="Pi1" arguments="{_all}" />
+	</f:then>
+	<f:else>
+		<f:render section="Pi2" arguments="{_all}" />
+	</f:else>
+</f:if>
+
+
+
+
+<f:comment>
+	Information for Plugin 1
+</f:comment>
+<f:section name="Pi1">
+	<p>
+		<strong>
+			<core:icon identifier="in2studyfinder-plugin-icon"/> Studiengangsfinder
+		</strong>
+		<br />
+		Listenansicht
+	</p>
+	<br />
+	<pre style="white-space:normal">
+		<strong>Detailansicht:</strong> {detailPage.title} ({detailPage.uid})
+		<br />
+		<strong>Fachbereiche:</strong> Alle
+		<br />
+		<strong>Fakultäten:</strong> Alle
+		<br />
+		<strong>Akademischer Grad:</strong> Alle
+		<br />
+		<br />
+		<strong>Record Storage Page:</strong> Other StudyCourses (13)
+	</pre>
+</f:section>
+
+
+
+
+<f:comment>
+	Information for Plugin 2
+</f:comment>
+<f:section name="Pi2">
+	<p>
+		<strong>
+			<core:icon identifier="in2studyfinder-plugin-icon"/> Studiengangsfinder
+		</strong>
+		<br />
+		Detailansicht
+	</p>
+
+	<pre style="white-space:normal">
+		<strong>Startingpoint:</strong> news (5)<br>
+	</pre>
+</f:section>
