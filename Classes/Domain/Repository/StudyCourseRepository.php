@@ -127,7 +127,11 @@ class StudyCourseRepository extends AbstractRepository
          */
         $storagePids = $query->getQuerySettings()->getStoragePageIds();
         $settings = ExtensionUtility::getExtensionConfiguration('in2studyfinder');
-        array_push($storagePids, $settings['settingsPid']);
+
+        if (!in_array((int)$settings['settingsPid'], $storagePids)) {
+            array_push($storagePids, $settings['settingsPid']);
+        }
+
         $query->getQuerySettings()->setStoragePageIds($storagePids);
 
         $mappedOptions = $this->mapOptionsToStudyCourseProperties($options);
@@ -136,21 +140,31 @@ class StudyCourseRepository extends AbstractRepository
         foreach ($mappedOptions as $name => $array) {
             if ($array[0] === 'isSet') {
                 $constraints[] = $query->logicalOr(
-                    $query->logicalNot($query->equals($name, '')),
-                    $query->greaterThan($name, 0)
+                    [
+                        $query->logicalNot($query->equals($name, '')),
+                        $query->greaterThan($name, 0)
+                    ]
                 );
             } elseif ($array[0] === 'isUnset') {
                 $constraints[] = $query->logicalOr(
-                    $query->equals($name, 0),
-                    $query->equals($name, ''),
-                    $query->equals($name, null)
+                    [
+                        $query->equals($name, 0),
+                        $query->equals($name, ''),
+                        $query->equals($name, null)
+                    ]
                 );
             } else {
                 $constraints[] = $query->in($name . '.uid', $array);
             }
         }
 
-        $constraints[] = $query->equals('sysLanguageUid', $GLOBALS['TSFE']->sys_language_uid);
+
+        $constraints[] = $query->logicalOr(
+            [
+                $query->equals('sysLanguageUid', $GLOBALS['TSFE']->sys_language_uid),
+                $query->equals('sysLanguageUid', -1)
+            ]
+        );
 
         if (!empty($constraints)) {
             $query->matching($query->logicalAnd($constraints));
