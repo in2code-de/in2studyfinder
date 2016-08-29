@@ -4,9 +4,11 @@
  * @module In2studyfinder
  */
 (function In2studyfinder() {
+
+	var readFilterFromUrl = true;
+
 	function Start() {
 		var dom = $('.in2studyfinder');
-		var readFilterFromUrl = true;
 
 		/**
 		 * initialize stuff
@@ -23,7 +25,6 @@
 				filterHandling.init();
 				paginationHandling.init();
 				uiBehaviour.checkboxHandling();
-
 				if (readFilterFromUrl) {
 					readFilterFromUrl = false;
 					if (window.location.hash) {

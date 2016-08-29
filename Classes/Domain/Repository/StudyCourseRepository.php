@@ -119,43 +119,19 @@ class StudyCourseRepository extends AbstractRepository
     {
         $query = $this->createQuery();
 
-        /*
-         * Workaround für Extbase Language handling.
-         *
-         * Das Problem:
-         * Übersetzte Datensätze werden über die Filterung nicht gefunden weil Extbase
-         * die Werte wie academic_degree usw. zwar im übersetzten Datensatz sucht,
-         * aber nicht findet, da sie dort nicht gepflegt werden (l10n_mode:exclude)
-         *
-         * Die Lösung:
-         * setRespectSysLanguage(FALSE) sorgt dafür, dass alle Datensätze gefunden
-         * werden, die diese Eigenschaften haben. In diesem Falle eigentlich nur
-         * die Originalsprachigen. Diese werden später von
-         * doWorkspaceAndLanguageOverlay() in die übersetzen Datensätze umgewandelt.
-         * Damit keine Originalsprachigen Datensätze angezeigt werden, wird der
-         * LanguageOverlayMode auf strict gesetzt. Dadurch verwirft
-         * doWorkspaceAndLanguageOverlay() originalsprachige Datensätze die keine
-         * Übersetzung haben.
-         *
-         * Gut zu wissen:
-         * Es ist grundsätzlich egal, welcher Wert bei dem übersetzten Datensatz
-         * eingetragen ist, wenn der Originalsprachige Datensatz den Suchwerten
-         * entspricht.
-         * Wenn der Übersetzte Datensatz den Suchwerten entspricht, der
-         * Originalsprachige aber nicht, dann wird er trotzdem gefunden.
-         * Die meisten dieser Werte sind aber nicht im Backend pflegbar und sollten
-         * immer auf 0 (null) stehen.
-         *
-         */
         $query->getQuerySettings()->setRespectSysLanguage(false);
-        $query->getQuerySettings()->setLanguageOverlayMode('strict');
+        $query->getQuerySettings()->setLanguageOverlayMode(true);
 
         /**
          * Add the Storage Pid für Settings
          */
         $storagePids = $query->getQuerySettings()->getStoragePageIds();
         $settings = ExtensionUtility::getExtensionConfiguration('in2studyfinder');
-        array_push($storagePids, $settings['settingsPid']);
+
+        if (!in_array((int)$settings['settingsPid'], $storagePids)) {
+            array_push($storagePids, $settings['settingsPid']);
+        }
+
         $query->getQuerySettings()->setStoragePageIds($storagePids);
 
         $mappedOptions = $this->mapOptionsToStudyCourseProperties($options);
@@ -164,19 +140,31 @@ class StudyCourseRepository extends AbstractRepository
         foreach ($mappedOptions as $name => $array) {
             if ($array[0] === 'isSet') {
                 $constraints[] = $query->logicalOr(
-                    $query->logicalNot($query->equals($name, '')),
-                    $query->greaterThan($name, 0)
+                    [
+                        $query->logicalNot($query->equals($name, '')),
+                        $query->greaterThan($name, 0)
+                    ]
                 );
             } elseif ($array[0] === 'isUnset') {
                 $constraints[] = $query->logicalOr(
-                    $query->equals($name, 0),
-                    $query->equals($name, ''),
-                    $query->equals($name, null)
+                    [
+                        $query->equals($name, 0),
+                        $query->equals($name, ''),
+                        $query->equals($name, null)
+                    ]
                 );
             } else {
                 $constraints[] = $query->in($name . '.uid', $array);
             }
         }
+
+
+        $constraints[] = $query->logicalOr(
+            [
+                $query->equals('sysLanguageUid', $GLOBALS['TSFE']->sys_language_uid),
+                $query->equals('sysLanguageUid', -1)
+            ]
+        );
 
         if (!empty($constraints)) {
             $query->matching($query->logicalAnd($constraints));
