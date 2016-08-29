@@ -15,7 +15,7 @@
 
 
 <f:comment>
-	Information for Plugin 1
+	Information for List View
 </f:comment>
 <f:section name="Pi1">
 	<p>
@@ -29,7 +29,15 @@
 	<pre style="white-space:normal">
 		<strong>Detailansicht:</strong> {detailPage.title} ({detailPage.uid})
 		<br />
-		<strong>Fachbereiche:</strong> Alle
+		<f:if condition="{flexFormData.settings.flexform.select.department}">
+			<f:then>
+				<strong>Fachbereiche:</strong> Alle
+			</f:then>
+			<f:else>
+				<strong>Fachbereich:</strong>
+			</f:else>
+		</f:if>
+
 		<br />
 		<strong>Fakultäten:</strong> Alle
 		<br />
@@ -44,7 +52,7 @@
 
 
 <f:comment>
-	Information for Plugin 2
+	Information for Detail View
 </f:comment>
 <f:section name="Pi2">
 	<p>

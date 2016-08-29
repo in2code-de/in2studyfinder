@@ -25,17 +25,12 @@ namespace In2code\In2studyfinder\Hooks;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use In2code\Powermail\Domain\Model\Form;
-use In2code\Powermail\Domain\Repository\MailRepository;
-use In2code\Powermail\Utility\ArrayUtility;
-use In2code\Powermail\Utility\ConfigurationUtility;
 use In2code\Powermail\Utility\ObjectUtility;
 use In2code\Powermail\Utility\TemplateUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Service\FlexFormService;
 
 /**
@@ -76,8 +71,6 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
         &$itemContent,
         array &$row
     ) {
-
-        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump(func_get_args(), __CLASS__ . ' in der Zeile ' . __LINE__);
         $this->initialize($row);
         switch ($this->row['list_type']) {
             case 'in2studyfinder_pi1':
@@ -113,6 +106,13 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
         switch ($pluginName) {
             case 'Pi1':
                 $detailPageRecord = BackendUtility::getRecord('pages', $this->flexFormData['settings']['flexform']['studyCourseDetailPage']);
+
+                foreach ($this->flexFormData['settings']['flexform']['select'] as $type => $data) {
+                    if ($data !== '') {
+                        $data = GeneralUtility::intExplode(',', $data);
+                        $standaloneView->assign($type.'Array', $this->getTableRecords('tx_in2studyfinder_domain_model_'.$type, $data));
+                    }
+                }
                 $standaloneView->assign('detailPage', $detailPageRecord);
                 break;
             case 'Pi2':
@@ -120,6 +120,21 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
         }
 
         return $standaloneView->render();
+    }
+
+    /**
+     * @param string $table
+     * @param array $recordUids
+     * @return array
+     */
+    protected function getTableRecords($table, $recordUids)
+    {
+        $records = [];
+        foreach ($recordUids as $recordUid) {
+            $records[] = BackendUtility::getRecord($table, $recordUid);
+        }
+
+        return $records;
     }
 
     /**
