@@ -119,11 +119,11 @@ class StudyCourseRepository extends AbstractRepository
     {
         $query = $this->createQuery();
 
-        $query->getQuerySettings()->setRespectSysLanguage(false);
         $query->getQuerySettings()->setLanguageOverlayMode(true);
+        $query->getQuerySettings()->setLanguageMode('strict');
 
         /**
-         * Add the Storage Pid für Settings
+         * Add the Storage Pid for Settings
          */
         $storagePids = $query->getQuerySettings()->getStoragePageIds();
         $settings = ExtensionUtility::getExtensionConfiguration('in2studyfinder');
@@ -157,14 +157,6 @@ class StudyCourseRepository extends AbstractRepository
                 $constraints[] = $query->in($name . '.uid', $array);
             }
         }
-
-
-        $constraints[] = $query->logicalOr(
-            [
-                $query->equals('sysLanguageUid', $GLOBALS['TSFE']->sys_language_uid),
-                $query->equals('sysLanguageUid', -1)
-            ]
-        );
 
         if (!empty($constraints)) {
             $query->matching($query->logicalAnd($constraints));
