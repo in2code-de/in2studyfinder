@@ -74,15 +74,11 @@ class StudyCourseController extends AbstractController
 
         $extendedStudyCourseClassName = 'In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository';
 
-        if (ExtensionUtility::isIn2studycoursesExtendLoaded()
-            && class_exists(
-                $extendedStudyCourseClassName
+        if (ExtensionUtility::isIn2studycoursesExtendLoaded() && class_exists($extendedStudyCourseClassName
 
             )
         ) {
-            $this->studyCourseRepository = $this->objectManager->get(
-                $extendedStudyCourseClassName
-            );
+            $this->studyCourseRepository = $this->objectManager->get($extendedStudyCourseClassName);
         }
     }
 
@@ -97,14 +93,9 @@ class StudyCourseController extends AbstractController
         foreach ($this->settings['filter']['allowedFilterTypes'] as $filterType) {
 
             if (class_exists($filterType . 'Repository')) {
-                $this->filterTypeRepositories[$filterType] = $this->objectManager->get(
-                    $filterType . 'Repository'
-                );
+                $this->filterTypeRepositories[$filterType] = $this->objectManager->get($filterType . 'Repository');
 
-                $filterTypeTitle = substr(
-                    $filterType,
-                    strripos($filterType, '\\') + 1
-                );
+                $filterTypeTitle = substr($filterType, strripos($filterType, '\\') + 1);
 
                 /** @var QuerySettingsInterface $defaultQuerySettings */
                 $defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
@@ -139,17 +130,16 @@ class StudyCourseController extends AbstractController
     protected function assignStudyCourses()
     {
         $studyCourses = $this->getStudyCourses();
+
         $studyCoursesSortedByLettersArray = $this->getStudyCoursesLetterArray($studyCourses);
 
-        $this->view->assignMultiple(
-            [
-                'filterTypes' => $this->filterTypes,
-                'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($studyCourses),
-                'studyCourseCount' => count($studyCourses),
-                'studyCourses' => $studyCourses,
-                'studyCoursesLetterArray' => $studyCoursesSortedByLettersArray
-            ]
-        );
+        $this->view->assignMultiple([
+            'filterTypes' => $this->filterTypes,
+            'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($studyCourses),
+            'studyCourseCount' => count($studyCourses),
+            'studyCourses' => $studyCourses,
+            'studyCoursesLetterArray' => $studyCoursesSortedByLettersArray
+        ]);
     }
 
     /**
@@ -158,9 +148,12 @@ class StudyCourseController extends AbstractController
     protected function getStudyCourses()
     {
         $options = null;
-        foreach ($this->settings['flexform']['select'] as $filterType => $uid) {
-            if ($uid !== '') {
-                $options[$filterType] = GeneralUtility::intExplode(',', $uid, true);
+
+        if (!empty($this->settings['flexform']['select'])) {
+            foreach ($this->settings['flexform']['select'] as $filterType => $uid) {
+                if ($uid !== '') {
+                    $options[$filterType] = GeneralUtility::intExplode(',', $uid, true);
+                }
             }
         }
 
@@ -259,7 +252,7 @@ class StudyCourseController extends AbstractController
      * @param array $searchOptions
      * @return void
      */
-    public function filterAction($searchOptions = array())
+    public function filterAction($searchOptions = [])
     {
         if (empty($searchOptions) && $this->request->getMethod() === 'GET') {
             if ($this->sessionUtility->has('searchOptions')) {
@@ -270,14 +263,13 @@ class StudyCourseController extends AbstractController
             $foundStudyCourses = $this->processSearch($searchOptions);
 
             $this->view->assignMultiple([
-                    'searchedOptions' => $searchOptions,
-                    'studyCoursesLetterArray' => $this->getStudyCoursesLetterArray($foundStudyCourses),
-                    'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($foundStudyCourses),
-                    'studyCourseCount' => count($foundStudyCourses),
-                    'filterTypes' => $this->filterTypes,
-                    'studyCourses' => $foundStudyCourses,
-                ]
-            );
+                'searchedOptions' => $searchOptions,
+                'studyCoursesLetterArray' => $this->getStudyCoursesLetterArray($foundStudyCourses),
+                'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($foundStudyCourses),
+                'studyCourseCount' => count($foundStudyCourses),
+                'filterTypes' => $this->filterTypes,
+                'studyCourses' => $foundStudyCourses,
+            ]);
             $this->sessionUtility->set('searchOptions', $searchOptions);
         } else {
             $this->assignStudyCourses();
@@ -300,13 +292,11 @@ class StudyCourseController extends AbstractController
      */
     protected function getAvailableFilterOptionsFromQueryResult($queryResult)
     {
-        $availableOptions = array();
+        $availableOptions = [];
         foreach ($queryResult as $studyCourse) {
             $properties = $studyCourse->_getProperties();
 
-            $this->getAvailableFilterOptionsFromProperties(
-                $properties, $availableOptions
-            );
+            $this->getAvailableFilterOptionsFromProperties($properties, $availableOptions);
         }
 
         return $availableOptions;
@@ -329,9 +319,8 @@ class StudyCourseController extends AbstractController
                         $this->getAvailableFilterOptionsFromProperties($property, $availableOptionArray, $currentLevel);
                     } elseif ($property instanceof AbstractDomainObject) {
 
-                        $this->getAvailableFilterOptionsFromProperties(
-                            $property->_getProperties(), $availableOptionArray, $currentLevel + 1
-                        );
+                        $this->getAvailableFilterOptionsFromProperties($property->_getProperties(),
+                            $availableOptionArray, $currentLevel + 1);
 
                         $className = ExtensionUtility::getClassName($property);
 

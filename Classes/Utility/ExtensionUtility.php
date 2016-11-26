@@ -28,10 +28,11 @@ namespace In2code\In2studyfinder\Utility;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 class ExtensionUtility
 {
@@ -44,6 +45,7 @@ class ExtensionUtility
     {
         /** @var ObjectManager $objectManager */
         $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+
         /** @var ConfigurationManagerInterface $configurationManager */
         $configurationManager = $objectManager->get(
             'TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface'
@@ -59,6 +61,7 @@ class ExtensionUtility
      * @return bool
      */
     public static function isIn2studycoursesExtendLoaded() {
+
         $isLoaded = false;
 
         if (ExtensionManagementUtility::isLoaded('in2studyfinder_extend')) {
@@ -66,6 +69,22 @@ class ExtensionUtility
         }
 
         return $isLoaded;
+    }
+
+    /**
+     * @return bool
+     */
+    public static function isLanguageFileOverrideActive()
+    {
+        $status = false;
+
+        $configuration = self::getExtensionConfiguration('in2studyfinder');
+
+        if (intval($configuration['languageOverride']) === 1) {
+            $status = true;
+        }
+
+        return $status;
     }
 
     /**
@@ -81,41 +100,6 @@ class ExtensionUtility
                 strripos($fullQualifiedClassName, "\\") + 1
             )
         );
-    }
-
-    /**
-     * Get current TYPO3 version as compareable integer
-     *
-     * @return int
-     */
-    public static function getCurrentTypo3MajorVersion()
-    {
-
-        $versionArray = VersionNumberUtility::convertVersionStringToArray(VersionNumberUtility::getCurrentTypo3Version());
-
-        return $versionArray['version_main'];
-    }
-
-    /**
-     * Is current TYPO3 newer than the version
-     *
-     * @param int $typo3Version
-     * @return bool
-     */
-    public static function isTypo3MajorVersionAbove($typo3Version)
-    {
-        return self::getCurrentTypo3MajorVersion() > $typo3Version;
-    }
-
-    /**
-     * Is current TYPO3 newer than the minium version
-     *
-     * @param int $typo3Version
-     * @return bool
-     */
-    public static function isTypo3MajorVersionBelow($typo3Version)
-    {
-        return self::getCurrentTypo3MajorVersion() < $typo3Version;
     }
 }
 

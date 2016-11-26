@@ -2,7 +2,6 @@
 namespace In2code\In2studyfinder\Utility;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
  * Class TcaUtility
@@ -203,7 +202,7 @@ class TcaUtility
         /**
          * Compatibility for Typo3 6.2 LTS
          */
-        if (ExtensionUtility::isTypo3MajorVersionBelow(7)) {
+        if (VersionUtility::isTypo3MajorVersionBelow(7)) {
             return self::getFullTcaForSelectSideBySide($label, $table, $mmTable);
         } else {
             return [
@@ -231,7 +230,7 @@ class TcaUtility
         $minItems = 0,
         $maxItems = 9999
     ) {
-        if (ExtensionUtility::isTypo3MajorVersionBelow(7)) {
+        if (VersionUtility::isTypo3MajorVersionBelow(7)) {
             return [
                 'exclude' => $exclude,
                 'l10n_mode' => 'exclude',

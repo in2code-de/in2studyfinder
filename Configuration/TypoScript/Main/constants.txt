@@ -10,17 +10,17 @@ plugin.tx_in2studyfinder {
 
 	persistence {
 		# cat=plugin.tx_in2studyfinder//a; type=string; label=Default storage PID
-		storagePid = 2
+		storagePid =
 		# cat=plugin.tx_in2studyfinder//a; type=string; label=Recursion level of the storagePid
-		recursive = 1
+		recursive =
 
 	}
 
 	settings {
 		# cat=plugin.tx_in2studyfinder//a; type=string; label=Default storage PID
-		storagePid = 2
+		storagePid =
 		# cat=plugin.tx_in2studyfinder//a; type=string; label=Settings storage PID
-		settingsPid = 3
+		settingsPid =
 
 		filter {
 			# cat=plugin.tx_in2studyfinder//a; type=string; label=Recursion level for the Filter Options
