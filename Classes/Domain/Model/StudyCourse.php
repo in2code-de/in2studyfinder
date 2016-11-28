@@ -414,7 +414,7 @@ class StudyCourse extends AbstractEntity
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\TtContent> $contentElements
      * @return void
      */
-    public function setContentElements(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $contentElements)
+    public function setContentElements(ObjectStorage $contentElements)
     {
         $this->contentElements = $contentElements;
     }
@@ -456,7 +456,7 @@ class StudyCourse extends AbstractEntity
      * @param \In2code\In2studyfinder\Domain\Model\Department $department
      * @return void
      */
-    public function setDepartment(\In2code\In2studyfinder\Domain\Model\Department $department)
+    public function setDepartment(Department $department)
     {
         $this->department = $department;
     }
@@ -477,7 +477,7 @@ class StudyCourse extends AbstractEntity
      * @param \In2code\In2studyfinder\Domain\Model\Faculty $faculty
      * @return void
      */
-    public function setFaculty(\In2code\In2studyfinder\Domain\Model\Faculty $faculty)
+    public function setFaculty(Faculty $faculty)
     {
         $this->faculty = $faculty;
     }
@@ -541,7 +541,7 @@ class StudyCourse extends AbstractEntity
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\CourseLanguage> $courseLanguages
      * @return void
      */
-    public function setCourseLanguages(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $courseLanguages)
+    public function setCourseLanguages(ObjectStorage $courseLanguages)
     {
         $this->courseLanguages = $courseLanguages;
     }
@@ -584,7 +584,7 @@ class StudyCourse extends AbstractEntity
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\AdmissionRequirement> $admissionRequirements
      * @return void
      */
-    public function setAdmissionRequirements(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $admissionRequirements)
+    public function setAdmissionRequirements(ObjectStorage $admissionRequirements)
     {
         $this->admissionRequirements = $admissionRequirements;
     }
