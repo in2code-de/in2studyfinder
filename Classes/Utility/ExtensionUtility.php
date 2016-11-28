@@ -28,10 +28,8 @@ namespace In2code\In2studyfinder\Utility;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 class ExtensionUtility
@@ -69,22 +67,6 @@ class ExtensionUtility
         }
 
         return $isLoaded;
-    }
-
-    /**
-     * @return bool
-     */
-    public static function isLanguageFileOverrideActive()
-    {
-        $status = false;
-
-        $configuration = self::getExtensionConfiguration('in2studyfinder');
-
-        if (intval($configuration['languageOverride']) === 1) {
-            $status = true;
-        }
-
-        return $status;
     }
 
     /**
