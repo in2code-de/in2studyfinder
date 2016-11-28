@@ -32,7 +32,7 @@ if (TYPO3_MODE === 'BE') {
      *
      * @todo set Icon for Typo3 6.2
      */
-    if (\In2code\In2studyfinder\Utility\ExtensionUtility::isTypo3MajorVersionAbove(6)) {
+    if (\In2code\In2studyfinder\Utility\VersionUtility::isTypo3MajorVersionAbove(6)) {
         /** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
         $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
         $iconRegistry->registerIcon(

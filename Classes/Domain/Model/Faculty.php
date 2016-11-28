@@ -26,10 +26,12 @@ namespace In2code\In2studyfinder\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
 /**
  * Faculty
  */
-class Faculty extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Faculty extends AbstractEntity
 {
 
     /**

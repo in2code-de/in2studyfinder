@@ -26,19 +26,30 @@ namespace In2code\In2studyfinder\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use In2code\In2studyfinder\Domain\Model\StudyCourse as BasicStudyCourse;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use In2code\In2studyfinderExtend\Domain\Model\StudyCourse;
+use In2code\In2studyfinderExtend\Domain\Repository\StudyCourseRepository;
+use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
  * StudyCourseController
  */
-class StudyCourseController extends AbstractController
+class StudyCourseController extends ActionController
 {
+    /**
+     * studyCourseRepository
+     *
+     * @var \In2code\In2studyfinder\Domain\Repository\AbstractRepository
+     * @inject
+     */
+    protected $studyCourseRepository = null;
 
     /**
      * @var array
@@ -72,18 +83,29 @@ class StudyCourseController extends AbstractController
 
         $this->setFilterTypesAndRepositories();
 
-        $extendedStudyCourseClassName = 'In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository';
-
-        if (ExtensionUtility::isIn2studycoursesExtendLoaded()
-            && class_exists(
-                $extendedStudyCourseClassName
-
-            )
-        ) {
-            $this->studyCourseRepository = $this->objectManager->get(
-                $extendedStudyCourseClassName
-            );
+        if (ExtensionUtility::isIn2studycoursesExtendLoaded() && class_exists(StudyCourseRepository::class)) {
+            $this->studyCourseRepository = $this->objectManager->get(StudyCourseRepository::class);
         }
+
+        $this->studyCourseRepository->setDefaultQuerySettings($this->getDefaultQuerySettings());
+    }
+
+    protected function getDefaultQuerySettings()
+    {
+        /** @var QuerySettingsInterface $defaultQuerySettings */
+        $defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
+
+        $defaultQuerySettings->setStoragePageIds(
+            [
+                $this->settings['settingsPid'],
+                $this->settings['storagePid']
+            ]
+        );
+
+        $defaultQuerySettings->setLanguageOverlayMode(true);
+        $defaultQuerySettings->setLanguageMode('strict');
+
+        return $defaultQuerySettings;
     }
 
     /**
@@ -92,26 +114,15 @@ class StudyCourseController extends AbstractController
     protected function setFilterTypesAndRepositories()
     {
 
-        $settingsStorageUid = $this->settings['settingsPid'];
-
         foreach ($this->settings['filter']['allowedFilterTypes'] as $filterType) {
+            $repository = ClassNamingUtility::translateModelNameToRepositoryName($filterType);
 
-            if (class_exists($filterType . 'Repository')) {
-                $this->filterTypeRepositories[$filterType] = $this->objectManager->get(
-                    $filterType . 'Repository'
-                );
+            if (class_exists($repository)) {
+                $this->filterTypeRepositories[$filterType] = $this->objectManager->get($repository);
 
-                $filterTypeTitle = substr(
-                    $filterType,
-                    strripos($filterType, '\\') + 1
-                );
+                $filterTypeTitle = substr($filterType, strripos($filterType, '\\') + 1);
 
-                /** @var QuerySettingsInterface $defaultQuerySettings */
-                $defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
-
-                $defaultQuerySettings->setStoragePageIds([$settingsStorageUid]);
-
-                $this->filterTypeRepositories[$filterType]->setDefaultQuerySettings($defaultQuerySettings);
+                $this->filterTypeRepositories[$filterType]->setDefaultQuerySettings($this->getDefaultQuerySettings());
 
                 $this->filterTypes[lcfirst($filterTypeTitle)] = $this->filterTypeRepositories[$filterType]->findAll();
             } else {
@@ -139,17 +150,16 @@ class StudyCourseController extends AbstractController
     protected function assignStudyCourses()
     {
         $studyCourses = $this->getStudyCourses();
+
         $studyCoursesSortedByLettersArray = $this->getStudyCoursesLetterArray($studyCourses);
 
-        $this->view->assignMultiple(
-            [
-                'filterTypes' => $this->filterTypes,
-                'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($studyCourses),
-                'studyCourseCount' => count($studyCourses),
-                'studyCourses' => $studyCourses,
-                'studyCoursesLetterArray' => $studyCoursesSortedByLettersArray
-            ]
-        );
+        $this->view->assignMultiple([
+            'filterTypes' => $this->filterTypes,
+            'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($studyCourses),
+            'studyCourseCount' => count($studyCourses),
+            'studyCourses' => $studyCourses,
+            'studyCoursesLetterArray' => $studyCoursesSortedByLettersArray
+        ]);
     }
 
     /**
@@ -157,20 +167,34 @@ class StudyCourseController extends AbstractController
      */
     protected function getStudyCourses()
     {
-        $options = null;
-        foreach ($this->settings['flexform']['select'] as $filterType => $uid) {
-            if ($uid !== '') {
-                $options[$filterType] = GeneralUtility::intExplode(',', $uid, true);
-            }
-        }
 
-        if ($options !== null) {
-            $studyCourses = $this->processSearch($options);
+        $selectedOptions = $this->getSelectedFlexformOptions();
+
+        if (!empty($selectedOptions)) {
+            $studyCourses = $this->processSearch($selectedOptions);
         } else {
             $studyCourses = $this->studyCourseRepository->findAll();
         }
 
         return $studyCourses;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getSelectedFlexformOptions()
+    {
+        $selectedOptions = [];
+
+        if (!empty($this->settings['flexform']['select'])) {
+            foreach ($this->settings['flexform']['select'] as $filterType => $uid) {
+                if ($uid !== '') {
+                    $selectedOptions[$filterType] = GeneralUtility::intExplode(',', $uid, true);
+                }
+            }
+        }
+
+        return $selectedOptions;
     }
 
     /**
@@ -259,7 +283,7 @@ class StudyCourseController extends AbstractController
      * @param array $searchOptions
      * @return void
      */
-    public function filterAction($searchOptions = array())
+    public function filterAction($searchOptions = [])
     {
         if (empty($searchOptions) && $this->request->getMethod() === 'GET') {
             if ($this->sessionUtility->has('searchOptions')) {
@@ -270,14 +294,13 @@ class StudyCourseController extends AbstractController
             $foundStudyCourses = $this->processSearch($searchOptions);
 
             $this->view->assignMultiple([
-                    'searchedOptions' => $searchOptions,
-                    'studyCoursesLetterArray' => $this->getStudyCoursesLetterArray($foundStudyCourses),
-                    'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($foundStudyCourses),
-                    'studyCourseCount' => count($foundStudyCourses),
-                    'filterTypes' => $this->filterTypes,
-                    'studyCourses' => $foundStudyCourses,
-                ]
-            );
+                'searchedOptions' => $searchOptions,
+                'studyCoursesLetterArray' => $this->getStudyCoursesLetterArray($foundStudyCourses),
+                'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($foundStudyCourses),
+                'studyCourseCount' => count($foundStudyCourses),
+                'filterTypes' => $this->filterTypes,
+                'studyCourses' => $foundStudyCourses,
+            ]);
             $this->sessionUtility->set('searchOptions', $searchOptions);
         } else {
             $this->assignStudyCourses();
@@ -300,13 +323,11 @@ class StudyCourseController extends AbstractController
      */
     protected function getAvailableFilterOptionsFromQueryResult($queryResult)
     {
-        $availableOptions = array();
+        $availableOptions = [];
         foreach ($queryResult as $studyCourse) {
             $properties = $studyCourse->_getProperties();
 
-            $this->getAvailableFilterOptionsFromProperties(
-                $properties, $availableOptions
-            );
+            $this->getAvailableFilterOptionsFromProperties($properties, $availableOptions);
         }
 
         return $availableOptions;
@@ -329,9 +350,8 @@ class StudyCourseController extends AbstractController
                         $this->getAvailableFilterOptionsFromProperties($property, $availableOptionArray, $currentLevel);
                     } elseif ($property instanceof AbstractDomainObject) {
 
-                        $this->getAvailableFilterOptionsFromProperties(
-                            $property->_getProperties(), $availableOptionArray, $currentLevel + 1
-                        );
+                        $this->getAvailableFilterOptionsFromProperties($property->_getProperties(),
+                            $availableOptionArray, $currentLevel + 1);
 
                         $className = ExtensionUtility::getClassName($property);
 

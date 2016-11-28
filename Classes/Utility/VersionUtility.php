@@ -1,11 +1,12 @@
 <?php
-namespace In2code\In2studyfinder\Domain\Model;
+
+namespace In2code\In2studyfinder\Utility;
 
 /***************************************************************
  *
  *  Copyright notice
  *
- *  (c) 2016 Sebastian Stein <sebastian.stein@in2code.de>, In2code GmbH
+ *  (c) 2016 Sebastian Stein <sebastian.stein@in2code.de>, In2code.de
  *
  *  All rights reserved
  *
@@ -26,51 +27,45 @@ namespace In2code\In2studyfinder\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
-/**
- * AdmissionRequirement
- */
-class AdmissionRequirement extends AbstractEntity
+
+class VersionUtility
 {
-
     /**
-     * title
+     * Get current TYPO3 version as compareable integer
      *
-     * @var string
-     * @validate NotEmpty
+     * @return int
      */
-    protected $title = '';
-    
-    /**
-     * Returns the title
-     *
-     * @return string $title
-     */
-    public function getTitle()
+    public static function getCurrentTypo3MajorVersion()
     {
-        return $this->title;
+
+        $versionArray = VersionNumberUtility::convertVersionStringToArray(VersionNumberUtility::getCurrentTypo3Version());
+
+        return $versionArray['version_main'];
     }
 
     /**
-     * Sets the title
+     * Is current TYPO3 newer than the version
      *
-     * @param string $title
-     * @return void
+     * @param int $typo3Version
+     * @return bool
      */
-    public function setTitle($title)
+    public static function isTypo3MajorVersionAbove($typo3Version)
     {
-        $this->title = $title;
+        return self::getCurrentTypo3MajorVersion() > $typo3Version;
     }
 
     /**
-     * Returns the option Field
+     * Is current TYPO3 newer than the minium version
      *
-     * @return string title
+     * @param int $typo3Version
+     * @return bool
      */
-    public function getOptionField()
+    public static function isTypo3MajorVersionBelow($typo3Version)
     {
-        return $this->getTitle();
+        return self::getCurrentTypo3MajorVersion() < $typo3Version;
     }
-
 }
+
+?>
