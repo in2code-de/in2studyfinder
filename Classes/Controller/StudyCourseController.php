@@ -26,10 +26,8 @@ namespace In2code\In2studyfinder\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use In2code\In2studyfinder\Domain\Model\StudyCourse as BasicStudyCourse;
+use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
-use In2code\In2studyfinderExtend\Domain\Model\StudyCourse;
-use In2code\In2studyfinderExtend\Domain\Repository\StudyCourseRepository;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
@@ -37,6 +35,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 
 /**
  * StudyCourseController
