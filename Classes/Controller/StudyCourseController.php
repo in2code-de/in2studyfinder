@@ -35,7 +35,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 
 /**
  * StudyCourseController
@@ -45,7 +44,7 @@ class StudyCourseController extends ActionController
     /**
      * studyCourseRepository
      *
-     * @var \In2code\In2studyfinder\Domain\Repository\AbstractRepository
+     * @var \In2code\In2studyfinder\Domain\Repository\StudyCourseRepository
      * @inject
      */
     protected $studyCourseRepository = null;
@@ -81,10 +80,6 @@ class StudyCourseController extends ActionController
         }
 
         $this->setFilterTypesAndRepositories();
-
-        if (ExtensionUtility::isIn2studycoursesExtendLoaded() && class_exists(StudyCourseRepository::class)) {
-            $this->studyCourseRepository = $this->objectManager->get(StudyCourseRepository::class);
-        }
 
         $this->studyCourseRepository->setDefaultQuerySettings($this->getDefaultQuerySettings());
     }
@@ -127,8 +122,6 @@ class StudyCourseController extends ActionController
             } else {
                 $this->filterTypes[lcfirst($filterType)] = ['isSet', 'isUnset'];
             }
-
-
         }
     }
 
@@ -140,7 +133,6 @@ class StudyCourseController extends ActionController
     public function listAction()
     {
         $this->assignStudyCourses();
-
     }
 
     /**

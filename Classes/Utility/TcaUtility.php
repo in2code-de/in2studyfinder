@@ -2,6 +2,7 @@
 namespace In2code\In2studyfinder\Utility;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class TcaUtility
@@ -34,7 +35,8 @@ class TcaUtility
     }
 
     /**
-     * @param $table
+     * @param string $table
+     *
      * @return array
      */
     public static function getFullTcaForL10nParent($table)
@@ -50,8 +52,7 @@ class TcaUtility
                     ['', 0],
                 ],
                 'foreign_table' => $table,
-                'foreign_table_where' => 'AND ' . $table . '.pid=###CURRENT_PID### AND ' . $table
-                    . '.sys_language_uid IN (-1,0)',
+                'foreign_table_where' => 'AND ' . $table . '.pid=###CURRENT_PID### AND ' . $table . '.sys_language_uid IN (-1,0)',
             ],
         ];
     }
@@ -106,17 +107,17 @@ class TcaUtility
             'exclude' => 1,
             'l10n_mode' => 'mergeIfNotBlank',
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 13,
                 'max' => 20,
                 'eval' => 'datetime',
                 'checkbox' => 0,
                 'default' => 0,
-                'range' => array(
+                'range' => [
                     'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y')),
-                ),
-            ),
+                ],
+            ],
         ];
     }
 
@@ -129,22 +130,23 @@ class TcaUtility
             'exclude' => 1,
             'l10n_mode' => 'mergeIfNotBlank',
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 13,
                 'max' => 20,
                 'eval' => 'datetime',
                 'checkbox' => 0,
                 'default' => 0,
-                'range' => array(
+                'range' => [
                     'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y')),
-                ),
-            ),
+                ],
+            ],
         ];
     }
 
     /**
      * @param string $table
+     *
      * @return array
      */
     public static function getPleaseChooseOption($table = '')
@@ -152,8 +154,7 @@ class TcaUtility
         $icon = '';
 
         if ($table !== '') {
-            $icon = ExtensionManagementUtility::extRelPath('in2studyfinder') .
-                    'Resources/Public/Icons/' . $table . '.png';
+            $icon = ExtensionManagementUtility::extRelPath('in2studyfinder') . 'Resources/Public/Icons/' . $table . '.png';
         }
 
         return [
@@ -168,6 +169,7 @@ class TcaUtility
      * @param string $table
      * @param int $minItems
      * @param int $exclude
+     *
      * @return array
      */
     public static function getFullTcaForSingleSelect(
@@ -191,6 +193,16 @@ class TcaUtility
         ];
     }
 
+    /**
+     * @param $label
+     * @param $table
+     * @param $mmTable
+     * @param int $exclude
+     * @param int $minItems
+     * @param int $maxItems
+     *
+     * @return array
+     */
     public static function getFullTcaForSelectCheckBox(
         $label,
         $table,
@@ -222,6 +234,16 @@ class TcaUtility
         }
     }
 
+    /**
+     * @param $label
+     * @param $table
+     * @param $mmTable
+     * @param int $exclude
+     * @param int $minItems
+     * @param int $maxItems
+     *
+     * @return array
+     */
     public static function getFullTcaForSelectSideBySide(
         $label,
         $table,
@@ -274,7 +296,7 @@ class TcaUtility
     }
 
     /**
-     * Gets the Suggest Wizard
+     * returns the TCA for an suggest wizard
      *
      * @return array
      */
@@ -288,14 +310,56 @@ class TcaUtility
     }
 
     /**
-     * @param $table
-     * @param $extbaseTypeValue
+     * returns the TCA for an link wizard
+     *
+     * @param string $blindLinkOptions
+     * @param string $allowedExtensions
+     * @param string $blindLinkFields
+     *
+     * @return array
+     */
+    public static function getLinkWizard(
+        $blindLinkOptions = '',
+        $allowedExtensions = '*',
+        $blindLinkFields = ''
+    ) {
+        $linkWizard = [
+            'type' => 'popup',
+            'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_link_formlabel',
+            'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
+            'params' => [
+                'blindLinkOptions' => $blindLinkOptions,
+                'allowedExtensions' => $allowedExtensions,
+                'blindLinkFields' => $blindLinkFields
+            ]
+        ];
+
+        if (VersionUtility::isTypo3MajorVersionBelow(7)) {
+            $linkWizard['icon'] = 'link_popup.gif';
+            $linkWizard['script'] = 'browse_links.php?mode=wizard&act=url';
+        } else {
+            $linkWizard['icon'] = 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif';
+            $linkWizard['module'] = [
+                'name' => 'wizard_link',
+            ];
+        }
+
+        return $linkWizard;
+    }
+
+    /**
+     * @param string $table
+     * @param string $extbaseTypeValue
      * @param string $insertAfter
+     * @param int $readOnly
+     *
+     * @return void
      */
     public static function setExtbaseType(
         $table,
         $extbaseTypeValue,
-        $insertAfter = 'title'
+        $insertAfter = 'title',
+        $readOnly = 1
     ) {
         if (!isset($GLOBALS['TCA'][$table]['ctrl']['type'])) {
             $GLOBALS['TCA'][$table]['ctrl']['type'] = 'tx_extbase_type';
@@ -307,29 +371,24 @@ class TcaUtility
                     'type' => 'select',
                     'renderType' => 'selectSingle',
                     'items' => [
-                        ['LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:extendedStudycourse', $extbaseTypeValue],
+                        [
+                            'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:extendedStudycourse',
+                            $extbaseTypeValue
+                        ],
                         ['LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:defaultStudycourse', '']
                     ],
                     'default' => $extbaseTypeValue,
-                    'readOnly' =>1,
+                    'readOnly' => $readOnly,
                     'size' => 1,
                     'maxitems' => 1,
                 ],
             ];
 
-            ExtensionManagementUtility::addTCAcolumns(
-                $table,
-                $extbaseType,
-                1
-            );
+            ExtensionManagementUtility::addTCAcolumns($table, $extbaseType, 1);
         }
 
-        ExtensionManagementUtility::addToAllTCAtypes(
-            $table,
-            $GLOBALS['TCA'][$table]['ctrl']['type'],
-            '',
-            'after:' . $insertAfter
-        );
+        ExtensionManagementUtility::addToAllTCAtypes($table, $GLOBALS['TCA'][$table]['ctrl']['type'], '',
+            'after:' . $insertAfter);
     }
 
     /**
@@ -337,6 +396,8 @@ class TcaUtility
      * @param $extbaseType
      * @param $field
      * @param $insertAfter
+     *
+     * @return void
      */
     public static function addFieldToShowItem(
         $table,
@@ -361,42 +422,42 @@ class TcaUtility
         $GLOBALS['TCA'][$table]['types'][$extbaseType]['showitem'] = implode(',', $fieldArray);
     }
 
-    /**
-     * @param $table
-     * @param $palette
-     * @param $field
-     * @param string $insertAfter
-     * @param bool|false $addLineBreakAfter
-     * @param bool|false $addLineBreakBefore
-     */
-    public static function addFieldToPalettes(
+    public static function addFieldsToPalette(
         $table,
         $palette,
-        $field,
+        $fields,
         $insertAfter = 'last',
         $addLineBreakBefore = false,
         $addLineBreakAfter = false
     ) {
         $newShowItem = $GLOBALS['TCA'][$table]['palettes'][$palette]['showitem'];
         $fieldArray = explode(',', $newShowItem);
+        $i = 0;
+        $insertFieldArray = [];
 
-        if ($addLineBreakBefore) {
-            $insertArray[0] = '--linebreak--';
-        }
+        foreach ($fields as $field) {
+            $preLineBreak = '';
+            $afterLineBreak = '';
 
-        $insertArray[1] = $field;
+            if ($addLineBreakBefore) {
+                $preLineBreak = '--linebreak--,';
+            }
+            if ($addLineBreakAfter) {
+                $afterLineBreak = ',--linebreak--';
+            }
 
-        if ($addLineBreakAfter) {
-            $insertArray[2] = '--linebreak--';
+            $insertFieldArray[$i] = $preLineBreak . $field . $afterLineBreak;
+
+            $i++;
         }
 
         array_walk($fieldArray, [self::class, 'trimValue']);
 
         if (in_array($insertAfter, $fieldArray)) {
             $arrayKey = array_search($insertAfter, $fieldArray) + 1;
-            array_splice($fieldArray, $arrayKey, 0, $insertArray);
+            array_splice($fieldArray, $arrayKey, 0, $insertFieldArray);
         } else {
-            foreach ($insertArray as $value) {
+            foreach ($insertFieldArray as $value) {
                 array_push($fieldArray, $value);
             }
 
@@ -408,12 +469,62 @@ class TcaUtility
 
     /**
      * @param $table
-     * @param $localLangPath
-     * @param $localLangId
-     * @param $fields
-     * @param $insertAfter
+     * @param $palette
+     * @param $field
+     * @param string $insertAfter
+     * @param bool|false $addLineBreakAfter
+     * @param bool|false $addLineBreakBefore
+     *
+     * @deprecated since 1.2, will be removed in version 2.0
+     *
+     * @return void
+     */
+    public static function addFieldToPalettes(
+        $table,
+        $palette,
+        $field,
+        $insertAfter = 'last',
+        $addLineBreakBefore = false,
+        $addLineBreakAfter = false
+    ) {
+        self::addFieldsToPalette($table,$palette,[$field],$insertAfter,$addLineBreakBefore,$addLineBreakAfter);
+    }
+
+    /**
+     * Use addFieldsToNewDiv instead
+     *
+     * @param string $table
+     * @param string $localLangPath
+     * @param string $localLangId
+     * @param array $fields
+     * @param string $insertAfter
+     *
+     * @deprecated since 1.2, will be removed in version 2.0
+     *
+     * @return void
      */
     public static function addFieldsInNewDiv(
+        $table,
+        $localLangPath,
+        $localLangId,
+        $fields,
+        $insertAfter
+    ) {
+        self::addFieldsToNewDivForAllTCAtypes($table, $localLangPath, $localLangId, $fields, $insertAfter);
+    }
+
+    /**
+     * Adds a new tab to the tca
+     *
+     * @param string $table
+     * @param string $localLangPath
+     * @param string $localLangId
+     * @param array $fields
+     * @param string $insertAfter
+     *
+     * @return void
+     */
+    public static function addFieldsToNewDivForAllTCAtypes(
         $table,
         $localLangPath,
         $localLangId,
@@ -428,51 +539,126 @@ class TcaUtility
     }
 
     /**
-     * @param $table
-     * @param $palette
-     * @param $field
+     * Adds fields to an existing tca tab for all TCA types
+     *
+     * @param string $table
+     * @param string $tcaType the TCA 'type'
+     * @param string $ll the language File
+     * @param string $div
+     * @param array $fields
+     *
+     * @return void
+     */
+    public static function addFieldsToDivForTCAtype(
+        $table,
+        $tcaType,
+        $ll,
+        $div,
+        $fields
+    ) {
+
+    }
+
+    public static function removeFieldsFromTCApalette(
+        $table,
+        $palette,
+        $fields
+    ) {
+        self::removeFieldsFromTCA($table, 'palettes', $palette, $fields);
+    }
+
+    /**
+     * @param string $table
+     * @param string $palette
+     * @param string $field
+     *
+     * @deprecated since 1.2, will be removed in version 2.0
+     *
+     * @return void
      */
     public static function removeFieldFromPaletteShowItem(
         $table,
         $palette,
         $field
     ) {
-        $showItemArray = explode(',', $GLOBALS['TCA'][$table]['palettes'][$palette]['showitem']);
-
-        if (in_array($field, $showItemArray)) {
-            unset(
-                $showItemArray[array_search($field, $showItemArray)]
-            );
-        }
-
-        $GLOBALS['TCA'][$table]['palettes'][$palette]['showitem'] = implode(',', $showItemArray);
+        self::removeFieldsFromTCApalette($table, $palette, [$field]);
     }
 
     /**
-     * @param $table
-     * @param $type
-     * @param $field
+     * @param string $table
+     * @param string $tcaType
+     * @param array $fields
+     *
+     * @return void
+     */
+    public static function removeFieldsFromTCAtype(
+        $table,
+        $tcaType,
+        $fields
+    ) {
+        self::removeFieldsFromTCA($table, 'types', $tcaType, $fields);
+    }
+
+    /**
+     * @param string $table
+     * @param string $type
+     * @param string $field
+     *
+     * @deprecated since 1.2, will be removed in version 2.0
+     *
+     * @return void
      */
     public static function removeFieldFromShowItem(
         $table,
         $type,
         $field
     ) {
-        $showItemArray = explode(',', $GLOBALS['TCA'][$table]['types'][$type]['showitem']);
+        self::removeFieldsFromTCAtype($table, $type, [$field]);
+    }
 
-        if (in_array($field, $showItemArray)) {
-            unset(
-                $showItemArray[array_search($field, $showItemArray)]
-            );
+    /**
+     * removes fields from the TCA
+     *
+     * @param string $table
+     * @param string $section 'types' or 'palettes'
+     * @param string $sectionName
+     * @param array $fields
+     *
+     * @return bool
+     */
+    private static function removeFieldsFromTCA(
+        $table,
+        $section,
+        $sectionName,
+        $fields
+    ) {
+        $status = true;
+
+        if ($section !== 'types' && $section !== 'palettes') {
+            $status = false;
         }
 
-        $GLOBALS['TCA'][$table]['types'][$type]['showitem'] = implode(',', $showItemArray);
+        if ($status) {
+            $showItemArray = explode(',', $GLOBALS['TCA'][$table][$section][$sectionName]['showitem']);
+            
+            array_walk($showItemArray, [self::class, 'trimValue']);
+
+            foreach ($fields as $field) {
+                if (in_array($field, $showItemArray)) {
+                    unset($showItemArray[array_search($field, $showItemArray)]);
+                }
+            }
+
+            $GLOBALS['TCA'][$table][$section][$sectionName]['showitem'] = implode(',', $showItemArray);
+        }
+
+        return $status;
     }
 
     /**
      * @param string $value
      */
-    public static function trimValue(&$value)
+    private static function trimValue(&$value)
     {
         $value = trim($value);
     }
