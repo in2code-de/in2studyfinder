@@ -32,7 +32,7 @@ return [
         'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, degree, graduation',
     ],
     'types' => [
-        '1' => [
+        '0' => [
             'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, degree, graduation, ' .
             '--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'
         ],

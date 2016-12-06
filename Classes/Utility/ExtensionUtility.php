@@ -41,24 +41,26 @@ class ExtensionUtility
      */
     public static function getExtensionConfiguration($extKey)
     {
-        /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-
         /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = $objectManager->get(
-            'TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface'
-        );
+        $configurationManager = self::getObjectManager()->get(ConfigurationManagerInterface::class);
 
-        return $configurationManager->getConfiguration(
-            ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
-            ucfirst($extKey)
-        );
+        return $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
+            ucfirst($extKey));
+    }
+
+    /**
+     * @return ObjectManager
+     */
+    public static function getObjectManager()
+    {
+        return GeneralUtility::makeInstance(ObjectManager::class);
     }
 
     /**
      * @return bool
      */
-    public static function isIn2studycoursesExtendLoaded() {
+    public static function isIn2studycoursesExtendLoaded()
+    {
 
         $isLoaded = false;
 
@@ -76,12 +78,7 @@ class ExtensionUtility
     public static function getClassName($object)
     {
         $fullQualifiedClassName = get_class($object);
-        return lcfirst(
-            substr(
-                $fullQualifiedClassName,
-                strripos($fullQualifiedClassName, "\\") + 1
-            )
-        );
+        return lcfirst(substr($fullQualifiedClassName, strripos($fullQualifiedClassName, "\\") + 1));
     }
 }
 

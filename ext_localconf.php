@@ -1,5 +1,7 @@
 <?php
 
+use In2code\In2studyfinder\Evaluation\UniqueDefaultPreset;
+
 if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
@@ -20,7 +22,8 @@ $extKey = 'in2studyfinder';
         'StudyCourse' => 'detail',
     ]);
 
-
+$TYPO3_CONF_VARS['SC_OPTIONS']['tce']['formevals'][UniqueDefaultPreset::class] =
+    'EXT:in2studyfinder/Classes/Evaluation/UniqueDefaultPreset.php';
 
 /*
 Adds the Language Files from in2studyfinder_extend

@@ -22,6 +22,7 @@ return [
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
+        'requestUpdate' => 'different_preset',
         'delete' => 'deleted',
         'enablecolumns' => [
             'disabled' => 'hidden',
@@ -37,16 +38,17 @@ return [
         'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, ' .
             'standard_period_of_study, ects_credits, teaser, description, tuition_fee, university_place, ' .
             'content_elements, academic_degree, department, faculty, types_of_study, course_languages, ' .
-            'admission_requirements, starts_of_study, meta_pagetitles, meta_keywordss, meta_description',
+            'admission_requirements, starts_of_study, meta_pagetitles, meta_keywordss, meta_description,different_preset,global_data_preset',
     ],
     'types' => [
         '0' => [
-            'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title,  ' .
+            'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, ' .
                 '--palette--;' . $ll . 'keyData;keyData,' .
                 'teaser;;;richtext:rte_transform[mode=ts_links], description;;;richtext:rte_transform[mode=ts_links], '
                 . 'content_elements, ' .
-                '--div--;' . $ll . 'metadata, --palette--;' . $ll . 'metadata;metadata,
-                --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'
+                '--div--;' . $ll . 'metadata, --palette--;' . $ll . 'metadata;metadata, ' .
+                '--div--;' . $ll . 'globalPreset, --palette--;' . $ll . 'globalPreset;globalPreset, ' .
+                '--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime,'
         ],
     ],
     'palettes' => [
@@ -54,11 +56,17 @@ return [
             'showitem' => 'academic_degree, --linebreak--, course_languages, --linebreak--, types_of_study,' .
                 ' --linebreak--, admission_requirements, --linebreak--,  starts_of_study, --linebreak--,' .
                 ' ects_credits, --linebreak--, tuition_fee, standard_period_of_study, --linebreak--, ' .
-                'university_place, faculty, --linebreak--, department'
+                'university_place, faculty, --linebreak--, department',
+            'canNotCollapse' => 1,
         ],
         'metadata' => [
-            'showitem' => 'meta_pagetitle, --linebreak--, meta_keywords, --linebreak--, meta_description'
+            'showitem' => 'meta_pagetitle, --linebreak--, meta_keywords, --linebreak--, meta_description',
+            'canNotCollapse' => 1,
         ],
+        'globalPreset' => [
+            'showitem' => 'different_preset, --linebreak--, global_data_preset',
+            'canNotCollapse' => 1,
+        ]
     ],
     'columns' => [
 
@@ -178,11 +186,7 @@ return [
                 'MM' => 'tx_in2studyfinder_studycourse_ttcontent_mm',
                 'maxitems' => 9999,
                 'size' => 10,
-                'wizards' => [
-                    'suggest' => [
-                        'type' => 'suggest',
-                    ],
-                ],
+                'wizards' => TcaUtility::getSuggestWizard(),
             ],
         ],
         'academic_degree' => TcaUtility::getFullTcaForSingleSelect(
@@ -257,6 +261,29 @@ return [
                 'eval' => 'trim',
                 'max' => 750,
             ],
+        ],
+        'different_preset' => [
+            'exclude' => 1,
+            'label' => $ll . 'differentPreset',
+            'config' => [
+                'type' => 'check',
+                'default' => 0,
+            ],
+        ],
+        'global_data_preset' => [
+            'exclude' => 1,
+            'l10n_mode' => 'exclude',
+            'label' => $ll . 'globalDataPreset',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'foreign_table' => 'tx_in2studyfinder_domain_model_globaldata',
+                'foreign_table_where' => 'AND sys_language_uid in (-1, 0)',
+                'items' => [TcaUtility::getPleaseChooseOption('tx_in2studyfinder_domain_model_globaldata')],
+                'minitems' => 1,
+                'maxitems' => 1,
+            ],
+            'displayCond' => 'FIELD:different_preset:=:1',
         ],
     ],
 ];

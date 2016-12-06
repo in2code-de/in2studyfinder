@@ -265,11 +265,7 @@ class TcaUtility
                     'autoSizeMax' => 30,
                     'maxitems' => 9999,
                     'multiple' => 0,
-                    'wizards' => [
-                        'suggest' => [
-                            'type' => 'suggest',
-                        ],
-                    ],
+                    'wizards' => self::getSuggestWizard(),
                 ],
             ];
         } else {
@@ -285,11 +281,7 @@ class TcaUtility
                     'foreign_table_where' => 'AND sys_language_uid in (-1, 0)',
                     'minitems' => $minItems,
                     'maxitems' => $maxItems,
-                    'wizards' => [
-                        'suggest' => [
-                            'type' => 'suggest',
-                        ],
-                    ],
+                    'wizards' => self::getSuggestWizard(),
                 ],
             ];
         }

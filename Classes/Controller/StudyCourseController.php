@@ -28,6 +28,9 @@ namespace In2code\In2studyfinder\Controller;
 
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
+use In2code\In2studyfinder\Utility\GlobalDataUtility;
+use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
@@ -80,26 +83,6 @@ class StudyCourseController extends ActionController
         }
 
         $this->setFilterTypesAndRepositories();
-
-        $this->studyCourseRepository->setDefaultQuerySettings($this->getDefaultQuerySettings());
-    }
-
-    protected function getDefaultQuerySettings()
-    {
-        /** @var QuerySettingsInterface $defaultQuerySettings */
-        $defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
-
-        $defaultQuerySettings->setStoragePageIds(
-            [
-                $this->settings['settingsPid'],
-                $this->settings['storagePid']
-            ]
-        );
-
-        $defaultQuerySettings->setLanguageOverlayMode(true);
-        $defaultQuerySettings->setLanguageMode('strict');
-
-        return $defaultQuerySettings;
     }
 
     /**
@@ -107,7 +90,6 @@ class StudyCourseController extends ActionController
      */
     protected function setFilterTypesAndRepositories()
     {
-
         foreach ($this->settings['filter']['allowedFilterTypes'] as $filterType) {
             $repository = ClassNamingUtility::translateModelNameToRepositoryName($filterType);
 
@@ -115,8 +97,6 @@ class StudyCourseController extends ActionController
                 $this->filterTypeRepositories[$filterType] = $this->objectManager->get($repository);
 
                 $filterTypeTitle = substr($filterType, strripos($filterType, '\\') + 1);
-
-                $this->filterTypeRepositories[$filterType]->setDefaultQuerySettings($this->getDefaultQuerySettings());
 
                 $this->filterTypes[lcfirst($filterTypeTitle)] = $this->filterTypeRepositories[$filterType]->findAll();
             } else {

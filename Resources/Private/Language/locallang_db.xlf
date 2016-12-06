@@ -10,6 +10,12 @@
 			<trans-unit id="title">
 				<source>Title</source>
 			</trans-unit>
+			<trans-unit id="globalData">
+				<source>Global Data</source>
+			</trans-unit>
+			<trans-unit id="globalPreset">
+				<source>Global Fields Settings</source>
+			</trans-unit>
 			<trans-unit id="metaPageTitle">
 				<source>Page Title Tag</source>
 			</trans-unit>
@@ -147,11 +153,12 @@
 			</trans-unit>
 			<trans-unit id="wizardItemTitle">
 				<source>Studyfinder</source>
-				<target>Studiengangsfinder</target>
 			</trans-unit>
 			<trans-unit id="wizardItemDescription">
 				<source>Plugin for Studycourses</source>
-				<target>Plugin zum strukturierten erfassen und verwalten von Studiengängen</target>
+			</trans-unit>
+			<trans-unit id="defaultPreset">
+				<source>default preset for global fields</source>
 			</trans-unit>
 		</body>
 	</file>
