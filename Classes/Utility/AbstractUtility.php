@@ -6,7 +6,7 @@ namespace In2code\In2studyfinder\Utility;
  *
  *  Copyright notice
  *
- *  (c) 2016 Sebastian Stein <sebastian.stein@in2code.de>, In2code.de
+ *  (c) 2015 Sebastian Stein <sebastian.stein@in2code.de>, In2code.de
  *
  *  All rights reserved
  *
@@ -27,44 +27,37 @@ namespace In2code\In2studyfinder\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 
-
-class VersionUtility extends AbstractUtility
+class AbstractUtility
 {
+
     /**
-     * Get current TYPO3 version as compareable integer
-     *
-     * @return int
+     * @return ObjectManager
      */
-    public static function getCurrentTypo3MajorVersion()
+    protected static function getObjectManager()
     {
-
-        $versionArray = VersionNumberUtility::convertVersionStringToArray(VersionNumberUtility::getCurrentTypo3Version());
-
-        return $versionArray['version_main'];
+        return GeneralUtility::makeInstance(ObjectManager::class);
     }
 
     /**
-     * Is current TYPO3 newer than the version
-     *
-     * @param int $typo3Version
-     * @return bool
+     * @return ConfigurationManager
      */
-    public static function isTypo3MajorVersionAbove($typo3Version)
+    protected static function getConfigurationManager()
     {
-        return self::getCurrentTypo3MajorVersion() > $typo3Version;
+        return self::getObjectManager()->get(ConfigurationManager::class);
     }
 
     /**
-     * Is current TYPO3 newer than the minium version
+     * Get extension configuration from LocalConfiguration.php
      *
-     * @param int $typo3Version
-     * @return bool
+     * @return array
      */
-    public static function isTypo3MajorVersionBelow($typo3Version)
+    protected static function getExtensionConfiguration()
     {
-        return self::getCurrentTypo3MajorVersion() < $typo3Version;
+        return unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['in2studyfinder']);
     }
 }
 

@@ -22,9 +22,6 @@ plugin.tx_in2studyfinder {
 		# cat=plugin.tx_in2studyfinder//a; type=string; label=Settings storage PID
 		settingsPid =
 
-		# cat=plugin.tx_in2studyfinder//a; type=string; label=Setting for global Field Handling
-		enableGlobalData = 0
-
 		filter {
 			# cat=plugin.tx_in2studyfinder//a; type=string; label=Recursion level for the Filter Options
 			recursive = 1

@@ -15,8 +15,6 @@ plugin.tx_in2studyfinder {
 		storagePid = {$plugin.tx_in2studyfinder.settings.storagePid}
 		settingsPid = {$plugin.tx_in2studyfinder.settings.settingsPid}
 
-		enableGlobalData = {$plugin.tx_in2studyfinder.settings.enableGlobalData}
-
 		pagination {
 			itemsPerPage = {$plugin.tx_in2studyfinder.settings.pagination.itemsPerPage}
 		}

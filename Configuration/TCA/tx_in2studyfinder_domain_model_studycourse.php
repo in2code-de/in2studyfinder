@@ -1,5 +1,6 @@
 <?php
-use In2code\In2studyfinder\Utility\GlobalDataUtility;
+
+use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\TcaUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
@@ -224,7 +225,7 @@ $tcaConfiguration = [
     ],
 ];
 
-if (GlobalDataUtility::isGlobalDataHandlingEnabled()) {
+if (!ConfigurationUtility::isDisableGlobalData()) {
 
     $tcaConfiguration['columns']['different_preset'] = [
         'exclude' => 1,

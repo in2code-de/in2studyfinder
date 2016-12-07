@@ -29,31 +29,15 @@ namespace In2code\In2studyfinder\Utility;
 
 use In2code\In2studyfinder\Domain\Repository\GlobalDataRepository;
 
-class GlobalDataUtility
+class GlobalDataUtility extends AbstractUtility
 {
-
-    /**
-     * @return bool
-     */
-    public static function isGlobalDataHandlingEnabled()
-    {
-        $status = false;
-        $settings = ExtensionUtility::getExtensionConfiguration('in2studyfinder');
-
-        if ($settings['enableGlobalData']) {
-            $status = true;
-        }
-
-        return $status;
-    }
 
     /**
      * @return bool
      */
     public static function existDefaultPreset()
     {
-        /** @var GlobalDataRepository $globalDataRepository */
-        $globalDataRepository = ExtensionUtility::getObjectManager()->get(GlobalDataRepository::class);
+        $globalDataRepository = self::getObjectManager()->get(GlobalDataRepository::class);
 
         if ($globalDataRepository->countDefaultPreset() > 0) {
             $status = true;
@@ -75,8 +59,7 @@ class GlobalDataUtility
         $defaultPreset = null;
 
         if (self::existDefaultPreset()) {
-            /** @var GlobalDataRepository $globalDataRepository */
-            $globalDataRepository = ExtensionUtility::getObjectManager()->get(GlobalDataRepository::class);
+            $globalDataRepository = self::getObjectManager()->get(GlobalDataRepository::class);
             $defaultPreset = $globalDataRepository->findDefaultPreset();
         }
 

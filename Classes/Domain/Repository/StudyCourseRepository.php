@@ -49,7 +49,7 @@ class StudyCourseRepository extends AbstractRepository
         $currentLevel = 0,
         $parentElement = null
     ) {
-        $settings = ExtensionUtility::getExtensionConfiguration('in2studyfinder');
+        $settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
 
         if ($currentLevel < $settings['filter']['recursive']) {
             foreach ($properties as $propertyName => $property) {
@@ -126,7 +126,7 @@ class StudyCourseRepository extends AbstractRepository
          * Add the Storage Pid for Settings
          */
         $storagePids = $query->getQuerySettings()->getStoragePageIds();
-        $settings = ExtensionUtility::getExtensionConfiguration('in2studyfinder');
+        $settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
 
         if (!in_array((int)$settings['settingsPid'], $storagePids)) {
             array_push($storagePids, $settings['settingsPid']);

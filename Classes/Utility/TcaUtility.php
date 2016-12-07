@@ -9,7 +9,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @package In2code\In2studyfinderExtend\Utility
  */
-class TcaUtility
+class TcaUtility extends AbstractUtility
 {
     /**
      * Gets full Tca Array for Sys Language Uid

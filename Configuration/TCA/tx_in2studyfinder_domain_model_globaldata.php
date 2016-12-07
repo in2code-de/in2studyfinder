@@ -1,5 +1,6 @@
 <?php
-use In2code\In2studyfinder\Utility\GlobalDataUtility;
+
+use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\TcaUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
@@ -7,7 +8,7 @@ $ll = 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:';
 $table = 'tx_in2studyfinder_domain_model_globaldata';
 $icon = ExtensionManagementUtility::extRelPath('in2studyfinder') . 'Resources/Public/Icons/' . $table . '.png';
 
-if (GlobalDataUtility::isGlobalDataHandlingEnabled()) {
+if (!ConfigurationUtility::isDisableGlobalData()) {
     return [
         'ctrl' => [
             'title' => $ll . 'globalData',

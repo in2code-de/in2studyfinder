@@ -203,6 +203,8 @@ class StudyCourseController extends ActionController
 
             $this->writePageMetadata($studyCourse);
 
+            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($studyCourse, __CLASS__ . ' in der Zeile ' . __LINE__);
+
             $this->view->assign('studyCourse', $studyCourse);
         } else {
             $this->redirect('list');

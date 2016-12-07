@@ -46,7 +46,7 @@ class AbstractRepository extends Repository
     protected function setQuerySettings() {
         /** @var $querySettings Typo3QuerySettings */
         $querySettings = $this->objectManager->get(Typo3QuerySettings::class);
-        $settings = ExtensionUtility::getExtensionConfiguration('in2studyfinder');
+        $settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
 
         $querySettings->setStoragePageIds(
             [

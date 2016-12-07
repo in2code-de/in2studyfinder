@@ -32,28 +32,17 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 
-class ExtensionUtility
+class ExtensionUtility extends AbstractUtility
 {
 
     /**
      * @param string $extKey
      * @return mixed
      */
-    public static function getExtensionConfiguration($extKey)
+    public static function getExtensionSettings($extKey)
     {
-        /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = self::getObjectManager()->get(ConfigurationManagerInterface::class);
-
-        return $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
+        return self::getConfigurationManager()->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
             ucfirst($extKey));
-    }
-
-    /**
-     * @return ObjectManager
-     */
-    public static function getObjectManager()
-    {
-        return GeneralUtility::makeInstance(ObjectManager::class);
     }
 
     /**
