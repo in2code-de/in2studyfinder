@@ -171,6 +171,14 @@ class StudyCourse extends AbstractEntity
     protected $sysLanguageUid = 0;
 
     /**
+     * @param int $uid
+     */
+    public function setUid($uid)
+    {
+        $this->uid = $uid;
+    }
+
+    /**
      * Returns the title
      *
      * @return string $title
