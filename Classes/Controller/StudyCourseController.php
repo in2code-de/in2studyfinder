@@ -82,8 +82,6 @@ class StudyCourseController extends ActionController
         }
 
         $this->setFilterTypesAndRepositories();
-
-        $this->studyCourseRepository->setDefaultQuerySettings($this->getDefaultQuerySettings());
     }
 
     protected function getDefaultQuerySettings()
@@ -93,8 +91,7 @@ class StudyCourseController extends ActionController
 
         $defaultQuerySettings->setStoragePageIds(
             [
-                $this->settings['settingsPid'],
-                $this->settings['storagePid']
+                $this->settings['settingsPid']
             ]
         );
 
