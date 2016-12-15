@@ -710,4 +710,8 @@ class StudyCourse extends AbstractEntity
         $this->metaDescription = $metaDescription;
     }
 
+    public function getTitleWithAcademicDegree()
+    {
+        return $this->getTitle() . ' - ' . $this->getAcademicDegree()->getDegree();
+    }
 }
