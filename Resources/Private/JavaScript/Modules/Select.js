@@ -14,7 +14,7 @@
 
 						if (data.id !== '' && $.trim(term) !== '') {
 							var element = data.element;
-							var keywords = $(element).attr('alt');
+							var keywords = $(element).attr('value');
 							var keywordArray = keywords.split(',');
 
 							$.each(keywordArray, function(index, keyword) {

@@ -26,6 +26,7 @@ namespace In2code\In2studyfinder\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use DmitryDulepov\Realurl\Encoder\UrlEncoder;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
@@ -35,6 +36,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 
 /**
  * StudyCourseController
@@ -138,7 +140,6 @@ class StudyCourseController extends ActionController
     protected function assignStudyCourses()
     {
         $studyCourses = $this->getStudyCourses();
-
         $studyCoursesSortedByLettersArray = $this->getStudyCoursesLetterArray($studyCourses);
 
         $this->view->assignMultiple([
@@ -203,27 +204,14 @@ class StudyCourseController extends ActionController
 
     /**
      * detail show
-     *
+     * @param StudyCourse $studyCourse
      * @return void
      */
-    public function detailAction()
+    public function detailAction(StudyCourse $studyCourse)
     {
+        $this->writePageMetadata($studyCourse);
 
-        $getData = GeneralUtility::_GET('tx_in2studyfinder_pi2');
-
-        if (GeneralUtility::_POST('tx_in2studyfinder_studycourse')) {
-            $getData['studyCourse'] = GeneralUtility::_POST('tx_in2studyfinder_studycourse')['studyCourse'];
-        }
-
-        if ($getData['studyCourse'] && $getData['studyCourse'] !== '') {
-            $studyCourse = $this->studyCourseRepository->findByUid($getData['studyCourse']);
-
-            $this->writePageMetadata($studyCourse);
-
-            $this->view->assign('studyCourse', $studyCourse);
-        } else {
-            $this->redirect('list');
-        }
+        $this->view->assign('studyCourse', $studyCourse);
     }
 
     /**
