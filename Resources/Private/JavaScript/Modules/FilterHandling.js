@@ -41,12 +41,6 @@
 					$('.in2studyfinder').html($(data).find('.in2studyfinder').html());
 				},
 				error: function () {
-					//var lang = $('html').attr('lang');
-					//if (lang === 'de') {
-					//	alert('Ihre abgespeicherte Suche kann nicht mehr ausgeführt werden. Bitte wählen sie ihr Filter erneut');
-					//} else {
-					//	alert('This results page is not available any more. Please search again');
-					//}
 				},
 				complete: function () {
 					start.init();
