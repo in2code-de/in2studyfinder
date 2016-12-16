@@ -1,4 +1,8 @@
+{namespace in2studyfinder=In2code\In2studyfinder\ViewHelpers}
 <f:form action="detail" pluginName="Pi2" pageUid="{settings.flexform.studyCourseDetailPage}">
-	<f:form.select property="uid" name="studyCourse" optionLabelField="titleWithAcademicDegree" optionValueField="metaKeywords" prependOptionLabel="" options="{studyCourses}" class="in2studyfinder-js-fast-select"
-				   style="width: 100%" additionalAttributes="{tabindex:'-1'}"/>
+	<in2studyfinder:form.select property="uid" name="studyCourse" optionLabelField="titleWithAcademicDegree"
+								prependOptionLabel=""
+								options="{studyCourses}" additionalOptionAttributes="{alt: 'metaKeywords'}"
+								class="in2studyfinder-js-fast-select" tabindex="-1"
+								style="width: 100%"/>
 </f:form>
