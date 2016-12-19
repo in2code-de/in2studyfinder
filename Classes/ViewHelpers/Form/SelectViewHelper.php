@@ -40,10 +40,8 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
                         $options[$value->getUid()]['additionalAttributes'][$attribute] = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($value,
                             $property);
 
-                        $uri = $uriBuilder
-                            ->reset()
-                            ->setTargetPageUid($pageUid)
-                            ->uriFor($action, ['studyCourse' => $value]);
+                        $uri = $uriBuilder->reset()->setTargetPageUid($pageUid)->uriFor($action,
+                                ['studyCourse' => $value]);
 
                         $options[$value->getUid()]['additionalAttributes']['data-url'] = $uri;
                     }
@@ -107,8 +105,10 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
 
         $output = '';
 
-        foreach ($additionalAttributes as $attribute => $value) {
-            $output .= htmlspecialchars($attribute) . '="' . htmlspecialchars($value) . '"';
+        if (!empty($additionalAttributes)) {
+            foreach ($additionalAttributes as $attribute => $value) {
+                $output .= htmlspecialchars($attribute) . '="' . htmlspecialchars($value) . '"';
+            }
         }
 
         return $output;
