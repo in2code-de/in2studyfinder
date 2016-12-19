@@ -26,7 +26,6 @@ namespace In2code\In2studyfinder\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use DmitryDulepov\Realurl\Encoder\UrlEncoder;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
@@ -36,7 +35,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 
 /**
  * StudyCourseController
@@ -79,6 +77,10 @@ class StudyCourseController extends ActionController
     {
         foreach ($this->settings['filter']['filterTypeLabelField'] as $key => $value) {
             $this->allowedSearchFields[] = $key;
+        }
+
+        if (ExtensionUtility::isIn2studycoursesExtendLoaded()) {
+            $this->studyCourseRepository = $this->objectManager->get('In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository');
         }
 
         $this->setFilterTypesAndRepositories();

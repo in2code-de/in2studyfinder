@@ -29,10 +29,8 @@ namespace In2code\In2studyfinder\Domain\Repository;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
-use In2code\In2studyfinderExtend\Domain\Model\StudyCourse as StudyCourseExtend;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
-use TYPO3\CMS\Lang\Domain\Model\Extension;
 
 /**
  * The repository for StudyCourses
@@ -94,10 +92,11 @@ class StudyCourseRepository extends AbstractRepository
     {
 
         if (ExtensionUtility::isIn2studycoursesExtendLoaded()) {
-            $studyCourse = new StudyCourseExtend();
+            $studyCourse = $this->objectManager->get('In2code\\In2studyfinderExtend\\Domain\\Model\\StudyCourse');
         } else {
-            $studyCourse = new StudyCourse();
+            $studyCourse = $this->objectManager->get(StudyCourse::class);
         }
+
         $filterToStudyCoursePropertyMappingArray = [];
 
         $this->getPropertyMapping($studyCourse->_getProperties(), $filterToStudyCoursePropertyMappingArray);
