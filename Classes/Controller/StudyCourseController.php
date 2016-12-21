@@ -26,7 +26,6 @@ namespace In2code\In2studyfinder\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use DmitryDulepov\Realurl\Encoder\UrlEncoder;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
@@ -36,7 +35,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 
 /**
  * StudyCourseController
@@ -81,9 +79,89 @@ class StudyCourseController extends ActionController
             $this->allowedSearchFields[] = $key;
         }
 
+        if (ExtensionUtility::isIn2studycoursesExtendLoaded()) {
+            $this->studyCourseRepository = $this->objectManager->get('In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository');
+        }
+
         $this->setFilterTypesAndRepositories();
     }
 
+
+    /**
+     * action list
+     *
+     * @return void
+     */
+    public function listAction()
+    {
+        $this->assignStudyCourses();
+    }
+
+    /**
+     * @return void
+     */
+    public function initializeFilterAction()
+    {
+
+        if ($this->request->hasArgument('searchOptions')) {
+            // filter empty options
+            $sanitizedSearchOptions = array_filter($this->request->getArgument('searchOptions'));
+
+            // remove not allowed keys (prevents SQL Injection, too)
+            foreach (array_keys($sanitizedSearchOptions) as $studyCoursePropertyName) {
+                if (!in_array($studyCoursePropertyName, $this->allowedSearchFields)) {
+                    unset($sanitizedSearchOptions[$studyCoursePropertyName]);
+                }
+            }
+            $this->request->setArgument('searchOptions', $sanitizedSearchOptions);
+        }
+    }
+
+    /**
+     * @param array $searchOptions
+     * @return void
+     */
+    public function filterAction($searchOptions = [])
+    {
+        if (empty($searchOptions) && $this->request->getMethod() === 'GET') {
+            if ($this->sessionUtility->has('searchOptions')) {
+                $searchOptions = $this->sessionUtility->get('searchOptions');
+            }
+        }
+        if (!empty($searchOptions)) {
+            $foundStudyCourses = $this->processSearch($searchOptions);
+
+            $this->view->assignMultiple([
+                'searchedOptions' => $searchOptions,
+                'studyCoursesLetterArray' => $this->getStudyCoursesLetterArray($foundStudyCourses),
+                'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($foundStudyCourses),
+                'studyCourseCount' => count($foundStudyCourses),
+                'filterTypes' => $this->filterTypes,
+                'studyCourses' => $foundStudyCourses,
+            ]);
+            $this->sessionUtility->set('searchOptions', $searchOptions);
+        } else {
+            $this->assignStudyCourses();
+        }
+    }
+
+    /**
+     * detail show
+     * @param StudyCourse $studyCourse
+     * @return void
+     */
+    public function detailAction(StudyCourse $studyCourse)
+    {
+        $this->writePageMetadata($studyCourse);
+
+        $this->view->assign('studyCourse', $studyCourse);
+    }
+
+    /**
+     * get the defaultQuerySettings for filters
+     *
+     * @return QuerySettingsInterface
+     */
     protected function getDefaultQuerySettings()
     {
         /** @var QuerySettingsInterface $defaultQuerySettings */
@@ -103,6 +181,7 @@ class StudyCourseController extends ActionController
 
     /**
      * set the Models and the Repositories
+     * @return void
      */
     protected function setFilterTypesAndRepositories()
     {
@@ -125,17 +204,8 @@ class StudyCourseController extends ActionController
     }
 
     /**
-     * action list
-     *
-     * @return void
-     */
-    public function listAction()
-    {
-        $this->assignStudyCourses();
-    }
-
-    /**
      * assign StudyCourses to the view
+     * @return void
      */
     protected function assignStudyCourses()
     {
@@ -203,19 +273,8 @@ class StudyCourseController extends ActionController
     }
 
     /**
-     * detail show
      * @param StudyCourse $studyCourse
      * @return void
-     */
-    public function detailAction(StudyCourse $studyCourse)
-    {
-        $this->writePageMetadata($studyCourse);
-
-        $this->view->assign('studyCourse', $studyCourse);
-    }
-
-    /**
-     * @param StudyCourse $studyCourse
      */
     protected function writePageMetadata($studyCourse)
     {
@@ -232,54 +291,6 @@ class StudyCourseController extends ActionController
         if (!empty($studyCourse->getMetaKeywords())) {
             $metaKeywords = '<meta name="keywords" content="' . $studyCourse->getMetaKeywords() . '">';
             $this->response->addAdditionalHeaderData($metaKeywords);
-        }
-    }
-
-    /**
-     * @return void
-     */
-    public function initializeFilterAction()
-    {
-
-        if ($this->request->hasArgument('searchOptions')) {
-            // filter empty options
-            $sanitizedSearchOptions = array_filter($this->request->getArgument('searchOptions'));
-
-            // remove not allowed keys (prevents SQL Injection, too)
-            foreach (array_keys($sanitizedSearchOptions) as $studyCoursePropertyName) {
-                if (!in_array($studyCoursePropertyName, $this->allowedSearchFields)) {
-                    unset($sanitizedSearchOptions[$studyCoursePropertyName]);
-                }
-            }
-            $this->request->setArgument('searchOptions', $sanitizedSearchOptions);
-        }
-    }
-
-    /**
-     * @param array $searchOptions
-     * @return void
-     */
-    public function filterAction($searchOptions = [])
-    {
-        if (empty($searchOptions) && $this->request->getMethod() === 'GET') {
-            if ($this->sessionUtility->has('searchOptions')) {
-                $searchOptions = $this->sessionUtility->get('searchOptions');
-            }
-        }
-        if (!empty($searchOptions)) {
-            $foundStudyCourses = $this->processSearch($searchOptions);
-
-            $this->view->assignMultiple([
-                'searchedOptions' => $searchOptions,
-                'studyCoursesLetterArray' => $this->getStudyCoursesLetterArray($foundStudyCourses),
-                'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($foundStudyCourses),
-                'studyCourseCount' => count($foundStudyCourses),
-                'filterTypes' => $this->filterTypes,
-                'studyCourses' => $foundStudyCourses,
-            ]);
-            $this->sessionUtility->set('searchOptions', $searchOptions);
-        } else {
-            $this->assignStudyCourses();
         }
     }
 
@@ -313,6 +324,8 @@ class StudyCourseController extends ActionController
      * @param array $propertyArray
      * @param array $availableOptionArray
      * @param int $currentLevel
+     *
+     * @return void
      */
     protected function getAvailableFilterOptionsFromProperties(
         $propertyArray,

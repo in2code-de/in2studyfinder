@@ -29,10 +29,8 @@ namespace In2code\In2studyfinder\Domain\Repository;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
-use In2code\In2studyfinderExtend\Domain\Model\StudyCourse as StudyCourseExtend;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
-use TYPO3\CMS\Lang\Domain\Model\Extension;
 
 /**
  * The repository for StudyCourses
@@ -94,10 +92,11 @@ class StudyCourseRepository extends AbstractRepository
     {
 
         if (ExtensionUtility::isIn2studycoursesExtendLoaded()) {
-            $studyCourse = new StudyCourseExtend();
+            $studyCourse = $this->objectManager->get('In2code\\In2studyfinderExtend\\Domain\\Model\\StudyCourse');
         } else {
-            $studyCourse = new StudyCourse();
+            $studyCourse = $this->objectManager->get(StudyCourse::class);
         }
+
         $filterToStudyCoursePropertyMappingArray = [];
 
         $this->getPropertyMapping($studyCourse->_getProperties(), $filterToStudyCoursePropertyMappingArray);
@@ -136,23 +135,19 @@ class StudyCourseRepository extends AbstractRepository
 
         $mappedOptions = $this->mapOptionsToStudyCourseProperties($options);
 
-        $constraints = array();
+        $constraints = [];
         foreach ($mappedOptions as $name => $array) {
             if ($array[0] === 'isSet') {
-                $constraints[] = $query->logicalOr(
-                    [
+                $constraints[] = $query->logicalOr([
                         $query->logicalNot($query->equals($name, '')),
                         $query->greaterThan($name, 0)
-                    ]
-                );
+                    ]);
             } elseif ($array[0] === 'isUnset') {
-                $constraints[] = $query->logicalOr(
-                    [
+                $constraints[] = $query->logicalOr([
                         $query->equals($name, 0),
                         $query->equals($name, ''),
                         $query->equals($name, null)
-                    ]
-                );
+                    ]);
             } else {
                 $constraints[] = $query->in($name . '.uid', $array);
             }

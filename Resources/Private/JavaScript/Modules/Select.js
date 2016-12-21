@@ -54,7 +54,7 @@
 			if ($('html').attr('lang') === 'de') {
 				$('.in2studyfinder-js-fast-select').attr('data-placeholder', 'Studiengang wählen oder Suchbegriff eingeben');
 			} else {
-				$('.in2studyfinder-js-fast-select').attr('data-placeholder', 'select degree program or enter keyword');
+				$('.in2studyfinder-js-fast-select').attr('data-placeholder', 'select degree programs or enter keyword');
 			}
 		}
 
