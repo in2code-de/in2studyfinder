@@ -17,7 +17,7 @@
 			<div class="in2studyfinder__content-box">
 				<div class="in2studyfinder__content-box-head">
 					<h3>
-						<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:keyData"/>
+						<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:keyData"/>
 					</h3>
 				</div>
 				<div class="in2studyfinder__content-box-content">
@@ -25,14 +25,14 @@
 
 						<f:if condition="{studyCourse.academicDegree.degree}">
 							<strong>
-								<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:typeOfStudy"/>
+								<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:typeOfStudy"/>
 							</strong>
 
 							<p>{studyCourse.academicDegree.degree}</p>
 						</f:if>
 
 						<strong>
-							<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:typeOfStudy"/>
+							<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:typeOfStudy"/>
 						</strong>
 						<ul class="in2studyfinder__list">
 							<f:for each="{studyCourse.typesOfStudy}" as="typeOfStudy">
@@ -41,7 +41,7 @@
 						</ul>
 
 						<strong>
-							<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:startOfStudy"/>
+							<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:startOfStudy"/>
 						</strong>
 						<ul class="in2studyfinder__list">
 							<f:for each="{studyCourse.startsOfStudy}" as="startOfStudy">
@@ -53,7 +53,7 @@
 
 						<f:if condition="{studyCourse.tuitionFee}">
 							<strong>
-								<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:tuitionFee"/>
+								<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:tuitionFee"/>
 							</strong>
 
 							<p>
@@ -63,7 +63,7 @@
 
 						<f:if condition="{studyCourse.universityPlace}">
 							<strong>
-								<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:universityPlace"/>
+								<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:universityPlace"/>
 							</strong>
 
 							<p>{studyCourse.universityPlace}</p>
@@ -72,7 +72,7 @@
 					<div class="in2studyfinder__column in2studyfinder__column--half">
 
 						<strong>
-							<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:courseLanguage"/>
+							<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:courseLanguage"/>
 						</strong>
 						<ul class="in2studyfinder__list">
 							<f:for each="{studyCourse.courseLanguages}" as="courseLanguage">
@@ -81,7 +81,7 @@
 						</ul>
 
 						<strong>
-							<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:admissionRequirements"/>
+							<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:admissionRequirements"/>
 						</strong>
 						<ul class="in2studyfinder__list">
 							<f:for each="{studyCourse.admissionRequirements}" as="admissionRequirement">
@@ -91,7 +91,7 @@
 
 						<f:if condition="{studyCourse.ectsCredits}">
 							<strong>
-								<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:ectsCredits"/>
+								<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:ectsCredits"/>
 							</strong>
 
 							<p>{studyCourse.ectsCredits}</p>
@@ -99,7 +99,7 @@
 
 						<f:if condition="{studyCourse.standardPeriodOfStudy}">
 							<strong>
-								<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:standardPeriodOfStudy"/>
+								<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:standardPeriodOfStudy"/>
 							</strong>
 
 							<p>{studyCourse.standardPeriodOfStudy}</p>
@@ -110,7 +110,7 @@
 
 			<div class="in2studyfinder__content-box">
 				<div class="in2studyfinder__content-box-head">
-					<h3><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:moreAbout"/></h3>
+					<h3><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:moreAbout"/></h3>
 				</div>
 				<div class="in2studyfinder__content-box-content">
 					<f:format.html>{studyCourse.description}</f:format.html>
@@ -125,7 +125,7 @@
 
 		<div class="in2studyfinder__content-box">
 			<f:link.page pageUid="{settings.flexform.studyCourseListPage}" class="in2studyfinder__button">
-				<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:backToList"/>
+				<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:backToList"/>
 			</f:link.page>
 		</div>
 	</div>
