@@ -179,6 +179,14 @@ class StudyCourse extends AbstractEntity
     protected $globalDataPreset = null;
 
     /**
+     * @param int $uid
+     */
+    public function setUid($uid)
+    {
+        $this->uid = $uid;
+    }
+
+    /**
      * Returns the title
      *
      * @return string $title
@@ -742,4 +750,8 @@ class StudyCourse extends AbstractEntity
         return $globalData;
     }
 
+    public function getTitleWithAcademicDegree()
+    {
+        return $this->getTitle() . ' - ' . $this->getAcademicDegree()->getDegree();
+    }
 }

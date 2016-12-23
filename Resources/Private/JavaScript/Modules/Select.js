@@ -23,7 +23,7 @@
 									text.toUpperCase().indexOf(term.toUpperCase()) > -1 ||
 									keyword.toUpperCase().indexOf(term.toUpperCase()) > -1
 								) {
-									status = true
+									status = true;
 								}
 							});
 						}
@@ -41,15 +41,20 @@
 				});
 			};
 
-			$('.in2studyfinder-js-fast-select').on('change', function() {
-				$(this).parent('form').submit();
+			$('.in2studyfinder-js-fast-select').on('select2:select', function() {
+				var obj = $('.in2studyfinder-js-fast-select').select2('data');
+				var url = obj[0].element.dataset.url;
+
+				if (url.length) {
+					window.location.href = url;
+				}
 			});
 
 			/** @todo better language handling for Placeholder */
 			if ($('html').attr('lang') === 'de') {
-				$('.in2studyfinder-js-fast-select').attr("data-placeholder", "Studiengang wählen oder Suchbegriff eingeben");
+				$('.in2studyfinder-js-fast-select').attr('data-placeholder', 'Studiengang wählen oder Suchbegriff eingeben');
 			} else {
-				$('.in2studyfinder-js-fast-select').attr("data-placeholder", "select degree program or enter keyword");
+				$('.in2studyfinder-js-fast-select').attr('data-placeholder', 'select degree programme or enter keyword');
 			}
 		}
 
