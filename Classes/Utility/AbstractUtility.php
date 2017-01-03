@@ -37,7 +37,7 @@ class AbstractUtility
     /**
      * @return ObjectManager
      */
-    protected static function getObjectManager()
+    public static function getObjectManager()
     {
         return GeneralUtility::makeInstance(ObjectManager::class);
     }
@@ -45,7 +45,7 @@ class AbstractUtility
     /**
      * @return ConfigurationManager
      */
-    protected static function getConfigurationManager()
+    public static function getConfigurationManager()
     {
         return self::getObjectManager()->get(ConfigurationManager::class);
     }
@@ -55,7 +55,7 @@ class AbstractUtility
      *
      * @return array
      */
-    protected static function getExtensionConfiguration()
+    public static function getExtensionConfiguration()
     {
         return unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['in2studyfinder']);
     }
