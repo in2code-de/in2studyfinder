@@ -27,17 +27,18 @@ namespace In2code\In2studyfinder\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use In2code\In2studyfinder\Domain\Model\GlobalData;
 use In2code\In2studyfinder\Domain\Repository\GlobalDataRepository;
 
 class GlobalDataUtility extends AbstractUtility
 {
 
     /**
+     * @param GlobalDataRepository
      * @return bool
      */
-    public static function existDefaultPreset()
+    public static function existDefaultPreset($globalDataRepository)
     {
-        $globalDataRepository = self::getObjectManager()->get(GlobalDataRepository::class);
 
         if ($globalDataRepository->countDefaultPreset() > 0) {
             $status = true;
@@ -52,15 +53,19 @@ class GlobalDataUtility extends AbstractUtility
     }
 
     /**
-     * @return \In2code\In2studyfinder\Domain\Model\GlobalData|null
+     * @param GlobalDataRepository $globalDataRepositoryClass
+     * @return GlobalData|null
      */
-    public static function getDefaultPreset()
+    public static function getDefaultPreset($globalDataRepositoryClass = GlobalDataRepository::class)
     {
         $defaultPreset = null;
 
-        if (self::existDefaultPreset()) {
-            $globalDataRepository = self::getObjectManager()->get(GlobalDataRepository::class);
-            $defaultPreset = $globalDataRepository->findDefaultPreset();
+        $globalDataRepository = self::getObjectManager()->get($globalDataRepositoryClass);
+    
+        if ($globalDataRepository instanceof GlobalDataRepository) {
+            if (self::existDefaultPreset($globalDataRepository)) {
+                $defaultPreset = $globalDataRepository->findDefaultPreset();
+            }
         }
 
         return $defaultPreset;
