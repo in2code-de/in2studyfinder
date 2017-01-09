@@ -260,6 +260,7 @@ class TcaUtility
                 'config' => [
                     'type' => 'select',
                     'foreign_table' => $table,
+                    'MM' => $mmTable,
                     'foreign_table_where' => 'AND sys_language_uid in (-1, 0)',
                     'size' => 5,
                     'autoSizeMax' => 30,
