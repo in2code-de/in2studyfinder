@@ -68,8 +68,13 @@ class RenderContentElementsViewHelper extends AbstractViewHelper
 
     public function findTtContentUidsByMmTable($domainObjectUid, $table)
     {
-        $uidArray = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid_foreign as uid', $table,
-            'uid_local=' . (int)$domainObjectUid);
+        $uidArray = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+            'uid_foreign as uid',
+            $table,
+            'uid_local=' . (int)$domainObjectUid,
+            '',
+            'sorting, sorting_foreign'
+        );
 
         return $uidArray;
     }
