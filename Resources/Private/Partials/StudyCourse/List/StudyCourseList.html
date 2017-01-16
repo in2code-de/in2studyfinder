@@ -2,18 +2,18 @@
 
 <f:render partial="StudyCourse/List/ItemCount" arguments="{studyCourseCount : studyCourseCount}"/>
 
-<in2studyfinder:widget.paginate objects="{studyCoursesLetterArray}" as="studyCoursesArray"
-									 configuration="{itemsPerPage:'{settings.pagination.itemsPerPage}'}">
+<in2studyfinder:widget.paginate objects="{studyCourses}" as="studyCoursesForPage"
+								configuration="{itemsPerPage:'{settings.pagination.itemsPerPage}'}">
 	<ul class="in2studyfinder__list">
-		<f:for each="{studyCoursesArray}" as="studyCoursesByLetter" key="key" iteration="iterator">
+		<in2studyfinder:for for="{studyCoursesForPage}" as="studyCoursesByLetter">
 			<li>
 				<div class="in2studyfinder__letter">
-					<span>{key}</span>
+					<span>{letter}</span>
 				</div>
 			</li>
 			<f:for each="{studyCoursesByLetter}" as="studyCourse">
 				<f:render partial="StudyCourse/List/Item" arguments="{studyCourse : studyCourse}"/>
 			</f:for>
-		</f:for>
+		</in2studyfinder:for>
 	</ul>
 </in2studyfinder:widget.paginate>
