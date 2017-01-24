@@ -133,7 +133,6 @@ class StudyCourseController extends ActionController
 
             $this->view->assignMultiple([
                 'searchedOptions' => $searchOptions,
-                'studyCoursesLetterArray' => $this->getStudyCoursesLetterArray($foundStudyCourses),
                 'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($foundStudyCourses),
                 'studyCourseCount' => count($foundStudyCourses),
                 'filterTypes' => $this->filterTypes,
@@ -210,14 +209,12 @@ class StudyCourseController extends ActionController
     protected function assignStudyCourses()
     {
         $studyCourses = $this->getStudyCourses();
-        $studyCoursesSortedByLettersArray = $this->getStudyCoursesLetterArray($studyCourses);
 
         $this->view->assignMultiple([
             'filterTypes' => $this->filterTypes,
             'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($studyCourses),
             'studyCourseCount' => count($studyCourses),
             'studyCourses' => $studyCourses,
-            'studyCoursesLetterArray' => $studyCoursesSortedByLettersArray
         ]);
     }
 
@@ -254,22 +251,6 @@ class StudyCourseController extends ActionController
         }
 
         return $selectedOptions;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult $studyCourses
-     * @return array
-     */
-    protected function getStudyCoursesLetterArray($studyCourses)
-    {
-        $studyCoursesSortedByLettersArray = [];
-
-        foreach ($studyCourses as $studyCourse) {
-            $firstLetter = substr($studyCourse->getTitle(), 0, 1);
-            $studyCoursesSortedByLettersArray[$firstLetter][] = $studyCourse;
-        }
-
-        return $studyCoursesSortedByLettersArray;
     }
 
     /**
