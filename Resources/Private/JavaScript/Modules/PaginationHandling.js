@@ -18,8 +18,8 @@
 			var destination = urlHandling.removeUrlParam('cHash', element.attr('href'));
 			var targetPage = 1;
 			destination.split('&').forEach(function(value) {
-				if (value.match(/tx_in2studyfinder_studycourse%5B%40widget_0%5D%5BcurrentPage%5D=/)) {
-					targetPage = value.replace('tx_in2studyfinder_studycourse%5B%40widget_0%5D%5BcurrentPage%5D=', '');
+				if (value.match(/tx_in2studyfinder_pi1%5B%40widget_0%5D%5BcurrentPage%5D=/)) {
+					targetPage = value.replace('tx_in2studyfinder_pi1%5B%40widget_0%5D%5BcurrentPage%5D=', '');
 				}
 			});
 
