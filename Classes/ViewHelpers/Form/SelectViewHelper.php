@@ -24,7 +24,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
         $parentOptions = parent::getOptions();
         $options = [];
         $optionsArgument = $this->arguments['options'];
-        $settings = ExtensionUtility::getExtensionConfiguration('in2studyfinder');
+        $settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
         $action = 'detail';
         $pageUid = $settings['flexform']['studyCourseDetailPage'];
 

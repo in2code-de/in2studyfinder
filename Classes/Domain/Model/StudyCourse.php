@@ -26,6 +26,9 @@ namespace In2code\In2studyfinder\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use In2code\In2studyfinder\Utility\DataPresetUtility;
+use In2code\In2studyfinder\Utility\ExtensionUtility;
+use In2code\In2studyfinder\Utility\GlobalDataUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
@@ -169,6 +172,11 @@ class StudyCourse extends AbstractEntity
      * @var integer
      */
     protected $sysLanguageUid = 0;
+
+    /**
+     * @var \In2code\In2studyfinder\Domain\Model\GlobalData
+     */
+    protected $globalDataPreset = null;
 
     /**
      * @param int $uid
@@ -708,6 +716,38 @@ class StudyCourse extends AbstractEntity
     public function setMetaDescription($metaDescription)
     {
         $this->metaDescription = $metaDescription;
+    }
+
+    /**
+     * @return GlobalData
+     */
+    public function getGlobalDataPreset()
+    {
+        return $this->globalDataPreset;
+    }
+
+    /**
+     * @param GlobalData $globalDataPreset
+     */
+    public function setGlobalDataPreset($globalDataPreset)
+    {
+        $this->globalDataPreset = $globalDataPreset;
+    }
+
+    /**
+     * @return GlobalData|null
+     */
+    public function getGlobalData()
+    {
+        $globalData = null;
+
+        if (!is_null($this->getGlobalDataPreset())) {
+            $globalData = $this->getGlobalDataPreset();
+        } else {
+            $globalData = GlobalDataUtility::getDefaultPreset();
+        }
+
+        return $globalData;
     }
 
     public function getTitleWithAcademicDegree()

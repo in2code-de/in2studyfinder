@@ -32,33 +32,24 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 
-class ExtensionUtility
+class ExtensionUtility extends AbstractUtility
 {
 
     /**
      * @param string $extKey
      * @return mixed
      */
-    public static function getExtensionConfiguration($extKey)
+    public static function getExtensionSettings($extKey)
     {
-        /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-
-        /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = $objectManager->get(
-            'TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface'
-        );
-
-        return $configurationManager->getConfiguration(
-            ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
-            ucfirst($extKey)
-        );
+        return self::getConfigurationManager()->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
+            ucfirst($extKey));
     }
 
     /**
      * @return bool
      */
-    public static function isIn2studycoursesExtendLoaded() {
+    public static function isIn2studycoursesExtendLoaded()
+    {
 
         $isLoaded = false;
 
@@ -76,12 +67,7 @@ class ExtensionUtility
     public static function getClassName($object)
     {
         $fullQualifiedClassName = get_class($object);
-        return lcfirst(
-            substr(
-                $fullQualifiedClassName,
-                strripos($fullQualifiedClassName, "\\") + 1
-            )
-        );
+        return lcfirst(substr($fullQualifiedClassName, strripos($fullQualifiedClassName, "\\") + 1));
     }
 }
 

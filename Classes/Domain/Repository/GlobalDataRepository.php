@@ -1,4 +1,5 @@
 <?php
+
 namespace In2code\In2studyfinder\Domain\Repository;
 
 /***************************************************************
@@ -26,26 +27,45 @@ namespace In2code\In2studyfinder\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Extbase\Persistence\Repository;
+use In2code\In2studyfinder\Domain\Model\GlobalData;
+use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * The repository for StudyCourses
  */
-class AbstractRepository extends Repository
+class GlobalDataRepository extends AbstractRepository
 {
     /**
-     * @param array $options
-     * @return array
+     * @return GlobalData|null
      */
-    protected function optionsToConstraints($options = array())
+    public function findDefaultPreset()
     {
         $query = $this->createQuery();
-        $constraints = array();
-        foreach ($options as $name => $uidArray) {
-            $constraints[] = $query->in($name . '.uid', $uidArray);
-        }
-        return $constraints;
+
+        $query->getQuerySettings()->setRespectStoragePage(false);
+
+        return $query->matching(
+            $query->logicalAnd(
+                $query->equals('default_preset', true),
+                $query->equals('deleted', 0)
+            ))->execute()->getFirst();
+    }
+
+    /**
+     * @return int
+     */
+    public function countDefaultPreset()
+    {
+        $query = $this->createQuery();
+
+        $query->getQuerySettings()->setRespectStoragePage(false);
+
+        return $query->matching(
+            $query->logicalAnd(
+                $query->equals('default_preset', true),
+                $query->equals('deleted', 0)
+            ))->execute()->count();
     }
 }
-
-
