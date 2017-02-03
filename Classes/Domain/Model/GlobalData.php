@@ -1,12 +1,11 @@
 <?php
-
-namespace In2code\In2studyfinder\Utility;
+namespace In2code\In2studyfinder\Domain\Model;
 
 /***************************************************************
  *
  *  Copyright notice
  *
- *  (c) 2016 Sebastian Stein <sebastian.stein@in2code.de>, In2code.de
+ *  (c) 2016 Sebastian Stein <sebastian.stein@in2code.de>, In2code GmbH
  *
  *  All rights reserved
  *
@@ -27,45 +26,62 @@ namespace In2code\In2studyfinder\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
-
-class VersionUtility extends AbstractUtility
+/**
+ * StudyCourse
+ */
+class GlobalData extends AbstractEntity
 {
+
     /**
-     * Get current TYPO3 version as compareable integer
+     * title
      *
-     * @return int
+     * @var string
+     * @validate NotEmpty
      */
-    public static function getCurrentTypo3MajorVersion()
+    protected $title = '';
+
+    /**
+     * @var bool
+     */
+    protected $defaultPreset = false;
+
+    /**
+     * Returns the title
+     *
+     * @return string $title
+     */
+    public function getTitle()
     {
-
-        $versionArray = VersionNumberUtility::convertVersionStringToArray(VersionNumberUtility::getCurrentTypo3Version());
-
-        return $versionArray['version_main'];
+        return $this->title;
     }
 
     /**
-     * Is current TYPO3 newer than the version
+     * Sets the title
      *
-     * @param int $typo3Version
-     * @return bool
+     * @param string $title
+     * @return void
      */
-    public static function isTypo3MajorVersionAbove($typo3Version)
+    public function setTitle($title)
     {
-        return self::getCurrentTypo3MajorVersion() > $typo3Version;
+        $this->title = $title;
     }
 
     /**
-     * Is current TYPO3 newer than the minium version
-     *
-     * @param int $typo3Version
-     * @return bool
+     * @return boolean
      */
-    public static function isTypo3MajorVersionBelow($typo3Version)
+    public function isDefaultPreset()
     {
-        return self::getCurrentTypo3MajorVersion() < $typo3Version;
+        return $this->defaultPreset;
     }
+
+    /**
+     * @param boolean $defaultPreset
+     */
+    public function setDefaultPreset($defaultPreset)
+    {
+        $this->defaultPreset = $defaultPreset;
+    }
+
 }
-
-?>

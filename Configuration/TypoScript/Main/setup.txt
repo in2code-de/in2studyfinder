@@ -54,6 +54,9 @@ plugin.tx_in2studyfinder {
 	}
 }
 
+# Module configuration
+module.tx_in2studyfinder < plugin.tx_in2studyfinder
+
 ############################
 # JavaScript and CSS section
 ############################

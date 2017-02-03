@@ -11,6 +11,14 @@
 				<source>Title</source>
 				<target>Titel</target>
 			</trans-unit>
+			<trans-unit id="globalData">
+				<source>global Data</source>
+				<target>globale Daten</target>
+			</trans-unit>
+			<trans-unit id="globalPreset">
+				<source>global field preset</source>
+				<target>Voreinstellungen für globale Felder</target>
+			</trans-unit>
 			<trans-unit id="metaPageTitle">
 				<source>Page Title Tag</source>
 				<target>Seiten Title Tag</target>
@@ -188,9 +196,23 @@
 			</trans-unit>
 			<trans-unit id="wizardItemTitle">
 				<source>Studyfinder</source>
+				<target>Studiengangsfinder</target>
 			</trans-unit>
 			<trans-unit id="wizardItemDescription">
 				<source>Plugin for Studycourses</source>
+				<target>Plugin für den Studiengangsfinder</target>
+			</trans-unit>
+			<trans-unit id="globalDataPreset">
+				<source>global field preset</source>
+				<target>verwendete globale Felder</target>
+			</trans-unit>
+			<trans-unit id="differentPreset">
+				<source>different global fields preset</source>
+				<target>abweichende Voreinstllung für globale Felder</target>
+			</trans-unit>
+			<trans-unit id="defaultPreset">
+				<source>default preset for global fields</source>
+				<target>Standard Voreinstellung für globale Felder</target>
 			</trans-unit>
 		</body>
 	</file>

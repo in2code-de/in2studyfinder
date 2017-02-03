@@ -1,5 +1,4 @@
 <?php
-
 namespace In2code\In2studyfinder\Utility;
 
 /***************************************************************
@@ -27,45 +26,23 @@ namespace In2code\In2studyfinder\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
-
-
-class VersionUtility extends AbstractUtility
+/**
+ * ConfigurationUtility class
+ *
+ * @package in2studyfinder
+ */
+class ConfigurationUtility extends AbstractUtility
 {
-    /**
-     * Get current TYPO3 version as compareable integer
-     *
-     * @return int
-     */
-    public static function getCurrentTypo3MajorVersion()
-    {
-
-        $versionArray = VersionNumberUtility::convertVersionStringToArray(VersionNumberUtility::getCurrentTypo3Version());
-
-        return $versionArray['version_main'];
-    }
 
     /**
-     * Is current TYPO3 newer than the version
+     * Check if disableIpLog is active
      *
-     * @param int $typo3Version
      * @return bool
      */
-    public static function isTypo3MajorVersionAbove($typo3Version)
+    public static function isEnableGlobalData()
     {
-        return self::getCurrentTypo3MajorVersion() > $typo3Version;
-    }
+        $extensionConfig = AbstractUtility::getExtensionConfiguration();
 
-    /**
-     * Is current TYPO3 newer than the minium version
-     *
-     * @param int $typo3Version
-     * @return bool
-     */
-    public static function isTypo3MajorVersionBelow($typo3Version)
-    {
-        return self::getCurrentTypo3MajorVersion() < $typo3Version;
+        return $extensionConfig['enableGlobalData'] === '1';
     }
 }
-
-?>

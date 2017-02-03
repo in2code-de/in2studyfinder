@@ -20,8 +20,6 @@ $extKey = 'in2studyfinder';
         'StudyCourse' => 'detail',
     ]);
 
-
-
 /*
 Adds the Language Files from in2studyfinder_extend
 */

@@ -9,7 +9,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @package In2code\In2studyfinderExtend\Utility
  */
-class TcaUtility
+class TcaUtility extends AbstractUtility
 {
     /**
      * Gets full Tca Array for Sys Language Uid
@@ -262,15 +262,13 @@ class TcaUtility
                     'foreign_table' => $table,
                     'MM' => $mmTable,
                     'foreign_table_where' => 'AND sys_language_uid in (-1, 0)',
+                    'MM' => $mmTable,
                     'size' => 5,
                     'autoSizeMax' => 30,
-                    'maxitems' => 9999,
+                    'minitems' => $minItems,
+                    'maxitems' => $maxItems,
                     'multiple' => 0,
-                    'wizards' => [
-                        'suggest' => [
-                            'type' => 'suggest',
-                        ],
-                    ],
+                    'wizards' => self::getSuggestWizard(),
                 ],
             ];
         } else {
@@ -286,11 +284,7 @@ class TcaUtility
                     'foreign_table_where' => 'AND sys_language_uid in (-1, 0)',
                     'minitems' => $minItems,
                     'maxitems' => $maxItems,
-                    'wizards' => [
-                        'suggest' => [
-                            'type' => 'suggest',
-                        ],
-                    ],
+                    'wizards' => self::getSuggestWizard(),
                 ],
             ];
         }
