@@ -3,6 +3,13 @@
 
 		var uiBehaviour = this;
 
+		this.init = function() {
+			$('.in2studyfinder__fast-select').removeClass('hide');
+			$('.in2studyfinder__filter').removeClass('hide');
+
+			this.checkboxHandling();
+		};
+
 		this.enableLoading = function() {
 			$(dom).addClass('in2studyfinder__loading');
 		};
