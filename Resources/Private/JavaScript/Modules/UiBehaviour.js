@@ -62,7 +62,7 @@
 				$(element).siblings('.in2studyfinder-js-checkbox-all').prop('checked', false).prop('disabled', false);
 			} else {
 				if ($(element).siblings('.in2studyfinder-js-checkbox:checkbox:checked').length === 0) {
-					$(element).siblings('.in2studyfinder-js-checkbox-all').prop("checked", true).prop("disabled", true);
+					$(element).siblings('.in2studyfinder-js-checkbox-all').prop('checked', true).prop('disabled', true);
 				}
 			}
 		};

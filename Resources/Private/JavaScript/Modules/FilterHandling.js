@@ -30,7 +30,7 @@
 				url += '&tx_in2studyfinder_pi1%5B%40widget_0%5D%5BcurrentPage%5D=' + paginationPage;
 			}
 			$.ajax({
-				type: "POST",
+				type: 'POST',
 				url: url,
 				data: studyFinderForm.serialize(),
 				beforeSend: function () {
@@ -56,7 +56,7 @@
 				uiBehaviour.resetAllFilterCheckboxes();
 				filterHandling.filterChanged();
 			});
-		}
+		};
 
 
 	}
