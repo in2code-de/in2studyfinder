@@ -39,10 +39,10 @@ class ConfigurationUtility extends AbstractUtility
      *
      * @return bool
      */
-    public static function isDisableGlobalData()
+    public static function isEnableGlobalData()
     {
         $extensionConfig = AbstractUtility::getExtensionConfiguration();
 
-        return $extensionConfig['disableGlobalData'] === '1';
+        return $extensionConfig['enableGlobalData'] === '1';
     }
 }

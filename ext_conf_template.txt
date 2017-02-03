@@ -1,2 +1,2 @@
-# cat=basic/enable/010; type=boolean; label= Disable Global Data Fields
-disableGlobalData = 1
+# cat=basic/enable/010; type=boolean; label= Enable Global Data Fields
+enableGlobalData = 0

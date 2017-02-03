@@ -160,6 +160,12 @@
 			<trans-unit id="defaultPreset">
 				<source>default preset for global fields</source>
 			</trans-unit>
+			<trans-unit id="differentPreset">
+				<source>different global fields preset</source>
+			</trans-unit>
+			<trans-unit id="defaultPreset">
+				<source>default preset for global fields</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

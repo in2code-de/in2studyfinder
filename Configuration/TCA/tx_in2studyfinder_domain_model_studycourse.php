@@ -225,7 +225,7 @@ $tcaConfiguration = [
     ],
 ];
 
-if (!ConfigurationUtility::isDisableGlobalData()) {
+if (ConfigurationUtility::isEnableGlobalData()) {
 
     $tcaConfiguration['columns']['different_preset'] = [
         'exclude' => 1,

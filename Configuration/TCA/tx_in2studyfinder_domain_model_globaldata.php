@@ -8,7 +8,7 @@ $ll = 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:';
 $table = 'tx_in2studyfinder_domain_model_globaldata';
 $icon = ExtensionManagementUtility::extRelPath('in2studyfinder') . 'Resources/Public/Icons/' . $table . '.png';
 
-if (!ConfigurationUtility::isDisableGlobalData()) {
+if (ConfigurationUtility::isEnableGlobalData()) {
     return [
         'ctrl' => [
             'title' => $ll . 'globalData',
