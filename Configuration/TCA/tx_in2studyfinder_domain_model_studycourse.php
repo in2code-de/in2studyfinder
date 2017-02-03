@@ -174,7 +174,10 @@ $tcaConfiguration = [
                 'MM' => 'tx_in2studyfinder_studycourse_ttcontent_mm',
                 'maxitems' => 9999,
                 'size' => 10,
-                'wizards' => TcaUtility::getSuggestWizard(),
+                'wizards' => [
+                    'suggest' => TcaUtility::getSuggestWizard(),
+                    'edit' => TcaUtility::getEditWizard(),
+                ]
             ],
         ],
         'academic_degree' => TcaUtility::getFullTcaForSingleSelect($ll . 'academicDegree',

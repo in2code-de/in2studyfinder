@@ -268,7 +268,10 @@ class TcaUtility extends AbstractUtility
                     'minitems' => $minItems,
                     'maxitems' => $maxItems,
                     'multiple' => 0,
-                    'wizards' => self::getSuggestWizard(),
+                    'wizards' => [
+                        'suggest' => self::getSuggestWizard(),
+                        'edit' => self::getEditWizard(),
+                    ],
                 ],
             ];
         } else {
@@ -284,7 +287,10 @@ class TcaUtility extends AbstractUtility
                     'foreign_table_where' => 'AND sys_language_uid in (-1, 0)',
                     'minitems' => $minItems,
                     'maxitems' => $maxItems,
-                    'wizards' => self::getSuggestWizard(),
+                    'wizards' => [
+                        'suggest' => self::getSuggestWizard(),
+                        'edit' => self::getEditWizard(),
+                    ],
                 ],
             ];
         }
@@ -298,10 +304,68 @@ class TcaUtility extends AbstractUtility
     public static function getSuggestWizard()
     {
         return [
-            'suggest' => [
-                'type' => 'suggest',
+            'type' => 'suggest',
+        ];
+    }
+
+    /**
+     * returns the TCA for an add wizard
+     *
+     * @param string $table
+     * @param string $pid
+     *
+     * @return array
+     */
+    public static function getAddWizard($table, $pid = '###CURRENT_PID###')
+    {
+        $wizard = [
+            'type' => 'script',
+            'title' => 'LLL:EXT:cms/locallang_tca.xlf:sys_template.basedOn_add',
+            'params' => [
+                'table' => $table,
+                'pid' => $pid,
+                'setValue' => 'prepend'
             ],
         ];
+
+        if (VersionUtility::isTypo3MajorVersionBelow(7)) {
+            $wizard['icon'] = 'add.gif';
+            $wizard['script'] = 'wizard_add.php';
+        } else {
+            $wizard['icon'] = 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif';
+            $wizard['module'] = [
+                'name' => 'wizard_add',
+            ];
+        }
+
+        return $wizard;
+    }
+
+    /**
+     * returns the TCA for an edit wizard
+     *
+     * @return array
+     */
+    public static function getEditWizard()
+    {
+        $wizard = [
+            'type' => 'popup',
+            'title' => 'Edit',
+            'popup_onlyOpenIfSelected' => 1,
+            'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1'
+        ];
+
+        if (VersionUtility::isTypo3MajorVersionBelow(7)) {
+            $wizard['icon'] = 'edit2.gif';
+            $wizard['script'] = 'wizard_edit.php';
+        } else {
+            $wizard['icon'] = 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif';
+            $wizard['module'] = [
+                'name' => 'wizard_edit',
+            ];
+        }
+
+        return $wizard;
     }
 
     /**
