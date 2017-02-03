@@ -26,8 +26,6 @@ namespace In2code\In2studyfinder\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use In2code\In2studyfinder\Utility\ExtensionUtility;
-use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
@@ -35,32 +33,6 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class AbstractRepository extends Repository
 {
-
-    public function initializeObject() {
-        $this->setQuerySettings();
-    }
-
-    /**
-     * Set Query Settings
-     */
-    protected function setQuerySettings() {
-        /** @var $querySettings Typo3QuerySettings */
-        $querySettings = $this->objectManager->get(Typo3QuerySettings::class);
-        $settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
-
-        $querySettings->setStoragePageIds(
-            [
-                $settings['settingsPid'],
-                $settings['storagePid']
-            ]
-        );
-
-        $querySettings->setLanguageOverlayMode(true);
-        $querySettings->setLanguageMode('strict');
-
-        $this->setDefaultQuerySettings($querySettings);
-    }
-
     /**
      * @param array $options
      * @return array
@@ -74,7 +46,6 @@ class AbstractRepository extends Repository
         }
         return $constraints;
     }
-
 }
 
 
