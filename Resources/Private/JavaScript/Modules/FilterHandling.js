@@ -51,10 +51,28 @@
 			});
 		};
 
+		this.isAnyFilterSet = function () {
+			var isFilterSet = false;
+
+			$.each($('.in2studyfinder-js-checkbox'), function() {
+				if ($(this).prop('checked')) {
+					isFilterSet = true;
+				}
+			});
+
+			return isFilterSet;
+		};
+
 		this.resetAllFilterOptions = function() {
 			$('.in2studyfinder-js-reset-filter-options').on('click', function () {
-				uiBehaviour.resetAllFilterCheckboxes();
-				filterHandling.filterChanged();
+				if (filterHandling.isAnyFilterSet()) {
+					uiBehaviour.resetAllFilterCheckboxes();
+					filterHandling.filterChanged();
+				} else {
+					uiBehaviour.hideFilters();
+					uiBehaviour.toggleShowFiltersButton();
+				}
+
 			});
 		};
 

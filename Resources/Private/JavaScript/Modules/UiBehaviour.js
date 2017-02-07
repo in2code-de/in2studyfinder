@@ -80,6 +80,26 @@
 			uiBehaviour.toggleOptionFormVisibility();
 			uiBehaviour.toggleOptionSectionVisibility();
 		};
+
+		this.hideFilters = function () {
+			$.each($('.in2studyfinder-js-option-section'), function () {
+				$(this).addClass('hide');
+			});
+		};
+
+		this.toggleShowFiltersButton = function () {
+
+			var showButton = $('.in2studyfinder-js-show-filter-options');
+			var resetButton = $('.in2studyfinder-js-reset-filter-options');
+
+			if (showButton.hasClass('hide')) {
+				showButton.removeClass('hide');
+				resetButton.addClass('hide');
+			} else if (resetButton.hasClass('hide')) {
+				resetButton.removeClass('hide');
+				showButton.addClass('hide');
+			}
+		};
 	}
 
 	// export to global scope
