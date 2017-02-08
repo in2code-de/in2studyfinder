@@ -26,6 +26,9 @@ namespace In2code\In2studyfinder\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use In2code\In2studyfinder\Utility\DataPresetUtility;
+use In2code\In2studyfinder\Utility\ExtensionUtility;
+use In2code\In2studyfinder\Utility\GlobalDataUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
@@ -169,6 +172,19 @@ class StudyCourse extends AbstractEntity
      * @var integer
      */
     protected $sysLanguageUid = 0;
+
+    /**
+     * @var \In2code\In2studyfinder\Domain\Model\GlobalData
+     */
+    protected $globalDataPreset = null;
+
+    /**
+     * @param int $uid
+     */
+    public function setUid($uid)
+    {
+        $this->uid = $uid;
+    }
 
     /**
      * Returns the title
@@ -414,7 +430,7 @@ class StudyCourse extends AbstractEntity
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\TtContent> $contentElements
      * @return void
      */
-    public function setContentElements(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $contentElements)
+    public function setContentElements(ObjectStorage $contentElements)
     {
         $this->contentElements = $contentElements;
     }
@@ -456,7 +472,7 @@ class StudyCourse extends AbstractEntity
      * @param \In2code\In2studyfinder\Domain\Model\Department $department
      * @return void
      */
-    public function setDepartment(\In2code\In2studyfinder\Domain\Model\Department $department)
+    public function setDepartment(Department $department)
     {
         $this->department = $department;
     }
@@ -477,7 +493,7 @@ class StudyCourse extends AbstractEntity
      * @param \In2code\In2studyfinder\Domain\Model\Faculty $faculty
      * @return void
      */
-    public function setFaculty(\In2code\In2studyfinder\Domain\Model\Faculty $faculty)
+    public function setFaculty(Faculty $faculty)
     {
         $this->faculty = $faculty;
     }
@@ -541,7 +557,7 @@ class StudyCourse extends AbstractEntity
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\CourseLanguage> $courseLanguages
      * @return void
      */
-    public function setCourseLanguages(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $courseLanguages)
+    public function setCourseLanguages(ObjectStorage $courseLanguages)
     {
         $this->courseLanguages = $courseLanguages;
     }
@@ -584,7 +600,7 @@ class StudyCourse extends AbstractEntity
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\AdmissionRequirement> $admissionRequirements
      * @return void
      */
-    public function setAdmissionRequirements(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $admissionRequirements)
+    public function setAdmissionRequirements(ObjectStorage $admissionRequirements)
     {
         $this->admissionRequirements = $admissionRequirements;
     }
@@ -702,4 +718,40 @@ class StudyCourse extends AbstractEntity
         $this->metaDescription = $metaDescription;
     }
 
+    /**
+     * @return GlobalData
+     */
+    public function getGlobalDataPreset()
+    {
+        return $this->globalDataPreset;
+    }
+
+    /**
+     * @param GlobalData $globalDataPreset
+     */
+    public function setGlobalDataPreset($globalDataPreset)
+    {
+        $this->globalDataPreset = $globalDataPreset;
+    }
+
+    /**
+     * @return GlobalData|null
+     */
+    public function getGlobalData()
+    {
+        $globalData = null;
+
+        if (!is_null($this->getGlobalDataPreset())) {
+            $globalData = $this->getGlobalDataPreset();
+        } else {
+            $globalData = GlobalDataUtility::getDefaultPreset();
+        }
+
+        return $globalData;
+    }
+
+    public function getTitleWithAcademicDegree()
+    {
+        return $this->getTitle() . ' - ' . $this->getAcademicDegree()->getDegree();
+    }
 }

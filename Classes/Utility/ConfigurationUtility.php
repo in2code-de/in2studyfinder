@@ -1,11 +1,11 @@
 <?php
-namespace In2code\In2studyfinder\Domain\Model;
+namespace In2code\In2studyfinder\Utility;
 
 /***************************************************************
  *
  *  Copyright notice
  *
- *  (c) 2016 Sebastian Stein <sebastian.stein@in2code.de>, In2code GmbH
+ *  (c) 2016 Sebastian Stein <sebastian.stein@in2code.de>, In2code.de
  *
  *  All rights reserved
  *
@@ -26,51 +26,23 @@ namespace In2code\In2studyfinder\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
-
 /**
- * AdmissionRequirement
+ * ConfigurationUtility class
+ *
+ * @package in2studyfinder
  */
-class AdmissionRequirement extends AbstractEntity
+class ConfigurationUtility extends AbstractUtility
 {
 
     /**
-     * title
+     * Check if disableIpLog is active
      *
-     * @var string
-     * @validate NotEmpty
+     * @return bool
      */
-    protected $title = '';
-    
-    /**
-     * Returns the title
-     *
-     * @return string $title
-     */
-    public function getTitle()
+    public static function isEnableGlobalData()
     {
-        return $this->title;
-    }
+        $extensionConfig = AbstractUtility::getExtensionConfiguration();
 
-    /**
-     * Sets the title
-     *
-     * @param string $title
-     * @return void
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
+        return $extensionConfig['enableGlobalData'] === '1';
     }
-
-    /**
-     * Returns the option Field
-     *
-     * @return string title
-     */
-    public function getOptionField()
-    {
-        return $this->getTitle();
-    }
-
 }

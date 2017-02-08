@@ -33,7 +33,6 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class AbstractRepository extends Repository
 {
-
     /**
      * @param array $options
      * @return array
@@ -47,7 +46,6 @@ class AbstractRepository extends Repository
         }
         return $constraints;
     }
-
 }
 
 

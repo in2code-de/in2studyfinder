@@ -22,13 +22,13 @@ plugin.tx_in2studyfinder {
 
 		filter {
 			allowedFilterTypes {
-				0 = In2code\In2studyfinder\Domain\Repository\AcademicDegree
-				1 = In2code\In2studyfinder\Domain\Repository\AdmissionRequirement
-				2 = In2code\In2studyfinder\Domain\Repository\CourseLanguage
-				3 = In2code\In2studyfinder\Domain\Repository\Department
-				4 = In2code\In2studyfinder\Domain\Repository\Faculty
-				5 = In2code\In2studyfinder\Domain\Repository\StartOfStudy
-				6 = In2code\In2studyfinder\Domain\Repository\TypeOfStudy
+				0 = In2code\In2studyfinder\Domain\Model\AcademicDegree
+				1 = In2code\In2studyfinder\Domain\Model\AdmissionRequirement
+				2 = In2code\In2studyfinder\Domain\Model\CourseLanguage
+				3 = In2code\In2studyfinder\Domain\Model\Department
+				4 = In2code\In2studyfinder\Domain\Model\Faculty
+				5 = In2code\In2studyfinder\Domain\Model\StartOfStudy
+				6 = In2code\In2studyfinder\Domain\Model\TypeOfStudy
 				//7 = standardPeriodOfStudy
 			}
 
@@ -53,6 +53,9 @@ plugin.tx_in2studyfinder {
 		recursive = {$plugin.tx_in2studyfinder.persistence.recursive}
 	}
 }
+
+# Module configuration
+module.tx_in2studyfinder < plugin.tx_in2studyfinder
 
 ############################
 # JavaScript and CSS section

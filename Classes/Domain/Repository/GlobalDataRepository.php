@@ -1,5 +1,6 @@
 <?php
-namespace In2code\In2studyfinder\Domain\Model;
+
+namespace In2code\In2studyfinder\Domain\Repository;
 
 /***************************************************************
  *
@@ -26,51 +27,45 @@ namespace In2code\In2studyfinder\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use In2code\In2studyfinder\Domain\Model\GlobalData;
+use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * AdmissionRequirement
+ * The repository for StudyCourses
  */
-class AdmissionRequirement extends AbstractEntity
+class GlobalDataRepository extends AbstractRepository
 {
-
     /**
-     * title
-     *
-     * @var string
-     * @validate NotEmpty
+     * @return GlobalData|null
      */
-    protected $title = '';
-    
-    /**
-     * Returns the title
-     *
-     * @return string $title
-     */
-    public function getTitle()
+    public function findDefaultPreset()
     {
-        return $this->title;
+        $query = $this->createQuery();
+
+        $query->getQuerySettings()->setRespectStoragePage(false);
+
+        return $query->matching(
+            $query->logicalAnd(
+                $query->equals('default_preset', true),
+                $query->equals('deleted', 0)
+            ))->execute()->getFirst();
     }
 
     /**
-     * Sets the title
-     *
-     * @param string $title
-     * @return void
+     * @return int
      */
-    public function setTitle($title)
+    public function countDefaultPreset()
     {
-        $this->title = $title;
-    }
+        $query = $this->createQuery();
 
-    /**
-     * Returns the option Field
-     *
-     * @return string title
-     */
-    public function getOptionField()
-    {
-        return $this->getTitle();
-    }
+        $query->getQuerySettings()->setRespectStoragePage(false);
 
+        return $query->matching(
+            $query->logicalAnd(
+                $query->equals('default_preset', true),
+                $query->equals('deleted', 0)
+            ))->execute()->count();
+    }
 }

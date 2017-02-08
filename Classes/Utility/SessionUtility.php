@@ -6,7 +6,7 @@ namespace In2code\In2studyfinder\Utility;
  *
  * @package In2code\In2studyfinder\Utility
  */
-class SessionUtility {
+class SessionUtility extends AbstractUtility {
 
 	/**
 	 * @var string

@@ -31,34 +31,26 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
-class ExtensionUtility
+class ExtensionUtility extends AbstractUtility
 {
 
     /**
      * @param string $extKey
      * @return mixed
      */
-    public static function getExtensionConfiguration($extKey)
+    public static function getExtensionSettings($extKey)
     {
-        /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-        /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = $objectManager->get(
-            'TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManagerInterface'
-        );
-
-        return $configurationManager->getConfiguration(
-            ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
-            ucfirst($extKey)
-        );
+        return self::getConfigurationManager()->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
+            ucfirst($extKey));
     }
 
     /**
      * @return bool
      */
-    public static function isIn2studycoursesExtendLoaded() {
+    public static function isIn2studycoursesExtendLoaded()
+    {
+
         $isLoaded = false;
 
         if (ExtensionManagementUtility::isLoaded('in2studyfinder_extend')) {
@@ -75,47 +67,7 @@ class ExtensionUtility
     public static function getClassName($object)
     {
         $fullQualifiedClassName = get_class($object);
-        return lcfirst(
-            substr(
-                $fullQualifiedClassName,
-                strripos($fullQualifiedClassName, "\\") + 1
-            )
-        );
-    }
-
-    /**
-     * Get current TYPO3 version as compareable integer
-     *
-     * @return int
-     */
-    public static function getCurrentTypo3MajorVersion()
-    {
-
-        $versionArray = VersionNumberUtility::convertVersionStringToArray(VersionNumberUtility::getCurrentTypo3Version());
-
-        return $versionArray['version_main'];
-    }
-
-    /**
-     * Is current TYPO3 newer than the version
-     *
-     * @param int $typo3Version
-     * @return bool
-     */
-    public static function isTypo3MajorVersionAbove($typo3Version)
-    {
-        return self::getCurrentTypo3MajorVersion() > $typo3Version;
-    }
-
-    /**
-     * Is current TYPO3 newer than the minium version
-     *
-     * @param int $typo3Version
-     * @return bool
-     */
-    public static function isTypo3MajorVersionBelow($typo3Version)
-    {
-        return self::getCurrentTypo3MajorVersion() < $typo3Version;
+        return lcfirst(substr($fullQualifiedClassName, strripos($fullQualifiedClassName, "\\") + 1));
     }
 }
 

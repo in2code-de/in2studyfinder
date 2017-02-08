@@ -1,11 +1,12 @@
 <?php
-namespace In2code\In2studyfinder\Domain\Model;
+
+namespace In2code\In2studyfinder\Utility;
 
 /***************************************************************
  *
  *  Copyright notice
  *
- *  (c) 2016 Sebastian Stein <sebastian.stein@in2code.de>, In2code GmbH
+ *  (c) 2015 Sebastian Stein <sebastian.stein@in2code.de>, In2code.de
  *
  *  All rights reserved
  *
@@ -26,51 +27,38 @@ namespace In2code\In2studyfinder\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 
-/**
- * AdmissionRequirement
- */
-class AdmissionRequirement extends AbstractEntity
+class AbstractUtility
 {
 
     /**
-     * title
-     *
-     * @var string
-     * @validate NotEmpty
+     * @return ObjectManager
      */
-    protected $title = '';
-    
-    /**
-     * Returns the title
-     *
-     * @return string $title
-     */
-    public function getTitle()
+    public static function getObjectManager()
     {
-        return $this->title;
+        return GeneralUtility::makeInstance(ObjectManager::class);
     }
 
     /**
-     * Sets the title
-     *
-     * @param string $title
-     * @return void
+     * @return ConfigurationManager
      */
-    public function setTitle($title)
+    public static function getConfigurationManager()
     {
-        $this->title = $title;
+        return self::getObjectManager()->get(ConfigurationManager::class);
     }
 
     /**
-     * Returns the option Field
+     * Get extension configuration from LocalConfiguration.php
      *
-     * @return string title
+     * @return array
      */
-    public function getOptionField()
+    public static function getExtensionConfiguration()
     {
-        return $this->getTitle();
+        return unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['in2studyfinder']);
     }
-
 }
+
+?>

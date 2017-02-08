@@ -27,7 +27,7 @@
 			var studyFinderForm = $('.in2studyfinder-js-filter');
 			var url = urlHandling.removeUrlParam('cHash', studyFinderForm.attr('action'));
 			if (paginationPage) {
-				url += '&tx_in2studyfinder_studycourse%5B%40widget_0%5D%5BcurrentPage%5D=' + paginationPage;
+				url += '&tx_in2studyfinder_pi1%5B%40widget_0%5D%5BcurrentPage%5D=' + paginationPage;
 			}
 			$.ajax({
 				type: "POST",
@@ -41,12 +41,6 @@
 					$('.in2studyfinder').html($(data).find('.in2studyfinder').html());
 				},
 				error: function () {
-					//var lang = $('html').attr('lang');
-					//if (lang === 'de') {
-					//	alert('Ihre abgespeicherte Suche kann nicht mehr ausgeführt werden. Bitte wählen sie ihr Filter erneut');
-					//} else {
-					//	alert('This results page is not available any more. Please search again');
-					//}
 				},
 				complete: function () {
 					start.init();

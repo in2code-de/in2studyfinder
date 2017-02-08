@@ -1,5 +1,5 @@
 <?php
-namespace In2code\In2studyfinder\Controller;
+namespace In2code\In2studyfinder\Domain\Model;
 
 /***************************************************************
  *
@@ -26,20 +26,62 @@ namespace In2code\In2studyfinder\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
- * StudyCourseController
+ * StudyCourse
  */
-class AbstractController extends ActionController
+class GlobalData extends AbstractEntity
 {
 
     /**
-     * studyCourseRepository
+     * title
      *
-     * @var \In2code\In2studyfinder\Domain\Repository\StudyCourseRepository
-     * @inject
+     * @var string
+     * @validate NotEmpty
      */
-    protected $studyCourseRepository = null;
+    protected $title = '';
+
+    /**
+     * @var bool
+     */
+    protected $defaultPreset = false;
+
+    /**
+     * Returns the title
+     *
+     * @return string $title
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Sets the title
+     *
+     * @param string $title
+     * @return void
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isDefaultPreset()
+    {
+        return $this->defaultPreset;
+    }
+
+    /**
+     * @param boolean $defaultPreset
+     */
+    public function setDefaultPreset($defaultPreset)
+    {
+        $this->defaultPreset = $defaultPreset;
+    }
 
 }

@@ -10,17 +10,17 @@ plugin.tx_in2studyfinder {
 
 	persistence {
 		# cat=plugin.tx_in2studyfinder//a; type=string; label=Default storage PID
-		storagePid = 2
+		storagePid =
 		# cat=plugin.tx_in2studyfinder//a; type=string; label=Recursion level of the storagePid
-		recursive = 1
+		recursive =
 
 	}
 
 	settings {
 		# cat=plugin.tx_in2studyfinder//a; type=string; label=Default storage PID
-		storagePid = 2
+		storagePid =
 		# cat=plugin.tx_in2studyfinder//a; type=string; label=Settings storage PID
-		settingsPid = 3
+		settingsPid =
 
 		filter {
 			# cat=plugin.tx_in2studyfinder//a; type=string; label=Recursion level for the Filter Options
@@ -36,8 +36,7 @@ plugin.tx_in2studyfinder {
 			addJQueryFromGoogle = 0
 
 			# cat=plugin.tx_in2studyfinder//a; type=text; label= jQuery Source: Change jQuery Source - per default it will be loaded from googleapis.com
-			//in2studyfinderJQuery = //ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js
-			in2studyfinderJQuery = EXT:in2studyfinder/Resources/Public/JavaScript/jquery-2.1.3.min.js
+			in2studyfinderJQuery = //ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js
 
 			# cat=plugin.tx_in2studyfinder//a; type=text; label= Select2 Source
 			in2studyfinderSelect2 = EXT:in2studyfinder/Resources/Public/JavaScript/select2.min.js

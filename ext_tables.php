@@ -23,32 +23,34 @@ $extKey = 'in2studyfinder';
 
 if (TYPO3_MODE === 'BE') {
 
-    /**
-     * Register Icons
-     */
+    if (\In2code\In2studyfinder\Utility\VersionUtility::isTypo3MajorVersionAbove(6)) {
 
-    /**
-     * Compatibility for Typo3 6.2 LTS
-     *
-     * @todo set Icon for Typo3 6.2
-     */
-    if (\In2code\In2studyfinder\Utility\ExtensionUtility::isTypo3MajorVersionAbove(6)) {
-        /** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
+        /**
+         * Register Icons
+         */
         $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
         $iconRegistry->registerIcon(
             'in2studyfinder-plugin-icon',
             \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
             ['source' => 'EXT:in2studyfinder/ext_icon.png']
         );
+
+        /**
+         * Add to ContentElementWizard
+         */
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
+            '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:in2studyfinder/Configuration/TSConfig/ContentElementWizard.typoscript">'
+        );
+
+    } else {
+
+        /**
+         * Add to ContentElementWizard
+         */
+        $TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['In2code\In2studyfinder\Utility\Hook\WizIcon'] =
+            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extKey) . 'Classes/Utility/Hook/WizIcon.php';
     }
 }
-
-/**
- * Add ContentElementWizard for ListView and DetailView
- */
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
-    '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:in2studyfinder/Configuration/TSConfig/ContentElementWizard.typoscript">'
-);
 
 /**
  * Include Flexform

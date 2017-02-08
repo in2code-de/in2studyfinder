@@ -1,26 +1,43 @@
 <?php
-namespace In2code\In2studycourses\ViewHelpers;
+namespace In2code\In2studyfinder\ViewHelpers;
 
-class ForViewHelper {
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
-	/**
-	 * @param array $for
-	 * @param string $as
-	 * @param string $letter
-	 * @return array
-	 */
-	public function render($for, $as, $letter = 'letter') {
-		$sortedStudyCourses = array();
-		/** @var \In2code\In2studyfinder\Domain\Model\StudyCourse $studyCourse */
-		foreach($for as $studyCourse) {
-			$sortedStudyCourses[substr($studyCourse->getTitle(), 0, 1)][] = $studyCourse;
-		}
-		$results = array();
-		foreach($sortedStudyCourses as $capitalLetter => $course) {
-			$this->setVariable($letter, $capitalLetter);
-			$this->setVariable($as, $course);
-			$results[] = $this->renderChildren();
-		}
-		return implode($results);
-	}
+class ForViewHelper extends AbstractViewHelper
+{
+
+    /**
+     * @param array $for
+     * @param string $as
+     * @param string $letter
+     * @return array
+     */
+    public function render($for, $as, $letter = 'letter')
+    {
+        $sortedStudyCourses = array();
+
+        foreach ($for as $studyCourse) {
+            $sortedStudyCourses[substr($studyCourse->getTitle(), 0, 1)][] = $studyCourse;
+        }
+        $results = array();
+        foreach ($sortedStudyCourses as $capitalLetter => $course) {
+            $this->setVariable($letter, $capitalLetter);
+            $this->setVariable($as, $course);
+            $results[] = $this->renderChildren();
+        }
+        return implode($results);
+    }
+
+    /**
+     * @param string $name
+     * @param mixed $value
+     * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException
+     */
+    protected function setVariable($name, $value)
+    {
+        if ($this->templateVariableContainer->exists($name)) {
+            $this->templateVariableContainer->remove($name);
+        }
+        $this->templateVariableContainer->add($name, $value);
+    }
 }
