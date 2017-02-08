@@ -1,2 +1,5 @@
 # cat=basic/enable/010; type=boolean; label= Enable Global Data Fields
 enableGlobalData = 0
+
+# cat=basic/enable/020; type=boolean; label= Enable the Caching functionality
+enableCaching = 1

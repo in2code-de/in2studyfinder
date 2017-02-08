@@ -38,3 +38,17 @@ if (In2code\In2studyfinder\Utility\ExtensionUtility::isIn2studycoursesExtendLoad
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['de']['EXT:in2studyfinder/Resources/Private/Language/de.locallang.xlf'][]
         = 'EXT:in2studyfinder_extend/Resources/Private/Language/de.locallang.xlf';
 }
+
+if (\In2code\In2studyfinder\Utility\ConfigurationUtility::isCachingEnabled()) {
+    if( !is_array($GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey] ) ) {
+        $GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey] = array();
+    }
+    if( !isset($GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey]['frontend'] ) ) {
+        $GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey]['frontend'] =
+            \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class;
+    }
+    if( !isset($GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey]['groups'] ) ) {
+        $GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey]['groups'] =
+            array('pages');
+    }
+}

@@ -26,8 +26,11 @@ namespace In2code\In2studyfinder\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use In2code\Femanager\Utility\HashUtility;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
+use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
@@ -35,6 +38,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 
 /**
  * StudyCourseController
@@ -71,10 +75,27 @@ class StudyCourseController extends ActionController
     protected $allowedSearchFields = [];
 
     /**
+     * cacheUtility
+     *
+     * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+     */
+    protected $cacheInstance;
+
+    /**
+     * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+     */
+    protected $cObj;
+
+    /**
      * initialize action
      */
     protected function initializeAction()
     {
+        if (ConfigurationUtility::isCachingEnabled()) {
+            $this->cacheInstance = GeneralUtility::makeInstance(CacheManager::class)->getCache('in2studyfinder');
+            $this->cObj = $this->configurationManager->getContentObject();
+        }
+
         foreach ($this->settings['filter']['filterTypeLabelField'] as $key => $value) {
             $this->allowedSearchFields[] = $key;
         }
@@ -129,7 +150,22 @@ class StudyCourseController extends ActionController
             }
         }
         if (!empty($searchOptions)) {
-            $foundStudyCourses = $this->processSearch($searchOptions);
+
+            if (ConfigurationUtility::isCachingEnabled()) {
+                $cacheIdentifier = md5(
+                    $GLOBALS['TSFE']->id . '-' . $this->cObj->data['uid']. '-' . $GLOBALS['TSFE']->sys_language_uid .
+                    '-' . $this->actionMethodName . '-' . json_encode($searchOptions)
+                );
+
+                $foundStudyCourses = $this->cacheInstance->get($cacheIdentifier);
+
+                if (!$foundStudyCourses) {
+                    $foundStudyCourses = $this->processSearch($searchOptions);
+                    $this->cacheInstance->set($cacheIdentifier, $foundStudyCourses, ['in2studyfinder']);
+                }
+            } else {
+                $foundStudyCourses = $this->processSearch($searchOptions);
+            }
 
             $this->view->assignMultiple([
                 'searchedOptions' => $searchOptions,
@@ -226,10 +262,39 @@ class StudyCourseController extends ActionController
 
         $selectedOptions = $this->getSelectedFlexformOptions();
 
-        if (!empty($selectedOptions)) {
-            $studyCourses = $this->processSearch($selectedOptions);
+        if (ConfigurationUtility::isCachingEnabled()) {
+
+            if (!empty($selectedOptions)) {
+                $cacheIdentifier = md5(
+                    $GLOBALS['TSFE']->id . "-" . $this->cObj->data['uid']. "-" . $GLOBALS['TSFE']->sys_language_uid .
+                    "-" . $this->actionMethodName . '-' . json_encode($selectedOptions)
+                );
+            } else {
+                $cacheIdentifier = md5(
+                    $GLOBALS['TSFE']->id . "-" . $this->cObj->data['uid']. "-" . $GLOBALS['TSFE']->sys_language_uid .
+                    "-" . $this->actionMethodName
+                );
+            }
+
+            $studyCourses = $this->cacheInstance->get($cacheIdentifier);
+
+            if (!$studyCourses) {
+
+                if (!empty($selectedOptions)) {
+                    $studyCourses = $this->processSearch($selectedOptions);
+                } else {
+                    $studyCourses = $this->studyCourseRepository->findAll();
+                }
+                // In diesem Beispiel wird das Ergebnis des Repositories im Cache gespeichert.
+                // Es ist natürlich möglich noch viel mehr zu speichern.
+                $this->cacheInstance->set($cacheIdentifier, $studyCourses, ['in2studyfinder']);
+            }
         } else {
-            $studyCourses = $this->studyCourseRepository->findAll();
+            if (!empty($selectedOptions)) {
+                $studyCourses = $this->processSearch($selectedOptions);
+            } else {
+                $studyCourses = $this->studyCourseRepository->findAll();
+            }
         }
 
         return $studyCourses;
@@ -286,6 +351,7 @@ class StudyCourseController extends ActionController
 
     /**
      * @param QueryResult $queryResult
+     * @param string $searchIdentifier
      * @return array
      * @throws \TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException
      */
