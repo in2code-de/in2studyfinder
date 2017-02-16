@@ -168,6 +168,8 @@ class TcaUtility extends AbstractUtility
      * @param string $table
      * @param int $minItems
      * @param int $exclude
+     * @param string $l10nMode
+     * @param string $l10nDisplay
      *
      * @return array
      */
@@ -175,11 +177,14 @@ class TcaUtility extends AbstractUtility
         $label,
         $table,
         $exclude = 1,
-        $minItems = 0
+        $minItems = 0,
+        $l10nMode = 'exclude',
+        $l10nDisplay = 'defaultAsReadonly'
     ) {
         return [
             'exclude' => $exclude,
-            'l10n_mode' => 'exclude',
+            'l10n_mode' => $l10nMode,
+            'l10n_display' => $l10nDisplay,
             'label' => $label,
             'config' => [
                 'type' => 'select',
@@ -199,6 +204,8 @@ class TcaUtility extends AbstractUtility
      * @param int $exclude
      * @param int $minItems
      * @param int $maxItems
+     * @param string $l10nMode
+     * @param string $l10nDisplay
      *
      * @return array
      */
@@ -208,7 +215,9 @@ class TcaUtility extends AbstractUtility
         $mmTable,
         $exclude = 1,
         $minItems = 0,
-        $maxItems = 5
+        $maxItems = 5,
+        $l10nMode = 'exclude',
+        $l10nDisplay = 'defaultAsReadonly'
     ) {
         /**
          * Compatibility for Typo3 6.2 LTS
@@ -218,7 +227,8 @@ class TcaUtility extends AbstractUtility
         } else {
             return [
                 'exclude' => $exclude,
-                'l10n_mode' => 'exclude',
+                'l10n_mode' => $l10nMode,
+                //'l10n_display' => $l10nDisplay,
                 'label' => $label,
                 'config' => [
                     'type' => 'select',
@@ -240,6 +250,8 @@ class TcaUtility extends AbstractUtility
      * @param int $exclude
      * @param int $minItems
      * @param int $maxItems
+     * @param string $l10nMode
+     * @param string $l10nDisplay
      *
      * @return array
      */
@@ -249,19 +261,21 @@ class TcaUtility extends AbstractUtility
         $mmTable,
         $exclude = 1,
         $minItems = 0,
-        $maxItems = 9999
+        $maxItems = 9999,
+        $l10nMode = 'exclude',
+        $l10nDisplay = 'defaultAsReadonly'
     ) {
         if (VersionUtility::isTypo3MajorVersionBelow(7)) {
             return [
                 'exclude' => $exclude,
-                'l10n_mode' => 'exclude',
+                'l10n_mode' => $l10nMode,
+                //'l10n_display' => $l10nDisplay, did not work on Typo3 7 maybe core bug
                 'label' => $label,
                 'config' => [
                     'type' => 'select',
                     'foreign_table' => $table,
                     'MM' => $mmTable,
                     'foreign_table_where' => 'AND sys_language_uid in (-1, 0)',
-                    'MM' => $mmTable,
                     'size' => 5,
                     'autoSizeMax' => 30,
                     'minitems' => $minItems,
@@ -276,7 +290,8 @@ class TcaUtility extends AbstractUtility
         } else {
             return [
                 'exclude' => $exclude,
-                'l10n_mode' => 'exclude',
+                'l10n_mode' => $l10nMode,
+                //'l10n_display' => $l10nDisplay, did not work on Typo3 7 maybe core bug
                 'label' => $label,
                 'config' => [
                     'type' => 'select',
@@ -698,7 +713,7 @@ class TcaUtility extends AbstractUtility
 
         if ($status) {
             $showItemArray = explode(',', $GLOBALS['TCA'][$table][$section][$sectionName]['showitem']);
-            
+
             array_walk($showItemArray, [self::class, 'trimValue']);
 
             foreach ($fields as $field) {
