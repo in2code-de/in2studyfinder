@@ -205,7 +205,6 @@ class TcaUtility extends AbstractUtility
      * @param int $minItems
      * @param int $maxItems
      * @param string $l10nMode
-     * @param string $l10nDisplay
      *
      * @return array
      */
@@ -216,8 +215,7 @@ class TcaUtility extends AbstractUtility
         $exclude = 1,
         $minItems = 0,
         $maxItems = 5,
-        $l10nMode = 'exclude',
-        $l10nDisplay = 'defaultAsReadonly'
+        $l10nMode = 'exclude'
     ) {
         /**
          * Compatibility for Typo3 6.2 LTS
@@ -228,7 +226,6 @@ class TcaUtility extends AbstractUtility
             return [
                 'exclude' => $exclude,
                 'l10n_mode' => $l10nMode,
-                //'l10n_display' => $l10nDisplay,
                 'label' => $label,
                 'config' => [
                     'type' => 'select',
@@ -251,7 +248,6 @@ class TcaUtility extends AbstractUtility
      * @param int $minItems
      * @param int $maxItems
      * @param string $l10nMode
-     * @param string $l10nDisplay
      *
      * @return array
      */
@@ -262,14 +258,12 @@ class TcaUtility extends AbstractUtility
         $exclude = 1,
         $minItems = 0,
         $maxItems = 9999,
-        $l10nMode = 'exclude',
-        $l10nDisplay = 'defaultAsReadonly'
+        $l10nMode = 'exclude'
     ) {
         if (VersionUtility::isTypo3MajorVersionBelow(7)) {
             return [
                 'exclude' => $exclude,
                 'l10n_mode' => $l10nMode,
-                //'l10n_display' => $l10nDisplay, did not work on Typo3 7 maybe core bug
                 'label' => $label,
                 'config' => [
                     'type' => 'select',
@@ -291,7 +285,6 @@ class TcaUtility extends AbstractUtility
             return [
                 'exclude' => $exclude,
                 'l10n_mode' => $l10nMode,
-                //'l10n_display' => $l10nDisplay, did not work on Typo3 7 maybe core bug
                 'label' => $label,
                 'config' => [
                     'type' => 'select',
