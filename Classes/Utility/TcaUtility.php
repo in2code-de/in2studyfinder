@@ -432,6 +432,7 @@ class TcaUtility extends AbstractUtility
             $extbaseType = [];
             $extbaseType['tx_extbase_type'] = [
                 'exclude' => 1,
+                'l10n_mode' => 'exclude',
                 'label' => 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:extendedStudycourseLabel',
                 'config' => [
                     'type' => 'select',

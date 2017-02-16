@@ -67,6 +67,7 @@ $tcaConfiguration = [
         'endtime' => TcaUtility::getFullTcaForEndTime(),
         'title' => [
             'exclude' => 1,
+            'l10n_mode' => 'mergeIfNotBlank',
             'label' => $ll . 'title',
             'config' => [
                 'type' => 'input',
@@ -77,6 +78,8 @@ $tcaConfiguration = [
         ],
         'standard_period_of_study' => [
             'exclude' => 1,
+            'l10n_mode' => 'mergeIfNotBlank',
+            'l10n_display' => 'defaultAsReadonly',
             'label' => $ll . 'standardPeriodOfStudy',
             'config' => [
                 'type' => 'input',
@@ -86,6 +89,8 @@ $tcaConfiguration = [
         ],
         'ects_credits' => [
             'exclude' => 1,
+            'l10n_mode' => 'mergeIfNotBlank',
+            'l10n_display' => 'defaultAsReadonly',
             'label' => $ll . 'ectsCredits',
             'config' => [
                 'type' => 'input',
@@ -95,6 +100,8 @@ $tcaConfiguration = [
         ],
         'tuition_fee' => [
             'exclude' => 1,
+            'l10n_mode' => 'mergeIfNotBlank',
+            'l10n_display' => 'defaultAsReadonly',
             'label' => $ll . 'tuitionFee',
             'config' => [
                 'type' => 'input',
@@ -156,6 +163,8 @@ $tcaConfiguration = [
         ],
         'university_place' => [
             'exclude' => 1,
+            'l10n_mode' => 'mergeIfNotBlank',
+            'l10n_display' => 'defaultAsReadonly',
             'label' => $ll . 'universityPlace',
             'config' => [
                 'type' => 'input',
@@ -206,6 +215,7 @@ $tcaConfiguration = [
         ],
         'meta_keywords' => [
             'exclude' => 1,
+            'l10n_mode' => 'mergeIfNotBlank',
             'label' => $ll . 'metaKeywords',
             'config' => [
                 'type' => 'input',
@@ -216,6 +226,7 @@ $tcaConfiguration = [
         ],
         'meta_description' => [
             'exclude' => 1,
+            'l10n_mode' => 'mergeIfNotBlank',
             'label' => $ll . 'metaDescription',
             'config' => [
                 'type' => 'text',
@@ -241,7 +252,6 @@ if (ConfigurationUtility::isEnableGlobalData()) {
 
     $tcaConfiguration['columns']['global_data_preset'] = [
         'exclude' => 1,
-        'l10n_mode' => 'exclude',
         'label' => $ll . 'globalDataPreset',
         'config' => [
             'type' => 'select',
