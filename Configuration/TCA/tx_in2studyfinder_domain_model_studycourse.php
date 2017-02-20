@@ -183,8 +183,8 @@ $tcaConfiguration = [
                 'maxitems' => 9999,
                 'size' => 10,
                 'wizards' => [
-                    'suggest' => TcaUtility::getSuggestWizard(),
                     'edit' => TcaUtility::getEditWizard(),
+                    'suggest' => TcaUtility::getSuggestWizard(),
                 ]
             ],
         ],

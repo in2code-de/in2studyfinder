@@ -153,7 +153,9 @@ class TcaUtility extends AbstractUtility
         $icon = '';
 
         if ($table !== '') {
-            $icon = ExtensionManagementUtility::extRelPath('in2studyfinder') . 'Resources/Public/Icons/' . $table . '.png';
+            $icon = ExtensionManagementUtility::extRelPath(
+                    'in2studyfinder'
+                ) . 'Resources/Public/Icons/' . $table . '.png';
         }
 
         return [
@@ -276,8 +278,8 @@ class TcaUtility extends AbstractUtility
                     'maxitems' => $maxItems,
                     'multiple' => 0,
                     'wizards' => [
-                        'suggest' => self::getSuggestWizard(),
                         'edit' => self::getEditWizard(),
+                        'suggest' => self::getSuggestWizard(),
                     ],
                 ],
             ];
@@ -295,8 +297,8 @@ class TcaUtility extends AbstractUtility
                     'minitems' => $minItems,
                     'maxitems' => $maxItems,
                     'wizards' => [
-                        'suggest' => self::getSuggestWizard(),
                         'edit' => self::getEditWizard(),
+                        'suggest' => self::getSuggestWizard(),
                     ],
                 ],
             ];
@@ -359,17 +361,16 @@ class TcaUtility extends AbstractUtility
             'type' => 'popup',
             'title' => 'Edit',
             'popup_onlyOpenIfSelected' => 1,
-            'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1'
+            'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
+            'module' => [
+                'name' => 'wizard_edit',
+            ]
         ];
 
         if (VersionUtility::isTypo3MajorVersionBelow(7)) {
             $wizard['icon'] = 'edit2.gif';
-            $wizard['script'] = 'wizard_edit.php';
         } else {
             $wizard['icon'] = 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif';
-            $wizard['module'] = [
-                'name' => 'wizard_edit',
-            ];
         }
 
         return $wizard;
@@ -454,8 +455,12 @@ class TcaUtility extends AbstractUtility
             ExtensionManagementUtility::addTCAcolumns($table, $extbaseType, 1);
         }
 
-        ExtensionManagementUtility::addToAllTCAtypes($table, $GLOBALS['TCA'][$table]['ctrl']['type'], '',
-            'after:' . $insertAfter);
+        ExtensionManagementUtility::addToAllTCAtypes(
+            $table,
+            $GLOBALS['TCA'][$table]['ctrl']['type'],
+            '',
+            'after:' . $insertAfter
+        );
     }
 
     /**
@@ -554,7 +559,7 @@ class TcaUtility extends AbstractUtility
         $addLineBreakBefore = false,
         $addLineBreakAfter = false
     ) {
-        self::addFieldsToPalette($table,$palette,[$field],$insertAfter,$addLineBreakBefore,$addLineBreakAfter);
+        self::addFieldsToPalette($table, $palette, [$field], $insertAfter, $addLineBreakBefore, $addLineBreakAfter);
     }
 
     /**
