@@ -78,7 +78,7 @@ $tcaConfiguration = [
         ],
         'standard_period_of_study' => [
             'exclude' => 1,
-            'l10n_mode' => 'mergeIfNotBlank',
+            'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => $ll . 'standardPeriodOfStudy',
             'config' => [
@@ -89,7 +89,7 @@ $tcaConfiguration = [
         ],
         'ects_credits' => [
             'exclude' => 1,
-            'l10n_mode' => 'mergeIfNotBlank',
+            'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => $ll . 'ectsCredits',
             'config' => [
@@ -100,7 +100,7 @@ $tcaConfiguration = [
         ],
         'tuition_fee' => [
             'exclude' => 1,
-            'l10n_mode' => 'mergeIfNotBlank',
+            'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => $ll . 'tuitionFee',
             'config' => [
