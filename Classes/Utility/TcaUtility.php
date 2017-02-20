@@ -335,16 +335,15 @@ class TcaUtility extends AbstractUtility
                 'pid' => $pid,
                 'setValue' => 'prepend'
             ],
+            'module' => [
+                'name' => 'wizard_add',
+            ],
         ];
 
         if (VersionUtility::isTypo3MajorVersionBelow(7)) {
             $wizard['icon'] = 'add.gif';
-            $wizard['script'] = 'wizard_add.php';
         } else {
             $wizard['icon'] = 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif';
-            $wizard['module'] = [
-                'name' => 'wizard_add',
-            ];
         }
 
         return $wizard;
