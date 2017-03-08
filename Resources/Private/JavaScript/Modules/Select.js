@@ -2,6 +2,9 @@
 		function Select(dom) {
 
 			this.initializeSelect = function() {
+
+				var query = {};
+
 				$('.in2studyfinder-js-fast-select').select2({
 					matcher: function(params, data) {
 						var status = false;
@@ -16,7 +19,9 @@
 							var element = data.element;
 							var keywords = $(element).attr('alt');
 							var keywordArray = keywords.split(',');
+							query = params;
 
+							// Search Keywords
 							$.each(keywordArray, function(index, keyword) {
 								keyword = keyword.trim();
 								if (
@@ -34,6 +39,34 @@
 							return null;
 						}
 
+					},
+					sorter: function (results) {
+						/* @todo: optimise sorting */
+						var sorted = results.slice(0);
+
+						sorted.sort(function (first, second) {
+							if (query.term && query.term !== '') {
+								var firstTextPosition = first.text.toUpperCase().indexOf(
+									query.term.toUpperCase()
+								);
+								var secondTextPosition = second.text.toUpperCase().indexOf(
+									query.term.toUpperCase()
+								);
+
+
+								if (firstTextPosition === -1) {
+									firstTextPosition = 100;
+								}
+
+								if (secondTextPosition === -1) {
+									secondTextPosition = 100;
+								}
+
+								return firstTextPosition - secondTextPosition;
+							}
+						});
+
+						return sorted;
 					},
 					allowClear: false,
 					placeholder: 'select degree program or enter keyword',

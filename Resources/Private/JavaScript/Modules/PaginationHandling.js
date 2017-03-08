@@ -24,7 +24,7 @@
 			});
 
 			$.ajax({
-				type: "GET",
+				type: 'GET',
 				url: destination,
 				beforeSend: function() {
 					uiBehaviour.enableLoading();
@@ -35,7 +35,7 @@
 					window.scrollTo(0, 0);
 				},
 				error: function() {
-					alert('fail')
+					alert('fail');
 				},
 				complete: function() {
 					start.init();
@@ -45,7 +45,7 @@
 				cache: false
 
 			});
-		}
+		};
 	}
 
 	// export to global scope

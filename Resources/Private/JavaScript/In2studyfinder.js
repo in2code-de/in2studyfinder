@@ -24,7 +24,8 @@
 				select.initializeSelect();
 				filterHandling.init();
 				paginationHandling.init();
-				uiBehaviour.checkboxHandling();
+				uiBehaviour.init();
+
 				if (readFilterFromUrl) {
 					readFilterFromUrl = false;
 					if (window.location.hash) {
