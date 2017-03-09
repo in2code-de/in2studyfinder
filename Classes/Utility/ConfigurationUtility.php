@@ -35,7 +35,7 @@ class ConfigurationUtility extends AbstractUtility
 {
 
     /**
-     * Check if disableIpLog is active
+     * Check if global data are active
      *
      * @return bool
      */
@@ -44,5 +44,17 @@ class ConfigurationUtility extends AbstractUtility
         $extensionConfig = AbstractUtility::getExtensionConfiguration();
 
         return $extensionConfig['enableGlobalData'] === '1';
+    }
+
+    /**
+     * Check if categorisation is active
+     *
+     * @return bool
+     */
+    public static function isCategorisationEnabled()
+    {
+        $extensionConfig = AbstractUtility::getExtensionConfiguration();
+
+        return $extensionConfig['enableCategories'] === '1';
     }
 }
