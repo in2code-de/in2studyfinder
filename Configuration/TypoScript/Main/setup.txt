@@ -19,6 +19,36 @@ plugin.tx_in2studyfinder {
 			itemsPerPage = {$plugin.tx_in2studyfinder.settings.pagination.itemsPerPage}
 		}
 
+		filters {
+			/*
+			the Name of the Filter (and the label for the frontend)
+			*/
+			graduation {
+				type = object
+				filterModelClass = In2code\In2studyfinder\Domain\Model\Graduation
+				coursePropertyName = academicDegree/graduation
+			}
+			typeOfStudy {
+				type = object
+				filterModelClass = In2code\In2studyfinder\Domain\Model\TypeOfStudy
+				coursePropertyName = typesOfStudy
+			}
+			admissionRequirement {
+				type = object
+				filterModelClass = In2code\In2studyfinder\Domain\Model\AdmissionRequirement
+				coursePropertyName = admissionRequirements
+			}
+			startOfStudy {
+				type = object
+				filterModelClass = In2code\In2studyfinder\Domain\Model\StartOfStudy
+				coursePropertyName = startsOfStudy
+			}
+			courseLanguage {
+				type = object
+				filterModelClass = In2code\In2studyfinder\Domain\Model\CourseLanguage
+				coursePropertyName = courseLanguages
+			}
+		}
 
 		filter {
 			allowedFilterTypes {

@@ -56,23 +56,13 @@ class StudyCourseController extends ActionController
     /**
      * @var array
      */
-    protected $filterTypeRepositories = [];
-
-    /**
-     * @var array
-     */
-    protected $filterTypes = [];
+    protected $filters = [];
 
     /**
      * @var \In2code\In2studyfinder\Utility\SessionUtility
      * @inject
      */
     protected $sessionUtility;
-
-    /**
-     * @var array
-     */
-    protected $allowedSearchFields = [];
 
     /**
      * cacheUtility
@@ -96,15 +86,12 @@ class StudyCourseController extends ActionController
             $this->cObj = $this->configurationManager->getContentObject();
         }
 
-        foreach ($this->settings['filter']['filterTypeLabelField'] as $key => $value) {
-            $this->allowedSearchFields[] = $key;
-        }
-
         if (ExtensionUtility::isIn2studycoursesExtendLoaded()) {
-            $this->studyCourseRepository = $this->objectManager->get('In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository');
+            $this->studyCourseRepository =
+                $this->objectManager->get('In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository');
         }
 
-        $this->setFilterTypesAndRepositories();
+        $this->setFilters();
     }
 
 
@@ -129,11 +116,11 @@ class StudyCourseController extends ActionController
             $sanitizedSearchOptions = array_filter($this->request->getArgument('searchOptions'));
 
             // remove not allowed keys (prevents SQL Injection, too)
-            foreach (array_keys($sanitizedSearchOptions) as $studyCoursePropertyName) {
-                if (!in_array($studyCoursePropertyName, $this->allowedSearchFields)) {
-                    unset($sanitizedSearchOptions[$studyCoursePropertyName]);
-                }
-            }
+//            foreach (array_keys($sanitizedSearchOptions) as $studyCoursePropertyName) {
+//                if (!in_array($studyCoursePropertyName, $this->allowedSearchFields)) {
+//                    unset($sanitizedSearchOptions[$studyCoursePropertyName]);
+//                }
+//            }
             $this->request->setArgument('searchOptions', $sanitizedSearchOptions);
         }
     }
@@ -153,8 +140,9 @@ class StudyCourseController extends ActionController
 
             if (ConfigurationUtility::isCachingEnabled()) {
                 $cacheIdentifier = md5(
-                    $GLOBALS['TSFE']->id . '-' . $this->cObj->data['uid']. '-' . $GLOBALS['TSFE']->sys_language_uid .
-                    '-' . $this->actionMethodName . '-' . json_encode($searchOptions)
+                    $GLOBALS['TSFE']->id . '-' . $this->cObj->data['uid'] . '-' . $GLOBALS['TSFE']->sys_language_uid . '-' . $this->actionMethodName . '-' . json_encode(
+                        $searchOptions
+                    )
                 );
 
                 $foundStudyCourses = $this->cacheInstance->get($cacheIdentifier);
@@ -167,13 +155,15 @@ class StudyCourseController extends ActionController
                 $foundStudyCourses = $this->processSearch($searchOptions);
             }
 
-            $this->view->assignMultiple([
-                'searchedOptions' => $searchOptions,
-                'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($foundStudyCourses),
-                'studyCourseCount' => count($foundStudyCourses),
-                'filterTypes' => $this->filterTypes,
-                'studyCourses' => $foundStudyCourses,
-            ]);
+            $this->view->assignMultiple(
+                [
+                    'searchedOptions' => $searchOptions,
+                    'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($foundStudyCourses),
+                    'studyCourseCount' => count($foundStudyCourses),
+                    'filters' => $this->filters,
+                    'studyCourses' => $foundStudyCourses,
+                ]
+            );
             $this->sessionUtility->set('searchOptions', $searchOptions);
         } else {
             $this->assignStudyCourses();
@@ -182,6 +172,7 @@ class StudyCourseController extends ActionController
 
     /**
      * detail show
+     *
      * @param StudyCourse $studyCourse
      * @return void
      */
@@ -214,44 +205,56 @@ class StudyCourseController extends ActionController
         return $defaultQuerySettings;
     }
 
-    /**
-     * set the Models and the Repositories
-     * @return void
-     */
-    protected function setFilterTypesAndRepositories()
+    protected function setFilters()
     {
+        foreach ($this->settings['filters'] as $filterName => $filterProperties) {
 
-        foreach ($this->settings['filter']['allowedFilterTypes'] as $filterType) {
-            $repository = ClassNamingUtility::translateModelNameToRepositoryName($filterType);
+            if ($filterProperties['type']) {
+                $this->filters[$filterName]['type'] = $filterProperties['type'];
 
-            if (class_exists($repository)) {
-                $this->filterTypeRepositories[$filterType] = $this->objectManager->get($repository);
+                $this->filters[$filterName]['coursePropertyName'] = $filterProperties['coursePropertyName'];
 
-                $filterTypeTitle = substr($filterType, strripos($filterType, '\\') + 1);
+                switch ($filterProperties['type']) {
+                    case 'object':
+                        $fullQualifiedRepositoryClassName = ClassNamingUtility::translateModelNameToRepositoryName(
+                            $filterProperties['filterModelClass']
+                        );
 
-                $this->filterTypeRepositories[$filterType]->setDefaultQuerySettings($this->getDefaultQuerySettings());
+                        if (class_exists($fullQualifiedRepositoryClassName)) {
+                            $repository = $this->objectManager->get($fullQualifiedRepositoryClassName);
+                            $repository->setDefaultQuerySettings($this->getDefaultQuerySettings());
 
-                $this->filterTypes[lcfirst($filterTypeTitle)] = $this->filterTypeRepositories[$filterType]->findAll();
-            } else {
-                $this->filterTypes[lcfirst($filterType)] = ['isSet', 'isUnset'];
+                            $this->filters[$filterName]['repository'] = $repository;
+                            $this->filters[$filterName]['filterOptions'] = $repository->findAll();
+                        }
+                        break;
+                    case 'boolean':
+                        $this->filters[$filterName]['filterOptions'] = [true, false];
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
 
     /**
      * assign StudyCourses to the view
+     *
      * @return void
      */
     protected function assignStudyCourses()
     {
         $studyCourses = $this->getStudyCourses();
 
-        $this->view->assignMultiple([
-            'filterTypes' => $this->filterTypes,
-            'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($studyCourses),
-            'studyCourseCount' => count($studyCourses),
-            'studyCourses' => $studyCourses,
-        ]);
+        $this->view->assignMultiple(
+            [
+                'filters' => $this->filters,
+                'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($studyCourses),
+                'studyCourseCount' => count($studyCourses),
+                'studyCourses' => $studyCourses,
+            ]
+        );
     }
 
     /**
@@ -266,13 +269,13 @@ class StudyCourseController extends ActionController
 
             if (!empty($selectedOptions)) {
                 $cacheIdentifier = md5(
-                    $GLOBALS['TSFE']->id . "-" . $this->cObj->data['uid']. "-" . $GLOBALS['TSFE']->sys_language_uid .
-                    "-" . $this->actionMethodName . '-' . json_encode($selectedOptions)
+                    $GLOBALS['TSFE']->id . "-" . $this->cObj->data['uid'] . "-" . $GLOBALS['TSFE']->sys_language_uid . "-" . $this->actionMethodName . '-' . json_encode(
+                        $selectedOptions
+                    )
                 );
             } else {
                 $cacheIdentifier = md5(
-                    $GLOBALS['TSFE']->id . "-" . $this->cObj->data['uid']. "-" . $GLOBALS['TSFE']->sys_language_uid .
-                    "-" . $this->actionMethodName
+                    $GLOBALS['TSFE']->id . "-" . $this->cObj->data['uid'] . "-" . $GLOBALS['TSFE']->sys_language_uid . "-" . $this->actionMethodName
                 );
             }
 
@@ -328,7 +331,8 @@ class StudyCourseController extends ActionController
         if (!empty($studyCourse->getMetaPagetitle())) {
             $GLOBALS['TSFE']->page['title'] = $studyCourse->getMetaPagetitle();
         } else {
-            $GLOBALS['TSFE']->page['title'] = $studyCourse->getTitle() . ' - ' . $studyCourse->getAcademicDegree()->getDegree();
+            $GLOBALS['TSFE']->page['title'] =
+                $studyCourse->getTitle() . ' - ' . $studyCourse->getAcademicDegree()->getDegree();
         }
         if (!empty($studyCourse->getMetaDescription())) {
             $metaDescription = '<meta name="description" content="' . $studyCourse->getMetaDescription() . '">';
@@ -351,61 +355,74 @@ class StudyCourseController extends ActionController
 
     /**
      * @param QueryResult $queryResult
-     * @param string $searchIdentifier
      * @return array
      * @throws \TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException
      */
     protected function getAvailableFilterOptionsFromQueryResult($queryResult)
     {
         $availableOptions = [];
-        foreach ($queryResult as $studyCourse) {
-            $properties = $studyCourse->_getProperties();
 
-            $this->getAvailableFilterOptionsFromProperties($properties, $availableOptions);
+        foreach ($this->filters as $filterName => $filter) {
+            /** @var $course StudyCourse */
+            foreach ($queryResult as $course) {
+
+                $property = $this->getPropertyByPropertyPath($course, $filter['coursePropertyName']);
+
+                switch ($filter['type']) {
+                    case 'object':
+                        if ($property instanceof ObjectStorage) {
+                            foreach ($property as $obj) {
+                                $availableOptions[$filterName][$obj->getUid()] = $obj->getUid();
+                            }
+                        } else {
+                            if ($property instanceof AbstractDomainObject) {
+                                $availableOptions[$filterName][$property->getUid()] = $property->getUid();
+                            } else {
+                                // Throw not Supported Object
+                            }
+                        }
+                        break;
+                    case 'boolean':
+                        if ($property !== '' && $property !== 0 && $property !== false) {
+                            $availableOptions[$filterName][0] = true;
+                        } else {
+                            $availableOptions[$filterName][1] = false;
+                        }
+                        break;
+                    default:
+                        // Throw not Supported Filter Type
+                        break;
+                }
+            }
         }
 
         return $availableOptions;
     }
 
     /**
-     * @param array $propertyArray
-     * @param array $availableOptionArray
-     * @param int $currentLevel
+     * get the property of an object or an sub object by an given path name
+     * e.g academicDegree/graduation
      *
-     * @return void
+     * @param AbstractDomainObject $obj
+     * @param string $propertyPath
+     * @return mixed
      */
-    protected function getAvailableFilterOptionsFromProperties(
-        $propertyArray,
-        &$availableOptionArray,
-        $currentLevel = 0
-    ) {
-        if ($currentLevel < $this->settings['filter']['recursive']) {
-            foreach ($propertyArray as $name => $property) {
-                if (is_object($property)) {
-                    if ($property instanceof ObjectStorage) {
-                        $this->getAvailableFilterOptionsFromProperties($property, $availableOptionArray, $currentLevel);
-                    } elseif ($property instanceof AbstractDomainObject) {
-
-                        $this->getAvailableFilterOptionsFromProperties($property->_getProperties(),
-                            $availableOptionArray, $currentLevel + 1);
-
-                        $className = ExtensionUtility::getClassName($property);
-
-                        if ($className !== 'ttContent') {
-                            $availableOptionArray[$className][] = $property->getUid();
-                        }
-                    }
+    protected function getPropertyByPropertyPath(AbstractDomainObject $obj, $propertyPath)
+    {
+        if (strpos($propertyPath, '/')) {
+            $pathSegments = GeneralUtility::trimExplode('/', $propertyPath);
+            $property = null;
+            foreach ($pathSegments as $pathSegment) {
+                if ($property === null) {
+                    $property = $obj->_getProperty($pathSegment);
                 } else {
-                    if (array_key_exists($name, $this->filterTypes)) {
-                        if ($property !== '' && $property !== 0 && $property !== false) {
-                            $availableOptionArray[$name][] = 'isSet';
-                        } else {
-                            $availableOptionArray[$name][] = 'isUnset';
-                        }
-                    }
+                    $property = $property->_getProperty($pathSegment);
                 }
             }
+        } else {
+            $property = $obj->_getProperty($propertyPath);
         }
-    }
 
+        return $property;
+    }
 }

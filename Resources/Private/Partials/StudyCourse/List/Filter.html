@@ -1,40 +1,27 @@
-{namespace in2studyfinder=In2code\In2studyfinder\ViewHelpers}
 <f:form action="filter" class="in2studyfinder-js-filter">
-	<div class="in2studyfinder__filter-header">
-		<span class="in2studyfinder__button in2studyfinder__button--show in2studyfinder-js-show-filter-options"><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:filter"/></span>
-		<span class="in2studyfinder__button in2studyfinder__button--reset hide in2studyfinder-js-reset-filter-options"><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:filter.reset"/></span>
-	</div>
+
+	<f:render partial="StudyCourse/List/Filter/FilterButtons" />
+
 	<div class="in2studyfinder__filter-options in2studyfinder-js-filter-options">
-		<f:for each="{filterTypes}" as="filterType" key="filterTypeName">
+		<f:for each="{filters}" as="filterType" key="filterTypeName">
 			<fieldset class="in2studyfinder__filter-section in2studyfinder-js-option-section hide" data-filtergroup="{filterTypeName}">
 				<legend class="in2studyfinder__filter-section-title in2studyfinder-js-option-legend">
 					<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:{filterTypeName}"/>
 				</legend>
 				<div class="in2studyfinder__accordion in2studyfinder-js-accordion hide">
-					<f:form.checkbox name="searchOptions[{filterTypeName}][{filterType.uid}]" id="{filterTypeName}_alle"
-													 class="in2studyfinder__checkbox--all in2studyfinder-js-checkbox-all" checked="checked" disabled="disabled" value="{filterTypeName}_alle"/>
-					<label for="{filterTypeName}_alle" class="in2studyfinder__checkbox-label">
-						<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:all"/>
-					</label>
-					<f:for each="{filterType}" as="option">
-						<f:if condition="{option.uid}">
-							<f:then>
-								<in2studyfinder:form.checkbox name="searchOptions[{filterTypeName}][]" id="{filterTypeName}_{option.uid}"
-																							class="in2studyfinder__checkbox in2studyfinder-js-checkbox" value="{option.uid}"
-																							searchedOptions="{searchedOptions}"
-																							possibleFilters="{availableFilterOptions}"
-										/>
-								<label for="{filterTypeName}_{option.uid}" class="in2studyfinder__checkbox-label">{option.optionField}</label>
-							</f:then>
-							<f:else>
-								<in2studyfinder:form.checkbox name="searchOptions[{filterTypeName}][]" id="{filterTypeName}_{option}"
-																							class="in2studyfinder__checkbox in2studyfinder-js-checkbox" value="{option}"
-																							searchedOptions="{searchedOptions}"
-																							possibleFilters="{availableFilterOptions}"
-										/>
-								<label for="{filterTypeName}_{option}" class="in2studyfinder__checkbox-label"><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:{option}"/></label>
-							</f:else>
-						</f:if>
+
+					<f:render partial="StudyCourse/List/Filter/CheckboxAll" arguments="{_all}" />
+
+					<f:for each="{filterType.filterOptions}" as="option">
+						<f:switch expression="{filterType.type}">
+							<f:case value="object">
+								<f:render partial="StudyCourse/List/Filter/TypeObject" arguments="{_all}" />
+							</f:case>
+							<f:case value="boolean">
+								<f:render partial="StudyCourse/List/Filter/TypeBoolean" arguments="{_all}" />
+							</f:case>
+							<f:case default="TRUE">Not Suported filter</f:case>
+						</f:switch>
 					</f:for>
 				</div>
 			</fieldset>
