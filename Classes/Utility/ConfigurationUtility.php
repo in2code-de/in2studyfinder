@@ -47,6 +47,18 @@ class ConfigurationUtility extends AbstractUtility
     }
 
     /**
+     * Check if categorisation is active
+     *
+     * @return bool
+     */
+    public static function isCategorisationEnabled()
+    {
+        $extensionConfig = AbstractUtility::getExtensionConfiguration();
+
+        return $extensionConfig['enableCategories'] === '1';
+    }
+
+    /**
      * Check if caching functionality is enabled
      *
      * @return bool

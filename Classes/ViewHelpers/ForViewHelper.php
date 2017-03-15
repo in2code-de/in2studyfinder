@@ -17,7 +17,7 @@ class ForViewHelper extends AbstractViewHelper
         $sortedStudyCourses = array();
 
         foreach ($for as $studyCourse) {
-            $sortedStudyCourses[substr($studyCourse->getTitle(), 0, 1)][] = $studyCourse;
+            $sortedStudyCourses[substr(strtoupper($studyCourse->getTitle()), 0, 1)][] = $studyCourse;
         }
         $results = array();
         foreach ($sortedStudyCourses as $capitalLetter => $course) {

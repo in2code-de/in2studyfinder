@@ -2,7 +2,6 @@
 namespace In2code\In2studyfinder\Utility;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class TcaUtility
@@ -154,7 +153,9 @@ class TcaUtility extends AbstractUtility
         $icon = '';
 
         if ($table !== '') {
-            $icon = ExtensionManagementUtility::extRelPath('in2studyfinder') . 'Resources/Public/Icons/' . $table . '.png';
+            $icon = ExtensionManagementUtility::extRelPath(
+                    'in2studyfinder'
+                ) . 'Resources/Public/Icons/' . $table . '.png';
         }
 
         return [
@@ -169,6 +170,8 @@ class TcaUtility extends AbstractUtility
      * @param string $table
      * @param int $minItems
      * @param int $exclude
+     * @param string $l10nMode
+     * @param string $l10nDisplay
      *
      * @return array
      */
@@ -176,11 +179,14 @@ class TcaUtility extends AbstractUtility
         $label,
         $table,
         $exclude = 1,
-        $minItems = 0
+        $minItems = 0,
+        $l10nMode = 'exclude',
+        $l10nDisplay = 'defaultAsReadonly'
     ) {
         return [
             'exclude' => $exclude,
-            'l10n_mode' => 'exclude',
+            'l10n_mode' => $l10nMode,
+            'l10n_display' => $l10nDisplay,
             'label' => $label,
             'config' => [
                 'type' => 'select',
@@ -200,6 +206,7 @@ class TcaUtility extends AbstractUtility
      * @param int $exclude
      * @param int $minItems
      * @param int $maxItems
+     * @param string $l10nMode
      *
      * @return array
      */
@@ -209,7 +216,8 @@ class TcaUtility extends AbstractUtility
         $mmTable,
         $exclude = 1,
         $minItems = 0,
-        $maxItems = 5
+        $maxItems = 5,
+        $l10nMode = 'exclude'
     ) {
         /**
          * Compatibility for Typo3 6.2 LTS
@@ -219,7 +227,7 @@ class TcaUtility extends AbstractUtility
         } else {
             return [
                 'exclude' => $exclude,
-                'l10n_mode' => 'exclude',
+                'l10n_mode' => $l10nMode,
                 'label' => $label,
                 'config' => [
                     'type' => 'select',
@@ -241,6 +249,7 @@ class TcaUtility extends AbstractUtility
      * @param int $exclude
      * @param int $minItems
      * @param int $maxItems
+     * @param string $l10nMode
      *
      * @return array
      */
@@ -250,31 +259,34 @@ class TcaUtility extends AbstractUtility
         $mmTable,
         $exclude = 1,
         $minItems = 0,
-        $maxItems = 9999
+        $maxItems = 9999,
+        $l10nMode = 'exclude'
     ) {
         if (VersionUtility::isTypo3MajorVersionBelow(7)) {
             return [
                 'exclude' => $exclude,
-                'l10n_mode' => 'exclude',
+                'l10n_mode' => $l10nMode,
                 'label' => $label,
                 'config' => [
                     'type' => 'select',
                     'foreign_table' => $table,
                     'MM' => $mmTable,
                     'foreign_table_where' => 'AND sys_language_uid in (-1, 0)',
-                    'MM' => $mmTable,
                     'size' => 5,
                     'autoSizeMax' => 30,
                     'minitems' => $minItems,
                     'maxitems' => $maxItems,
                     'multiple' => 0,
-                    'wizards' => self::getSuggestWizard(),
+                    'wizards' => [
+                        'edit' => self::getEditWizard(),
+                        'suggest' => self::getSuggestWizard(),
+                    ],
                 ],
             ];
         } else {
             return [
                 'exclude' => $exclude,
-                'l10n_mode' => 'exclude',
+                'l10n_mode' => $l10nMode,
                 'label' => $label,
                 'config' => [
                     'type' => 'select',
@@ -284,7 +296,10 @@ class TcaUtility extends AbstractUtility
                     'foreign_table_where' => 'AND sys_language_uid in (-1, 0)',
                     'minitems' => $minItems,
                     'maxitems' => $maxItems,
-                    'wizards' => self::getSuggestWizard(),
+                    'wizards' => [
+                        'edit' => self::getEditWizard(),
+                        'suggest' => self::getSuggestWizard(),
+                    ],
                 ],
             ];
         }
@@ -298,10 +313,66 @@ class TcaUtility extends AbstractUtility
     public static function getSuggestWizard()
     {
         return [
-            'suggest' => [
-                'type' => 'suggest',
+            'type' => 'suggest',
+        ];
+    }
+
+    /**
+     * returns the TCA for an add wizard
+     *
+     * @param string $table
+     * @param string $pid
+     *
+     * @return array
+     */
+    public static function getAddWizard($table, $pid = '###CURRENT_PID###')
+    {
+        $wizard = [
+            'type' => 'script',
+            'title' => 'LLL:EXT:cms/locallang_tca.xlf:sys_template.basedOn_add',
+            'params' => [
+                'table' => $table,
+                'pid' => $pid,
+                'setValue' => 'prepend'
+            ],
+            'module' => [
+                'name' => 'wizard_add',
             ],
         ];
+
+        if (VersionUtility::isTypo3MajorVersionBelow(7)) {
+            $wizard['icon'] = 'add.gif';
+        } else {
+            $wizard['icon'] = 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif';
+        }
+
+        return $wizard;
+    }
+
+    /**
+     * returns the TCA for an edit wizard
+     *
+     * @return array
+     */
+    public static function getEditWizard()
+    {
+        $wizard = [
+            'type' => 'popup',
+            'title' => 'Edit',
+            'popup_onlyOpenIfSelected' => 1,
+            'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
+            'module' => [
+                'name' => 'wizard_edit',
+            ]
+        ];
+
+        if (VersionUtility::isTypo3MajorVersionBelow(7)) {
+            $wizard['icon'] = 'edit2.gif';
+        } else {
+            $wizard['icon'] = 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif';
+        }
+
+        return $wizard;
     }
 
     /**
@@ -361,6 +432,7 @@ class TcaUtility extends AbstractUtility
             $extbaseType = [];
             $extbaseType['tx_extbase_type'] = [
                 'exclude' => 1,
+                'l10n_mode' => 'exclude',
                 'label' => 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:extendedStudycourseLabel',
                 'config' => [
                     'type' => 'select',
@@ -382,8 +454,12 @@ class TcaUtility extends AbstractUtility
             ExtensionManagementUtility::addTCAcolumns($table, $extbaseType, 1);
         }
 
-        ExtensionManagementUtility::addToAllTCAtypes($table, $GLOBALS['TCA'][$table]['ctrl']['type'], '',
-            'after:' . $insertAfter);
+        ExtensionManagementUtility::addToAllTCAtypes(
+            $table,
+            $GLOBALS['TCA'][$table]['ctrl']['type'],
+            '',
+            'after:' . $insertAfter
+        );
     }
 
     /**
@@ -482,7 +558,7 @@ class TcaUtility extends AbstractUtility
         $addLineBreakBefore = false,
         $addLineBreakAfter = false
     ) {
-        self::addFieldsToPalette($table,$palette,[$field],$insertAfter,$addLineBreakBefore,$addLineBreakAfter);
+        self::addFieldsToPalette($table, $palette, [$field], $insertAfter, $addLineBreakBefore, $addLineBreakAfter);
     }
 
     /**
@@ -635,7 +711,7 @@ class TcaUtility extends AbstractUtility
 
         if ($status) {
             $showItemArray = explode(',', $GLOBALS['TCA'][$table][$section][$sectionName]['showitem']);
-            
+
             array_walk($showItemArray, [self::class, 'trimValue']);
 
             foreach ($fields as $field) {
