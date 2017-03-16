@@ -246,7 +246,7 @@ class StudyCourseController extends ActionController
     protected function assignStudyCourses()
     {
         $studyCourses = $this->getStudyCourses();
-
+        
         $this->view->assignMultiple(
             [
                 'filters' => $this->filters,
@@ -350,6 +350,11 @@ class StudyCourseController extends ActionController
      */
     protected function processSearch($searchOptions)
     {
+        // merge filter options to searchedOptions
+        foreach ($searchOptions as $filterName => $searchedOptions) {
+            $newSearchOptions[$this->filters[$filterName]['coursePropertyName']] = $searchOptions[$filterName];
+        }
+        
         return $this->studyCourseRepository->findAllFilteredByOptions($searchOptions);
     }
 
@@ -384,9 +389,9 @@ class StudyCourseController extends ActionController
                         break;
                     case 'boolean':
                         if ($property !== '' && $property !== 0 && $property !== false) {
-                            $availableOptions[$filterName][0] = true;
+                            $availableOptions[$filterName][0] = 'true';
                         } else {
-                            $availableOptions[$filterName][1] = false;
+                            $availableOptions[$filterName][0] = 'false';
                         }
                         break;
                     default:
@@ -409,8 +414,9 @@ class StudyCourseController extends ActionController
      */
     protected function getPropertyByPropertyPath(AbstractDomainObject $obj, $propertyPath)
     {
-        if (strpos($propertyPath, '/')) {
-            $pathSegments = GeneralUtility::trimExplode('/', $propertyPath);
+        if (strpos($propertyPath, '.')) {
+
+            $pathSegments = GeneralUtility::trimExplode('.', $propertyPath);
             $property = null;
             foreach ($pathSegments as $pathSegment) {
                 if ($property === null) {

@@ -26,7 +26,7 @@ plugin.tx_in2studyfinder {
 			graduation {
 				type = object
 				filterModelClass = In2code\In2studyfinder\Domain\Model\Graduation
-				coursePropertyName = academicDegree/graduation
+				coursePropertyName = academicDegree.graduation
 			}
 			typeOfStudy {
 				type = object
@@ -49,33 +49,6 @@ plugin.tx_in2studyfinder {
 				coursePropertyName = courseLanguages
 			}
 		}
-
-		filter {
-			allowedFilterTypes {
-				0 = In2code\In2studyfinder\Domain\Model\AcademicDegree
-				1 = In2code\In2studyfinder\Domain\Model\AdmissionRequirement
-				2 = In2code\In2studyfinder\Domain\Model\CourseLanguage
-				3 = In2code\In2studyfinder\Domain\Model\Department
-				4 = In2code\In2studyfinder\Domain\Model\Faculty
-				5 = In2code\In2studyfinder\Domain\Model\StartOfStudy
-				6 = In2code\In2studyfinder\Domain\Model\TypeOfStudy
-				//7 = standardPeriodOfStudy
-			}
-
-			filterTypeLabelField {
-				academicDegree = degree
-				admissionRequirement = title
-				courseLanguage = language
-				department = title
-				faculty = title
-				startOfStudy = title
-				typeOfStudy = type
-				//standardPeriodOfStudy = standardPeriodOfStudy
-			}
-
-			recursive = {$plugin.tx_in2studyfinder.settings.filter.recursive}
-		}
-
 	}
 
 	persistence {
