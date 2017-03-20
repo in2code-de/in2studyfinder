@@ -29,6 +29,7 @@ namespace In2code\In2studyfinder\Domain\Repository;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
+use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
@@ -43,7 +44,7 @@ class StudyCourseRepository extends AbstractRepository
 
     /**
      * @param $options
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     * @return QueryResult
      */
     public function findAllFilteredByOptions($options)
     {
