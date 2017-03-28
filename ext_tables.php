@@ -100,8 +100,9 @@ foreach ($tables as $table) {
     );
 }
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable(
-    $extKey,
-    'tx_in2studyfinder_domain_model_studycourse'
-);
-
+if (\In2code\In2studyfinder\Utility\ConfigurationUtility::isCategorisationEnabled()) {
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable(
+        $extKey,
+        'tx_in2studyfinder_domain_model_studycourse'
+    );
+}

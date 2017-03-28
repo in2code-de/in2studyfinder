@@ -3,6 +3,13 @@
 
 		var uiBehaviour = this;
 
+		this.init = function() {
+			$('.in2studyfinder__fast-select').removeClass('hide');
+			$('.in2studyfinder__filter').removeClass('hide');
+
+			this.checkboxHandling();
+		};
+
 		this.enableLoading = function() {
 			$(dom).addClass('in2studyfinder__loading');
 		};
@@ -55,7 +62,7 @@
 				$(element).siblings('.in2studyfinder-js-checkbox-all').prop('checked', false).prop('disabled', false);
 			} else {
 				if ($(element).siblings('.in2studyfinder-js-checkbox:checkbox:checked').length === 0) {
-					$(element).siblings('.in2studyfinder-js-checkbox-all').prop("checked", true).prop("disabled", true);
+					$(element).siblings('.in2studyfinder-js-checkbox-all').prop('checked', true).prop('disabled', true);
 				}
 			}
 		};
@@ -72,6 +79,26 @@
 		this.checkboxHandling = function() {
 			uiBehaviour.toggleOptionFormVisibility();
 			uiBehaviour.toggleOptionSectionVisibility();
+		};
+
+		this.hideFilters = function () {
+			$.each($('.in2studyfinder-js-option-section'), function () {
+				$(this).addClass('hide');
+			});
+		};
+
+		this.toggleShowFiltersButton = function () {
+
+			var showButton = $('.in2studyfinder-js-show-filter-options');
+			var resetButton = $('.in2studyfinder-js-reset-filter-options');
+
+			if (showButton.hasClass('hide')) {
+				showButton.removeClass('hide');
+				resetButton.addClass('hide');
+			} else if (resetButton.hasClass('hide')) {
+				resetButton.removeClass('hide');
+				showButton.addClass('hide');
+			}
 		};
 	}
 

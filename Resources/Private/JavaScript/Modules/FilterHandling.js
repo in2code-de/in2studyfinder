@@ -30,7 +30,7 @@
 				url += '&tx_in2studyfinder_pi1%5B%40widget_0%5D%5BcurrentPage%5D=' + paginationPage;
 			}
 			$.ajax({
-				type: "POST",
+				type: 'POST',
 				url: url,
 				data: studyFinderForm.serialize(),
 				beforeSend: function () {
@@ -51,12 +51,30 @@
 			});
 		};
 
+		this.isAnyFilterSet = function () {
+			var isFilterSet = false;
+
+			$.each($('.in2studyfinder-js-checkbox'), function() {
+				if ($(this).prop('checked')) {
+					isFilterSet = true;
+				}
+			});
+
+			return isFilterSet;
+		};
+
 		this.resetAllFilterOptions = function() {
 			$('.in2studyfinder-js-reset-filter-options').on('click', function () {
-				uiBehaviour.resetAllFilterCheckboxes();
-				filterHandling.filterChanged();
+				if (filterHandling.isAnyFilterSet()) {
+					uiBehaviour.resetAllFilterCheckboxes();
+					filterHandling.filterChanged();
+				} else {
+					uiBehaviour.hideFilters();
+					uiBehaviour.toggleShowFiltersButton();
+				}
+
 			});
-		}
+		};
 
 
 	}

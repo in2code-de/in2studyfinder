@@ -77,6 +77,8 @@ $tcaConfiguration = [
         ],
         'standard_period_of_study' => [
             'exclude' => 1,
+            'l10n_mode' => 'exclude',
+            'l10n_display' => 'defaultAsReadonly',
             'label' => $ll . 'standardPeriodOfStudy',
             'config' => [
                 'type' => 'input',
@@ -86,6 +88,8 @@ $tcaConfiguration = [
         ],
         'ects_credits' => [
             'exclude' => 1,
+            'l10n_mode' => 'exclude',
+            'l10n_display' => 'defaultAsReadonly',
             'label' => $ll . 'ectsCredits',
             'config' => [
                 'type' => 'input',
@@ -95,6 +99,8 @@ $tcaConfiguration = [
         ],
         'tuition_fee' => [
             'exclude' => 1,
+            'l10n_mode' => 'exclude',
+            'l10n_display' => 'defaultAsReadonly',
             'label' => $ll . 'tuitionFee',
             'config' => [
                 'type' => 'input',
@@ -156,6 +162,8 @@ $tcaConfiguration = [
         ],
         'university_place' => [
             'exclude' => 1,
+            'l10n_mode' => 'mergeIfNotBlank',
+            'l10n_display' => 'defaultAsReadonly',
             'label' => $ll . 'universityPlace',
             'config' => [
                 'type' => 'input',
@@ -174,23 +182,51 @@ $tcaConfiguration = [
                 'MM' => 'tx_in2studyfinder_studycourse_ttcontent_mm',
                 'maxitems' => 9999,
                 'size' => 10,
-                'wizards' => TcaUtility::getSuggestWizard(),
+                'wizards' => [
+                    'edit' => TcaUtility::getEditWizard(),
+                    'suggest' => TcaUtility::getSuggestWizard(),
+                ]
             ],
         ],
-        'academic_degree' => TcaUtility::getFullTcaForSingleSelect($ll . 'academicDegree',
-            'tx_in2studyfinder_domain_model_academicdegree', 1, 1),
-        'department' => TcaUtility::getFullTcaForSingleSelect($ll . 'department',
-            'tx_in2studyfinder_domain_model_department'),
+        'academic_degree' => TcaUtility::getFullTcaForSingleSelect(
+            $ll . 'academicDegree',
+            'tx_in2studyfinder_domain_model_academicdegree',
+            1,
+            1
+        ),
+        'department' => TcaUtility::getFullTcaForSingleSelect(
+            $ll . 'department',
+            'tx_in2studyfinder_domain_model_department'
+        ),
         'faculty' => TcaUtility::getFullTcaForSingleSelect($ll . 'faculty', 'tx_in2studyfinder_domain_model_faculty'),
-        'types_of_study' => TcaUtility::getFullTcaForSelectSideBySide($ll . 'typeOfStudy',
-            'tx_in2studyfinder_domain_model_typeofstudy', 'tx_in2studyfinder_studycourse_typeofstudy_mm', 1, 1),
-        'course_languages' => TcaUtility::getFullTcaForSelectSideBySide($ll . 'courseLanguage',
-            'tx_in2studyfinder_domain_model_courselanguage', 'tx_in2studyfinder_studycourse_courselanguage_mm', 1, 1),
-        'admission_requirements' => TcaUtility::getFullTcaForSelectSideBySide($ll . 'admissionRequirements',
+        'types_of_study' => TcaUtility::getFullTcaForSelectSideBySide(
+            $ll . 'typeOfStudy',
+            'tx_in2studyfinder_domain_model_typeofstudy',
+            'tx_in2studyfinder_studycourse_typeofstudy_mm',
+            1,
+            1
+        ),
+        'course_languages' => TcaUtility::getFullTcaForSelectSideBySide(
+            $ll . 'courseLanguage',
+            'tx_in2studyfinder_domain_model_courselanguage',
+            'tx_in2studyfinder_studycourse_courselanguage_mm',
+            1,
+            1
+        ),
+        'admission_requirements' => TcaUtility::getFullTcaForSelectSideBySide(
+            $ll . 'admissionRequirements',
             'tx_in2studyfinder_domain_model_admissionrequirement',
-            'tx_in2studyfinder_studycourse_admissionrequirement_mm', 1, 1),
-        'starts_of_study' => TcaUtility::getFullTcaForSelectCheckBox($ll . 'startOfStudy',
-            'tx_in2studyfinder_domain_model_startofstudy', 'tx_in2studyfinder_studycourse_startofstudy_mm', 1, 1),
+            'tx_in2studyfinder_studycourse_admissionrequirement_mm',
+            1,
+            1
+        ),
+        'starts_of_study' => TcaUtility::getFullTcaForSelectCheckBox(
+            $ll . 'startOfStudy',
+            'tx_in2studyfinder_domain_model_startofstudy',
+            'tx_in2studyfinder_studycourse_startofstudy_mm',
+            1,
+            1
+        ),
         'meta_pagetitle' => [
             'exclude' => 1,
             'label' => $ll . 'metaPageTitle',
@@ -203,6 +239,7 @@ $tcaConfiguration = [
         ],
         'meta_keywords' => [
             'exclude' => 1,
+            'l10n_mode' => 'mergeIfNotBlank',
             'label' => $ll . 'metaKeywords',
             'config' => [
                 'type' => 'input',
@@ -213,6 +250,7 @@ $tcaConfiguration = [
         ],
         'meta_description' => [
             'exclude' => 1,
+            'l10n_mode' => 'mergeIfNotBlank',
             'label' => $ll . 'metaDescription',
             'config' => [
                 'type' => 'text',
@@ -238,7 +276,6 @@ if (ConfigurationUtility::isEnableGlobalData()) {
 
     $tcaConfiguration['columns']['global_data_preset'] = [
         'exclude' => 1,
-        'l10n_mode' => 'exclude',
         'label' => $ll . 'globalDataPreset',
         'config' => [
             'type' => 'select',
