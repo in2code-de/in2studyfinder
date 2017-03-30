@@ -4,7 +4,7 @@ namespace In2code\In2studyfinder\Hooks;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2016 Sebastian Stein <sebastian.stein@in2code.de>, in2code.de
+ *  (c) 2017 Sebastian Stein <sebastian.stein@in2code.de>, in2code.de
  *
  *  All rights reserved
  *
@@ -25,16 +25,18 @@ namespace In2code\In2studyfinder\Hooks;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use In2code\Powermail\Utility\ObjectUtility;
-use In2code\Powermail\Utility\TemplateUtility;
+use In2code\In2studyfinder\Utility\AbstractUtility;
+use In2code\In2studyfinder\Utility\ExtensionUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Service\FlexFormService;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
- * Contains a preview rendering for the powermail page module
+ * Contains a preview rendering for the in2studyfinder plugins in the page module
  */
 class PluginPreview implements PageLayoutViewDrawItemHookInterface
 {
@@ -52,7 +54,12 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
     /**
      * @var string
      */
-    protected $templatePathAndFile = 'EXT:in2studyfinder/Resources/Private/Templates/StudyCourse/Hook/PluginPreview.html';
+    protected $templatePathAndFile = '';
+
+    /**
+     * @var array
+     */
+    protected $settings = [];
 
     /**
      * Preprocesses the preview rendering of a content element
@@ -72,6 +79,7 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
         array &$row
     ) {
         $this->initialize($row);
+
         switch ($this->row['list_type']) {
             case 'in2studyfinder_pi1':
                 $drawItem = false;
@@ -93,8 +101,9 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
      */
     protected function getPluginInformation($pluginName)
     {
-        $standaloneView = TemplateUtility::getDefaultStandAloneView();
+        $standaloneView = AbstractUtility::getObjectManager()->get(StandaloneView::class);
         $standaloneView->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($this->templatePathAndFile));
+
         $standaloneView->assignMultiple(
             [
                 'row' => $this->row,
@@ -105,17 +114,44 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
 
         switch ($pluginName) {
             case 'Pi1':
-                $detailPageRecord = BackendUtility::getRecord('pages', $this->flexFormData['settings']['flexform']['studyCourseDetailPage']);
+                $detailPageRecord = BackendUtility::getRecord(
+                    'pages',
+                    $this->flexFormData['settings']['flexform']['studyCourseDetailPage']
+                );
 
-                foreach ($this->flexFormData['settings']['flexform']['select'] as $type => $data) {
-                    if ($data !== '') {
-                        $data = GeneralUtility::intExplode(',', $data);
-                        $standaloneView->assign($type.'Array', $this->getTableRecords('tx_in2studyfinder_domain_model_'.$type, $data));
+                if (!empty($this->flexFormData['settings']['flexform']['select'])) {
+                    foreach ($this->flexFormData['settings']['flexform']['select'] as $type => $data) {
+                        if ($data !== '') {
+                            $data = GeneralUtility::intExplode(',', $data);
+                            $standaloneView->assign(
+                                $type . 'Array',
+                                $this->getTableRecords('tx_in2studyfinder_domain_model_' . $type, $data)
+                            );
+                        }
                     }
                 }
-                $standaloneView->assign('detailPage', $detailPageRecord);
+
+
+                $standaloneView->assignMultiple(
+                    [
+                        'detailPage' => $detailPageRecord,
+                        'recordStoragePages' => $this->getRecordStoragePages(),
+                    ]
+                );
                 break;
             case 'Pi2':
+                $listPageRecord = BackendUtility::getRecord(
+                    'pages',
+                    $this->flexFormData['settings']['flexform']['studyCourseListPage']
+                );
+
+
+                $standaloneView->assignMultiple(
+                    [
+                        'listPage' => $listPageRecord
+                    ]
+                );
+
                 break;
         }
 
@@ -138,6 +174,40 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
     }
 
     /**
+     * @return array
+     */
+    protected function getRecordStoragePages()
+    {
+        $recordStoragePages = [];
+
+        if ($this->row['pages'] !== '') {
+            $storageUids = GeneralUtility::trimExplode(',', $this->row['pages'], true);
+
+            foreach ($storageUids as $storageUid) {
+                $recordStoragePages[] = BackendUtility::getRecord(
+                    'pages',
+                    $storageUid
+                );
+            }
+        } else {
+            $fullTypoScriptConfiguration = AbstractUtility::getConfigurationManager()->getConfiguration(
+                ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT,
+                'in2studyfinder'
+            );
+            $storagePid = $fullTypoScriptConfiguration['plugin.']['tx_in2studyfinder.']['settings.']['storagePid'];
+
+            if ($storagePid !== '') {
+                $recordStoragePages[] = BackendUtility::getRecord(
+                    'pages',
+                    $storagePid
+                );
+            }
+        }
+
+        return $recordStoragePages;
+    }
+
+    /**
      * @param array $row
      * @return void
      */
@@ -145,8 +215,9 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
     {
         $this->row = $row;
 
-        /** @var FlexFormService $flexFormService */
-        $flexFormService = ObjectUtility::getObjectManager()->get(FlexFormService::class);
+        $this->settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
+        $this->templatePathAndFile = $this->settings['backend']['pluginPreviewTemplate'];
+        $flexFormService = AbstractUtility::getObjectManager()->get(FlexFormService::class);
         $this->flexFormData = $flexFormService->convertFlexFormContentToArray($this->row['pi_flexform']);
     }
 }

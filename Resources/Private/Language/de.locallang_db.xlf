@@ -214,6 +214,50 @@
 				<source>default preset for global fields</source>
 				<target>Standard Voreinstellung für globale Felder</target>
 			</trans-unit>
+			<trans-unit id="pluginInformation.detailView">
+				<source>Detail View</source>
+				<target>Detailansicht</target>
+			</trans-unit>
+			<trans-unit id="pluginInformation.recordStoragePage">
+				<source>Record Storage Page</source>
+				<target></target>
+			</trans-unit>
+			<trans-unit id="pluginInformation.recordStoragePages">
+				<source>Record Storage Pages</source>
+				<target></target>
+			</trans-unit>
+			<trans-unit id="pluginInformation.noStoragePage">
+				<source>No Storage Page is Set!</source>
+				<target>Es ist keine Datensatzsammlung (Storage Page) gesetzt!</target>
+			</trans-unit>
+			<trans-unit id="pluginInformation.showAll">
+				<source>show all</source>
+				<target>zeige alle</target>
+			</trans-unit>
+			<trans-unit id="pluginInformation.only">
+				<source>only</source>
+				<target>nur</target>
+			</trans-unit>
+			<trans-unit id="pluginInformation.departments">
+				<source>Departments</source>
+				<target>Fachbereiche</target>
+			</trans-unit>
+			<trans-unit id="pluginInformation.faculties">
+				<source>Faculties</source>
+				<target>Fakultäten</target>
+			</trans-unit>
+			<trans-unit id="pluginInformation.academicDegrees">
+				<source>Academic Degrees</source>
+				<target>Akademische Grade</target>
+			</trans-unit>
+			<trans-unit id="pluginInformation.listView">
+				<source>List View</source>
+				<target>Listenansicht</target>
+			</trans-unit>
+			<trans-unit id="pluginInformation.extensionTitle">
+				<source>Studyfinder</source>
+				<target>Studiengangsfinder</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
