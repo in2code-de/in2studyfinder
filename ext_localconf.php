@@ -38,3 +38,9 @@ if (In2code\In2studyfinder\Utility\ExtensionUtility::isIn2studycoursesExtendLoad
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['de']['EXT:in2studyfinder/Resources/Private/Language/de.locallang.xlf'][]
         = 'EXT:in2studyfinder_extend/Resources/Private/Language/de.locallang.xlf';
 }
+
+/**
+ * Hook to show PluginInformation under a tt_content element in page module of type powermail
+ */
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'][$extKey] =
+    \In2code\In2studyfinder\Hooks\PluginPreview::class;
