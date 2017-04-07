@@ -163,6 +163,8 @@ class StudyCourseController extends ActionController
     }
 
     /**
+     * call page not found if the request throws an exception
+     *
      * @param RequestInterface $request
      * @param ResponseInterface $response
      * @throws \Exception|Exception
@@ -172,7 +174,7 @@ class StudyCourseController extends ActionController
         try {
             parent::processRequest($request, $response);
         } catch (Exception $exception) {
-            if ($exception instanceof Exception\TargetNotFoundException || $exception instanceof Exception\InvalidSourceException) {
+            if ($exception instanceof Exception) {
                 $GLOBALS['TSFE']->pageNotFoundAndExit();
             }
             throw $exception;
