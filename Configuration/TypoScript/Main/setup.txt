@@ -46,6 +46,10 @@ plugin.tx_in2studyfinder {
 			recursive = {$plugin.tx_in2studyfinder.settings.filter.recursive}
 		}
 
+		backend {
+			pluginPreviewTemplate = {$plugin.tx_in2studyfinder.settings.backend.pluginPreviewTemplate}
+		}
+
 	}
 
 	persistence {
