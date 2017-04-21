@@ -41,6 +41,8 @@ use TYPO3\CMS\Extbase\Property\Exception;
 
 /**
  * StudyCourseController
+ *
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
 class StudyCourseController extends ActionController
 {
@@ -49,6 +51,7 @@ class StudyCourseController extends ActionController
      *
      * @var \In2code\In2studyfinder\Domain\Repository\StudyCourseRepository
      * @inject
+     *
      */
     protected $studyCourseRepository = null;
 
@@ -155,11 +158,15 @@ class StudyCourseController extends ActionController
      * @param StudyCourse $studyCourse
      * @return void
      */
-    public function detailAction(StudyCourse $studyCourse)
+    public function detailAction(StudyCourse $studyCourse = null)
     {
-        $this->writePageMetadata($studyCourse);
+        if ($studyCourse) {
+            $this->writePageMetadata($studyCourse);
+            $this->view->assign('studyCourse', $studyCourse);
 
-        $this->view->assign('studyCourse', $studyCourse);
+        } else {
+            $this->redirect('listAction', null, null, null, $this->settings['flexform']['studyCourseListPage']);
+        }
     }
 
     /**
@@ -168,6 +175,8 @@ class StudyCourseController extends ActionController
      * @param RequestInterface $request
      * @param ResponseInterface $response
      * @throws \Exception|Exception
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
     public function processRequest(RequestInterface $request, ResponseInterface $response)
     {
@@ -205,7 +214,6 @@ class StudyCourseController extends ActionController
 
     /**
      * set the Models and the Repositories
-     *
      * @return void
      */
     protected function setFilterTypesAndRepositories()
@@ -230,7 +238,6 @@ class StudyCourseController extends ActionController
 
     /**
      * assign StudyCourses to the view
-     *
      * @return void
      */
     protected function assignStudyCourses()
@@ -283,7 +290,10 @@ class StudyCourseController extends ActionController
     }
 
     /**
+     * @SuppressWarnings(PHPMD.Superglobals)
+     *
      * @param StudyCourse $studyCourse
+     *
      * @return void
      */
     protected function writePageMetadata($studyCourse)
@@ -349,7 +359,6 @@ class StudyCourseController extends ActionController
                     if ($property instanceof ObjectStorage) {
                         $this->getAvailableFilterOptionsFromProperties($property, $availableOptionArray, $currentLevel);
                     } elseif ($property instanceof AbstractDomainObject) {
-
                         $this->getAvailableFilterOptionsFromProperties(
                             $property->_getProperties(),
                             $availableOptionArray,
@@ -374,5 +383,4 @@ class StudyCourseController extends ActionController
             }
         }
     }
-
 }
