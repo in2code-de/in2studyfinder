@@ -85,9 +85,9 @@
 
 			/** @todo better language handling for Placeholder */
 			if ($('html').attr('lang') === 'de') {
-				$('.in2studyfinder-js-fast-select').attr('data-placeholder', 'Studiengang w√§hlen oder Suchbegriff eingeben');
+				$('.in2studyfinder-js-fast-select').attr('data-placeholder', 'Studiengang w‰hlen oder Suchbegriff eingeben');
 			} else {
-				$('.in2studyfinder-js-fast-select').attr('data-placeholder', 'select degree programme or enter keyword');
+				$('.in2studyfinder-js-fast-select').attr('data-placeholder', 'Select degree program or enter keyword');
 			}
 		}
 
