@@ -31,13 +31,18 @@ use In2code\In2studyfinder\Utility\ExtensionUtility;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
+use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Property\Exception;
 
 /**
  * StudyCourseController
+ *
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
 class StudyCourseController extends ActionController
 {
@@ -46,6 +51,7 @@ class StudyCourseController extends ActionController
      *
      * @var \In2code\In2studyfinder\Domain\Repository\StudyCourseRepository
      * @inject
+     *
      */
     protected $studyCourseRepository = null;
 
@@ -80,12 +86,12 @@ class StudyCourseController extends ActionController
         }
 
         if (ExtensionUtility::isIn2studycoursesExtendLoaded()) {
-            $this->studyCourseRepository = $this->objectManager->get('In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository');
+            $this->studyCourseRepository =
+                $this->objectManager->get('In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository');
         }
 
         $this->setFilterTypesAndRepositories();
     }
-
 
     /**
      * action list
@@ -131,13 +137,15 @@ class StudyCourseController extends ActionController
         if (!empty($searchOptions)) {
             $foundStudyCourses = $this->processSearch($searchOptions);
 
-            $this->view->assignMultiple([
-                'searchedOptions' => $searchOptions,
-                'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($foundStudyCourses),
-                'studyCourseCount' => count($foundStudyCourses),
-                'filterTypes' => $this->filterTypes,
-                'studyCourses' => $foundStudyCourses,
-            ]);
+            $this->view->assignMultiple(
+                [
+                    'searchedOptions' => $searchOptions,
+                    'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($foundStudyCourses),
+                    'studyCourseCount' => count($foundStudyCourses),
+                    'filterTypes' => $this->filterTypes,
+                    'studyCourses' => $foundStudyCourses,
+                ]
+            );
             $this->sessionUtility->set('searchOptions', $searchOptions);
         } else {
             $this->assignStudyCourses();
@@ -146,14 +154,40 @@ class StudyCourseController extends ActionController
 
     /**
      * detail show
+     *
      * @param StudyCourse $studyCourse
      * @return void
      */
-    public function detailAction(StudyCourse $studyCourse)
+    public function detailAction(StudyCourse $studyCourse = null)
     {
-        $this->writePageMetadata($studyCourse);
+        if ($studyCourse) {
+            $this->writePageMetadata($studyCourse);
+            $this->view->assign('studyCourse', $studyCourse);
 
-        $this->view->assign('studyCourse', $studyCourse);
+        } else {
+            $this->redirect('listAction', null, null, null, $this->settings['flexform']['studyCourseListPage']);
+        }
+    }
+
+    /**
+     * call page not found if the request throws an exception
+     *
+     * @param RequestInterface $request
+     * @param ResponseInterface $response
+     * @throws \Exception|Exception
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
+     */
+    public function processRequest(RequestInterface $request, ResponseInterface $response)
+    {
+        try {
+            parent::processRequest($request, $response);
+        } catch (Exception $exception) {
+            if ($exception instanceof Exception) {
+                $GLOBALS['TSFE']->pageNotFoundAndExit();
+            }
+            throw $exception;
+        }
     }
 
     /**
@@ -210,12 +244,14 @@ class StudyCourseController extends ActionController
     {
         $studyCourses = $this->getStudyCourses();
 
-        $this->view->assignMultiple([
-            'filterTypes' => $this->filterTypes,
-            'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($studyCourses),
-            'studyCourseCount' => count($studyCourses),
-            'studyCourses' => $studyCourses,
-        ]);
+        $this->view->assignMultiple(
+            [
+                'filterTypes' => $this->filterTypes,
+                'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($studyCourses),
+                'studyCourseCount' => count($studyCourses),
+                'studyCourses' => $studyCourses,
+            ]
+        );
     }
 
     /**
@@ -254,7 +290,10 @@ class StudyCourseController extends ActionController
     }
 
     /**
+     * @SuppressWarnings(PHPMD.Superglobals)
+     *
      * @param StudyCourse $studyCourse
+     *
      * @return void
      */
     protected function writePageMetadata($studyCourse)
@@ -263,7 +302,8 @@ class StudyCourseController extends ActionController
         if (!empty($studyCourse->getMetaPagetitle())) {
             $GLOBALS['TSFE']->page['title'] = $studyCourse->getMetaPagetitle();
         } else {
-            $GLOBALS['TSFE']->page['title'] = $studyCourse->getTitle() . ' - ' . $studyCourse->getAcademicDegree()->getDegree();
+            $GLOBALS['TSFE']->page['title'] =
+                $studyCourse->getTitle() . ' - ' . $studyCourse->getAcademicDegree()->getDegree();
         }
         if (!empty($studyCourse->getMetaDescription())) {
             $metaDescription = '<meta name="description" content="' . $studyCourse->getMetaDescription() . '">';
@@ -319,9 +359,11 @@ class StudyCourseController extends ActionController
                     if ($property instanceof ObjectStorage) {
                         $this->getAvailableFilterOptionsFromProperties($property, $availableOptionArray, $currentLevel);
                     } elseif ($property instanceof AbstractDomainObject) {
-
-                        $this->getAvailableFilterOptionsFromProperties($property->_getProperties(),
-                            $availableOptionArray, $currentLevel + 1);
+                        $this->getAvailableFilterOptionsFromProperties(
+                            $property->_getProperties(),
+                            $availableOptionArray,
+                            $currentLevel + 1
+                        );
 
                         $className = ExtensionUtility::getClassName($property);
 
@@ -341,5 +383,4 @@ class StudyCourseController extends ActionController
             }
         }
     }
-
 }

@@ -162,7 +162,7 @@ $tcaConfiguration = [
         ],
         'university_place' => [
             'exclude' => 1,
-            'l10n_mode' => 'mergeIfNotBlank',
+            'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => $ll . 'universityPlace',
             'config' => [
