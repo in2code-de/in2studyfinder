@@ -66,6 +66,8 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
         if ($this->hasArgument('prependOptionLabel')) {
             $value = $this->hasArgument('prependOptionValue') ? $this->arguments['prependOptionValue'] : '';
             $label = $this->arguments['prependOptionLabel'];
+            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($options[$value]['additionalAttributes'], __CLASS__ . ' in der Zeile ' . __LINE__);
+            die();
             $output .= $this->renderOptionTag($value, $label, false, $options[$value]['additionalAttributes']) . LF;
         }
         foreach ($options as $value => $attributes) {

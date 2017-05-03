@@ -48,6 +48,16 @@ plugin.tx_in2studyfinder {
 				filterModelClass = In2code\In2studyfinder\Domain\Model\CourseLanguage
 				coursePropertyName = courseLanguages
 			}
+			faculty {
+				type = object
+				filterModelClass = In2code\In2studyfinder\Domain\Model\Faculty
+				coursePropertyName = faculty
+			}
+			department {
+				type = object
+				filterModelClass = In2code\In2studyfinder\Domain\Model\Department
+				coursePropertyName = department
+			}
 		}
 	}
 

@@ -137,7 +137,6 @@ class StudyCourseController extends ActionController
             }
         }
         if (!empty($searchOptions)) {
-
             if (ConfigurationUtility::isCachingEnabled()) {
                 $cacheIdentifier = md5(
                     $GLOBALS['TSFE']->id . '-' . $this->cObj->data['uid'] . '-' . $GLOBALS['TSFE']->sys_language_uid . '-' . $this->actionMethodName . '-' . json_encode(
@@ -246,7 +245,7 @@ class StudyCourseController extends ActionController
     protected function assignStudyCourses()
     {
         $studyCourses = $this->getStudyCourses();
-        
+
         $this->view->assignMultiple(
             [
                 'filters' => $this->filters,
@@ -356,7 +355,7 @@ class StudyCourseController extends ActionController
         foreach ($searchOptions as $filterName => $searchedOptions) {
             $mergedOptions[$this->filters[$filterName]['coursePropertyName']] = $searchOptions[$filterName];
         }
-        
+
         return $this->studyCourseRepository->findAllFilteredByOptions($mergedOptions);
     }
 
