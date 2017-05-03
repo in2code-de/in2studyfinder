@@ -1,4 +1,5 @@
 <?php
+
 namespace In2code\In2studyfinder\Controller;
 
 /***************************************************************
@@ -27,7 +28,9 @@ namespace In2code\In2studyfinder\Controller;
  ***************************************************************/
 
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
+use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
+use In2code\In2studyfinder\Utility\SessionUtility;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
@@ -35,6 +38,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
  * StudyCourseController
@@ -45,7 +49,6 @@ class StudyCourseController extends ActionController
      * studyCourseRepository
      *
      * @var \In2code\In2studyfinder\Domain\Repository\StudyCourseRepository
-     * @inject
      */
     protected $studyCourseRepository = null;
 
@@ -61,7 +64,6 @@ class StudyCourseController extends ActionController
 
     /**
      * @var \In2code\In2studyfinder\Utility\SessionUtility
-     * @inject
      */
     protected $sessionUtility;
 
@@ -80,12 +82,32 @@ class StudyCourseController extends ActionController
         }
 
         if (ExtensionUtility::isIn2studycoursesExtendLoaded()) {
-            $this->studyCourseRepository = $this->objectManager->get('In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository');
+            $this->studyCourseRepository =
+                $this->objectManager->get('In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository');
         }
 
         $this->setFilterTypesAndRepositories();
     }
 
+    /**
+     * Inject Session Utility
+     *
+     * @param SessionUtility $sessionUtility
+     */
+    public function injectSessionUtility(SessionUtility $sessionUtility)
+    {
+        $this->sessionUtility = $sessionUtility;
+    }
+
+    /**
+     * Inject Study Course Repository
+     *
+     * @param StudyCourseRepository $studyCourseRepository
+     */
+    public function injectStudyCourseRepository(StudyCourseRepository $studyCourseRepository)
+    {
+        $this->studyCourseRepository = $studyCourseRepository;
+    }
 
     /**
      * action list
@@ -131,13 +153,15 @@ class StudyCourseController extends ActionController
         if (!empty($searchOptions)) {
             $foundStudyCourses = $this->processSearch($searchOptions);
 
-            $this->view->assignMultiple([
-                'searchedOptions' => $searchOptions,
-                'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($foundStudyCourses),
-                'studyCourseCount' => count($foundStudyCourses),
-                'filterTypes' => $this->filterTypes,
-                'studyCourses' => $foundStudyCourses,
-            ]);
+            $this->view->assignMultiple(
+                [
+                    'searchedOptions' => $searchOptions,
+                    'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($foundStudyCourses),
+                    'studyCourseCount' => count($foundStudyCourses),
+                    'filterTypes' => $this->filterTypes,
+                    'studyCourses' => $foundStudyCourses,
+                ]
+            );
             $this->sessionUtility->set('searchOptions', $searchOptions);
         } else {
             $this->assignStudyCourses();
@@ -146,6 +170,7 @@ class StudyCourseController extends ActionController
 
     /**
      * detail show
+     *
      * @param StudyCourse $studyCourse
      * @return void
      */
@@ -180,6 +205,7 @@ class StudyCourseController extends ActionController
 
     /**
      * set the Models and the Repositories
+     *
      * @return void
      */
     protected function setFilterTypesAndRepositories()
@@ -204,18 +230,21 @@ class StudyCourseController extends ActionController
 
     /**
      * assign StudyCourses to the view
+     *
      * @return void
      */
     protected function assignStudyCourses()
     {
         $studyCourses = $this->getStudyCourses();
 
-        $this->view->assignMultiple([
-            'filterTypes' => $this->filterTypes,
-            'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($studyCourses),
-            'studyCourseCount' => count($studyCourses),
-            'studyCourses' => $studyCourses,
-        ]);
+        $this->view->assignMultiple(
+            [
+                'filterTypes' => $this->filterTypes,
+                'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($studyCourses),
+                'studyCourseCount' => count($studyCourses),
+                'studyCourses' => $studyCourses,
+            ]
+        );
     }
 
     /**
@@ -263,7 +292,8 @@ class StudyCourseController extends ActionController
         if (!empty($studyCourse->getMetaPagetitle())) {
             $GLOBALS['TSFE']->page['title'] = $studyCourse->getMetaPagetitle();
         } else {
-            $GLOBALS['TSFE']->page['title'] = $studyCourse->getTitle() . ' - ' . $studyCourse->getAcademicDegree()->getDegree();
+            $GLOBALS['TSFE']->page['title'] =
+                $studyCourse->getTitle() . ' - ' . $studyCourse->getAcademicDegree()->getDegree();
         }
         if (!empty($studyCourse->getMetaDescription())) {
             $metaDescription = '<meta name="description" content="' . $studyCourse->getMetaDescription() . '">';
@@ -277,7 +307,7 @@ class StudyCourseController extends ActionController
 
     /**
      * @param $searchOptions
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult
+     * @return QueryResultInterface
      */
     protected function processSearch($searchOptions)
     {
@@ -319,9 +349,11 @@ class StudyCourseController extends ActionController
                     if ($property instanceof ObjectStorage) {
                         $this->getAvailableFilterOptionsFromProperties($property, $availableOptionArray, $currentLevel);
                     } elseif ($property instanceof AbstractDomainObject) {
-
-                        $this->getAvailableFilterOptionsFromProperties($property->_getProperties(),
-                            $availableOptionArray, $currentLevel + 1);
+                        $this->getAvailableFilterOptionsFromProperties(
+                            $property->_getProperties(),
+                            $availableOptionArray,
+                            $currentLevel + 1
+                        );
 
                         $className = ExtensionUtility::getClassName($property);
 
