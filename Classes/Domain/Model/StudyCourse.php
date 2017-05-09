@@ -167,6 +167,13 @@ class StudyCourse extends AbstractEntity
     protected $metaDescription = '';
 
     /**
+     * Different Preset
+     *
+     * @var boolean
+     */
+    protected $differentPreset = false;
+
+    /**
      * sysLanguageUid
      *
      * @var integer
@@ -735,13 +742,29 @@ class StudyCourse extends AbstractEntity
     }
 
     /**
+     * @return bool
+     */
+    public function isDifferentPreset()
+    {
+        return $this->differentPreset;
+    }
+
+    /**
+     * @param bool $differentPreset
+     */
+    public function setDifferentPreset($differentPreset)
+    {
+        $this->differentPreset = $differentPreset;
+    }
+
+    /**
      * @return GlobalData|null
      */
     public function getGlobalData()
     {
         $globalData = null;
 
-        if (!is_null($this->getGlobalDataPreset())) {
+        if ($this->isDifferentPreset()) {
             $globalData = $this->getGlobalDataPreset();
         } else {
             $globalData = GlobalDataUtility::getDefaultPreset();
