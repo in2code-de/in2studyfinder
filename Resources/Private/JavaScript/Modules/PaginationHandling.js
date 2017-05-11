@@ -2,9 +2,8 @@
 	function PaginationHandling(dom) {
 
 		var paginationHandling = this;
-		var uiBehaviour = new window.In2studyfinder.UiBehaviour(dom);
+		var filterHandling = new window.In2studyfinder.FilterHandling(dom);
 		var urlHandling = new window.In2studyfinder.UrlHandling(dom);
-		var start = new window.In2studyfinder.Start();
 
 		this.init = function() {
 			$('.js-get-by-ajax').on('click', function(e) {
@@ -17,34 +16,15 @@
 		this.callPagination = function(element) {
 			var destination = urlHandling.removeUrlParam('cHash', element.attr('href'));
 			var targetPage = 1;
-			destination.split('&').forEach(function(value) {
-				if (value.match(/tx_in2studyfinder_pi1%5B%40widget_0%5D%5BcurrentPage%5D=/)) {
-					targetPage = value.replace('tx_in2studyfinder_pi1%5B%40widget_0%5D%5BcurrentPage%5D=', '');
-				}
-			});
+			if (destination.indexOf('&') !== -1 || destination.indexOf('?') !== -1) {
+				destination.replace('?', '&').split('&').forEach(function(value) {
+					if (value.match(/tx_in2studyfinder_pi1%5B%40widget_0%5D%5BcurrentPage%5D=/)) {
+						targetPage = value.replace('tx_in2studyfinder_pi1%5B%40widget_0%5D%5BcurrentPage%5D=', '');
+					}
+				});
+			}
 
-			$.ajax({
-				type: 'GET',
-				url: destination,
-				beforeSend: function() {
-					uiBehaviour.enableLoading();
-					urlHandling.saveSelectedOptionsToUrl(targetPage);
-				},
-				success: function(data) {
-					$('.in2studyfinder').html($(data).find('.in2studyfinder'));
-					window.scrollTo(0, 0);
-				},
-				error: function() {
-					alert('fail');
-				},
-				complete: function() {
-					start.init();
-					uiBehaviour.openPreviouslyOpenedFilterSections();
-					uiBehaviour.disbaleLoading();
-				},
-				cache: false
-
-			});
+			filterHandling.filterChanged(targetPage);
 		};
 	}
 
