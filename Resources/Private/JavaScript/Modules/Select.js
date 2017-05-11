@@ -15,29 +15,12 @@
 					return select.matcher(params, data);
 				},
 				sorter: function (results) {
-					/* @todo: optimise sorting */
 					var sorted = results.slice(0);
 
 					sorted.sort(function (first, second) {
-						if (query.term && query.term !== '') {
-							var firstTextPosition = first.text.toUpperCase().indexOf(
-								query.term.toUpperCase()
-							);
-							var secondTextPosition = second.text.toUpperCase().indexOf(
-								query.term.toUpperCase()
-							);
-
-
-							if (firstTextPosition === -1) {
-								firstTextPosition = 100;
-							}
-
-							if (secondTextPosition === -1) {
-								secondTextPosition = 100;
-							}
-
-							return firstTextPosition - secondTextPosition;
-						}
+						if (first.text.toUpperCase() < second.text.toUpperCase()) return -1;
+						if (first.text.toUpperCase() > second.text.toUpperCase()) return 1;
+						return 0;
 					});
 
 					return sorted;
