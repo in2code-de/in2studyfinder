@@ -66,12 +66,6 @@ class StudyCourseController extends ActionController
     protected $filterTypes = [];
 
     /**
-     * @var \In2code\In2studyfinder\Utility\SessionUtility
-     * @inject
-     */
-    protected $sessionUtility;
-
-    /**
      * @var array
      */
     protected $allowedSearchFields = [];
@@ -108,7 +102,6 @@ class StudyCourseController extends ActionController
      */
     public function initializeFilterAction()
     {
-
         if ($this->request->hasArgument('searchOptions')) {
             // filter empty options
             $sanitizedSearchOptions = array_filter($this->request->getArgument('searchOptions'));
@@ -129,11 +122,6 @@ class StudyCourseController extends ActionController
      */
     public function filterAction($searchOptions = [])
     {
-        if (empty($searchOptions) && $this->request->getMethod() === 'GET') {
-            if ($this->sessionUtility->has('searchOptions')) {
-                $searchOptions = $this->sessionUtility->get('searchOptions');
-            }
-        }
         if (!empty($searchOptions)) {
             $foundStudyCourses = $this->processSearch($searchOptions);
 
@@ -146,7 +134,6 @@ class StudyCourseController extends ActionController
                     'studyCourses' => $foundStudyCourses,
                 ]
             );
-            $this->sessionUtility->set('searchOptions', $searchOptions);
         } else {
             $this->assignStudyCourses();
         }
