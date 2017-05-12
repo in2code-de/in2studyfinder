@@ -1,4 +1,5 @@
 <?php
+
 namespace In2code\In2studyfinder\Controller;
 
 /***************************************************************
@@ -201,6 +202,7 @@ class StudyCourseController extends ActionController
 
     /**
      * set the Models and the Repositories
+     *
      * @return void
      */
     protected function setFilterTypesAndRepositories()
@@ -225,6 +227,7 @@ class StudyCourseController extends ActionController
 
     /**
      * assign StudyCourses to the view
+     *
      * @return void
      */
     protected function assignStudyCourses()
@@ -254,6 +257,10 @@ class StudyCourseController extends ActionController
         } else {
             $studyCourses = $this->studyCourseRepository->findAll();
         }
+
+        /* sort the Studycourses with usort see: Domain/Model/StudyCourse:cmpObj */
+        $studyCourses = $studyCourses->toArray();
+        usort($studyCourses, array(StudyCourse::class, "cmpObj"));
 
         return $studyCourses;
     }
