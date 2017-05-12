@@ -112,6 +112,10 @@
       top: 12px;
       left: -20px;
     }
+
+    &.opened:before {
+      background: url($iconPath + "close.png") no-repeat;
+    }
   }
 
   &__accordion {
