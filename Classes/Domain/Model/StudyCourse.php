@@ -809,6 +809,6 @@ class StudyCourse extends AbstractEntity
      */
     public static function cmpObj($studyCourseA, $studyCourseB)
     {
-        return strcmp($studyCourseA->getTitle(), $studyCourseB->getTitle());
+        return strcmp(strtolower($studyCourseA->getTitle()), strtolower($studyCourseB->getTitle()));
     }
 }
