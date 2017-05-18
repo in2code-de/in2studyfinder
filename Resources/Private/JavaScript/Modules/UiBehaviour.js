@@ -28,7 +28,9 @@
 
 		this.toggleOptionSectionVisibility = function() {
 			$('.in2studyfinder-js-option-legend').on('click', function() {
-				$(this).siblings().toggleClass('hide');
+				$(this)
+					.toggleClass('opened')
+					.siblings().toggleClass('hide');
 			});
 		};
 

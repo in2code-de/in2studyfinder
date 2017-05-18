@@ -166,6 +166,39 @@
 			<trans-unit id="defaultPreset">
 				<source>default preset for global fields</source>
 			</trans-unit>
+			<trans-unit id="pluginInformation.detailView">
+				<source>Detail View</source>
+			</trans-unit>
+			<trans-unit id="pluginInformation.recordStoragePage">
+				<source>Record Storage Page</source>
+			</trans-unit>
+			<trans-unit id="pluginInformation.recordStoragePages">
+				<source>Record Storage Pages</source>
+			</trans-unit>
+			<trans-unit id="pluginInformation.noStoragePage">
+				<source>No Storage Page is Set!</source>
+			</trans-unit>
+			<trans-unit id="pluginInformation.showAll">
+				<source>show all</source>
+			</trans-unit>
+			<trans-unit id="pluginInformation.only">
+				<source>only</source>
+			</trans-unit>
+			<trans-unit id="pluginInformation.departments">
+				<source>Departments</source>
+			</trans-unit>
+			<trans-unit id="pluginInformation.faculties">
+				<source>Faculties</source>
+			</trans-unit>
+			<trans-unit id="pluginInformation.academicDegrees">
+				<source>Academic Degrees</source>
+			</trans-unit>
+			<trans-unit id="pluginInformation.listView">
+				<source>List View</source>
+			</trans-unit>
+			<trans-unit id="pluginInformation.extensionTitle">
+				<source>Studyfinder</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

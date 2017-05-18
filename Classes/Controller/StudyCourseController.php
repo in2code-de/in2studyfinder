@@ -30,7 +30,6 @@ namespace In2code\In2studyfinder\Controller;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
-use In2code\In2studyfinder\Utility\SessionUtility;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
@@ -39,9 +38,14 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
+use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
+use TYPO3\CMS\Extbase\Property\Exception;
 
 /**
  * StudyCourseController
+ *
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
 class StudyCourseController extends ActionController
 {
@@ -63,11 +67,6 @@ class StudyCourseController extends ActionController
     protected $filterTypes = [];
 
     /**
-     * @var \In2code\In2studyfinder\Utility\SessionUtility
-     */
-    protected $sessionUtility;
-
-    /**
      * @var array
      */
     protected $allowedSearchFields = [];
@@ -87,16 +86,6 @@ class StudyCourseController extends ActionController
         }
 
         $this->setFilterTypesAndRepositories();
-    }
-
-    /**
-     * Inject Session Utility
-     *
-     * @param SessionUtility $sessionUtility
-     */
-    public function injectSessionUtility(SessionUtility $sessionUtility)
-    {
-        $this->sessionUtility = $sessionUtility;
     }
 
     /**
@@ -124,7 +113,6 @@ class StudyCourseController extends ActionController
      */
     public function initializeFilterAction()
     {
-
         if ($this->request->hasArgument('searchOptions')) {
             // filter empty options
             $sanitizedSearchOptions = array_filter($this->request->getArgument('searchOptions'));
@@ -145,24 +133,23 @@ class StudyCourseController extends ActionController
      */
     public function filterAction($searchOptions = [])
     {
-        if (empty($searchOptions) && $this->request->getMethod() === 'GET') {
-            if ($this->sessionUtility->has('searchOptions')) {
-                $searchOptions = $this->sessionUtility->get('searchOptions');
-            }
-        }
         if (!empty($searchOptions)) {
             $foundStudyCourses = $this->processSearch($searchOptions);
+
+            /* sort the Studycourses with usort see: Domain/Model/StudyCourse:cmpObj */
+            $studyCourses = $foundStudyCourses->toArray();
+            usort($studyCourses, array(StudyCourse::class, "cmpObj"));
+
 
             $this->view->assignMultiple(
                 [
                     'searchedOptions' => $searchOptions,
-                    'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($foundStudyCourses),
+                    'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($studyCourses),
                     'studyCourseCount' => count($foundStudyCourses),
                     'filterTypes' => $this->filterTypes,
                     'studyCourses' => $foundStudyCourses,
                 ]
             );
-            $this->sessionUtility->set('searchOptions', $searchOptions);
         } else {
             $this->assignStudyCourses();
         }
@@ -174,11 +161,36 @@ class StudyCourseController extends ActionController
      * @param StudyCourse $studyCourse
      * @return void
      */
-    public function detailAction(StudyCourse $studyCourse)
+    public function detailAction(StudyCourse $studyCourse = null)
     {
-        $this->writePageMetadata($studyCourse);
+        if ($studyCourse) {
+            $this->writePageMetadata($studyCourse);
+            $this->view->assign('studyCourse', $studyCourse);
 
-        $this->view->assign('studyCourse', $studyCourse);
+        } else {
+            $this->redirect('listAction', null, null, null, $this->settings['flexform']['studyCourseListPage']);
+        }
+    }
+
+    /**
+     * call page not found if the request throws an exception
+     *
+     * @param RequestInterface $request
+     * @param ResponseInterface $response
+     * @throws \Exception|Exception
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
+     */
+    public function processRequest(RequestInterface $request, ResponseInterface $response)
+    {
+        try {
+            parent::processRequest($request, $response);
+        } catch (Exception $exception) {
+            if ($exception instanceof Exception) {
+                $GLOBALS['TSFE']->pageNotFoundAndExit();
+            }
+            throw $exception;
+        }
     }
 
     /**
@@ -248,7 +260,7 @@ class StudyCourseController extends ActionController
     }
 
     /**
-     * @return QueryResult
+     * @return array
      */
     protected function getStudyCourses()
     {
@@ -261,6 +273,10 @@ class StudyCourseController extends ActionController
             $studyCourses = $this->studyCourseRepository->findAll();
         }
 
+        /* sort the Studycourses with usort see: Domain/Model/StudyCourse:cmpObj */
+        $studyCourses = $studyCourses->toArray();
+        usort($studyCourses, array(StudyCourse::class, "cmpObj"));
+        
         return $studyCourses;
     }
 
@@ -283,7 +299,10 @@ class StudyCourseController extends ActionController
     }
 
     /**
+     * @SuppressWarnings(PHPMD.Superglobals)
+     *
      * @param StudyCourse $studyCourse
+     *
      * @return void
      */
     protected function writePageMetadata($studyCourse)
@@ -315,14 +334,14 @@ class StudyCourseController extends ActionController
     }
 
     /**
-     * @param QueryResult $queryResult
+     * @param array $studyCourses
      * @return array
      * @throws \TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException
      */
-    protected function getAvailableFilterOptionsFromQueryResult($queryResult)
+    protected function getAvailableFilterOptionsFromQueryResult($studyCourses)
     {
         $availableOptions = [];
-        foreach ($queryResult as $studyCourse) {
+        foreach ($studyCourses as $studyCourse) {
             $properties = $studyCourse->_getProperties();
 
             $this->getAvailableFilterOptionsFromProperties($properties, $availableOptions);
@@ -373,5 +392,4 @@ class StudyCourseController extends ActionController
             }
         }
     }
-
 }

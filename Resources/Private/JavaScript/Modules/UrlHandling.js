@@ -6,7 +6,7 @@
 		/**
 		 * Remove Param
 		 */
-		this.removeUrlParam = function(key, sourceURL) {
+		this.removeUrlParam = function (key, sourceURL) {
 			var rtn = sourceURL.split('?')[0],
 				param,
 				paramsArr = [],
@@ -27,11 +27,11 @@
 		/**
 		 * Save Selected Options to Url
 		 */
-		this.saveSelectedOptionsToUrl = function(paginationPage) {
+		this.saveSelectedOptionsToUrl = function (paginationPage) {
 			var selectionValues = {};
 			var selectionString = '';
 			var selectedOptions = $('.in2studyfinder-js-filter').find('input.in2studyfinder-js-checkbox:checked');
-			$(selectedOptions).each(function() {
+			$(selectedOptions).each(function () {
 				var filterGroupAbbreviation = $(this).closest('fieldset').data('filtergroup');
 				if (selectionValues[filterGroupAbbreviation] === undefined) {
 					selectionValues[filterGroupAbbreviation] = [];
@@ -39,10 +39,10 @@
 				selectionValues[filterGroupAbbreviation].push($(this).val());
 			});
 
-			$(selectionValues).each(function(key, values) {
-				$.each(values, function(filterKey, value) {
+			$(selectionValues).each(function (key, values) {
+				$.each(values, function (filterKey, value) {
 					selectionString += filterKey + '--';
-					$.each(value, function(key, value) {
+					$.each(value, function (key, value) {
 						selectionString += value + '+';
 					});
 					selectionString = selectionString.replace(/\+$/, '');
@@ -60,7 +60,7 @@
 		/**
 		 * Load Selected Options from Url
 		 */
-		this.loadSelectedOptionsFromUrl = function() {
+		this.loadSelectedOptionsFromUrl = function () {
 			var filterHash = window.location.hash.split('#');
 			if (1 in filterHash) {
 				filterHash = filterHash[1];
@@ -70,16 +70,20 @@
 					filterHash = filterHash.split('p')[0];
 				}
 
-				var filterParts = filterHash.split('__');
-				$(filterParts).each(function(key, values) {
-					var sectionSplit = '--';
-					var selections = values.split(sectionSplit);
-					var filterGroup = values.substr(0, values.indexOf(sectionSplit));
-					var selectedOptions = selections[1].split('+');
-					$(selectedOptions).each(function(key, value) {
-						$('#' + filterGroup + '_' + value).prop('checked', true);
+				if (filterHash !== '') {
+
+					var filterParts = filterHash.split('__');
+
+					$(filterParts).each(function (key, values) {
+						var sectionSplit = '--';
+						var selections = values.split(sectionSplit);
+						var filterGroup = values.substr(0, values.indexOf(sectionSplit));
+						var selectedOptions = selections[1].split('+');
+						$(selectedOptions).each(function (key, value) {
+							$('#' + filterGroup + '_' + value).prop('checked', true);
+						});
 					});
-				});
+				}
 
 				return paginationPage;
 			}

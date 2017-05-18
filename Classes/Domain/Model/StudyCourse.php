@@ -1,4 +1,5 @@
 <?php
+
 namespace In2code\In2studyfinder\Domain\Model;
 
 /***************************************************************
@@ -26,8 +27,6 @@ namespace In2code\In2studyfinder\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use In2code\In2studyfinder\Utility\DataPresetUtility;
-use In2code\In2studyfinder\Utility\ExtensionUtility;
 use In2code\In2studyfinder\Utility\GlobalDataUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -165,6 +164,13 @@ class StudyCourse extends AbstractEntity
      * @var string
      */
     protected $metaDescription = '';
+
+    /**
+     * Different Preset
+     *
+     * @var boolean
+     */
+    protected $differentPreset = false;
 
     /**
      * sysLanguageUid
@@ -576,7 +582,8 @@ class StudyCourse extends AbstractEntity
     /**
      * Removes a CourseLanguage
      *
-     * @param \In2code\In2studyfinder\Domain\Model\CourseLanguage $courseLanguageToRemove The Course Language to be removed
+     * @param \In2code\In2studyfinder\Domain\Model\CourseLanguage $courseLanguageToRemove The Course Language to be
+     *     removed
      * @return void
      */
     public function removeCourseLanguage($courseLanguageToRemove)
@@ -619,7 +626,8 @@ class StudyCourse extends AbstractEntity
     /**
      * Removes a admissionRequirement
      *
-     * @param \In2code\In2studyfinder\Domain\Model\AdmissionRequirement $admissionRequirementToRemove The type of study to be removed
+     * @param \In2code\In2studyfinder\Domain\Model\AdmissionRequirement $admissionRequirementToRemove The type of study
+     *     to be removed
      * @return void
      */
     public function removeAdmissionRequirement($admissionRequirementToRemove)
@@ -735,13 +743,29 @@ class StudyCourse extends AbstractEntity
     }
 
     /**
+     * @return bool
+     */
+    public function isDifferentPreset()
+    {
+        return $this->differentPreset;
+    }
+
+    /**
+     * @param bool $differentPreset
+     */
+    public function setDifferentPreset($differentPreset)
+    {
+        $this->differentPreset = $differentPreset;
+    }
+
+    /**
      * @return GlobalData|null
      */
     public function getGlobalData()
     {
         $globalData = null;
 
-        if (!is_null($this->getGlobalDataPreset())) {
+        if ($this->isDifferentPreset()) {
             $globalData = $this->getGlobalDataPreset();
         } else {
             $globalData = GlobalDataUtility::getDefaultPreset();
@@ -753,5 +777,38 @@ class StudyCourse extends AbstractEntity
     public function getTitleWithAcademicDegree()
     {
         return $this->getTitle() . ' - ' . $this->getAcademicDegree()->getDegree();
+    }
+
+    /**
+     * compare function for sorting
+     *
+     * DE: ein Workaround für die Sortierung nach Titel. Da die Sortierung über das
+     * Repository ($defaultOrderings) bei übersetzten Datensätzen nicht richtig funktioniert.
+     * Soll nach anderen Kriterien sortiert werden kann diese Funktion einfach überschrieben werden.
+     *
+     * z.B.
+     *
+     * public static function cmpObj($studyCourseA, $studyCourseB)
+     * {
+     *     $al = strtolower($studyCourseA->getTitle());
+     *     $bl = strtolower($studyCourseB->getTitle());
+     *
+     *     if ($al == $bl) {
+     *       return $studyCourseB->getAcademicDegree()->getSorting() - $studyCourseB->getAcademicDegree()->getSorting();
+     *     }
+     *
+     *     return strcmp($studyCourseA->getTitle(), $studyCourseB->getTitle());
+     * }
+     *
+     * würde erst nach Titel alphabetisch und danach nach dem Akademischem Grad ("sorting" im Backend durch den
+     * Redakteur gepflegt) sortieren.
+     *
+     * @param $studyCourseA StudyCourse
+     * @param $studyCourseB StudyCourse
+     * @return int
+     */
+    public static function cmpObj($studyCourseA, $studyCourseB)
+    {
+        return strcmp(strtolower($studyCourseA->getTitle()), strtolower($studyCourseB->getTitle()));
     }
 }
