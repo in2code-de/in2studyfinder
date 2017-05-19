@@ -539,52 +539,6 @@ class TcaUtility extends AbstractUtility
     }
 
     /**
-     * @param $table
-     * @param $palette
-     * @param $field
-     * @param string $insertAfter
-     * @param bool|false $addLineBreakAfter
-     * @param bool|false $addLineBreakBefore
-     *
-     * @deprecated since 1.2, will be removed in version 2.0
-     *
-     * @return void
-     */
-    public static function addFieldToPalettes(
-        $table,
-        $palette,
-        $field,
-        $insertAfter = 'last',
-        $addLineBreakBefore = false,
-        $addLineBreakAfter = false
-    ) {
-        self::addFieldsToPalette($table, $palette, [$field], $insertAfter, $addLineBreakBefore, $addLineBreakAfter);
-    }
-
-    /**
-     * Use addFieldsToNewDiv instead
-     *
-     * @param string $table
-     * @param string $localLangPath
-     * @param string $localLangId
-     * @param array $fields
-     * @param string $insertAfter
-     *
-     * @deprecated since 1.2, will be removed in version 2.0
-     *
-     * @return void
-     */
-    public static function addFieldsInNewDiv(
-        $table,
-        $localLangPath,
-        $localLangId,
-        $fields,
-        $insertAfter
-    ) {
-        self::addFieldsToNewDivForAllTCAtypes($table, $localLangPath, $localLangId, $fields, $insertAfter);
-    }
-
-    /**
      * Adds a new tab to the tca
      *
      * @param string $table
@@ -640,23 +594,6 @@ class TcaUtility extends AbstractUtility
 
     /**
      * @param string $table
-     * @param string $palette
-     * @param string $field
-     *
-     * @deprecated since 1.2, will be removed in version 2.0
-     *
-     * @return void
-     */
-    public static function removeFieldFromPaletteShowItem(
-        $table,
-        $palette,
-        $field
-    ) {
-        self::removeFieldsFromTCApalette($table, $palette, [$field]);
-    }
-
-    /**
-     * @param string $table
      * @param string $tcaType
      * @param array $fields
      *
@@ -668,23 +605,6 @@ class TcaUtility extends AbstractUtility
         $fields
     ) {
         self::removeFieldsFromTCA($table, 'types', $tcaType, $fields);
-    }
-
-    /**
-     * @param string $table
-     * @param string $type
-     * @param string $field
-     *
-     * @deprecated since 1.2, will be removed in version 2.0
-     *
-     * @return void
-     */
-    public static function removeFieldFromShowItem(
-        $table,
-        $type,
-        $field
-    ) {
-        self::removeFieldsFromTCAtype($table, $type, [$field]);
     }
 
     /**
