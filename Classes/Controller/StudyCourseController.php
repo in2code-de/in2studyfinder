@@ -136,10 +136,7 @@ class StudyCourseController extends ActionController
         if (!empty($searchOptions)) {
             $foundStudyCourses = $this->processSearch($searchOptions);
 
-            /* sort the Studycourses with usort see: Domain/Model/StudyCourse:cmpObj */
-            $studyCourses = $foundStudyCourses->toArray();
-            usort($studyCourses, array(StudyCourse::class, "cmpObj"));
-
+            $studyCourses = $this->sortStudyCourses($foundStudyCourses);
 
             $this->view->assignMultiple(
                 [
@@ -273,10 +270,8 @@ class StudyCourseController extends ActionController
             $studyCourses = $this->studyCourseRepository->findAll();
         }
 
-        /* sort the Studycourses with usort see: Domain/Model/StudyCourse:cmpObj */
-        $studyCourses = $studyCourses->toArray();
-        usort($studyCourses, array(StudyCourse::class, "cmpObj"));
-        
+        $studyCourses = $this->sortStudyCourses($studyCourses);
+
         return $studyCourses;
     }
 
@@ -331,6 +326,21 @@ class StudyCourseController extends ActionController
     protected function processSearch($searchOptions)
     {
         return $this->studyCourseRepository->findAllFilteredByOptions($searchOptions);
+    }
+
+    /**
+     * @param QueryResultInterface $studyCourses
+     *
+     * @return array
+     */
+    protected function sortStudyCourses(QueryResultInterface $studyCourses)
+    {
+        $studyCoursesArray = (array)$studyCourses->toArray();
+
+        /* sort the Studycourses with usort see: Domain/Model/StudyCourse:cmpObj */
+        usort($studyCoursesArray, array(StudyCourse::class, "cmpObj"));
+
+        return $studyCoursesArray;
     }
 
     /**
