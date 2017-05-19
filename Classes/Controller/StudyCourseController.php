@@ -30,6 +30,7 @@ namespace In2code\In2studyfinder\Controller;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
@@ -135,7 +136,7 @@ class StudyCourseController extends ActionController
         if (!empty($searchOptions)) {
             $foundStudyCourses = $this->processSearch($searchOptions);
 
-            $studyCourses = $this->sortStudyCourses($foundStudyCourses);
+            $studyCourses = $this->sortStudyCourses($foundStudyCourses->toArray());
 
             $this->view->assignMultiple(
                 [
@@ -269,7 +270,7 @@ class StudyCourseController extends ActionController
             $studyCourses = $this->studyCourseRepository->findAll();
         }
 
-        $studyCourses = $this->sortStudyCourses($studyCourses);
+        $studyCourses = $this->sortStudyCourses($studyCourses->toArray());
 
         return $studyCourses;
     }
@@ -328,18 +329,16 @@ class StudyCourseController extends ActionController
     }
 
     /**
-     * @param QueryResultInterface $studyCourses
+     * @param array $studyCourses
      *
      * @return array
      */
-    protected function sortStudyCourses(QueryResultInterface $studyCourses)
+    protected function sortStudyCourses($studyCourses)
     {
-        $studyCoursesArray = (array)$studyCourses->toArray();
-
         /* sort the Studycourses with usort see: Domain/Model/StudyCourse:cmpObj */
-        usort($studyCoursesArray, array(StudyCourse::class, "cmpObj"));
+        usort($studyCourses, array(StudyCourse::class, "cmpObj"));
 
-        return $studyCoursesArray;
+        return $studyCourses;
     }
 
     /**
