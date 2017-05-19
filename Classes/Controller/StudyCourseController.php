@@ -31,6 +31,7 @@ use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
+use In2code\In2studyfinder\Utility\FrontendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -241,10 +242,7 @@ class StudyCourseController extends ActionController
     protected function setFilters()
     {
         foreach ($this->settings['filters'] as $filterName => $filterProperties) {
-            if ($filterProperties['type'] &&
-                $filterProperties['propertyPath'] &&
-                $filterProperties['frontendLabel']
-            ) {
+            if ($filterProperties['type'] && $filterProperties['propertyPath'] && $filterProperties['frontendLabel']) {
                 $frontendLabel = LocalizationUtility::translate(
                     $filterProperties['frontendLabel'],
                     'in2studyfinder'
@@ -314,45 +312,65 @@ class StudyCourseController extends ActionController
      */
     protected function getStudyCourses()
     {
-
-        $selectedOptions = $this->getSelectedFlexformOptions();
+        $studyCourses = [];
+        $flexformOptions = $this->getSelectedFlexformOptions();
 
         if (ConfigurationUtility::isCachingEnabled()) {
-            if (!empty($selectedOptions)) {
-                $cacheIdentifier = md5(
-                    $GLOBALS['TSFE']->id . "-" . $this->cObj->data['uid'] . "-" . $GLOBALS['TSFE']->sys_language_uid . "-" . $this->actionMethodName . '-' . json_encode(
-                        $selectedOptions
-                    )
-                );
-            } else {
-                $cacheIdentifier = md5(
-                    $GLOBALS['TSFE']->id . "-" . $this->cObj->data['uid'] . "-" . $GLOBALS['TSFE']->sys_language_uid . "-" . $this->actionMethodName
-                );
-            }
+            $cacheIdentifier = $this->getCacheIdentifierForStudyCourses($flexformOptions);
 
             $studyCourses = $this->cacheInstance->get($cacheIdentifier);
 
+            // if no cache entry exists write cache
             if (!$studyCourses) {
-                if (!empty($selectedOptions)) {
-                    $studyCourses = $this->processSearch($selectedOptions);
-                } else {
-                    $studyCourses = $this->studyCourseRepository->findAll();
-                }
-                // In diesem Beispiel wird das Ergebnis des Repositories im Cache gespeichert.
-                // Es ist natürlich möglich noch viel mehr zu speichern.
+                $this->getStudyCoursesFromRepository($flexformOptions);
                 $this->cacheInstance->set($cacheIdentifier, $studyCourses, ['in2studyfinder']);
             }
         } else {
-            if (!empty($selectedOptions)) {
-                $studyCourses = $this->processSearch($selectedOptions);
-            } else {
-                $studyCourses = $this->studyCourseRepository->findAll();
-            }
+            $this->getStudyCoursesFromRepository($flexformOptions);
         }
 
         $studyCourses = $this->sortStudyCourses($studyCourses->toArray());
 
         return $studyCourses;
+    }
+
+    /**
+     * @param array $flexformOptions
+     * @return array|QueryResultInterface
+     */
+    protected function getStudyCoursesFromRepository($flexformOptions)
+    {
+        if (!empty($flexformOptions)) {
+            $studyCourses = $this->processSearch($flexformOptions);
+        } else {
+            $studyCourses = $this->studyCourseRepository->findAll();
+        }
+
+        return $studyCourses;
+    }
+
+    /**
+     * @param array $flexformOptions
+     * @return string
+     */
+    protected function getCacheIdentifierForStudyCourses($flexformOptions)
+    {
+        // create cache Identifier
+        if (!empty($flexformOptions)) {
+            $cacheIdentifier = md5(
+                FrontendUtility::getCurrentPageIdentifier() . "-" . $this->cObj->data['uid'] . "-" .
+                FrontendUtility::getCurrentSysLanguageUid() . "-" .
+                json_encode($flexformOptions)
+            );
+        } else {
+            $cacheIdentifier = md5(
+                FrontendUtility::getCurrentPageIdentifier() . '-' .
+                FrontendUtility::getCurrentSysLanguageUid() . '-' .
+                'allStudyCourses'
+            );
+        }
+
+        return $cacheIdentifier;
     }
 
     /**
