@@ -23,8 +23,7 @@ $extKey = 'in2studyfinder';
     [
         'StudyCourse' => 'detail',
     ], // non-cacheable actions
-    [
-        //'StudyCourse' => 'detail',
+    [//'StudyCourse' => 'detail',
     ]
 );
 
@@ -52,3 +51,16 @@ if (In2code\In2studyfinder\Utility\ExtensionUtility::isIn2studycoursesExtendLoad
  */
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'][$extKey] =
     \In2code\In2studyfinder\Hooks\PluginPreview::class;
+
+if (\In2code\In2studyfinder\Utility\ConfigurationUtility::isCachingEnabled()) {
+    if (!is_array($GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey])) {
+        $GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey] = array();
+    }
+    if (!isset($GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey]['frontend'])) {
+        $GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey]['frontend'] =
+            \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class;
+    }
+    if (!isset($GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey]['groups'])) {
+        $GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey]['groups'] = array('pages');
+    }
+}

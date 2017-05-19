@@ -6,6 +6,13 @@
 
 	<f:render partial="StudyCourse/List/SelectionOptions" arguments="{_all}"/>
 
-	<f:render partial="StudyCourse/List/StudyCourseList" arguments="{_all}"/>
+	<f:if condition="{studyCourses}">
+		<f:then>
+			<f:render partial="StudyCourse/List/StudyCourseList" arguments="{_all}"/>
+		</f:then>
+		<f:else>
+			<f:render partial="StudyCourse/List/NoStudyCourses" arguments="{_all}"/>
+		</f:else>
+	</f:if>
 
 </f:section>

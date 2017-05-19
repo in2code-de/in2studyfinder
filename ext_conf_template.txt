@@ -2,3 +2,5 @@
 enableGlobalData = 0
 # cat=basic/enable/020; type=boolean; label= Enable Typo3 Categorisation for courses
 enableCategories = 0
+# cat=basic/enable/030; type=boolean; label= Enable the Caching functionality
+enableCaching = 1

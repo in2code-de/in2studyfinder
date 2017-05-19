@@ -47,7 +47,6 @@ class CheckboxViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\CheckboxViewH
                 }
                 $nameAttribute .= '[]';
             } elseif (($multiple = false) === true) {
-                // @todo: implement correct as in Flow.Fluid
                 $nameAttribute .= '[]';
             } elseif ($checked === null && $propertyValue !== null) {
                 $checked = (boolean)$propertyValue === (boolean)$valueAttribute;
