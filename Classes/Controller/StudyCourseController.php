@@ -32,6 +32,8 @@ use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Log\LogLevel;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
@@ -42,6 +44,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Extbase\Property\Exception;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * StudyCourseController
@@ -75,6 +78,11 @@ class StudyCourseController extends ActionController
     protected $cObj;
 
     /**
+     * @var \TYPO3\CMS\Core\Log\Logger
+     */
+    protected $logger;
+
+    /**
      * initialize action
      */
     protected function initializeAction()
@@ -88,6 +96,8 @@ class StudyCourseController extends ActionController
             $this->studyCourseRepository =
                 $this->objectManager->get('In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository');
         }
+
+        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 
         $this->setFilters();
     }
@@ -109,6 +119,9 @@ class StudyCourseController extends ActionController
      */
     public function listAction()
     {
+
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->filters, __CLASS__ . ' in der Zeile ' . __LINE__);
+
         $this->assignStudyCourses();
     }
 
@@ -121,12 +134,6 @@ class StudyCourseController extends ActionController
             // filter empty options
             $sanitizedSearchOptions = array_filter((array)$this->request->getArgument('searchOptions'));
 
-            // remove not allowed keys (prevents SQL Injection, too)
-//            foreach (array_keys($sanitizedSearchOptions) as $studyCoursePropertyName) {
-//                if (!in_array($studyCoursePropertyName, $this->allowedSearchFields)) {
-//                    unset($sanitizedSearchOptions[$studyCoursePropertyName]);
-//                }
-//            }
             $this->request->setArgument('searchOptions', $sanitizedSearchOptions);
         }
     }
@@ -231,13 +238,30 @@ class StudyCourseController extends ActionController
         return $defaultQuerySettings;
     }
 
+    /**
+     * set Filters
+     */
     protected function setFilters()
     {
         foreach ($this->settings['filters'] as $filterName => $filterProperties) {
-            if ($filterProperties['type']) {
-                $this->filters[$filterName]['type'] = $filterProperties['type'];
+            if ($filterProperties['type'] &&
+                $filterProperties['coursePropertyName'] &&
+                $filterProperties['frontendLabel']
+            ) {
+                $frontendLabel = LocalizationUtility::translate(
+                    $filterProperties['frontendLabel'],
+                    'in2studyfinder'
+                );
 
-                $this->filters[$filterName]['coursePropertyName'] = $filterProperties['coursePropertyName'];
+                if ($frontendLabel === null) {
+                    $frontendLabel = $filterProperties['frontendLabel'];
+                }
+
+                $this->filters[$filterName] = [
+                    'type' => $filterProperties['type'],
+                    'coursePropertyName' => $filterProperties['coursePropertyName'],
+                    'frontendLabel' => $frontendLabel
+                ];
 
                 switch ($filterProperties['type']) {
                     case 'object':
@@ -259,6 +283,12 @@ class StudyCourseController extends ActionController
                     default:
                         break;
                 }
+            } else {
+                $this->logger->log(
+                    LogLevel::WARNING,
+                    'Not a valid Typoscript Filter configuration! Ignore Filter: ' . $filterName,
+                    [$filterName, $filterProperties]
+                );
             }
         }
     }
