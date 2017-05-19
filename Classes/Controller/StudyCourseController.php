@@ -119,9 +119,6 @@ class StudyCourseController extends ActionController
      */
     public function listAction()
     {
-
-        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->filters, __CLASS__ . ' in der Zeile ' . __LINE__);
-
         $this->assignStudyCourses();
     }
 
@@ -463,7 +460,7 @@ class StudyCourseController extends ActionController
                         if ($property !== '' && $property !== 0 && $property !== false) {
                             $availableOptions[$filterName][0] = 'true';
                         } else {
-                            $availableOptions[$filterName][0] = 'false';
+                            $availableOptions[$filterName][1] = 'false';
                         }
                         break;
                     default:
