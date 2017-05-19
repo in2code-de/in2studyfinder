@@ -242,7 +242,7 @@ class StudyCourseController extends ActionController
     {
         foreach ($this->settings['filters'] as $filterName => $filterProperties) {
             if ($filterProperties['type'] &&
-                $filterProperties['coursePropertyName'] &&
+                $filterProperties['propertyPath'] &&
                 $filterProperties['frontendLabel']
             ) {
                 $frontendLabel = LocalizationUtility::translate(
@@ -256,7 +256,7 @@ class StudyCourseController extends ActionController
 
                 $this->filters[$filterName] = [
                     'type' => $filterProperties['type'],
-                    'coursePropertyName' => $filterProperties['coursePropertyName'],
+                    'propertyPath' => $filterProperties['propertyPath'],
                     'frontendLabel' => $frontendLabel
                 ];
 
@@ -409,7 +409,7 @@ class StudyCourseController extends ActionController
 
         // merge filter options to searchedOptions
         foreach ($searchOptions as $filterName => $searchedOptions) {
-            $mergedOptions[$this->filters[$filterName]['coursePropertyName']] = $searchOptions[$filterName];
+            $mergedOptions[$this->filters[$filterName]['propertyPath']] = $searchOptions[$filterName];
         }
 
         return $this->studyCourseRepository->findAllFilteredByOptions($mergedOptions);
@@ -440,7 +440,7 @@ class StudyCourseController extends ActionController
         foreach ($this->filters as $filterName => $filter) {
             /** @var $course StudyCourse */
             foreach ($studyCourses as $course) {
-                $property = $this->getPropertyByPropertyPath($course, $filter['coursePropertyName']);
+                $property = $this->getPropertyByPropertyPath($course, $filter['propertyPath']);
 
                 switch ($filter['type']) {
                     case 'object':
