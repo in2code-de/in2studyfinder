@@ -33,7 +33,7 @@ class FrontendUtility
      * @return TypoScriptFrontendController
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    protected static function getTyposcriptFrontendController()
+    public static function getTyposcriptFrontendController()
     {
         return $GLOBALS['TSFE'];
     }

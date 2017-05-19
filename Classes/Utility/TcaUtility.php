@@ -1,4 +1,5 @@
 <?php
+
 namespace In2code\In2studyfinder\Utility;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -153,9 +154,8 @@ class TcaUtility extends AbstractUtility
         $icon = '';
 
         if ($table !== '') {
-            $icon = ExtensionManagementUtility::extRelPath(
-                    'in2studyfinder'
-                ) . 'Resources/Public/Icons/' . $table . '.png';
+            $icon =
+                ExtensionManagementUtility::extRelPath('in2studyfinder') . 'Resources/Public/Icons/' . $table . '.png';
         }
 
         return [
@@ -433,7 +433,7 @@ class TcaUtility extends AbstractUtility
             $extbaseType['tx_extbase_type'] = [
                 'exclude' => 1,
                 'l10n_mode' => 'exclude',
-                'label' => 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:extendedStudycourseLabel',
+                'label' => 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:' . 'extendedStudycourseLabel',
                 'config' => [
                     'type' => 'select',
                     'renderType' => 'selectSingle',
@@ -561,27 +561,6 @@ class TcaUtility extends AbstractUtility
         $tab = ', --div--;' . $localLangPath . ':' . $localLangId . ',' . $fieldString . ',';
 
         ExtensionManagementUtility::addToAllTCAtypes($table, $tab, '', 'after:' . $insertAfter);
-    }
-
-    /**
-     * Adds fields to an existing tca tab for all TCA types
-     *
-     * @param string $table
-     * @param string $tcaType the TCA 'type'
-     * @param string $ll the language File
-     * @param string $div
-     * @param array $fields
-     *
-     * @return void
-     */
-    public static function addFieldsToDivForTCAtype(
-        $table,
-        $tcaType,
-        $ll,
-        $div,
-        $fields
-    ) {
-
     }
 
     public static function removeFieldsFromTCApalette(

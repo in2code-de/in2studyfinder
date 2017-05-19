@@ -84,6 +84,11 @@ class StudyCourseController extends ActionController
     protected $logger;
 
     /**
+     * @var \TYPO3\CMS\Extbase\Mvc\Web\Response
+     */
+    protected $response;
+
+    /**
      * initialize action
      */
     protected function initializeAction()
@@ -143,24 +148,25 @@ class StudyCourseController extends ActionController
     public function filterAction($searchOptions = [])
     {
         if (!empty($searchOptions)) {
-            if (ConfigurationUtility::isCachingEnabled()) {
-                $cacheIdentifier = md5(
-                    $GLOBALS['TSFE']->id . '-' . $this->cObj->data['uid'] . '-' . $GLOBALS['TSFE']->sys_language_uid . '-' . $this->actionMethodName . '-' . json_encode(
-                        $searchOptions
-                    )
-                );
+//            if (ConfigurationUtility::isCachingEnabled()) {
+//                $cacheIdentifier = md5(
+//                    $GLOBALS['TSFE']->id . '-' . $this->cObj->data['uid'] . '-' .
+//                    $GLOBALS['TSFE']->sys_language_uid . '-' . $this->actionMethodName . '-' . json_encode(
+//                        $searchOptions
+//                    )
+//                );
+//
+//                $foundStudyCourses = $this->cacheInstance->get($cacheIdentifier);
+//
+//                if (!$foundStudyCourses) {
+//                    $foundStudyCourses = $this->processSearch($searchOptions);
+//                    $this->cacheInstance->set($cacheIdentifier, $foundStudyCourses, ['in2studyfinder']);
+//                }
+//            } else {
+            $foundStudyCourses = $this->processSearch($searchOptions);
+//            }
 
-                $foundStudyCourses = $this->cacheInstance->get($cacheIdentifier);
-
-                if (!$foundStudyCourses) {
-                    $foundStudyCourses = $this->processSearch($searchOptions);
-                    $this->cacheInstance->set($cacheIdentifier, $foundStudyCourses, ['in2studyfinder']);
-                }
-            } else {
-                $foundStudyCourses = $this->processSearch($searchOptions);
-            }
-
-            $studyCourses = $this->sortStudyCourses($foundStudyCourses->toArray());
+            $studyCourses = $this->sortStudyCourses($foundStudyCourses);
 
             $this->view->assignMultiple(
                 [
@@ -187,7 +193,6 @@ class StudyCourseController extends ActionController
         if ($studyCourse) {
             $this->writePageMetadata($studyCourse);
             $this->view->assign('studyCourse', $studyCourse);
-
         } else {
             $this->redirect('listAction', null, null, null, $this->settings['flexform']['studyCourseListPage']);
         }
@@ -312,7 +317,6 @@ class StudyCourseController extends ActionController
      */
     protected function getStudyCourses()
     {
-        $studyCourses = [];
         $flexformOptions = $this->getSelectedFlexformOptions();
 
         if (ConfigurationUtility::isCachingEnabled()) {
@@ -329,7 +333,7 @@ class StudyCourseController extends ActionController
             $studyCourses = $this->getStudyCoursesFromRepository($flexformOptions);
         }
 
-        
+
         $studyCourses = $this->sortStudyCourses($studyCourses->toArray());
 
         return $studyCourses;
@@ -359,15 +363,14 @@ class StudyCourseController extends ActionController
         // create cache Identifier
         if (!empty($flexformOptions)) {
             $cacheIdentifier = md5(
-                FrontendUtility::getCurrentPageIdentifier() . "-" . $this->cObj->data['uid'] . "-" .
-                FrontendUtility::getCurrentSysLanguageUid() . "-" .
-                json_encode($flexformOptions)
+                FrontendUtility::getCurrentPageIdentifier(
+                ) . '-' . $this->cObj->data['uid'] . '-' . FrontendUtility::getCurrentSysLanguageUid(
+                ) . '-' . json_encode($flexformOptions)
             );
         } else {
             $cacheIdentifier = md5(
-                FrontendUtility::getCurrentPageIdentifier() . '-' .
-                FrontendUtility::getCurrentSysLanguageUid() . '-' .
-                'allStudyCourses'
+                FrontendUtility::getCurrentPageIdentifier() . '-' . FrontendUtility::getCurrentSysLanguageUid(
+                ) . '-' . 'allStudyCourses'
             );
         }
 
@@ -393,19 +396,16 @@ class StudyCourseController extends ActionController
     }
 
     /**
-     * @SuppressWarnings(PHPMD.Superglobals)
-     *
      * @param StudyCourse $studyCourse
      *
      * @return void
      */
     protected function writePageMetadata($studyCourse)
     {
-
         if (!empty($studyCourse->getMetaPagetitle())) {
-            $GLOBALS['TSFE']->page['title'] = $studyCourse->getMetaPagetitle();
+            FrontendUtility::getTyposcriptFrontendController()->page['title'] = $studyCourse->getMetaPagetitle();
         } else {
-            $GLOBALS['TSFE']->page['title'] =
+            FrontendUtility::getTyposcriptFrontendController()->page['title'] =
                 $studyCourse->getTitle() . ' - ' . $studyCourse->getAcademicDegree()->getDegree();
         }
         if (!empty($studyCourse->getMetaDescription())) {
@@ -420,7 +420,7 @@ class StudyCourseController extends ActionController
 
     /**
      * @param $searchOptions
-     * @return QueryResultInterface
+     * @return array
      */
     protected function processSearch($searchOptions)
     {
@@ -431,7 +431,7 @@ class StudyCourseController extends ActionController
             $mergedOptions[$this->filters[$filterName]['propertyPath']] = $searchOptions[$filterName];
         }
 
-        return $this->studyCourseRepository->findAllFilteredByOptions($mergedOptions);
+        return $this->studyCourseRepository->findAllFilteredByOptions($mergedOptions)->toArray();
     }
 
     /**
@@ -509,6 +509,7 @@ class StudyCourseController extends ActionController
                 if ($property === null) {
                     $property = $obj->_getProperty($pathSegment);
                 } else {
+                    /** @var AbstractDomainObject $property */
                     $property = $property->_getProperty($pathSegment);
                 }
             }

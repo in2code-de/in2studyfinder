@@ -60,5 +60,3 @@ class AbstractUtility
         return unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['in2studyfinder']);
     }
 }
-
-?>
