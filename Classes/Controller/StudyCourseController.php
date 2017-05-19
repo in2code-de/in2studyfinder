@@ -263,7 +263,7 @@ class StudyCourseController extends ActionController
                 switch ($filterProperties['type']) {
                     case 'object':
                         $fullQualifiedRepositoryClassName = ClassNamingUtility::translateModelNameToRepositoryName(
-                            $filterProperties['filterModelClass']
+                            $filterProperties['objectModel']
                         );
 
                         if (class_exists($fullQualifiedRepositoryClassName)) {

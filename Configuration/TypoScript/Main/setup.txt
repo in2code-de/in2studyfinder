@@ -22,43 +22,43 @@ plugin.tx_in2studyfinder {
 		filters {
 			graduation {
 				type = object
-				filterModelClass = In2code\In2studyfinder\Domain\Model\Graduation
+				objectModel = In2code\In2studyfinder\Domain\Model\Graduation
 				coursePropertyName = academicDegree.graduation
 				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:graduation
 			}
 			typeOfStudy {
 				type = object
-				filterModelClass = In2code\In2studyfinder\Domain\Model\TypeOfStudy
+				objectModel = In2code\In2studyfinder\Domain\Model\TypeOfStudy
 				coursePropertyName = typesOfStudy
 				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:typeOfStudy
 			}
 			admissionRequirement {
 				type = object
-				filterModelClass = In2code\In2studyfinder\Domain\Model\AdmissionRequirement
+				objectModel = In2code\In2studyfinder\Domain\Model\AdmissionRequirement
 				coursePropertyName = admissionRequirements
 				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:admissionRequirement
 			}
 			startOfStudy {
 				type = object
-				filterModelClass = In2code\In2studyfinder\Domain\Model\StartOfStudy
+				objectModel = In2code\In2studyfinder\Domain\Model\StartOfStudy
 				coursePropertyName = startsOfStudy
 				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:startOfStudy
 			}
 			courseLanguage {
 				type = object
-				filterModelClass = In2code\In2studyfinder\Domain\Model\CourseLanguage
+				objectModel = In2code\In2studyfinder\Domain\Model\CourseLanguage
 				coursePropertyName = courseLanguages
 				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:courseLanguage
 			}
 			faculty {
 				type = object
-				filterModelClass = In2code\In2studyfinder\Domain\Model\Faculty
+				objectModel = In2code\In2studyfinder\Domain\Model\Faculty
 				coursePropertyName = faculty
 				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:faculty
 			}
 			department {
 				type = object
-				filterModelClass = In2code\In2studyfinder\Domain\Model\Department
+				objectModel = In2code\In2studyfinder\Domain\Model\Department
 				coursePropertyName = department
 				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:department
 			}
