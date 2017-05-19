@@ -1,4 +1,6 @@
 (function In2studyfinder() {
+	'use strict';
+
 	function Select(dom) {
 
 		/**

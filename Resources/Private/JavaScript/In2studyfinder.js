@@ -4,7 +4,7 @@
  * @module In2studyfinder
  */
 (function In2studyfinder() {
-
+	'use strict';
 	var readFilterFromUrl = true;
 
 	function Start() {
@@ -47,6 +47,7 @@
 ();
 
 jQuery(document).ready(function() {
+	'use strict';
 	var start = new window.In2studyfinder.Start();
 	start.init();
 });
