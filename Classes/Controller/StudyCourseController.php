@@ -322,13 +322,14 @@ class StudyCourseController extends ActionController
 
             // if no cache entry exists write cache
             if (!$studyCourses) {
-                $this->getStudyCoursesFromRepository($flexformOptions);
+                $studyCourses = $this->getStudyCoursesFromRepository($flexformOptions);
                 $this->cacheInstance->set($cacheIdentifier, $studyCourses, ['in2studyfinder']);
             }
         } else {
-            $this->getStudyCoursesFromRepository($flexformOptions);
+            $studyCourses = $this->getStudyCoursesFromRepository($flexformOptions);
         }
 
+        
         $studyCourses = $this->sortStudyCourses($studyCourses->toArray());
 
         return $studyCourses;
