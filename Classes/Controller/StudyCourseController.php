@@ -27,7 +27,6 @@ namespace In2code\In2studyfinder\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use In2code\Femanager\Utility\HashUtility;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 use In2code\In2studyfinder\Utility\ConfigurationUtility;
@@ -39,7 +38,6 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
@@ -121,7 +119,7 @@ class StudyCourseController extends ActionController
     {
         if ($this->request->hasArgument('searchOptions')) {
             // filter empty options
-            $sanitizedSearchOptions = array_filter($this->request->getArgument('searchOptions'));
+            $sanitizedSearchOptions = array_filter((array)$this->request->getArgument('searchOptions'));
 
             // remove not allowed keys (prevents SQL Injection, too)
 //            foreach (array_keys($sanitizedSearchOptions) as $studyCoursePropertyName) {
@@ -236,7 +234,6 @@ class StudyCourseController extends ActionController
     protected function setFilters()
     {
         foreach ($this->settings['filters'] as $filterName => $filterProperties) {
-
             if ($filterProperties['type']) {
                 $this->filters[$filterName]['type'] = $filterProperties['type'];
 
@@ -294,7 +291,6 @@ class StudyCourseController extends ActionController
         $selectedOptions = $this->getSelectedFlexformOptions();
 
         if (ConfigurationUtility::isCachingEnabled()) {
-
             if (!empty($selectedOptions)) {
                 $cacheIdentifier = md5(
                     $GLOBALS['TSFE']->id . "-" . $this->cObj->data['uid'] . "-" . $GLOBALS['TSFE']->sys_language_uid . "-" . $this->actionMethodName . '-' . json_encode(
@@ -417,7 +413,6 @@ class StudyCourseController extends ActionController
         foreach ($this->filters as $filterName => $filter) {
             /** @var $course StudyCourse */
             foreach ($studyCourses as $course) {
-
                 $property = $this->getPropertyByPropertyPath($course, $filter['coursePropertyName']);
 
                 switch ($filter['type']) {

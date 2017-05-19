@@ -1,4 +1,5 @@
 <?php
+
 namespace In2code\In2studyfinder\Domain\Repository;
 
 /***************************************************************
@@ -26,12 +27,9 @@ namespace In2code\In2studyfinder\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
-use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
-use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
-use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
  * The repository for StudyCourses
@@ -44,7 +42,7 @@ class StudyCourseRepository extends AbstractRepository
 
     /**
      * @param $options
-     * @return QueryResult
+     * @return QueryResultInterface
      */
     public function findAllFilteredByOptions($options)
     {
@@ -68,16 +66,20 @@ class StudyCourseRepository extends AbstractRepository
         $constraints = [];
         foreach ($options as $name => $array) {
             if ($array[0] === 'true') {
-                $constraints[] = $query->logicalOr([
+                $constraints[] = $query->logicalOr(
+                    [
                         $query->logicalNot($query->equals($name, '')),
                         $query->greaterThan($name, 0)
-                    ]);
+                    ]
+                );
             } elseif ($array[0] === 'false') {
-                $constraints[] = $query->logicalOr([
+                $constraints[] = $query->logicalOr(
+                    [
                         $query->equals($name, 0),
                         $query->equals($name, ''),
                         $query->equals($name, null)
-                    ]);
+                    ]
+                );
             } else {
                 $constraints[] = $query->in($name . '.uid', $array);
             }
