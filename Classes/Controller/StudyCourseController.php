@@ -105,7 +105,19 @@ class StudyCourseController extends ActionController
 
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 
-        $this->setFilters();
+        // cache $this->filters
+        if (ConfigurationUtility::isCachingEnabled()) {
+            $cacheIdentifier = $this->getCacheIdentifierForStudyCourses($this->settings['filters']);
+
+            $filters = $this->cacheInstance->get($cacheIdentifier);
+
+            if (!$filters) {
+                $this->setFilters();
+                $this->cacheInstance->set($cacheIdentifier, $this->filters, ['in2studyfinder']);
+            } else {
+                $this->filters = $filters;
+            }
+        }
     }
 
     /**
