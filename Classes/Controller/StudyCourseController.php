@@ -28,7 +28,7 @@ namespace In2code\In2studyfinder\Controller;
  ***************************************************************/
 
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
-use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
+use In2code\In2studyfinder\Domain\Repository\StudyCourseListContextRepository;
 use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use In2code\In2studyfinder\Utility\FrontendUtility;
@@ -55,11 +55,9 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 class StudyCourseController extends ActionController
 {
     /**
-     * studyCourseRepository
-     *
-     * @var \In2code\In2studyfinder\Domain\Repository\StudyCourseRepository
+     * @var \In2code\In2studyfinder\Domain\Repository\StudyCourseListContextRepository
      */
-    protected $studyCourseRepository = null;
+    protected $studyCourseListContextRepository = null;
 
     /**
      * @var array
@@ -121,13 +119,14 @@ class StudyCourseController extends ActionController
     }
 
     /**
-     * Inject Study Course Repository
+     * Inject Study Course List Context Repository
      *
-     * @param StudyCourseRepository $studyCourseRepository
+     * @param StudyCourseListContextRepository $studyCourseListContextRepository
      */
-    public function injectStudyCourseRepository(StudyCourseRepository $studyCourseRepository)
-    {
-        $this->studyCourseRepository = $studyCourseRepository;
+    public function injectStudyCourseListContextRepository(
+        StudyCourseListContextRepository $studyCourseListContextRepository
+    ) {
+        $this->studyCourseListContextRepository = $studyCourseListContextRepository;
     }
 
     /**
@@ -355,7 +354,7 @@ class StudyCourseController extends ActionController
         if (!empty($flexformOptions)) {
             $studyCourses = $this->processSearch($flexformOptions);
         } else {
-            $studyCourses = $this->studyCourseRepository->findAll();
+            $studyCourses = $this->studyCourseListContextRepository->findAll();
         }
 
         return $studyCourses;
@@ -438,7 +437,7 @@ class StudyCourseController extends ActionController
             $mergedOptions[$this->filters[$filterName]['propertyPath']] = $searchOptions[$filterName];
         }
 
-        return $this->studyCourseRepository->findAllFilteredByOptions($mergedOptions)->toArray();
+        return $this->studyCourseListContextRepository->findAllFilteredByOptions($mergedOptions)->toArray();
     }
 
     /**

@@ -13,6 +13,11 @@ config.tx_extbase{
                     }
                 }
             }
+            In2code\In2studyfinder\Domain\Model\StudyCourseListContext {
+                mapping {
+                    tableName = tx_in2studyfinder_domain_model_studycourse
+                }
+            }
         }
     }
 }
