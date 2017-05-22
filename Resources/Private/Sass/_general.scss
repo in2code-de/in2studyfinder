@@ -9,19 +9,22 @@
   //
 
   &__loading {
+    position: relative;
+
     > * {
       opacity: 0.1;
     }
-    &:after {
+
+    &::after {
       content: '';
       opacity: 1;
       position: absolute;
-      top: 0;
+      top: 5%;
       left: 0;
       right: 0;
       bottom: 0;
       display: block;
-      background: url($iconPath + 'loading.gif') no-repeat center;
+      background: url($iconPath + 'loading.gif') no-repeat top center;
     }
   }
 
@@ -111,6 +114,10 @@
       position: relative;
       top: 12px;
       left: -20px;
+    }
+
+    &.opened:before {
+      background: url($iconPath + "close.png") no-repeat;
     }
   }
 

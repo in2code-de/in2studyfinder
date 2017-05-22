@@ -28,16 +28,18 @@ namespace In2code\In2studyfinder\Controller;
  ***************************************************************/
 
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
+use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
-use TYPO3\CMS\Extbase\Mvc\RequestInterface;
-use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
+use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Extbase\Property\Exception;
 
 /**
@@ -51,8 +53,6 @@ class StudyCourseController extends ActionController
      * studyCourseRepository
      *
      * @var \In2code\In2studyfinder\Domain\Repository\StudyCourseRepository
-     * @inject
-     *
      */
     protected $studyCourseRepository = null;
 
@@ -86,6 +86,16 @@ class StudyCourseController extends ActionController
         }
 
         $this->setFilterTypesAndRepositories();
+    }
+
+    /**
+     * Inject Study Course Repository
+     *
+     * @param StudyCourseRepository $studyCourseRepository
+     */
+    public function injectStudyCourseRepository(StudyCourseRepository $studyCourseRepository)
+    {
+        $this->studyCourseRepository = $studyCourseRepository;
     }
 
     /**
@@ -126,10 +136,15 @@ class StudyCourseController extends ActionController
         if (!empty($searchOptions)) {
             $foundStudyCourses = $this->processSearch($searchOptions);
 
+            /* sort the Studycourses with usort see: Domain/Model/StudyCourse:cmpObj */
+            $studyCourses = $foundStudyCourses->toArray();
+            usort($studyCourses, array(StudyCourse::class, "cmpObj"));
+
+
             $this->view->assignMultiple(
                 [
                     'searchedOptions' => $searchOptions,
-                    'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($foundStudyCourses),
+                    'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($studyCourses),
                     'studyCourseCount' => count($foundStudyCourses),
                     'filterTypes' => $this->filterTypes,
                     'studyCourses' => $foundStudyCourses,
@@ -245,7 +260,7 @@ class StudyCourseController extends ActionController
     }
 
     /**
-     * @return QueryResult
+     * @return array
      */
     protected function getStudyCourses()
     {
@@ -261,7 +276,7 @@ class StudyCourseController extends ActionController
         /* sort the Studycourses with usort see: Domain/Model/StudyCourse:cmpObj */
         $studyCourses = $studyCourses->toArray();
         usort($studyCourses, array(StudyCourse::class, "cmpObj"));
-
+        
         return $studyCourses;
     }
 
@@ -311,7 +326,7 @@ class StudyCourseController extends ActionController
 
     /**
      * @param $searchOptions
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult
+     * @return QueryResultInterface
      */
     protected function processSearch($searchOptions)
     {
@@ -319,14 +334,14 @@ class StudyCourseController extends ActionController
     }
 
     /**
-     * @param QueryResult $queryResult
+     * @param array $studyCourses
      * @return array
      * @throws \TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException
      */
-    protected function getAvailableFilterOptionsFromQueryResult($queryResult)
+    protected function getAvailableFilterOptionsFromQueryResult($studyCourses)
     {
         $availableOptions = [];
-        foreach ($queryResult as $studyCourse) {
+        foreach ($studyCourses as $studyCourse) {
             $properties = $studyCourse->_getProperties();
 
             $this->getAvailableFilterOptionsFromProperties($properties, $availableOptions);
