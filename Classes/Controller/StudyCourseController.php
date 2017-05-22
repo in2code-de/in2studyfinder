@@ -148,23 +148,18 @@ class StudyCourseController extends ActionController
     public function filterAction($searchOptions = [])
     {
         if (!empty($searchOptions)) {
-//            if (ConfigurationUtility::isCachingEnabled()) {
-//                $cacheIdentifier = md5(
-//                    $GLOBALS['TSFE']->id . '-' . $this->cObj->data['uid'] . '-' .
-//                    $GLOBALS['TSFE']->sys_language_uid . '-' . $this->actionMethodName . '-' . json_encode(
-//                        $searchOptions
-//                    )
-//                );
-//
-//                $foundStudyCourses = $this->cacheInstance->get($cacheIdentifier);
-//
-//                if (!$foundStudyCourses) {
-//                    $foundStudyCourses = $this->processSearch($searchOptions);
-//                    $this->cacheInstance->set($cacheIdentifier, $foundStudyCourses, ['in2studyfinder']);
-//                }
-//            } else {
-            $foundStudyCourses = $this->processSearch($searchOptions);
-//            }
+            if (ConfigurationUtility::isCachingEnabled()) {
+                $cacheIdentifier = $this->getCacheIdentifierForStudyCourses($searchOptions);
+
+                $foundStudyCourses = $this->cacheInstance->get($cacheIdentifier);
+
+                if (!$foundStudyCourses) {
+                    $foundStudyCourses = $this->processSearch($searchOptions);
+                    $this->cacheInstance->set($cacheIdentifier, $foundStudyCourses, ['in2studyfinder']);
+                }
+            } else {
+                $foundStudyCourses = $this->processSearch($searchOptions);
+            }
 
             $studyCourses = $this->sortStudyCourses($foundStudyCourses);
 
@@ -355,17 +350,17 @@ class StudyCourseController extends ActionController
     }
 
     /**
-     * @param array $flexformOptions
+     * @param array $options
      * @return string
      */
-    protected function getCacheIdentifierForStudyCourses($flexformOptions)
+    protected function getCacheIdentifierForStudyCourses($options)
     {
         // create cache Identifier
-        if (!empty($flexformOptions)) {
+        if (!empty($options)) {
             $cacheIdentifier = md5(
                 FrontendUtility::getCurrentPageIdentifier(
                 ) . '-' . $this->cObj->data['uid'] . '-' . FrontendUtility::getCurrentSysLanguageUid(
-                ) . '-' . json_encode($flexformOptions)
+                ) . '-' . json_encode($options)
             );
         } else {
             $cacheIdentifier = md5(
