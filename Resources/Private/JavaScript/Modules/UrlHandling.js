@@ -52,7 +52,7 @@
 			});
 
 			if (paginationPage) {
-				selectionString += 'p' + paginationPage;
+				selectionString += 'page=' + paginationPage;
 			}
 			window.location = location.protocol + '//' + location.host + location.pathname + (location.search ? location.search : '') + '#' + selectionString;
 		};
@@ -62,23 +62,26 @@
 		 */
 		this.loadSelectedOptionsFromUrl = function () {
 			var filterHash = window.location.hash.split('#');
+
 			if (1 in filterHash) {
 				filterHash = filterHash[1];
 				var paginationPage;
-				if (filterHash.indexOf('p') !== -1) {
-					paginationPage = filterHash.split('p')[1];
-					filterHash = filterHash.split('p')[0];
+				if (filterHash.indexOf('page=') !== -1) {
+					paginationPage = filterHash.split('page=')[1];
+					filterHash = filterHash.split('page=')[0];
 				}
+
+				console.log(filterHash);
 
 				if (filterHash !== '') {
 
 					var filterParts = filterHash.split('__');
-
 					$(filterParts).each(function (key, values) {
 						var sectionSplit = '--';
 						var selections = values.split(sectionSplit);
 						var filterGroup = values.substr(0, values.indexOf(sectionSplit));
 						var selectedOptions = selections[1].split('+');
+
 						$(selectedOptions).each(function (key, value) {
 							$('#' + filterGroup + '_' + value).prop('checked', true);
 						});
