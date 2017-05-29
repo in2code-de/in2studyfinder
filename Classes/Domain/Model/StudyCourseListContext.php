@@ -28,6 +28,7 @@ namespace In2code\In2studyfinder\Domain\Model;
  ***************************************************************/
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * StudyCourse
@@ -55,7 +56,68 @@ class StudyCourseListContext extends AbstractEntity
      *
      * @var \In2code\In2studyfinder\Domain\Model\AcademicDegree
      */
-    protected $academicDegree = null;
+    protected $academicDegree;
+
+    /**
+     * typeOfStudy
+     *
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\TypeOfStudy>
+     */
+    protected $typesOfStudy = null;
+
+    /**
+     * admissionRequirements
+     *
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\AdmissionRequirement>
+     */
+    protected $admissionRequirements = null;
+
+    /**
+     * startOfStudy
+     *
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\StartOfStudy>
+     */
+    protected $startsOfStudy = null;
+
+    /**
+     * courseLanguages
+     *
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\CourseLanguage>
+     */
+    protected $courseLanguages = null;
+
+    /**
+     * department
+     *
+     * @var \In2code\In2studyfinder\Domain\Model\Department
+     */
+    protected $department = null;
+
+    /**
+     * __construct
+     */
+    public function __construct()
+    {
+        //Do not remove the next line: It would break the functionality
+        $this->initStorageObjects();
+    }
+
+    /**
+     * Initializes all ObjectStorage properties
+     * Do not modify this method!
+     * It will be rewritten on each save in the extension builder
+     * You may modify the constructor of this class instead
+     *
+     * @return void
+     */
+    protected function initStorageObjects()
+    {
+        $this->courseLanguages = new ObjectStorage();
+        $this->startsOfStudy = new ObjectStorage();
+        $this->typesOfStudy = new ObjectStorage();
+        $this->admissionRequirements = new ObjectStorage();
+    }
+
 
     /**
      * Returns the title
@@ -118,6 +180,201 @@ class StudyCourseListContext extends AbstractEntity
     public function setAcademicDegree(AcademicDegree $academicDegree)
     {
         $this->academicDegree = $academicDegree;
+    }
+
+    /**
+     * Returns the typesOfStudy
+     *
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\TypeOfStudy> $typesOfStudy
+     */
+    public function getTypesOfStudy()
+    {
+        return $this->typesOfStudy;
+    }
+
+    /**
+     * Sets the typeOfStudy
+     *
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\TypeOfStudy> $typeOfStudy
+     * @return void
+     */
+    public function setTypesOfStudy(ObjectStorage $typesOfStudy)
+    {
+        $this->typesOfStudy = $typesOfStudy;
+    }
+
+    /**
+     * Adds a type of study
+     *
+     * @param \In2code\In2studyfinder\Domain\Model\TypeOfStudy $typeOfStudy
+     * @return void
+     */
+    public function addTypeOfStudy($typeOfStudy)
+    {
+        $this->typesOfStudy->attach($typeOfStudy);
+    }
+
+    /**
+     * Removes a type of study
+     *
+     * @param \In2code\In2studyfinder\Domain\Model\TypeOfStudy $typeOfStudyToRemove The type of study to be removed
+     * @return void
+     */
+    public function removeTypeOfStudy($typeOfStudyToRemove)
+    {
+        $this->typesOfStudy->detach($typeOfStudyToRemove);
+    }
+
+    /**
+     * Returns the admissionRequirements
+     *
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\AdmissionRequirement> $admissionRequirements
+     */
+    public function getAdmissionRequirements()
+    {
+        return $this->admissionRequirements;
+    }
+
+    /**
+     * Sets the admissionRequirements
+     *
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\AdmissionRequirement> $admissionRequirements
+     * @return void
+     */
+    public function setAdmissionRequirements(ObjectStorage $admissionRequirements)
+    {
+        $this->admissionRequirements = $admissionRequirements;
+    }
+
+    /**
+     * Adds a admissionRequirement
+     *
+     * @param \In2code\In2studyfinder\Domain\Model\AdmissionRequirement $admissionRequirement
+     * @return void
+     */
+    public function addAdmissionRequirement($admissionRequirement)
+    {
+        $this->admissionRequirements->attach($admissionRequirement);
+    }
+
+    /**
+     * Removes a admissionRequirement
+     *
+     * @param \In2code\In2studyfinder\Domain\Model\AdmissionRequirement $admissionRequirementToRemove The type of study
+     *     to be removed
+     * @return void
+     */
+    public function removeAdmissionRequirement($admissionRequirementToRemove)
+    {
+        $this->admissionRequirements->detach($admissionRequirementToRemove);
+    }
+
+    /**
+     * Returns the startsOfStudy
+     *
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\StartOfStudy> $startsOfStudy
+     */
+    public function getStartsOfStudy()
+    {
+        return $this->startsOfStudy;
+    }
+
+    /**
+     * Sets the startsOfStudy
+     *
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\StartOfStudy> $startsOfStudy
+     * @return void
+     */
+    public function setStartsOfStudy(ObjectStorage $startsOfStudy)
+    {
+        $this->startsOfStudy = $startsOfStudy;
+    }
+
+    /**
+     * Adds a StartOfStudy
+     *
+     * @param \In2code\In2studyfinder\Domain\Model\StartOfStudy $startOfStudy
+     * @return void
+     */
+    public function addStartOfStudy($startOfStudy)
+    {
+        $this->startsOfStudy->attach($startOfStudy);
+    }
+
+    /**
+     * Removes a startOfStudy
+     *
+     * @param \In2code\In2studyfinder\Domain\Model\StartOfStudy $startOfStudyToRemove The start of study to be removed
+     * @return void
+     */
+    public function removeStartOfStudy($startOfStudyToRemove)
+    {
+        $this->startsOfStudy->detach($startOfStudyToRemove);
+    }
+
+    /**
+     * Returns the courseLanguages
+     *
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\CourseLanguage> $courseLanguages
+     */
+    public function getCourseLanguages()
+    {
+        return $this->courseLanguages;
+    }
+
+    /**
+     * Sets the courseLanguages
+     *
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\CourseLanguage> $courseLanguages
+     * @return void
+     */
+    public function setCourseLanguages(ObjectStorage $courseLanguages)
+    {
+        $this->courseLanguages = $courseLanguages;
+    }
+
+    /**
+     * Adds a CourseLanguage
+     *
+     * @param \In2code\In2studyfinder\Domain\Model\CourseLanguage $courseLanguage
+     * @return void
+     */
+    public function addCourseLanguage($courseLanguage)
+    {
+        $this->courseLanguages->attach($courseLanguage);
+    }
+
+    /**
+     * Removes a CourseLanguage
+     *
+     * @param \In2code\In2studyfinder\Domain\Model\CourseLanguage $courseLanguageToRemove The Course Language to be
+     *     removed
+     * @return void
+     */
+    public function removeCourseLanguage($courseLanguageToRemove)
+    {
+        $this->courseLanguages->detach($courseLanguageToRemove);
+    }
+
+    /**
+     * Returns the department
+     *
+     * @return \In2code\In2studyfinder\Domain\Model\Department $department
+     */
+    public function getDepartment()
+    {
+        return $this->department;
+    }
+
+    /**
+     * Sets the department
+     *
+     * @param \In2code\In2studyfinder\Domain\Model\Department $department
+     * @return void
+     */
+    public function setDepartment(Department $department)
+    {
+        $this->department = $department;
     }
 
     public function getTitleWithAcademicDegree()
