@@ -97,8 +97,15 @@ class StudyCourseController extends ActionController
         }
 
         if (ExtensionUtility::isIn2studycoursesExtendLoaded()) {
-            $this->studyCourseRepository =
-                $this->objectManager->get('In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository');
+            if (class_exists('\\In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseListContextRepository')) {
+                $this->studyCourseListContextRepository = $this->objectManager->get(
+                    'In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseListContextRepository'
+                );
+            } else {
+                $this->studyCourseListContextRepository = $this->objectManager->get(
+                    'In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository'
+                );
+            }
         }
 
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
