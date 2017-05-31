@@ -1,4 +1,5 @@
 <?php
+
 namespace In2code\In2studyfinder\Utility;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -153,9 +154,8 @@ class TcaUtility extends AbstractUtility
         $icon = '';
 
         if ($table !== '') {
-            $icon = ExtensionManagementUtility::extRelPath(
-                    'in2studyfinder'
-                ) . 'Resources/Public/Icons/' . $table . '.png';
+            $icon =
+                ExtensionManagementUtility::extRelPath('in2studyfinder') . 'Resources/Public/Icons/' . $table . '.png';
         }
 
         return [
@@ -433,7 +433,7 @@ class TcaUtility extends AbstractUtility
             $extbaseType['tx_extbase_type'] = [
                 'exclude' => 1,
                 'l10n_mode' => 'exclude',
-                'label' => 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:extendedStudycourseLabel',
+                'label' => 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:' . 'extendedStudycourseLabel',
                 'config' => [
                     'type' => 'select',
                     'renderType' => 'selectSingle',
@@ -539,52 +539,6 @@ class TcaUtility extends AbstractUtility
     }
 
     /**
-     * @param $table
-     * @param $palette
-     * @param $field
-     * @param string $insertAfter
-     * @param bool|false $addLineBreakAfter
-     * @param bool|false $addLineBreakBefore
-     *
-     * @deprecated since 1.2, will be removed in version 2.0
-     *
-     * @return void
-     */
-    public static function addFieldToPalettes(
-        $table,
-        $palette,
-        $field,
-        $insertAfter = 'last',
-        $addLineBreakBefore = false,
-        $addLineBreakAfter = false
-    ) {
-        self::addFieldsToPalette($table, $palette, [$field], $insertAfter, $addLineBreakBefore, $addLineBreakAfter);
-    }
-
-    /**
-     * Use addFieldsToNewDiv instead
-     *
-     * @param string $table
-     * @param string $localLangPath
-     * @param string $localLangId
-     * @param array $fields
-     * @param string $insertAfter
-     *
-     * @deprecated since 1.2, will be removed in version 2.0
-     *
-     * @return void
-     */
-    public static function addFieldsInNewDiv(
-        $table,
-        $localLangPath,
-        $localLangId,
-        $fields,
-        $insertAfter
-    ) {
-        self::addFieldsToNewDivForAllTCAtypes($table, $localLangPath, $localLangId, $fields, $insertAfter);
-    }
-
-    /**
      * Adds a new tab to the tca
      *
      * @param string $table
@@ -609,50 +563,12 @@ class TcaUtility extends AbstractUtility
         ExtensionManagementUtility::addToAllTCAtypes($table, $tab, '', 'after:' . $insertAfter);
     }
 
-    /**
-     * Adds fields to an existing tca tab for all TCA types
-     *
-     * @param string $table
-     * @param string $tcaType the TCA 'type'
-     * @param string $ll the language File
-     * @param string $div
-     * @param array $fields
-     *
-     * @return void
-     */
-    public static function addFieldsToDivForTCAtype(
-        $table,
-        $tcaType,
-        $ll,
-        $div,
-        $fields
-    ) {
-
-    }
-
     public static function removeFieldsFromTCApalette(
         $table,
         $palette,
         $fields
     ) {
         self::removeFieldsFromTCA($table, 'palettes', $palette, $fields);
-    }
-
-    /**
-     * @param string $table
-     * @param string $palette
-     * @param string $field
-     *
-     * @deprecated since 1.2, will be removed in version 2.0
-     *
-     * @return void
-     */
-    public static function removeFieldFromPaletteShowItem(
-        $table,
-        $palette,
-        $field
-    ) {
-        self::removeFieldsFromTCApalette($table, $palette, [$field]);
     }
 
     /**
@@ -668,23 +584,6 @@ class TcaUtility extends AbstractUtility
         $fields
     ) {
         self::removeFieldsFromTCA($table, 'types', $tcaType, $fields);
-    }
-
-    /**
-     * @param string $table
-     * @param string $type
-     * @param string $field
-     *
-     * @deprecated since 1.2, will be removed in version 2.0
-     *
-     * @return void
-     */
-    public static function removeFieldFromShowItem(
-        $table,
-        $type,
-        $field
-    ) {
-        self::removeFieldsFromTCAtype($table, $type, [$field]);
     }
 
     /**

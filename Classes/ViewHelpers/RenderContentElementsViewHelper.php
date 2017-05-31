@@ -1,4 +1,5 @@
 <?php
+
 namespace In2code\In2studyfinder\ViewHelpers;
 
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -31,10 +32,10 @@ class RenderContentElementsViewHelper extends AbstractViewHelper
         if ($language > 0) {
             $uid = $domainObject->_getProperty('_localizedUid');
         } else {
-            $uid =  $domainObject->getUid();
+            $uid = $domainObject->getUid();
         }
 
-        $uidArray = $this->findTtContentUidsByMmTable($uid,$mmTable);
+        $uidArray = $this->findTtContentUidsByMmTable($uid, $mmTable);
         $uidList = '';
 
         if (!empty($uidArray)) {
@@ -44,7 +45,7 @@ class RenderContentElementsViewHelper extends AbstractViewHelper
 
             $uidList = rtrim($uidList, ",");
         }
-        
+
         $conf = [
             'tables' => 'tt_content',
             'source' => $uidList,

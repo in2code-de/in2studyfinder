@@ -19,31 +19,54 @@ plugin.tx_in2studyfinder {
 			itemsPerPage = {$plugin.tx_in2studyfinder.settings.pagination.itemsPerPage}
 		}
 
-
-		filter {
-			allowedFilterTypes {
-				0 = In2code\In2studyfinder\Domain\Model\AcademicDegree
-				1 = In2code\In2studyfinder\Domain\Model\AdmissionRequirement
-				2 = In2code\In2studyfinder\Domain\Model\CourseLanguage
-				3 = In2code\In2studyfinder\Domain\Model\Department
-				4 = In2code\In2studyfinder\Domain\Model\Faculty
-				5 = In2code\In2studyfinder\Domain\Model\StartOfStudy
-				6 = In2code\In2studyfinder\Domain\Model\TypeOfStudy
-				//7 = standardPeriodOfStudy
+		filters {
+			graduation {
+				type = object
+				objectModel = In2code\In2studyfinder\Domain\Model\Graduation
+				propertyPath = academicDegree.graduation
+				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:graduation
 			}
-
-			filterTypeLabelField {
-				academicDegree = degree
-				admissionRequirement = title
-				courseLanguage = language
-				department = title
-				faculty = title
-				startOfStudy = title
-				typeOfStudy = type
-				//standardPeriodOfStudy = standardPeriodOfStudy
+			typeOfStudy {
+				type = object
+				objectModel = In2code\In2studyfinder\Domain\Model\TypeOfStudy
+				propertyPath = typesOfStudy
+				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:typeOfStudy
 			}
-
-			recursive = {$plugin.tx_in2studyfinder.settings.filter.recursive}
+			admissionRequirement {
+				type = object
+				objectModel = In2code\In2studyfinder\Domain\Model\AdmissionRequirement
+				propertyPath = admissionRequirements
+				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:admissionRequirement
+			}
+			startOfStudy {
+				type = object
+				objectModel = In2code\In2studyfinder\Domain\Model\StartOfStudy
+				propertyPath = startsOfStudy
+				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:startOfStudy
+			}
+			courseLanguage {
+				type = object
+				objectModel = In2code\In2studyfinder\Domain\Model\CourseLanguage
+				propertyPath = courseLanguages
+				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:courseLanguage
+			}
+			faculty {
+				type = object
+				objectModel = In2code\In2studyfinder\Domain\Model\Faculty
+				propertyPath = faculty
+				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:faculty
+			}
+			department {
+				type = object
+				objectModel = In2code\In2studyfinder\Domain\Model\Department
+				propertyPath = department
+				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:department
+			}
+#			credits {
+#				type = boolean
+#				propertyPath = ectsCredits
+#				frontendLabel = FrontendLabel
+#			}
 		}
 
 		backend {

@@ -61,7 +61,7 @@ class GlobalDataUtility extends AbstractUtility
         $defaultPreset = null;
 
         $globalDataRepository = self::getObjectManager()->get($globalDataRepositoryClass);
-    
+
         if ($globalDataRepository instanceof GlobalDataRepository) {
             if (self::existDefaultPreset($globalDataRepository)) {
                 $defaultPreset = $globalDataRepository->findDefaultPreset();

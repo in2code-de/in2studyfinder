@@ -39,7 +39,8 @@ class VersionUtility extends AbstractUtility
     public static function getCurrentTypo3MajorVersion()
     {
 
-        $versionArray = VersionNumberUtility::convertVersionStringToArray(VersionNumberUtility::getCurrentTypo3Version());
+        $versionArray =
+            VersionNumberUtility::convertVersionStringToArray(VersionNumberUtility::getCurrentTypo3Version());
 
         return $versionArray['version_main'];
     }
@@ -66,5 +67,3 @@ class VersionUtility extends AbstractUtility
         return self::getCurrentTypo3MajorVersion() < $typo3Version;
     }
 }
-
-?>
