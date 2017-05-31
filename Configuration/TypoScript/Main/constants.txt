@@ -22,11 +22,6 @@ plugin.tx_in2studyfinder {
 		# cat=plugin.tx_in2studyfinder//a; type=string; label=Settings storage PID
 		settingsPid =
 
-		filter {
-			# cat=plugin.tx_in2studyfinder//a; type=string; label=Recursion level for the Filter Options
-			recursive = 1
-		}
-
 		pagination {
 			itemsPerPage = 25
 		}

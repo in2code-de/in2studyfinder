@@ -588,7 +588,7 @@ class StudyCourse extends AbstractEntity
      */
     public function removeCourseLanguage($courseLanguageToRemove)
     {
-        $this->contentElements->detach($courseLanguageToRemove);
+        $this->courseLanguages->detach($courseLanguageToRemove);
     }
 
     /**

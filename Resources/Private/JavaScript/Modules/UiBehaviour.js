@@ -1,4 +1,6 @@
 (function In2studyfinder() {
+	'use strict';
+
 	function UiBehaviour(dom) {
 
 		var uiBehaviour = this;

@@ -39,8 +39,10 @@ class ExtensionUtility extends AbstractUtility
      */
     public static function getExtensionSettings($extKey)
     {
-        return self::getConfigurationManager()->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
-            ucfirst($extKey));
+        return self::getConfigurationManager()->getConfiguration(
+            ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
+            ucfirst($extKey)
+        );
     }
 
     /**
@@ -68,5 +70,3 @@ class ExtensionUtility extends AbstractUtility
         return lcfirst(substr($fullQualifiedClassName, strripos($fullQualifiedClassName, "\\") + 1));
     }
 }
-
-?>

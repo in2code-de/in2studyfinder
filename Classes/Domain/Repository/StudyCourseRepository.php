@@ -1,4 +1,5 @@
 <?php
+
 namespace In2code\In2studyfinder\Domain\Repository;
 
 /***************************************************************
@@ -26,11 +27,9 @@ namespace In2code\In2studyfinder\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
-use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
-use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
  * The repository for StudyCourses
@@ -41,78 +40,9 @@ class StudyCourseRepository extends AbstractRepository
         'title' => QueryInterface::ORDER_ASCENDING,
     ];
 
-    protected function getPropertyMapping(
-        $properties,
-        &$mapping,
-        $currentLevel = 0,
-        $parentElement = null
-    ) {
-        $settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
-
-        if ($currentLevel < $settings['filter']['recursive']) {
-            foreach ($properties as $propertyName => $property) {
-                if (is_object($property)) {
-                    if ($property instanceof ObjectStorage) {
-                        if ($property->current() !== null) {
-                            $className = ExtensionUtility::getClassName($property->current());
-
-                            $mapping[$className] = $propertyName;
-
-                            $this->getPropertyMapping($property->current(), $mapping, $currentLevel + 1);
-
-                        }
-
-                    } elseif ($property instanceof AbstractDomainObject) {
-                        $className = ExtensionUtility::getClassName($property);
-
-                        $this->getPropertyMapping(
-                            $property->_getProperties(), $mapping, $currentLevel + 1, $className
-                        );
-
-
-                        if ($className !== 'ttContent') {
-                            if ($parentElement !== null) {
-                                $propertyName = $parentElement . '.' . $propertyName;
-                            }
-                            $mapping[$className] = $propertyName;
-                        }
-                    }
-                } else {
-                    $mapping[$propertyName] = $propertyName;
-                }
-            }
-        }
-    }
-
     /**
      * @param $options
-     * @return array
-     */
-    protected function mapOptionsToStudyCourseProperties($options)
-    {
-
-        if (ExtensionUtility::isIn2studycoursesExtendLoaded()) {
-            $studyCourse = $this->objectManager->get('In2code\\In2studyfinderExtend\\Domain\\Model\\StudyCourse');
-        } else {
-            $studyCourse = $this->objectManager->get(StudyCourse::class);
-        }
-
-        $filterToStudyCoursePropertyMappingArray = [];
-
-        $this->getPropertyMapping($studyCourse->_getProperties(), $filterToStudyCoursePropertyMappingArray);
-
-        $mappedOptions = [];
-
-        foreach ($options as $key => $value) {
-            $mappedOptions[$filterToStudyCoursePropertyMappingArray[$key]] = $value;
-        }
-
-        return $mappedOptions;
-    }
-
-    /**
-     * @param $options
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     * @return QueryResultInterface
      */
     public function findAllFilteredByOptions($options)
     {
@@ -133,21 +63,23 @@ class StudyCourseRepository extends AbstractRepository
 
         $query->getQuerySettings()->setStoragePageIds($storagePids);
 
-        $mappedOptions = $this->mapOptionsToStudyCourseProperties($options);
-
         $constraints = [];
-        foreach ($mappedOptions as $name => $array) {
-            if ($array[0] === 'isSet') {
-                $constraints[] = $query->logicalOr([
+        foreach ($options as $name => $array) {
+            if ($array[0] === 'true') {
+                $constraints[] = $query->logicalOr(
+                    [
                         $query->logicalNot($query->equals($name, '')),
                         $query->greaterThan($name, 0)
-                    ]);
-            } elseif ($array[0] === 'isUnset') {
-                $constraints[] = $query->logicalOr([
+                    ]
+                );
+            } elseif ($array[0] === 'false') {
+                $constraints[] = $query->logicalOr(
+                    [
                         $query->equals($name, 0),
                         $query->equals($name, ''),
                         $query->equals($name, null)
-                    ]);
+                    ]
+                );
             } else {
                 $constraints[] = $query->in($name . '.uid', $array);
             }

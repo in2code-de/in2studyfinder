@@ -1,4 +1,6 @@
 (function In2studyfinder() {
+	'use strict';
+
 	function FilterHandling(dom) {
 
 		var urlHandling = new window.In2studyfinder.UrlHandling(dom);
