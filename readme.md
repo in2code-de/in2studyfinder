@@ -59,4 +59,5 @@ sandra.pohl@in2code.de
 
 | Version    | Date       | State      | Description                                                                  | 
 | ---------- | ---------- | ---------- | ---------------------------------------------------------------------------- | 
-| 2.0.0      | 2017-03-19 | Task       | Initial free release on Github                                               |
+| 2.0.1      | 2017-06-02 | Task       | Add a readme and license file                                                |
+| 2.0.0      | 2017-05-31 | Task       | Initial free release on Github                                               |
