@@ -1,5 +1,4 @@
 .in2studyfinder {
-
   .hide {
     display: none;
   }
@@ -7,39 +6,21 @@
   //
   // Listenansicht
   //
-
-  &__loading {
-    position: relative;
-
-    > * {
-      opacity: 0.1;
-    }
-
-    &::after {
-      content: '';
-      opacity: 1;
-      position: absolute;
-      top: 5%;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      display: block;
-      background: url($iconPath + 'loading.gif') no-repeat top center;
-    }
-  }
-
   &__button {
     cursor: pointer;
+
     margin: {
       bottom: 9px;
       top: 9px;
-    };
+    }
+
     padding: {
       bottom: $boxpadding;
       left: 20px;
       right: 25px;
       top: $boxpadding;
-    };
+    }
+
     &--show {
       &:after {
         background: url($iconPath + "open-white.png") no-repeat;
@@ -53,6 +34,7 @@
         left: 10px;
       }
     }
+
     &--reset {
       &:after {
         background: url($iconPath + "closex.png") no-repeat;
@@ -72,14 +54,15 @@
     padding: {
       top: $boxpadding;
       bottom: $boxpadding;
-    };
+    }
   }
 
   &__filter {
+    overflow: hidden;
+
     padding: {
       bottom: 20px;
     }
-    overflow: hidden;
   }
 
   &__filter-header {
@@ -101,10 +84,12 @@
     margin: 0;
     position: relative;
     top: 15px;
+    width: 100%;
+
     padding: {
       left: 20px;
     }
-    width: 100%;
+
     &:before {
       background: url($iconPath + "open.png") no-repeat;
       content: "";
@@ -132,10 +117,12 @@
 
     input {
       display: none;
+
       &:checked + .in2studyfinder__checkbox-label {
         background-image: url($iconPath + "checked.png");
         background-repeat: no-repeat;
       }
+
       &:disabled + .in2studyfinder__checkbox-label {
         opacity: .5;
       }
@@ -158,48 +145,48 @@
   }
 
   &__list {
-      list-style: none;
-      margin: {
-        bottom: 1em;
-        left: 0;
-        top: 0;
-        right: 0;
-      }
-      padding: 0;
+    list-style: none;
+    padding: 0;
+
+    margin: {
+      bottom: 1em;
+      left: 0;
+      top: 0;
+      right: 0;
+    }
   }
 
-    &__item {
-      padding: 20px;
+  &__item {
+    padding: 20px;
+  }
+
+  &__letter {
+    margin-left: 20px;
+    margin-top: 20px;
+    margin-bottom: 0;
+
+    span {
+      margin-left: -20px;
     }
-
-    &__letter {
-      margin-left: 20px;
-      margin-top: 20px;
-      margin-bottom: 0;
-
-      span {
-        margin-left: -20px;
-      }
-    }
-
+  }
 
   //
   // Pagebrowser
   //
-
   &__pagebrowser {
     text-align: center;
     margin: 20px 0;
+
     a {
       margin-right: 15px;
     }
   }
 
-    &__pagebrowser-page {
-      &:last-child {
-        margin-right: 0;
-      }
+  &__pagebrowser-page {
+    &:last-child {
+      margin-right: 0;
     }
+  }
 
   //
   // Detailansicht
@@ -215,8 +202,10 @@
 
   &__column {
     float: left;
+
     &--half {
       width: 47.8%;
+
       &:last-child {
         margin-left: 4.4%;
       }
@@ -236,15 +225,75 @@
       right: 12px;
       top: 12px;
     }
+
     @include clearfix;
   }
 
-    &__content-box-head {
-      padding: 6px 0px 4px 4px;
-    }
+  &__content-box-head {
+    padding: 6px 0 4px 4px;
+  }
 }
 
-@media only screen and (max-width: 767px) {
+//
+// Loader
+//
+// Usage:
+// <div class="in2studyfinder-loader in2js-in2studyfinder-loader">
+//     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" class="in2studyfinder-loader__icon">
+//         <title>Loader</title>
+//         <path d="M16 32c-4.274 0-8.292-1.664-11.314-4.686S0 20.274 0 16c0-3.026.849-5.973 2.456-8.522a16.061 16.061 0 0 1 6.386-5.791l1.344 2.682a13.044 13.044 0 0 0-5.192 4.708A12.953 12.953 0 0 0 3 15.999c0 7.168 5.832 13 13 13s13-5.832 13-13c0-2.459-.69-4.853-1.994-6.922a13.051 13.051 0 0 0-5.192-4.708l1.344-2.682a16.047 16.047 0 0 1 6.386 5.791A15.953 15.953 0 0 1 32 16c0 4.274-1.664 8.292-4.686 11.314S20.274 32 16 32z" />
+//     </svg>
+// </div>
+//
+// JavaScript:
+// EXT:in2studyfinder/Resources/Private/JavaScript/Modules/UiBehaviour.js
+//
+.in2studyfinder-loader {
+  position: fixed;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -ms-grid-row-align: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.5);
+  z-index: 100;
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  display: none;
+  -webkit-transition: opacity 0.3s;
+  transition: opacity 0.3s;
 
+  &--active {
+    opacity: 1;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+
+  &__icon {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    -webkit-animation: rotating 1s linear infinite;
+    animation: rotating 1s linear infinite;
+  }
+}
+
+@keyframes rotating {
+  from {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  to {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
 }
 
