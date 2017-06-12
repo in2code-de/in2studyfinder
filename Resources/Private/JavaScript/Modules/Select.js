@@ -96,7 +96,11 @@
 			var obj = $('.in2studyfinder-js-fast-select').select2('data');
 			var url = obj[0].element.dataset.url;
 
-			if (url.length) {
+			/**
+			 * Fire request only one time
+			 */
+			if (url.length && in2studyfinderRequestCounter === 0) {
+				in2studyfinderRequestCounter++;
 				window.location.href = url;
 			}
 		});
@@ -114,6 +118,7 @@
 		window.In2studyfinder = {};
 	}
 
+	window.in2studyfinderRequestCounter = 0;
 	window.In2studyfinder.Select = Select;
 })
 ();
