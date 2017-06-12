@@ -13,11 +13,11 @@
 		};
 
 		this.enableLoading = function() {
-			$(dom).addClass('in2studyfinder__loading');
+			$('.in2js-in2studyfinder-loader').addClass('in2studyfinder-loader--active');
 		};
 
 		this.disbaleLoading = function() {
-			$(dom).removeClass('in2studyfinder__loading');
+			$('.in2js-in2studyfinder-loader').removeClass('in2studyfinder-loader--active');
 		};
 
 		this.toggleOptionFormVisibility = function() {
