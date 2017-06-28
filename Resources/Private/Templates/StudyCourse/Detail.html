@@ -45,8 +45,8 @@
 						</strong>
 						<ul class="in2studyfinder__list">
 							<f:for each="{studyCourse.startsOfStudy}" as="startOfStudy">
-								<li>{startOfStudy.title}:
-									<f:format.date date="{startOfStudy.startDate}" format="d.m.Y"/>
+								<li>{startOfStudy.title}<f:if condition="{startOfStudy.startDate}">:
+									<f:format.date date="{startOfStudy.startDate}" format="{f:cObject(typoscriptObjectPath:'lib.activeDateFormat')}"/></f:if>
 								</li>
 							</f:for>
 						</ul>
