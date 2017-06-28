@@ -114,13 +114,11 @@ class StudyCourseController extends ActionController
         if (ConfigurationUtility::isCachingEnabled()) {
             $cacheIdentifier = $this->getCacheIdentifierForStudyCourses($this->settings['filters']);
 
-            $filters = $this->cacheInstance->get($cacheIdentifier);
-
-            if (!$filters) {
+            if ($this->cacheInstance->has($cacheIdentifier)) {
+                $this->filters = $this->cacheInstance->get($cacheIdentifier);
+            } else {
                 $this->setFilters();
                 $this->cacheInstance->set($cacheIdentifier, $this->filters, ['in2studyfinder']);
-            } else {
-                $this->filters = $filters;
             }
         } else {
             $this->setFilters();
