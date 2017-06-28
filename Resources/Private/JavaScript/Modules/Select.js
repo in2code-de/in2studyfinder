@@ -3,14 +3,17 @@
 
 	function Select(dom) {
 
+		var select = $('.in2studyfinder-js-fast-select');
+
 		/**
 		 * Init Select2
 		 */
 		this.initializeSelect = function () {
-
 			var query = {};
 
-			$('.in2studyfinder-js-fast-select').select2({
+			this.updatePlaceholderLabel();
+
+			select.select2({
 				matcher: function (params, data) {
 					query = params;
 					var select = new window.In2studyfinder.Select(dom);
@@ -20,8 +23,14 @@
 					var sorted = results.slice(0);
 
 					sorted.sort(function (first, second) {
-						if (first.text.toUpperCase() < second.text.toUpperCase()) return -1;
-						if (first.text.toUpperCase() > second.text.toUpperCase()) return 1;
+						if (first.text.toUpperCase() < second.text.toUpperCase()) {
+							return -1;
+						}
+
+						if (first.text.toUpperCase() > second.text.toUpperCase()) {
+							return 1;
+						}
+
 						return 0;
 					});
 
@@ -31,6 +40,8 @@
 				placeholder: 'select degree program or enter keyword',
 				language: 'de'
 			});
+
+			this.redirectOnSelect();
 		};
 
 		/**
@@ -92,25 +103,31 @@
 			return null;
 		};
 
-		$('.in2studyfinder-js-fast-select').on('select2:select', function () {
-			var obj = $('.in2studyfinder-js-fast-select').select2('data');
-			var url = obj[0].element.dataset.url;
+		/**
+		 * Redirect to the selected Studycourse on Select
+		 */
+		this.redirectOnSelect = function () {
+			select.on('select2:select', function () {
+				var obj = select.select2('data');
+				var url = obj[0].element.dataset.url;
 
-			/**
-			 * Fire request only one time
-			 */
-			if (url.length && in2studyfinderRequestCounter === 0) {
-				in2studyfinderRequestCounter++;
-				window.location.href = url;
+				if (url.length) {
+					window.location.href = url;
+				}
+			});
+		};
+
+		/**
+		 * Update Placeholder Label if Language is de
+		 */
+		this.updatePlaceholderLabel = function () {
+			/** @todo better language handling for Placeholder */
+			if ($('html').attr('lang') === 'de') {
+				select.attr('data-placeholder', 'Studiengang wählen oder Suchbegriff eingeben');
+			} else {
+				select.attr('data-placeholder', 'Select degree program or enter keyword');
 			}
-		});
-
-		/** @todo better language handling for Placeholder */
-		if ($('html').attr('lang') === 'de') {
-			$('.in2studyfinder-js-fast-select').attr('data-placeholder', 'Studiengang wählen oder Suchbegriff eingeben');
-		} else {
-			$('.in2studyfinder-js-fast-select').attr('data-placeholder', 'Select degree program or enter keyword');
-		}
+		};
 	}
 
 	// export to global scope
@@ -118,7 +135,6 @@
 		window.In2studyfinder = {};
 	}
 
-	window.in2studyfinderRequestCounter = 0;
 	window.In2studyfinder.Select = Select;
 })
 ();
