@@ -122,6 +122,8 @@ class StudyCourseController extends ActionController
             } else {
                 $this->filters = $filters;
             }
+        } else {
+            $this->setFilters();
         }
     }
 
