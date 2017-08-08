@@ -73,8 +73,6 @@
 					filterHash = filterHash.split('page=')[0];
 				}
 
-				console.log(filterHash);
-
 				if (filterHash !== '') {
 
 					var filterParts = filterHash.split('__');
