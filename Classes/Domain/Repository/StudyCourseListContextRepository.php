@@ -27,10 +27,6 @@ namespace In2code\In2studyfinder\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use In2code\In2studyfinder\Utility\ExtensionUtility;
-use TYPO3\CMS\Extbase\Persistence\QueryInterface;
-use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
-
 /**
  * The repository for StudyCourses
  */

@@ -28,9 +28,6 @@ namespace In2code\In2studyfinder\Domain\Repository;
  ***************************************************************/
 
 use In2code\In2studyfinder\Domain\Model\GlobalData;
-use TYPO3\CMS\Core\Log\Logger;
-use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * The repository for StudyCourses
