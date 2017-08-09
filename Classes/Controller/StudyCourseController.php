@@ -373,20 +373,19 @@ class StudyCourseController extends ActionController
     protected function getCacheIdentifierForStudyCourses($options)
     {
         // create cache Identifier
-        if (!empty($options)) {
-            $cacheIdentifier = md5(
-                FrontendUtility::getCurrentPageIdentifier(
-                ) . '-' . $this->cObj->data['uid'] . '-' . FrontendUtility::getCurrentSysLanguageUid(
-                ) . '-' . json_encode($options)
-            );
+        if (empty($options)) {
+            $optionsIdentifier = 'allStudyCourses';
         } else {
-            $cacheIdentifier = md5(
-                FrontendUtility::getCurrentPageIdentifier() . '-' . FrontendUtility::getCurrentSysLanguageUid(
-                ) . '-' . 'allStudyCourses'
-            );
+            $optionsIdentifier = json_encode($options);
         }
 
-        return $cacheIdentifier;
+        return md5(
+            FrontendUtility::getCurrentPageIdentifier()
+            . '-'
+            . FrontendUtility::getCurrentSysLanguageUid()
+            . '-'
+            . $optionsIdentifier
+        );
     }
 
     /**
