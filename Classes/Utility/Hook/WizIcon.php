@@ -33,7 +33,6 @@ use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  */
 class WizIcon
 {
-
     /**
      * Path to locallang file (with : as postfix)
      *

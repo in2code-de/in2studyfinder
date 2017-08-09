@@ -4,7 +4,6 @@ namespace In2code\In2studyfinder\ViewHelpers\Form;
 
 class CheckboxViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\CheckboxViewHelper
 {
-
     public function initializeArguments()
     {
         parent::initializeArguments();

@@ -5,7 +5,6 @@ if (!defined('TYPO3_MODE')) {
 
 $extKey = 'in2studyfinder';
 
-
 /**
  * Include Plugins
  */
@@ -41,7 +40,6 @@ if (TYPO3_MODE === 'BE') {
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
             '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:in2studyfinder/Configuration/TSConfig/ContentElementWizard.typoscript">'
         );
-
     } else {
 
         /**
@@ -68,7 +66,6 @@ $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$pluginSignat
     $pluginSignature,
     'FILE:EXT:' . $extKey . '/Configuration/FlexForms/FlexformStudyfinderDetail.xml'
 );
-
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
     $extKey, 'Configuration/TypoScript/Main', 'In2studyfinder Basic Template'

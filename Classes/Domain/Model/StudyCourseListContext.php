@@ -35,7 +35,6 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  */
 class StudyCourseListContext extends AbstractEntity
 {
-
     /**
      * title
      *
@@ -117,7 +116,6 @@ class StudyCourseListContext extends AbstractEntity
         $this->typesOfStudy = new ObjectStorage();
         $this->admissionRequirements = new ObjectStorage();
     }
-
 
     /**
      * Returns the title

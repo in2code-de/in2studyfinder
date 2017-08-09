@@ -33,7 +33,6 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class AdmissionRequirement extends AbstractEntity
 {
-
     /**
      * title
      *
@@ -41,7 +40,7 @@ class AdmissionRequirement extends AbstractEntity
      * @validate NotEmpty
      */
     protected $title = '';
-    
+
     /**
      * Returns the title
      *
@@ -72,5 +71,4 @@ class AdmissionRequirement extends AbstractEntity
     {
         return $this->getTitle();
     }
-
 }

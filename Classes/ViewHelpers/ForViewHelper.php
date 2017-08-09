@@ -5,7 +5,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 class ForViewHelper extends AbstractViewHelper
 {
-
     /**
      * @param array $for
      * @param string $as

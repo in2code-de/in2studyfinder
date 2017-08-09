@@ -32,7 +32,6 @@ use In2code\In2studyfinder\Domain\Repository\GlobalDataRepository;
 
 class GlobalDataUtility extends AbstractUtility
 {
-
     /**
      * @param GlobalDataRepository
      * @return bool

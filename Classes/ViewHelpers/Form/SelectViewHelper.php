@@ -7,7 +7,6 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 
 class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper
 {
-
     public function initializeArguments()
     {
         parent::initializeArguments();
@@ -70,7 +69,6 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
     protected function renderOptionTags($options)
     {
         $output = '';
-
 
         if ($this->hasArgument('prependOptionLabel')) {
             $value = $this->hasArgument('prependOptionValue') ? $this->arguments['prependOptionValue'] : '';

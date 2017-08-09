@@ -7,7 +7,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 class RenderContentElementsViewHelper extends AbstractViewHelper
 {
-
     /**
      * @var ConfigurationManagerInterface
      */

@@ -34,7 +34,6 @@ namespace In2code\In2studyfinder\Utility;
  */
 class ConfigurationUtility extends AbstractUtility
 {
-
     /**
      * Check if feature global data is enabled
      *

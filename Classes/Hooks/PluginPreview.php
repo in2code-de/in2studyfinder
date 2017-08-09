@@ -40,7 +40,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class PluginPreview implements PageLayoutViewDrawItemHookInterface
 {
-
     /**
      * @var array
      */
@@ -131,7 +130,6 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
                     }
                 }
 
-
                 $standaloneView->assignMultiple(
                     [
                         'detailPage' => $detailPageRecord,
@@ -144,7 +142,6 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
                     'pages',
                     $this->flexFormData['settings']['flexform']['studyCourseListPage']
                 );
-
 
                 $standaloneView->assignMultiple(
                     [

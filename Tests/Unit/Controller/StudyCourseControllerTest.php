@@ -1,10 +1,11 @@
 <?php
 namespace In2code\In2studyfinder\Tests\Unit\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
  *  (c) 2016 Sebastian Stein <sebastian.stein@in2code.de>, In2code GmbH
- *  			
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

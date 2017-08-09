@@ -1,4 +1,5 @@
 <?php
+
 use In2code\In2studyfinder\Utility\TcaUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 

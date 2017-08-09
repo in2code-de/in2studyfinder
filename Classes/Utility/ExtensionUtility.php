@@ -32,7 +32,6 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
 class ExtensionUtility extends AbstractUtility
 {
-
     /**
      * @param string $extKey
      * @return mixed

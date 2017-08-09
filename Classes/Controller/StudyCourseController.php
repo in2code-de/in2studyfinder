@@ -346,7 +346,6 @@ class StudyCourseController extends ActionController
             $studyCourses = $this->getStudyCoursesFromRepository($flexformOptions);
         }
 
-
         $studyCourses = $this->sortStudyCourses($studyCourses->toArray());
 
         return $studyCourses;
