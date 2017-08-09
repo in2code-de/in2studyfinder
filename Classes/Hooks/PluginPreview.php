@@ -78,19 +78,23 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
         array &$row
     ) {
         $this->initialize($row);
-
-        switch ($this->row['list_type']) {
-            case 'in2studyfinder_pi1':
-                $drawItem = false;
-                $headerContent = '';
-                $itemContent = $this->getPluginInformation('Pi1');
-                break;
-            case 'in2studyfinder_pi2':
-                $drawItem = false;
-                $headerContent = '';
-                $itemContent = $this->getPluginInformation('Pi2');
-                break;
-            default:
+        
+        if (null === $this->settings) {
+            $headerContent = '<b>Please include the in2studyfinder TypoScript Template!</b><br /><br />';
+        } else {
+            switch ($this->row['list_type']) {
+                case 'in2studyfinder_pi1':
+                    $drawItem = false;
+                    $headerContent = '';
+                    $itemContent = $this->getPluginInformation('Pi1');
+                    break;
+                case 'in2studyfinder_pi2':
+                    $drawItem = false;
+                    $headerContent = '';
+                    $itemContent = $this->getPluginInformation('Pi2');
+                    break;
+                default:
+            }
         }
     }
 
