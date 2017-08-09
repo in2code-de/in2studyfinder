@@ -52,7 +52,8 @@ class TcaUtility extends AbstractUtility
                     ['', 0],
                 ],
                 'foreign_table' => $table,
-                'foreign_table_where' => 'AND ' . $table . '.pid=###CURRENT_PID### AND ' . $table . '.sys_language_uid IN (-1,0)',
+                'foreign_table_where' => 'AND ' . $table . '.pid=###CURRENT_PID### AND ' . $table
+                                         . '.sys_language_uid IN (-1,0)',
             ],
         ];
     }
@@ -433,7 +434,7 @@ class TcaUtility extends AbstractUtility
             $extbaseType['tx_extbase_type'] = [
                 'exclude' => 1,
                 'l10n_mode' => 'exclude',
-                'label' => 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:' . 'extendedStudycourseLabel',
+                'label' => 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:extendedStudycourseLabel',
                 'config' => [
                     'type' => 'select',
                     'renderType' => 'selectSingle',
