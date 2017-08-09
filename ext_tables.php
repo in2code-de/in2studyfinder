@@ -27,7 +27,9 @@ if (TYPO3_MODE === 'BE') {
         /**
          * Register Icons
          */
-        $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+        $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            \TYPO3\CMS\Core\Imaging\IconRegistry::class
+        );
         $iconRegistry->registerIcon(
             'in2studyfinder-plugin-icon',
             \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
@@ -68,11 +70,15 @@ $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$pluginSignat
 );
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
-    $extKey, 'Configuration/TypoScript/Main', 'In2studyfinder Basic Template'
+    $extKey,
+    'Configuration/TypoScript/Main',
+    'In2studyfinder Basic Template'
 );
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
-    $extKey, 'Configuration/TypoScript/Css', 'In2studyfinder Demo CSS Template'
+    $extKey,
+    'Configuration/TypoScript/Css',
+    'In2studyfinder Demo CSS Template'
 );
 
 $tables = [

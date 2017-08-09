@@ -78,7 +78,11 @@ class PaginateController extends AbstractWidgetController
     public function initializeAction()
     {
         $this->objects = $this->widgetConfiguration['objects'];
-        ArrayUtility::mergeRecursiveWithOverrule($this->configuration, $this->widgetConfiguration['configuration'], false);
+        ArrayUtility::mergeRecursiveWithOverrule(
+            $this->configuration,
+            $this->widgetConfiguration['configuration'],
+            false
+        );
         $itemsPerPage = (int)$this->configuration['itemsPerPage'];
         $this->numberOfPages = $itemsPerPage > 0 ? ceil(count($this->objects) / $itemsPerPage) : 0;
         $this->maximumNumberOfLinks = (int)$this->configuration['maximumNumberOfLinks'];
@@ -107,9 +111,12 @@ class PaginateController extends AbstractWidgetController
             }
             $modifiedObjects = $this->prepareObjectsSlice($itemsPerPage, $offset);
         }
-        $this->view->assign('contentArguments', array(
-            $this->widgetConfiguration['as'] => $modifiedObjects
-        ));
+        $this->view->assign(
+            'contentArguments',
+            array(
+                $this->widgetConfiguration['as'] => $modifiedObjects,
+            )
+        );
         $this->view->assign('configuration', $this->configuration);
         $this->view->assign('pagination', $this->buildPagination());
     }
@@ -198,7 +205,8 @@ class PaginateController extends AbstractWidgetController
             $modifiedObjects = array_slice($this->objects, $offset, $itemsPerPage);
             return $modifiedObjects;
         } else {
-            throw new \InvalidArgumentException('The view helper "' . get_class($this)
+            throw new \InvalidArgumentException(
+                'The view helper "' . get_class($this)
                 . '" accepts as argument "QueryResultInterface", "\SplObjectStorage", "ObjectStorage" or an array. '
                 . 'given: ' . get_class($this->objects), 1385547291
             );
