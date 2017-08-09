@@ -36,7 +36,7 @@ if (ConfigurationUtility::isEnableGlobalData()) {
         ],
         'types' => [
             '0' => [
-                'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, default_preset;;1,' . '--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime',
+                'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, default_preset;;1, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime',
             ],
         ],
         'palettes' => [

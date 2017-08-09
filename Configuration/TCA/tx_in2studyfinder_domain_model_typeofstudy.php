@@ -33,8 +33,9 @@ return [
         'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, type',
     ],
     'types' => [
-        '0' => ['showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, type, ' .
-            '--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'],
+        '0' => [
+            'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, type, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime',
+        ],
     ],
     'palettes' => [
         '1' => ['showitem' => ''],
