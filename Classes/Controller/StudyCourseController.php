@@ -29,6 +29,7 @@ namespace In2code\In2studyfinder\Controller;
 
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Domain\Repository\StudyCourseListContextRepository;
+use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use In2code\In2studyfinder\Utility\FrontendUtility;
@@ -442,7 +443,7 @@ class StudyCourseController extends ActionController
             $mergedOptions[$this->filters[$filterName]['propertyPath']] = $searchOptions[$filterName];
         }
 
-        return $this->studyCourseListContextRepository->findAllFilteredByOptions($mergedOptions)->toArray();
+        return $this->objectManager->get(StudyCourseRepository::class)->findAllFilteredByOptions($mergedOptions);
     }
 
     /**
