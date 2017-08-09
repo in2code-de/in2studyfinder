@@ -57,16 +57,15 @@ use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper;
 class PaginateViewHelper extends AbstractWidgetViewHelper
 {
     /**
-     * @var \In2code\In2studyfinder\ViewHelpers\Widget\Controller\PaginateController
+     * @var Controller\PaginateController
      */
     protected $controller;
 
     /**
-     * @param \In2code\In2studyfinder\ViewHelpers\Widget\Controller\PaginateController $controller
+     * @param Controller\PaginateController $controller
      */
-    public function injectPaginateController(
-        \In2code\In2studyfinder\ViewHelpers\Widget\Controller\PaginateController $controller
-    ) {
+    public function injectPaginateController(Controller\PaginateController $controller)
+    {
         $this->controller = $controller;
     }
 
