@@ -82,10 +82,8 @@ class CheckboxViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\CheckboxViewH
         list($propertyName, $objectId) = explode('_', $this->arguments['id']);
 
         if (is_array($this->arguments['possibleFilters']) && !empty($this->arguments['possibleFilters'])) {
-            if (!isset($this->arguments['possibleFilters'][$propertyName]) || !in_array(
-                    $objectId,
-                    $this->arguments['possibleFilters'][$propertyName]
-                )
+            if (!isset($this->arguments['possibleFilters'][$propertyName])
+                || !in_array($objectId, $this->arguments['possibleFilters'][$propertyName])
             ) {
                 $this->tag->addAttribute('disabled', 'disabled');
             }
