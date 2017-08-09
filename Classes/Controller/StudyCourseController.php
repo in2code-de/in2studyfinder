@@ -259,7 +259,7 @@ class StudyCourseController extends ActionController
      */
     protected function setFilters()
     {
-        foreach ($this->settings['filters'] as $filterName => $filterProperties) {
+        foreach ((array)$this->settings['filters'] as $filterName => $filterProperties) {
             if ($filterProperties['type'] && $filterProperties['propertyPath'] && $filterProperties['frontendLabel']) {
                 $frontendLabel = LocalizationUtility::translate(
                     $filterProperties['frontendLabel'],
