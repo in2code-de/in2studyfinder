@@ -27,7 +27,7 @@ return [
             'endtime' => 'endtime',
         ],
         'searchFields' => 'type,',
-        'iconfile' => $icon
+        'iconfile' => $icon,
     ],
     'interface' => [
         'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, type',

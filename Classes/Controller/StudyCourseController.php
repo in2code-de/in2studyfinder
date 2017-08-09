@@ -244,7 +244,7 @@ class StudyCourseController extends ActionController
 
         $defaultQuerySettings->setStoragePageIds(
             [
-                $this->settings['settingsPid']
+                $this->settings['settingsPid'],
             ]
         );
 
@@ -273,7 +273,7 @@ class StudyCourseController extends ActionController
                 $this->filters[$filterName] = [
                     'type' => $filterProperties['type'],
                     'propertyPath' => $filterProperties['propertyPath'],
-                    'frontendLabel' => $frontendLabel
+                    'frontendLabel' => $frontendLabel,
                 ];
 
                 switch ($filterProperties['type']) {

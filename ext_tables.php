@@ -84,7 +84,7 @@ $tables = [
     'tx_in2studyfinder_domain_model_courselanguage',
     'tx_in2studyfinder_domain_model_admissionrequirement',
     'tx_in2studyfinder_domain_model_startofstudy',
-    'tx_in2studyfinder_domain_model_graduation'
+    'tx_in2studyfinder_domain_model_graduation',
 ];
 
 foreach ($tables as $table) {

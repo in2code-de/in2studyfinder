@@ -69,7 +69,7 @@ class StudyCourseRepository extends AbstractRepository
                 $constraints[] = $query->logicalOr(
                     [
                         $query->logicalNot($query->equals($name, '')),
-                        $query->greaterThan($name, 0)
+                        $query->greaterThan($name, 0),
                     ]
                 );
             } elseif ($array[0] === 'false') {
@@ -77,7 +77,7 @@ class StudyCourseRepository extends AbstractRepository
                     [
                         $query->equals($name, 0),
                         $query->equals($name, ''),
-                        $query->equals($name, null)
+                        $query->equals($name, null),
                     ]
                 );
             } else {

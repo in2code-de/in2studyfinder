@@ -145,7 +145,7 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
 
                 $standaloneView->assignMultiple(
                     [
-                        'listPage' => $listPageRecord
+                        'listPage' => $listPageRecord,
                     ]
                 );
 

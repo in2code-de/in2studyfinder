@@ -32,14 +32,14 @@ $tcaConfiguration = [
             'endtime' => 'endtime',
         ],
         'searchFields' => 'title,standard_period_of_study,ects_credits,tuition_fee,teaser,description,' . 'university_place,content_elements,academic_degree,department,faculty,types_of_study,course_languages,' . 'admission_requirements,starts_of_study,',
-        'iconfile' => $icon
+        'iconfile' => $icon,
     ],
     'interface' => [
         'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, ' . 'standard_period_of_study, ects_credits, teaser, description, tuition_fee, university_place, ' . 'content_elements, academic_degree, department, faculty, types_of_study, course_languages, ' . 'admission_requirements, starts_of_study, meta_pagetitles, meta_keywordss, meta_description,different_preset,global_data_preset',
     ],
     'types' => [
         '0' => [
-            'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, ' . '--palette--;' . $ll . 'keyData;keyData,' . 'teaser;;;richtext:rte_transform[mode=ts_links], description;;;richtext:rte_transform[mode=ts_links], ' . 'content_elements, ' . '--div--;' . $ll . 'metadata, --palette--;' . $ll . 'metadata;metadata, ' . '--div--;' . $ll . 'globalPreset, --palette--;' . $ll . 'globalPreset;globalPreset, ' . '--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime,'
+            'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, ' . '--palette--;' . $ll . 'keyData;keyData,' . 'teaser;;;richtext:rte_transform[mode=ts_links], description;;;richtext:rte_transform[mode=ts_links], ' . 'content_elements, ' . '--div--;' . $ll . 'metadata, --palette--;' . $ll . 'metadata;metadata, ' . '--div--;' . $ll . 'globalPreset, --palette--;' . $ll . 'globalPreset;globalPreset, ' . '--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime,',
         ],
     ],
     'palettes' => [
@@ -54,7 +54,7 @@ $tcaConfiguration = [
         'globalPreset' => [
             'showitem' => 'different_preset, --linebreak--, global_data_preset',
             'canNotCollapse' => 1,
-        ]
+        ],
     ],
     'columns' => [
 
@@ -83,8 +83,8 @@ $tcaConfiguration = [
             'config' => [
                 'type' => 'input',
                 'size' => 4,
-                'eval' => 'int'
-            ]
+                'eval' => 'int',
+            ],
         ],
         'ects_credits' => [
             'exclude' => 1,
@@ -94,8 +94,8 @@ $tcaConfiguration = [
             'config' => [
                 'type' => 'input',
                 'size' => 4,
-                'eval' => 'int'
-            ]
+                'eval' => 'int',
+            ],
         ],
         'tuition_fee' => [
             'exclude' => 1,
@@ -105,8 +105,8 @@ $tcaConfiguration = [
             'config' => [
                 'type' => 'input',
                 'size' => 4,
-                'eval' => 'double2'
-            ]
+                'eval' => 'double2',
+            ],
         ],
         'teaser' => [
             'exclude' => 1,
@@ -125,13 +125,13 @@ $tcaConfiguration = [
                             'name' => 'wizard_rich_text_editor',
                             'urlParameters' => [
                                 'mode' => 'wizard',
-                                'act' => 'wizard_rte.php'
-                            ]
+                                'act' => 'wizard_rte.php',
+                            ],
                         ],
                         'title' => 'LLL:EXT:cms/locallang_ttc.xlf:bodytext.W.RTE',
-                        'type' => 'script'
-                    ]
-                ]
+                        'type' => 'script',
+                    ],
+                ],
             ],
         ],
         'description' => [
@@ -151,13 +151,13 @@ $tcaConfiguration = [
                             'name' => 'wizard_rich_text_editor',
                             'urlParameters' => [
                                 'mode' => 'wizard',
-                                'act' => 'wizard_rte.php'
-                            ]
+                                'act' => 'wizard_rte.php',
+                            ],
                         ],
                         'title' => 'LLL:EXT:cms/locallang_ttc.xlf:bodytext.W.RTE',
-                        'type' => 'script'
-                    ]
-                ]
+                        'type' => 'script',
+                    ],
+                ],
             ],
         ],
         'university_place' => [
@@ -168,8 +168,8 @@ $tcaConfiguration = [
             'config' => [
                 'type' => 'input',
                 'size' => 4,
-                'eval' => 'int'
-            ]
+                'eval' => 'int',
+            ],
         ],
         'content_elements' => [
             'exclude' => 1,
@@ -185,7 +185,7 @@ $tcaConfiguration = [
                 'wizards' => [
                     'edit' => TcaUtility::getEditWizard(),
                     'suggest' => TcaUtility::getSuggestWizard(),
-                ]
+                ],
             ],
         ],
         'academic_degree' => TcaUtility::getFullTcaForSingleSelect(
@@ -271,7 +271,7 @@ if (ConfigurationUtility::isEnableGlobalData()) {
         'config' => [
             'type' => 'check',
             'default' => 0,
-        ]
+        ],
     ];
 
     $tcaConfiguration['columns']['global_data_preset'] = [

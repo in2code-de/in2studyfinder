@@ -39,7 +39,7 @@ class PaginateController extends AbstractWidgetController
         'insertBelow' => true,
         'maximumNumberOfLinks' => 99,
         'addQueryStringMethod' => '',
-        'section' => ''
+        'section' => '',
     );
 
     /**
@@ -159,7 +159,7 @@ class PaginateController extends AbstractWidgetController
             'displayRangeStart' => $this->displayRangeStart,
             'displayRangeEnd' => $this->displayRangeEnd,
             'hasLessPages' => $this->displayRangeStart > 2,
-            'hasMorePages' => $this->displayRangeEnd + 1 < $this->numberOfPages
+            'hasMorePages' => $this->displayRangeEnd + 1 < $this->numberOfPages,
         );
         if ($this->currentPage < $this->numberOfPages) {
             $pagination['nextPage'] = $this->currentPage + 1;
