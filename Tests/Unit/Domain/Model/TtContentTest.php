@@ -36,30 +36,32 @@ namespace In2code\In2studyfinder\Tests\Unit\Domain\Model;
  */
 class TtContentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
-	/**
-	 * @var \In2code\In2studyfinder\Domain\Model\TtContent
-	 */
-	protected $subject = NULL;
+    /**
+     * @var \In2code\In2studyfinder\Domain\Model\TtContent
+     */
+    protected $subject = null;
 
-	public function setUp()
-	{
-		$this->subject = new \In2code\In2studyfinder\Domain\Model\TtContent();
-	}
+    public function setUp()
+    {
+        $this->subject = new \In2code\In2studyfinder\Domain\Model\TtContent();
+    }
 
-	public function tearDown()
-	{
-		unset($this->subject);
-	}
+    public function tearDown()
+    {
+        unset($this->subject);
+    }
 
-	/**
-	 * @test
-	 */
-	public function getStudycourseReturnsInitialValueForInt()
-	{	}
+    /**
+     * @test
+     */
+    public function getStudycourseReturnsInitialValueForInt()
+    {
+    }
 
-	/**
-	 * @test
-	 */
-	public function setStudycourseForIntSetsStudycourse()
-	{	}
+    /**
+     * @test
+     */
+    public function setStudycourseForIntSetsStudycourse()
+    {
+    }
 }

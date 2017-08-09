@@ -36,43 +36,43 @@ namespace In2code\In2studyfinder\Tests\Unit\Domain\Model;
  */
 class TypeOfStudyTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
-	/**
-	 * @var \In2code\In2studyfinder\Domain\Model\TypeOfStudy
-	 */
-	protected $subject = NULL;
+    /**
+     * @var \In2code\In2studyfinder\Domain\Model\TypeOfStudy
+     */
+    protected $subject = null;
 
-	public function setUp()
-	{
-		$this->subject = new \In2code\In2studyfinder\Domain\Model\TypeOfStudy();
-	}
+    public function setUp()
+    {
+        $this->subject = new \In2code\In2studyfinder\Domain\Model\TypeOfStudy();
+    }
 
-	public function tearDown()
-	{
-		unset($this->subject);
-	}
+    public function tearDown()
+    {
+        unset($this->subject);
+    }
 
-	/**
-	 * @test
-	 */
-	public function getTypeReturnsInitialValueForString()
-	{
-		$this->assertSame(
-			'',
-			$this->subject->getType()
-		);
-	}
+    /**
+     * @test
+     */
+    public function getTypeReturnsInitialValueForString()
+    {
+        $this->assertSame(
+            '',
+            $this->subject->getType()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function setTypeForStringSetsType()
-	{
-		$this->subject->setType('Conceived at T3CON10');
+    /**
+     * @test
+     */
+    public function setTypeForStringSetsType()
+    {
+        $this->subject->setType('Conceived at T3CON10');
 
-		$this->assertAttributeEquals(
-			'Conceived at T3CON10',
-			'type',
-			$this->subject
-		);
-	}
+        $this->assertAttributeEquals(
+            'Conceived at T3CON10',
+            'type',
+            $this->subject
+        );
+    }
 }

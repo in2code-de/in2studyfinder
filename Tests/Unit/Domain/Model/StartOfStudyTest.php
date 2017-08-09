@@ -36,68 +36,68 @@ namespace In2code\In2studyfinder\Tests\Unit\Domain\Model;
  */
 class StartOfStudyTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
-	/**
-	 * @var \In2code\In2studyfinder\Domain\Model\StartOfStudy
-	 */
-	protected $subject = NULL;
+    /**
+     * @var \In2code\In2studyfinder\Domain\Model\StartOfStudy
+     */
+    protected $subject = null;
 
-	public function setUp()
-	{
-		$this->subject = new \In2code\In2studyfinder\Domain\Model\StartOfStudy();
-	}
+    public function setUp()
+    {
+        $this->subject = new \In2code\In2studyfinder\Domain\Model\StartOfStudy();
+    }
 
-	public function tearDown()
-	{
-		unset($this->subject);
-	}
+    public function tearDown()
+    {
+        unset($this->subject);
+    }
 
-	/**
-	 * @test
-	 */
-	public function getTitleReturnsInitialValueForString()
-	{
-		$this->assertSame(
-			'',
-			$this->subject->getTitle()
-		);
-	}
+    /**
+     * @test
+     */
+    public function getTitleReturnsInitialValueForString()
+    {
+        $this->assertSame(
+            '',
+            $this->subject->getTitle()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function setTitleForStringSetsTitle()
-	{
-		$this->subject->setTitle('Conceived at T3CON10');
+    /**
+     * @test
+     */
+    public function setTitleForStringSetsTitle()
+    {
+        $this->subject->setTitle('Conceived at T3CON10');
 
-		$this->assertAttributeEquals(
-			'Conceived at T3CON10',
-			'title',
-			$this->subject
-		);
-	}
+        $this->assertAttributeEquals(
+            'Conceived at T3CON10',
+            'title',
+            $this->subject
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function getStartDateReturnsInitialValueForString()
-	{
-		$this->assertSame(
-			'',
-			$this->subject->getStartDate()
-		);
-	}
+    /**
+     * @test
+     */
+    public function getStartDateReturnsInitialValueForString()
+    {
+        $this->assertSame(
+            '',
+            $this->subject->getStartDate()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function setStartDateForStringSetsStartDate()
-	{
-		$this->subject->setStartDate('Conceived at T3CON10');
+    /**
+     * @test
+     */
+    public function setStartDateForStringSetsStartDate()
+    {
+        $this->subject->setStartDate('Conceived at T3CON10');
 
-		$this->assertAttributeEquals(
-			'Conceived at T3CON10',
-			'startDate',
-			$this->subject
-		);
-	}
+        $this->assertAttributeEquals(
+            'Conceived at T3CON10',
+            'startDate',
+            $this->subject
+        );
+    }
 }

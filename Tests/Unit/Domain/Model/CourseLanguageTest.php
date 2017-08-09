@@ -36,43 +36,43 @@ namespace In2code\In2studyfinder\Tests\Unit\Domain\Model;
  */
 class CourseLanguageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
-	/**
-	 * @var \In2code\In2studyfinder\Domain\Model\CourseLanguage
-	 */
-	protected $subject = NULL;
+    /**
+     * @var \In2code\In2studyfinder\Domain\Model\CourseLanguage
+     */
+    protected $subject = null;
 
-	public function setUp()
-	{
-		$this->subject = new \In2code\In2studyfinder\Domain\Model\CourseLanguage();
-	}
+    public function setUp()
+    {
+        $this->subject = new \In2code\In2studyfinder\Domain\Model\CourseLanguage();
+    }
 
-	public function tearDown()
-	{
-		unset($this->subject);
-	}
+    public function tearDown()
+    {
+        unset($this->subject);
+    }
 
-	/**
-	 * @test
-	 */
-	public function getLanguageReturnsInitialValueForString()
-	{
-		$this->assertSame(
-			'',
-			$this->subject->getLanguage()
-		);
-	}
+    /**
+     * @test
+     */
+    public function getLanguageReturnsInitialValueForString()
+    {
+        $this->assertSame(
+            '',
+            $this->subject->getLanguage()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function setLanguageForStringSetsLanguage()
-	{
-		$this->subject->setLanguage('Conceived at T3CON10');
+    /**
+     * @test
+     */
+    public function setLanguageForStringSetsLanguage()
+    {
+        $this->subject->setLanguage('Conceived at T3CON10');
 
-		$this->assertAttributeEquals(
-			'Conceived at T3CON10',
-			'language',
-			$this->subject
-		);
-	}
+        $this->assertAttributeEquals(
+            'Conceived at T3CON10',
+            'language',
+            $this->subject
+        );
+    }
 }

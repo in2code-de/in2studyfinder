@@ -36,394 +36,415 @@ namespace In2code\In2studyfinder\Tests\Unit\Domain\Model;
  */
 class StudyCourseTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
-	/**
-	 * @var \In2code\In2studyfinder\Domain\Model\StudyCourse
-	 */
-	protected $subject = NULL;
+    /**
+     * @var \In2code\In2studyfinder\Domain\Model\StudyCourse
+     */
+    protected $subject = null;
 
-	public function setUp()
-	{
-		$this->subject = new \In2code\In2studyfinder\Domain\Model\StudyCourse();
-	}
+    public function setUp()
+    {
+        $this->subject = new \In2code\In2studyfinder\Domain\Model\StudyCourse();
+    }
 
-	public function tearDown()
-	{
-		unset($this->subject);
-	}
+    public function tearDown()
+    {
+        unset($this->subject);
+    }
 
-	/**
-	 * @test
-	 */
-	public function getTitleReturnsInitialValueForString()
-	{
-		$this->assertSame(
-			'',
-			$this->subject->getTitle()
-		);
-	}
+    /**
+     * @test
+     */
+    public function getTitleReturnsInitialValueForString()
+    {
+        $this->assertSame(
+            '',
+            $this->subject->getTitle()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function setTitleForStringSetsTitle()
-	{
-		$this->subject->setTitle('Conceived at T3CON10');
+    /**
+     * @test
+     */
+    public function setTitleForStringSetsTitle()
+    {
+        $this->subject->setTitle('Conceived at T3CON10');
 
-		$this->assertAttributeEquals(
-			'Conceived at T3CON10',
-			'title',
-			$this->subject
-		);
-	}
+        $this->assertAttributeEquals(
+            'Conceived at T3CON10',
+            'title',
+            $this->subject
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function getStandardPeriodOfStudyReturnsInitialValueForInt()
-	{	}
+    /**
+     * @test
+     */
+    public function getStandardPeriodOfStudyReturnsInitialValueForInt()
+    {
+    }
 
-	/**
-	 * @test
-	 */
-	public function setStandardPeriodOfStudyForIntSetsStandardPeriodOfStudy()
-	{	}
+    /**
+     * @test
+     */
+    public function setStandardPeriodOfStudyForIntSetsStandardPeriodOfStudy()
+    {
+    }
 
-	/**
-	 * @test
-	 */
-	public function getEctsCreditsReturnsInitialValueForInt()
-	{	}
+    /**
+     * @test
+     */
+    public function getEctsCreditsReturnsInitialValueForInt()
+    {
+    }
 
-	/**
-	 * @test
-	 */
-	public function setEctsCreditsForIntSetsEctsCredits()
-	{	}
+    /**
+     * @test
+     */
+    public function setEctsCreditsForIntSetsEctsCredits()
+    {
+    }
 
-	/**
-	 * @test
-	 */
-	public function getTuitionFeeReturnsInitialValueForFloat()
-	{
-		$this->assertSame(
-			0.0,
-			$this->subject->getTuitionFee()
-		);
-	}
+    /**
+     * @test
+     */
+    public function getTuitionFeeReturnsInitialValueForFloat()
+    {
+        $this->assertSame(
+            0.0,
+            $this->subject->getTuitionFee()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function setTuitionFeeForFloatSetsTuitionFee()
-	{
-		$this->subject->setTuitionFee(3.14159265);
+    /**
+     * @test
+     */
+    public function setTuitionFeeForFloatSetsTuitionFee()
+    {
+        $this->subject->setTuitionFee(3.14159265);
 
-		$this->assertAttributeEquals(
-			3.14159265,
-			'tuitionFee',
-			$this->subject,
-			'',
-			0.000000001
-		);
-	}
+        $this->assertAttributeEquals(
+            3.14159265,
+            'tuitionFee',
+            $this->subject,
+            '',
+            0.000000001
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function getTeaserReturnsInitialValueForString()
-	{
-		$this->assertSame(
-			'',
-			$this->subject->getTeaser()
-		);
-	}
+    /**
+     * @test
+     */
+    public function getTeaserReturnsInitialValueForString()
+    {
+        $this->assertSame(
+            '',
+            $this->subject->getTeaser()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function setTeaserForStringSetsTeaser()
-	{
-		$this->subject->setTeaser('Conceived at T3CON10');
+    /**
+     * @test
+     */
+    public function setTeaserForStringSetsTeaser()
+    {
+        $this->subject->setTeaser('Conceived at T3CON10');
 
-		$this->assertAttributeEquals(
-			'Conceived at T3CON10',
-			'teaser',
-			$this->subject
-		);
-	}
+        $this->assertAttributeEquals(
+            'Conceived at T3CON10',
+            'teaser',
+            $this->subject
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function getDescriptionReturnsInitialValueForString()
-	{
-		$this->assertSame(
-			'',
-			$this->subject->getDescription()
-		);
-	}
+    /**
+     * @test
+     */
+    public function getDescriptionReturnsInitialValueForString()
+    {
+        $this->assertSame(
+            '',
+            $this->subject->getDescription()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function setDescriptionForStringSetsDescription()
-	{
-		$this->subject->setDescription('Conceived at T3CON10');
+    /**
+     * @test
+     */
+    public function setDescriptionForStringSetsDescription()
+    {
+        $this->subject->setDescription('Conceived at T3CON10');
 
-		$this->assertAttributeEquals(
-			'Conceived at T3CON10',
-			'description',
-			$this->subject
-		);
-	}
+        $this->assertAttributeEquals(
+            'Conceived at T3CON10',
+            'description',
+            $this->subject
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function getUniversityPlaceReturnsInitialValueForInt()
-	{	}
+    /**
+     * @test
+     */
+    public function getUniversityPlaceReturnsInitialValueForInt()
+    {
+    }
 
-	/**
-	 * @test
-	 */
-	public function setUniversityPlaceForIntSetsUniversityPlace()
-	{	}
+    /**
+     * @test
+     */
+    public function setUniversityPlaceForIntSetsUniversityPlace()
+    {
+    }
 
-	/**
-	 * @test
-	 */
-	public function getContentElementsReturnsInitialValueForTtContent()
-	{
-		$newObjectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$this->assertEquals(
-			$newObjectStorage,
-			$this->subject->getContentElements()
-		);
-	}
+    /**
+     * @test
+     */
+    public function getContentElementsReturnsInitialValueForTtContent()
+    {
+        $newObjectStorage = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->assertEquals(
+            $newObjectStorage,
+            $this->subject->getContentElements()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function setContentElementsForObjectStorageContainingTtContentSetsContentElements()
-	{
-		$contentElement = new \In2code\In2studyfinder\Domain\Model\TtContent();
-		$objectStorageHoldingExactlyOneContentElements = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$objectStorageHoldingExactlyOneContentElements->attach($contentElement);
-		$this->subject->setContentElements($objectStorageHoldingExactlyOneContentElements);
+    /**
+     * @test
+     */
+    public function setContentElementsForObjectStorageContainingTtContentSetsContentElements()
+    {
+        $contentElement = new \In2code\In2studyfinder\Domain\Model\TtContent();
+        $objectStorageHoldingExactlyOneContentElements = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $objectStorageHoldingExactlyOneContentElements->attach($contentElement);
+        $this->subject->setContentElements($objectStorageHoldingExactlyOneContentElements);
 
-		$this->assertAttributeEquals(
-			$objectStorageHoldingExactlyOneContentElements,
-			'contentElements',
-			$this->subject
-		);
-	}
+        $this->assertAttributeEquals(
+            $objectStorageHoldingExactlyOneContentElements,
+            'contentElements',
+            $this->subject
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function addContentElementToObjectStorageHoldingContentElements()
-	{
-		$contentElement = new \In2code\In2studyfinder\Domain\Model\TtContent();
-		$contentElementsObjectStorageMock = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', array('attach'), array(), '', FALSE);
-		$contentElementsObjectStorageMock->expects($this->once())->method('attach')->with($this->equalTo($contentElement));
-		$this->inject($this->subject, 'contentElements', $contentElementsObjectStorageMock);
+    /**
+     * @test
+     */
+    public function addContentElementToObjectStorageHoldingContentElements()
+    {
+        $contentElement = new \In2code\In2studyfinder\Domain\Model\TtContent();
+        $contentElementsObjectStorageMock = $this->getMock(
+            'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage',
+            array('attach'),
+            array(),
+            '',
+            false
+        );
+        $contentElementsObjectStorageMock->expects($this->once())->method('attach')->with(
+            $this->equalTo($contentElement)
+        );
+        $this->inject($this->subject, 'contentElements', $contentElementsObjectStorageMock);
 
-		$this->subject->addContentElement($contentElement);
-	}
+        $this->subject->addContentElement($contentElement);
+    }
 
-	/**
-	 * @test
-	 */
-	public function removeContentElementFromObjectStorageHoldingContentElements()
-	{
-		$contentElement = new \In2code\In2studyfinder\Domain\Model\TtContent();
-		$contentElementsObjectStorageMock = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', array('detach'), array(), '', FALSE);
-		$contentElementsObjectStorageMock->expects($this->once())->method('detach')->with($this->equalTo($contentElement));
-		$this->inject($this->subject, 'contentElements', $contentElementsObjectStorageMock);
+    /**
+     * @test
+     */
+    public function removeContentElementFromObjectStorageHoldingContentElements()
+    {
+        $contentElement = new \In2code\In2studyfinder\Domain\Model\TtContent();
+        $contentElementsObjectStorageMock = $this->getMock(
+            'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage',
+            array('detach'),
+            array(),
+            '',
+            false
+        );
+        $contentElementsObjectStorageMock->expects($this->once())->method('detach')->with(
+            $this->equalTo($contentElement)
+        );
+        $this->inject($this->subject, 'contentElements', $contentElementsObjectStorageMock);
 
-		$this->subject->removeContentElement($contentElement);
+        $this->subject->removeContentElement($contentElement);
+    }
 
-	}
+    /**
+     * @test
+     */
+    public function getAcademicDegreeReturnsInitialValueForAcademicDegree()
+    {
+        $this->assertEquals(
+            null,
+            $this->subject->getAcademicDegree()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function getAcademicDegreeReturnsInitialValueForAcademicDegree()
-	{
-		$this->assertEquals(
-			NULL,
-			$this->subject->getAcademicDegree()
-		);
-	}
+    /**
+     * @test
+     */
+    public function setAcademicDegreeForAcademicDegreeSetsAcademicDegree()
+    {
+        $academicDegreeFixture = new \In2code\In2studyfinder\Domain\Model\AcademicDegree();
+        $this->subject->setAcademicDegree($academicDegreeFixture);
 
-	/**
-	 * @test
-	 */
-	public function setAcademicDegreeForAcademicDegreeSetsAcademicDegree()
-	{
-		$academicDegreeFixture = new \In2code\In2studyfinder\Domain\Model\AcademicDegree();
-		$this->subject->setAcademicDegree($academicDegreeFixture);
+        $this->assertAttributeEquals(
+            $academicDegreeFixture,
+            'academicDegree',
+            $this->subject
+        );
+    }
 
-		$this->assertAttributeEquals(
-			$academicDegreeFixture,
-			'academicDegree',
-			$this->subject
-		);
-	}
+    /**
+     * @test
+     */
+    public function getDepartmentReturnsInitialValueForDepartment()
+    {
+        $this->assertEquals(
+            null,
+            $this->subject->getDepartment()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function getDepartmentReturnsInitialValueForDepartment()
-	{
-		$this->assertEquals(
-			NULL,
-			$this->subject->getDepartment()
-		);
-	}
+    /**
+     * @test
+     */
+    public function setDepartmentForDepartmentSetsDepartment()
+    {
+        $departmentFixture = new \In2code\In2studyfinder\Domain\Model\Department();
+        $this->subject->setDepartment($departmentFixture);
 
-	/**
-	 * @test
-	 */
-	public function setDepartmentForDepartmentSetsDepartment()
-	{
-		$departmentFixture = new \In2code\In2studyfinder\Domain\Model\Department();
-		$this->subject->setDepartment($departmentFixture);
+        $this->assertAttributeEquals(
+            $departmentFixture,
+            'department',
+            $this->subject
+        );
+    }
 
-		$this->assertAttributeEquals(
-			$departmentFixture,
-			'department',
-			$this->subject
-		);
-	}
+    /**
+     * @test
+     */
+    public function getFacultyReturnsInitialValueForFaculty()
+    {
+        $this->assertEquals(
+            null,
+            $this->subject->getFaculty()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function getFacultyReturnsInitialValueForFaculty()
-	{
-		$this->assertEquals(
-			NULL,
-			$this->subject->getFaculty()
-		);
-	}
+    /**
+     * @test
+     */
+    public function setFacultyForFacultySetsFaculty()
+    {
+        $facultyFixture = new \In2code\In2studyfinder\Domain\Model\Faculty();
+        $this->subject->setFaculty($facultyFixture);
 
-	/**
-	 * @test
-	 */
-	public function setFacultyForFacultySetsFaculty()
-	{
-		$facultyFixture = new \In2code\In2studyfinder\Domain\Model\Faculty();
-		$this->subject->setFaculty($facultyFixture);
+        $this->assertAttributeEquals(
+            $facultyFixture,
+            'faculty',
+            $this->subject
+        );
+    }
 
-		$this->assertAttributeEquals(
-			$facultyFixture,
-			'faculty',
-			$this->subject
-		);
-	}
+    /**
+     * @test
+     */
+    public function getTypeOfStudyReturnsInitialValueForTypeOfStudy()
+    {
+        $this->assertEquals(
+            null,
+            $this->subject->getTypeOfStudy()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function getTypeOfStudyReturnsInitialValueForTypeOfStudy()
-	{
-		$this->assertEquals(
-			NULL,
-			$this->subject->getTypeOfStudy()
-		);
-	}
+    /**
+     * @test
+     */
+    public function setTypeOfStudyForTypeOfStudySetsTypeOfStudy()
+    {
+        $typeOfStudyFixture = new \In2code\In2studyfinder\Domain\Model\TypeOfStudy();
+        $this->subject->setTypeOfStudy($typeOfStudyFixture);
 
-	/**
-	 * @test
-	 */
-	public function setTypeOfStudyForTypeOfStudySetsTypeOfStudy()
-	{
-		$typeOfStudyFixture = new \In2code\In2studyfinder\Domain\Model\TypeOfStudy();
-		$this->subject->setTypeOfStudy($typeOfStudyFixture);
+        $this->assertAttributeEquals(
+            $typeOfStudyFixture,
+            'typeOfStudy',
+            $this->subject
+        );
+    }
 
-		$this->assertAttributeEquals(
-			$typeOfStudyFixture,
-			'typeOfStudy',
-			$this->subject
-		);
-	}
+    /**
+     * @test
+     */
+    public function getCourseLanguageReturnsInitialValueForCourseLanguage()
+    {
+        $this->assertEquals(
+            null,
+            $this->subject->getCourseLanguage()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function getCourseLanguageReturnsInitialValueForCourseLanguage()
-	{
-		$this->assertEquals(
-			NULL,
-			$this->subject->getCourseLanguage()
-		);
-	}
+    /**
+     * @test
+     */
+    public function setCourseLanguageForCourseLanguageSetsCourseLanguage()
+    {
+        $courseLanguageFixture = new \In2code\In2studyfinder\Domain\Model\CourseLanguage();
+        $this->subject->setCourseLanguage($courseLanguageFixture);
 
-	/**
-	 * @test
-	 */
-	public function setCourseLanguageForCourseLanguageSetsCourseLanguage()
-	{
-		$courseLanguageFixture = new \In2code\In2studyfinder\Domain\Model\CourseLanguage();
-		$this->subject->setCourseLanguage($courseLanguageFixture);
+        $this->assertAttributeEquals(
+            $courseLanguageFixture,
+            'courseLanguage',
+            $this->subject
+        );
+    }
 
-		$this->assertAttributeEquals(
-			$courseLanguageFixture,
-			'courseLanguage',
-			$this->subject
-		);
-	}
+    /**
+     * @test
+     */
+    public function getAdmissionRequirementsReturnsInitialValueForAdmissionRequirements()
+    {
+        $this->assertEquals(
+            null,
+            $this->subject->getAdmissionRequirements()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function getAdmissionRequirementsReturnsInitialValueForAdmissionRequirements()
-	{
-		$this->assertEquals(
-			NULL,
-			$this->subject->getAdmissionRequirements()
-		);
-	}
+    /**
+     * @test
+     */
+    public function setAdmissionRequirementsForAdmissionRequirementsSetsAdmissionRequirements()
+    {
+        $admissionRequirementsFixture = new \In2code\In2studyfinder\Domain\Model\AdmissionRequirements();
+        $this->subject->setAdmissionRequirements($admissionRequirementsFixture);
 
-	/**
-	 * @test
-	 */
-	public function setAdmissionRequirementsForAdmissionRequirementsSetsAdmissionRequirements()
-	{
-		$admissionRequirementsFixture = new \In2code\In2studyfinder\Domain\Model\AdmissionRequirements();
-		$this->subject->setAdmissionRequirements($admissionRequirementsFixture);
+        $this->assertAttributeEquals(
+            $admissionRequirementsFixture,
+            'admissionRequirements',
+            $this->subject
+        );
+    }
 
-		$this->assertAttributeEquals(
-			$admissionRequirementsFixture,
-			'admissionRequirements',
-			$this->subject
-		);
-	}
+    /**
+     * @test
+     */
+    public function getStartOfStudyReturnsInitialValueForStartOfStudy()
+    {
+        $this->assertEquals(
+            null,
+            $this->subject->getStartOfStudy()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function getStartOfStudyReturnsInitialValueForStartOfStudy()
-	{
-		$this->assertEquals(
-			NULL,
-			$this->subject->getStartOfStudy()
-		);
-	}
+    /**
+     * @test
+     */
+    public function setStartOfStudyForStartOfStudySetsStartOfStudy()
+    {
+        $startOfStudyFixture = new \In2code\In2studyfinder\Domain\Model\StartOfStudy();
+        $this->subject->setStartOfStudy($startOfStudyFixture);
 
-	/**
-	 * @test
-	 */
-	public function setStartOfStudyForStartOfStudySetsStartOfStudy()
-	{
-		$startOfStudyFixture = new \In2code\In2studyfinder\Domain\Model\StartOfStudy();
-		$this->subject->setStartOfStudy($startOfStudyFixture);
-
-		$this->assertAttributeEquals(
-			$startOfStudyFixture,
-			'startOfStudy',
-			$this->subject
-		);
-	}
+        $this->assertAttributeEquals(
+            $startOfStudyFixture,
+            'startOfStudy',
+            $this->subject
+        );
+    }
 }

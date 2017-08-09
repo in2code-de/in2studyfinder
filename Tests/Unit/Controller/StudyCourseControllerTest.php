@@ -32,52 +32,69 @@ namespace In2code\In2studyfinder\Tests\Unit\Controller;
  */
 class StudyCourseControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
+    /**
+     * @var \In2code\In2studyfinder\Controller\StudyCourseController
+     */
+    protected $subject = null;
 
-	/**
-	 * @var \In2code\In2studyfinder\Controller\StudyCourseController
-	 */
-	protected $subject = NULL;
+    public function setUp()
+    {
+        $this->subject = $this->getMock(
+            'In2code\\In2studyfinder\\Controller\\StudyCourseController',
+            array('redirect', 'forward', 'addFlashMessage'),
+            array(),
+            '',
+            false
+        );
+    }
 
-	public function setUp()
-	{
-		$this->subject = $this->getMock('In2code\\In2studyfinder\\Controller\\StudyCourseController', array('redirect', 'forward', 'addFlashMessage'), array(), '', FALSE);
-	}
+    public function tearDown()
+    {
+        unset($this->subject);
+    }
 
-	public function tearDown()
-	{
-		unset($this->subject);
-	}
+    /**
+     * @test
+     */
+    public function listActionFetchesAllStudyCoursesFromRepositoryAndAssignsThemToView()
+    {
 
-	/**
-	 * @test
-	 */
-	public function listActionFetchesAllStudyCoursesFromRepositoryAndAssignsThemToView()
-	{
+        $allStudyCourses = $this->getMock(
+            'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage',
+            array(),
+            array(),
+            '',
+            false
+        );
 
-		$allStudyCourses = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', array(), array(), '', FALSE);
+        $studyCourseRepository = $this->getMock(
+            'In2code\\In2studyfinder\\Domain\\Repository\\StudyCourseRepository',
+            array('findAll'),
+            array(),
+            '',
+            false
+        );
+        $studyCourseRepository->expects($this->once())->method('findAll')->will($this->returnValue($allStudyCourses));
+        $this->inject($this->subject, 'studyCourseRepository', $studyCourseRepository);
 
-		$studyCourseRepository = $this->getMock('In2code\\In2studyfinder\\Domain\\Repository\\StudyCourseRepository', array('findAll'), array(), '', FALSE);
-		$studyCourseRepository->expects($this->once())->method('findAll')->will($this->returnValue($allStudyCourses));
-		$this->inject($this->subject, 'studyCourseRepository', $studyCourseRepository);
+        $view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
+        $view->expects($this->once())->method('assign')->with('studyCourses', $allStudyCourses);
+        $this->inject($this->subject, 'view', $view);
 
-		$view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
-		$view->expects($this->once())->method('assign')->with('studyCourses', $allStudyCourses);
-		$this->inject($this->subject, 'view', $view);
+        $this->subject->listAction();
+    }
 
-		$this->subject->listAction();
-	}
+    /**
+     * @test
+     */
+    public function showActionAssignsTheGivenStudyCourseToView()
+    {
+        $studyCourse = new \In2code\In2studyfinder\Domain\Model\StudyCourse();
 
-	/**
-	 * @test
-	 */
-	public function showActionAssignsTheGivenStudyCourseToView()
-	{
-		$studyCourse = new \In2code\In2studyfinder\Domain\Model\StudyCourse();
+        $view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
+        $this->inject($this->subject, 'view', $view);
+        $view->expects($this->once())->method('assign')->with('studyCourse', $studyCourse);
 
-		$view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
-		$this->inject($this->subject, 'view', $view);
-		$view->expects($this->once())->method('assign')->with('studyCourse', $studyCourse);
-
-		$this->subject->showAction($studyCourse);
-	}
+        $this->subject->showAction($studyCourse);
+    }
 }

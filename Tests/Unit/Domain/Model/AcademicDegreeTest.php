@@ -36,43 +36,43 @@ namespace In2code\In2studyfinder\Tests\Unit\Domain\Model;
  */
 class AcademicDegreeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
-	/**
-	 * @var \In2code\In2studyfinder\Domain\Model\AcademicDegree
-	 */
-	protected $subject = NULL;
+    /**
+     * @var \In2code\In2studyfinder\Domain\Model\AcademicDegree
+     */
+    protected $subject = null;
 
-	public function setUp()
-	{
-		$this->subject = new \In2code\In2studyfinder\Domain\Model\AcademicDegree();
-	}
+    public function setUp()
+    {
+        $this->subject = new \In2code\In2studyfinder\Domain\Model\AcademicDegree();
+    }
 
-	public function tearDown()
-	{
-		unset($this->subject);
-	}
+    public function tearDown()
+    {
+        unset($this->subject);
+    }
 
-	/**
-	 * @test
-	 */
-	public function getDegreeReturnsInitialValueForString()
-	{
-		$this->assertSame(
-			'',
-			$this->subject->getDegree()
-		);
-	}
+    /**
+     * @test
+     */
+    public function getDegreeReturnsInitialValueForString()
+    {
+        $this->assertSame(
+            '',
+            $this->subject->getDegree()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function setDegreeForStringSetsDegree()
-	{
-		$this->subject->setDegree('Conceived at T3CON10');
+    /**
+     * @test
+     */
+    public function setDegreeForStringSetsDegree()
+    {
+        $this->subject->setDegree('Conceived at T3CON10');
 
-		$this->assertAttributeEquals(
-			'Conceived at T3CON10',
-			'degree',
-			$this->subject
-		);
-	}
+        $this->assertAttributeEquals(
+            'Conceived at T3CON10',
+            'degree',
+            $this->subject
+        );
+    }
 }
