@@ -9,22 +9,24 @@ class ForViewHelper extends AbstractViewHelper
      * @param array $for
      * @param string $as
      * @param string $letter
-     * @return array
+     * @return string
      */
     public function render($for, $as, $letter = 'letter')
     {
-        $sortedStudyCourses = array();
-
-        foreach ($for as $studyCourse) {
-            $sortedStudyCourses[substr(strtoupper($studyCourse->getTitle()), 0, 1)][] = $studyCourse;
+        if (is_array($for)) {
+            $sortedStudyCourses = array();
+            foreach ($for as $studyCourse) {
+                $sortedStudyCourses[substr(strtoupper($studyCourse->getTitle()), 0, 1)][] = $studyCourse;
+            }
+            $results = array();
+            foreach ($sortedStudyCourses as $capitalLetter => $course) {
+                $this->setVariable($letter, $capitalLetter);
+                $this->setVariable($as, $course);
+                $results[] = $this->renderChildren();
+            }
+            return implode($results);
         }
-        $results = array();
-        foreach ($sortedStudyCourses as $capitalLetter => $course) {
-            $this->setVariable($letter, $capitalLetter);
-            $this->setVariable($as, $course);
-            $results[] = $this->renderChildren();
-        }
-        return implode($results);
+        return '';
     }
 
     /**
