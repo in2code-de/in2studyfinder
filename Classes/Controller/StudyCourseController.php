@@ -426,7 +426,7 @@ class StudyCourseController extends ActionController
 
         // merge filter options to searchedOptions
         foreach ($searchOptions as $filterName => $searchedOptions) {
-            $mergedOptions[$this->filters[$filterName]['propertyPath']] = $searchOptions[$filterName];
+            $mergedOptions[$this->filters[$filterName]['propertyPath']] = $searchedOptions;
         }
 
         return $this->objectManager->get(StudyCourseRepository::class)->findAllFilteredByOptions($mergedOptions);
