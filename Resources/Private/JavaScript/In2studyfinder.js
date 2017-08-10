@@ -28,10 +28,8 @@
 
 				if (readFilterFromUrl) {
 					readFilterFromUrl = false;
-					if (window.location.hash) {
-						var paginationPage = urlHandling.loadSelectedOptionsFromUrl();
-						filterHandling.filterChanged(paginationPage);
-					}
+					var paginationPage = urlHandling.loadSelectedOptionsFromUrl();
+					filterHandling.filterChanged(paginationPage);
 				}
 			}
 		};
