@@ -430,11 +430,11 @@ class StudyCourseController extends ActionController
             ->objectManager
             ->get(StudyCourseRepository::class)
             ->findAllFilteredByOptions($mergedOptions);
-        
+
         if ($studyCourses instanceof QueryResultInterface) {
             $studyCourses = $studyCourses->toArray();
         }
-        
+
         /**
          * sort the Studycourses with usort
          *
@@ -455,9 +455,9 @@ class StudyCourseController extends ActionController
         $availableOptions = [];
 
         foreach ($this->filters as $filterName => $filter) {
-            /** @var $course StudyCourse */
-            foreach ($studyCourses as $course) {
-                $property = ObjectAccess::getPropertyPath($course, $filter['propertyPath']);
+            /** @var $studyCourse StudyCourse */
+            foreach ($studyCourses as $studyCourse) {
+                $property = ObjectAccess::getPropertyPath($studyCourse, $filter['propertyPath']);
 
                 switch ($filter['type']) {
                     case 'object':
@@ -465,12 +465,8 @@ class StudyCourseController extends ActionController
                             foreach ($property as $obj) {
                                 $availableOptions[$filterName][$obj->getUid()] = $obj->getUid();
                             }
-                        } else {
-                            if ($property instanceof AbstractDomainObject) {
-                                $availableOptions[$filterName][$property->getUid()] = $property->getUid();
-                            } else {
-                                // Throw not Supported Object
-                            }
+                        } elseif ($property instanceof AbstractDomainObject) {
+                            $availableOptions[$filterName][$property->getUid()] = $property->getUid();
                         }
                         break;
                     case 'boolean':
@@ -481,7 +477,6 @@ class StudyCourseController extends ActionController
                         }
                         break;
                     default:
-                        // Throw not Supported Filter Type
                         break;
                 }
             }
