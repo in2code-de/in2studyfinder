@@ -456,7 +456,7 @@ class StudyCourseController extends ActionController
         if ($studyCourses instanceof QueryResultInterface) {
             $studyCourses = $studyCourses->toArray();
         }
-        /* sort the Studycourses with usort see: Domain/Model/StudyCourse:cmpObj */
+        // sort the Studycourses with usort see: Domain/Model/StudyCourse:cmpObj
         usort($studyCourses, array(StudyCourse::class, 'cmpObj'));
 
         return $studyCourses;
