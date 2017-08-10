@@ -34,6 +34,8 @@ use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use In2code\In2studyfinder\Utility\FrontendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
@@ -42,6 +44,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
+use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
@@ -56,7 +59,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 class StudyCourseController extends ActionController
 {
     /**
-     * @var \In2code\In2studyfinder\Domain\Repository\StudyCourseListContextRepository
+     * @var StudyCourseListContextRepository
      */
     protected $studyCourseListContextRepository = null;
 
@@ -66,35 +69,37 @@ class StudyCourseController extends ActionController
     protected $filters = [];
 
     /**
-     * cacheUtility
-     *
-     * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+     * @var FrontendInterface
      */
-    protected $cacheInstance;
+    protected $cacheInstance = null;
 
     /**
-     * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+     * @var Logger
      */
-    protected $cObj;
+    protected $logger = null;
 
     /**
-     * @var \TYPO3\CMS\Core\Log\Logger
+     * @var Response
      */
-    protected $logger;
+    protected $response = null;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Web\Response
+     * @param StudyCourseListContextRepository $studyListRepo
      */
-    protected $response;
+    public function injectStudyCourseListContextRepository(StudyCourseListContextRepository $studyListRepo)
+    {
+        $this->studyCourseListContextRepository = $studyListRepo;
+    }
 
     /**
      * initialize action
      */
     protected function initializeAction()
     {
+        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(static::class);
+
         if (ConfigurationUtility::isCachingEnabled()) {
             $this->cacheInstance = GeneralUtility::makeInstance(CacheManager::class)->getCache('in2studyfinder');
-            $this->cObj = $this->configurationManager->getContentObject();
         }
 
         if (ExtensionUtility::isIn2studycoursesExtendLoaded()) {
@@ -109,8 +114,6 @@ class StudyCourseController extends ActionController
             }
         }
 
-        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-
         // cache $this->filters
         if (ConfigurationUtility::isCachingEnabled()) {
             $cacheIdentifier = $this->getCacheIdentifierForStudyCourses($this->settings['filters']);
@@ -124,17 +127,6 @@ class StudyCourseController extends ActionController
         } else {
             $this->setFilters();
         }
-    }
-
-    /**
-     * Inject Study Course List Context Repository
-     *
-     * @param StudyCourseListContextRepository $studyCourseListContextRepository
-     */
-    public function injectStudyCourseListContextRepository(
-        StudyCourseListContextRepository $studyCourseListContextRepository
-    ) {
-        $this->studyCourseListContextRepository = $studyCourseListContextRepository;
     }
 
     /**
