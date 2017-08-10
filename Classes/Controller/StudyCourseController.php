@@ -45,7 +45,6 @@ use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Property\Exception;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -131,25 +130,14 @@ class StudyCourseController extends ActionController
     public function filterAction($searchOptions = [])
     {
         if (!empty($searchOptions)) {
-            if (ConfigurationUtility::isCachingEnabled()) {
-                $cacheIdentifier = $this->getCacheIdentifierForStudyCourses($searchOptions);
-
-                $foundStudyCourses = $this->cacheInstance->get($cacheIdentifier);
-
-                if (!$foundStudyCourses) {
-                    $foundStudyCourses = $this->processSearch($searchOptions);
-                    $this->cacheInstance->set($cacheIdentifier, $foundStudyCourses, ['in2studyfinder']);
-                }
-            } else {
-                $foundStudyCourses = $this->processSearch($searchOptions);
-            }
+            $foundStudyCourses = $this->processSearch($searchOptions);
 
             $this->view->assignMultiple(
                 [
                     'searchedOptions' => $searchOptions,
+                    'filters' => $this->filters,
                     'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($foundStudyCourses),
                     'studyCourseCount' => count($foundStudyCourses),
-                    'filters' => $this->filters,
                     'studyCourses' => $foundStudyCourses,
                 ]
             );
@@ -278,19 +266,7 @@ class StudyCourseController extends ActionController
     {
         $flexformOptions = $this->getSelectedFlexformOptions();
 
-        if (ConfigurationUtility::isCachingEnabled()) {
-            $cacheIdentifier = $this->getCacheIdentifierForStudyCourses($flexformOptions);
-
-            $studyCourses = $this->cacheInstance->get($cacheIdentifier);
-
-            // if no cache entry exists write cache
-            if (!$studyCourses) {
-                $studyCourses = $this->processSearch($flexformOptions);
-                $this->cacheInstance->set($cacheIdentifier, $studyCourses, ['in2studyfinder']);
-            }
-        } else {
-            $studyCourses = $this->processSearch($flexformOptions);
-        }
+        $studyCourses = $this->processSearch($flexformOptions);
 
         $this->view->assignMultiple(
             [
@@ -373,27 +349,37 @@ class StudyCourseController extends ActionController
     {
         $mergedOptions = [];
 
-        // merge filter options to searchedOptions
         foreach ($searchOptions as $filterName => $searchedOptions) {
             $mergedOptions[$this->filters[$filterName]['propertyPath']] = $searchedOptions;
         }
 
+        if (ConfigurationUtility::isCachingEnabled()) {
+            $cacheIdentifier = $this->getCacheIdentifierForStudyCourses($mergedOptions);
+            $studyCourses = $this->cacheInstance->get($cacheIdentifier);
+            
+            if (!$studyCourses) {
+                $studyCourses = $this->searchAndSortStudyCourses($mergedOptions);
+                $this->cacheInstance->set($cacheIdentifier, $studyCourses, ['in2studyfinder']);
+            }
+        } else {
+            $studyCourses = $this->searchAndSortStudyCourses($mergedOptions);
+        }
+
+        return $studyCourses;
+    }
+
+    /**
+     * @param array $searchOptions
+     * @return array
+     */
+    protected function searchAndSortStudyCourses(array $searchOptions)
+    {
         $studyCourses = $this
             ->objectManager
             ->get(StudyCourseRepository::class)
-            ->findAllFilteredByOptions($mergedOptions);
-
-        if ($studyCourses instanceof QueryResultInterface) {
-            $studyCourses = $studyCourses->toArray();
-        }
-
-        /**
-         * sort the Studycourses with usort
-         *
-         * @see \In2code\In2studyfinder\Domain\Model\StudyCourse::cmpObj
-         */
+            ->findAllFilteredByOptions($searchOptions)
+            ->toArray();
         usort($studyCourses, array(StudyCourse::class, 'cmpObj'));
-
         return $studyCourses;
     }
 
