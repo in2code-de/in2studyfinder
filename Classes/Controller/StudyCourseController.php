@@ -153,10 +153,8 @@ class StudyCourseController extends ActionController
     public function initializeFilterAction()
     {
         if ($this->request->hasArgument('searchOptions')) {
-            // filter empty options
-            $sanitizedSearchOptions = array_filter((array)$this->request->getArgument('searchOptions'));
-
-            $this->request->setArgument('searchOptions', $sanitizedSearchOptions);
+            $searchOptions = (array)$this->request->getArgument('searchOptions');
+            $this->request->setArgument('searchOptions', array_filter($searchOptions));
         }
     }
 
