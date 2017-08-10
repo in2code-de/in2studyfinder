@@ -1,5 +1,4 @@
 <?php
-
 namespace In2code\In2studyfinder\ViewHelpers\Form;
 
 use In2code\In2studyfinder\Utility\ExtensionUtility;

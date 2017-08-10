@@ -1,5 +1,4 @@
 <?php
-
 namespace In2code\In2studyfinder\Tests\Unit\Domain\Model;
 
 /***************************************************************

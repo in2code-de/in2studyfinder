@@ -1,5 +1,4 @@
 <?php
-
 namespace In2code\In2studyfinder\Utility;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
