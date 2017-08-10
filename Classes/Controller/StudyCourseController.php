@@ -107,10 +107,6 @@ class StudyCourseController extends ActionController
                 $this->studyCourseListContextRepository = $this->objectManager->get(
                     'In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseListContextRepository'
                 );
-            } else {
-                $this->studyCourseListContextRepository = $this->objectManager->get(
-                    'In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository'
-                );
             }
         }
 
