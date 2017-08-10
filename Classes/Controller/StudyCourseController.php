@@ -110,7 +110,6 @@ class StudyCourseController extends ActionController
             }
         }
 
-        // cache $this->filters
         if (ConfigurationUtility::isCachingEnabled()) {
             $cacheIdentifier = $this->getCacheIdentifierForStudyCourses($this->settings['filters']);
 
