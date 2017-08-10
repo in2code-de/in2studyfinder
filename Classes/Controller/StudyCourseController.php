@@ -276,23 +276,6 @@ class StudyCourseController extends ActionController
      */
     protected function assignStudyCourses()
     {
-        $studyCourses = $this->getStudyCourses();
-
-        $this->view->assignMultiple(
-            [
-                'filters' => $this->filters,
-                'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($studyCourses),
-                'studyCourseCount' => count($studyCourses),
-                'studyCourses' => $studyCourses,
-            ]
-        );
-    }
-
-    /**
-     * @return array
-     */
-    protected function getStudyCourses()
-    {
         $flexformOptions = $this->getSelectedFlexformOptions();
 
         if (ConfigurationUtility::isCachingEnabled()) {
@@ -309,7 +292,14 @@ class StudyCourseController extends ActionController
             $studyCourses = $this->processSearch($flexformOptions);
         }
 
-        return $studyCourses;
+        $this->view->assignMultiple(
+            [
+                'filters' => $this->filters,
+                'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($studyCourses),
+                'studyCourseCount' => count($studyCourses),
+                'studyCourses' => $studyCourses,
+            ]
+        );
     }
 
     /**
