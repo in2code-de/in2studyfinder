@@ -237,27 +237,6 @@ class StudyCourseController extends ActionController
     }
 
     /**
-     * assign StudyCourses to the view
-     *
-     * @return void
-     */
-    protected function assignStudyCourses()
-    {
-        $flexformOptions = $this->getSelectedFlexformOptions();
-
-        $studyCourses = $this->processSearch($flexformOptions);
-
-        $this->view->assignMultiple(
-            [
-                'filters' => $this->filters,
-                'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($studyCourses),
-                'studyCourseCount' => count($studyCourses),
-                'studyCourses' => $studyCourses,
-            ]
-        );
-    }
-
-    /**
      * @param array $options
      * @return string
      */
