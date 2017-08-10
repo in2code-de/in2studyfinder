@@ -176,10 +176,7 @@ class StudyCourseController extends ActionController
         try {
             parent::processRequest($request, $response);
         } catch (Exception $exception) {
-            if ($exception instanceof Exception) {
-                $this->getTypoScriptFrontendController()->pageNotFoundAndExit();
-            }
-            throw $exception;
+            $this->getTypoScriptFrontendController()->pageNotFoundAndExit();
         }
     }
 
