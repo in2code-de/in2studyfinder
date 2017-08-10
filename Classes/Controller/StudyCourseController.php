@@ -103,13 +103,12 @@ class StudyCourseController extends ActionController
     }
 
     /**
-     * action list
-     *
-     * @return void
+     * The list action is nothing else than the filter action but
+     * without any search options (or they are predefined in the FlexForm options)
      */
     public function listAction()
     {
-        $this->assignStudyCourses();
+        $this->filterAction();
     }
 
     /**
@@ -130,20 +129,21 @@ class StudyCourseController extends ActionController
     public function filterAction($searchOptions = [])
     {
         if (!empty($searchOptions)) {
-            $foundStudyCourses = $this->processSearch($searchOptions);
-
-            $this->view->assignMultiple(
-                [
-                    'searchedOptions' => $searchOptions,
-                    'filters' => $this->filters,
-                    'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($foundStudyCourses),
-                    'studyCourseCount' => count($foundStudyCourses),
-                    'studyCourses' => $foundStudyCourses,
-                ]
-            );
+            $this->view->assign('searchedOptions', $searchOptions);
         } else {
-            $this->assignStudyCourses();
+            $searchOptions = $this->getSelectedFlexformOptions();
         }
+
+        $studyCourses = $this->processSearch($searchOptions);
+
+        $this->view->assignMultiple(
+            [
+                'filters' => $this->filters,
+                'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($studyCourses),
+                'studyCourseCount' => count($studyCourses),
+                'studyCourses' => $studyCourses,
+            ]
+        );
     }
 
     /**
@@ -356,7 +356,7 @@ class StudyCourseController extends ActionController
         if (ConfigurationUtility::isCachingEnabled()) {
             $cacheIdentifier = $this->getCacheIdentifierForStudyCourses($mergedOptions);
             $studyCourses = $this->cacheInstance->get($cacheIdentifier);
-            
+
             if (!$studyCourses) {
                 $studyCourses = $this->searchAndSortStudyCourses($mergedOptions);
                 $this->cacheInstance->set($cacheIdentifier, $studyCourses, ['in2studyfinder']);
