@@ -181,28 +181,6 @@ class StudyCourseController extends ActionController
     }
 
     /**
-     * get the defaultQuerySettings for filters
-     *
-     * @return QuerySettingsInterface
-     */
-    protected function getDefaultQuerySettings()
-    {
-        /** @var QuerySettingsInterface $defaultQuerySettings */
-        $defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
-
-        $defaultQuerySettings->setStoragePageIds(
-            [
-                $this->settings['settingsPid'],
-            ]
-        );
-
-        $defaultQuerySettings->setLanguageOverlayMode(true);
-        $defaultQuerySettings->setLanguageMode('strict');
-
-        return $defaultQuerySettings;
-    }
-
-    /**
      * set Filters
      */
     protected function setFilters()
@@ -231,8 +209,13 @@ class StudyCourseController extends ActionController
                         );
 
                         if (class_exists($fullQualifiedRepositoryClassName)) {
+                            $defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
+                            $defaultQuerySettings->setStoragePageIds([$this->settings['settingsPid']]);
+                            $defaultQuerySettings->setLanguageOverlayMode(true);
+                            $defaultQuerySettings->setLanguageMode('strict');
+                            
                             $repository = $this->objectManager->get($fullQualifiedRepositoryClassName);
-                            $repository->setDefaultQuerySettings($this->getDefaultQuerySettings());
+                            $repository->setDefaultQuerySettings($defaultQuerySettings);
 
                             $this->filters[$filterName]['repository'] = $repository;
                             $this->filters[$filterName]['filterOptions'] = $repository->findAll();
