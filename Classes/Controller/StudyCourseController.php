@@ -28,10 +28,8 @@ namespace In2code\In2studyfinder\Controller;
  ***************************************************************/
 
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
-use In2code\In2studyfinder\Domain\Repository\StudyCourseListContextRepository;
 use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 use In2code\In2studyfinder\Utility\ConfigurationUtility;
-use In2code\In2studyfinder\Utility\ExtensionUtility;
 use In2code\In2studyfinder\Utility\FrontendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -61,11 +59,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 class StudyCourseController extends ActionController
 {
     /**
-     * @var StudyCourseListContextRepository
-     */
-    protected $studyCourseListContextRepository = null;
-
-    /**
      * @var array
      */
     protected $filters = [];
@@ -86,14 +79,6 @@ class StudyCourseController extends ActionController
     protected $response = null;
 
     /**
-     * @param StudyCourseListContextRepository $studyListRepo
-     */
-    public function injectStudyCourseListContextRepository(StudyCourseListContextRepository $studyListRepo)
-    {
-        $this->studyCourseListContextRepository = $studyListRepo;
-    }
-
-    /**
      * initialize action
      */
     protected function initializeAction()
@@ -102,14 +87,6 @@ class StudyCourseController extends ActionController
 
         if (ConfigurationUtility::isCachingEnabled()) {
             $this->cacheInstance = GeneralUtility::makeInstance(CacheManager::class)->getCache('in2studyfinder');
-        }
-
-        if (ExtensionUtility::isIn2studycoursesExtendLoaded()) {
-            if (class_exists('\\In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseListContextRepository')) {
-                $this->studyCourseListContextRepository = $this->objectManager->get(
-                    'In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseListContextRepository'
-                );
-            }
         }
 
         if (ConfigurationUtility::isCachingEnabled()) {
@@ -325,26 +302,11 @@ class StudyCourseController extends ActionController
 
             // if no cache entry exists write cache
             if (!$studyCourses) {
-                $studyCourses = $this->getStudyCoursesFromRepository($flexformOptions);
+                $studyCourses = $this->processSearch($flexformOptions);
                 $this->cacheInstance->set($cacheIdentifier, $studyCourses, ['in2studyfinder']);
             }
         } else {
-            $studyCourses = $this->getStudyCoursesFromRepository($flexformOptions);
-        }
-
-        return $studyCourses;
-    }
-
-    /**
-     * @param array $flexformOptions
-     * @return array|QueryResultInterface
-     */
-    protected function getStudyCoursesFromRepository($flexformOptions)
-    {
-        if (!empty($flexformOptions)) {
             $studyCourses = $this->processSearch($flexformOptions);
-        } else {
-            $studyCourses = $this->studyCourseListContextRepository->findAll();
         }
 
         return $studyCourses;
