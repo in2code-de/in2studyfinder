@@ -166,15 +166,13 @@ class StudyCourseController extends ActionController
                 $foundStudyCourses = $this->processSearch($searchOptions);
             }
 
-            $studyCourses = $this->sortStudyCourses($foundStudyCourses);
-
             $this->view->assignMultiple(
                 [
                     'searchedOptions' => $searchOptions,
                     'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($foundStudyCourses),
                     'studyCourseCount' => count($foundStudyCourses),
                     'filters' => $this->filters,
-                    'studyCourses' => $studyCourses,
+                    'studyCourses' => $foundStudyCourses,
                 ]
             );
         } else {
@@ -333,8 +331,6 @@ class StudyCourseController extends ActionController
             $studyCourses = $this->getStudyCoursesFromRepository($flexformOptions);
         }
 
-        $studyCourses = $this->sortStudyCourses($studyCourses->toArray());
-
         return $studyCourses;
     }
 
@@ -429,19 +425,15 @@ class StudyCourseController extends ActionController
             $mergedOptions[$this->filters[$filterName]['propertyPath']] = $searchedOptions;
         }
 
-        return $this->objectManager->get(StudyCourseRepository::class)->findAllFilteredByOptions($mergedOptions);
-    }
-
-    /**
-     * @param array $studyCourses
-     *
-     * @return array
-     */
-    protected function sortStudyCourses($studyCourses)
-    {
+        $studyCourses = $this
+            ->objectManager
+            ->get(StudyCourseRepository::class)
+            ->findAllFilteredByOptions($mergedOptions);
+        
         if ($studyCourses instanceof QueryResultInterface) {
             $studyCourses = $studyCourses->toArray();
         }
+        
         /**
          * sort the Studycourses with usort
          *
