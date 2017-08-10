@@ -48,7 +48,6 @@ class ExtensionUtility extends AbstractUtility
      */
     public static function isIn2studycoursesExtendLoaded()
     {
-
         $isLoaded = false;
 
         if (ExtensionManagementUtility::isLoaded('in2studyfinder_extend')) {
@@ -56,15 +55,5 @@ class ExtensionUtility extends AbstractUtility
         }
 
         return $isLoaded;
-    }
-
-    /**
-     * @param $object
-     * @return string
-     */
-    public static function getClassName($object)
-    {
-        $fullQualifiedClassName = get_class($object);
-        return lcfirst(substr($fullQualifiedClassName, strripos($fullQualifiedClassName, "\\") + 1));
     }
 }
