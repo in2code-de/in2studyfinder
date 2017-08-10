@@ -116,8 +116,14 @@ class StudyCourseController extends ActionController
     public function initializeFilterAction()
     {
         if ($this->request->hasArgument('searchOptions')) {
-            $searchOptions = (array)$this->request->getArgument('searchOptions');
-            $this->request->setArgument('searchOptions', array_filter($searchOptions));
+            $searchOptions = array_filter((array)$this->request->getArgument('searchOptions'));
+            $this->request->setArgument('searchOptions', $searchOptions);
+            if (ConfigurationUtility::isPersistentFilterEnabled()) {
+                $this
+                    ->getTypoScriptFrontendController()
+                    ->fe_user
+                    ->setAndSaveSessionData('tx_in2studycourse_filter', $searchOptions);
+            }
         }
     }
 
@@ -126,16 +132,27 @@ class StudyCourseController extends ActionController
      */
     public function filterAction(array $searchOptions = [])
     {
-        if (!empty($searchOptions)) {
-            $this->view->assign('searchedOptions', $searchOptions);
-        } else {
+        if (empty($searchOptions)) {
             $searchOptions = $this->getSelectedFlexformOptions();
+            if (empty($searchOptions) && ConfigurationUtility::isPersistentFilterEnabled()) {
+                // No search options have been provided and no filter have been predefined in the Plugin's FlexForm
+                // so we assume the user came back to the list page through another direct link.
+                // Do not run this in the initializeFilterAction because it must also be applied for listAction.
+                $searchOptions = $this
+                    ->getTypoScriptFrontendController()
+                    ->fe_user
+                    ->getSessionData('tx_in2studycourse_filter');
+                if (empty($searchOptions)) {
+                    $searchOptions = [];
+                }
+            }
         }
 
         $studyCourses = $this->processSearch($searchOptions);
 
         $this->view->assignMultiple(
             [
+                'searchedOptions' => $searchOptions,
                 'filters' => $this->filters,
                 'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($studyCourses),
                 'studyCourseCount' => count($studyCourses),
