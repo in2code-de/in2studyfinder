@@ -227,7 +227,7 @@ class StudyCourseController extends ActionController
             parent::processRequest($request, $response);
         } catch (Exception $exception) {
             if ($exception instanceof Exception) {
-                $GLOBALS['TSFE']->pageNotFoundAndExit();
+                $this->getTypoScriptFrontendController()->pageNotFoundAndExit();
             }
             throw $exception;
         }
@@ -537,5 +537,14 @@ class StudyCourseController extends ActionController
         }
 
         return $property;
+    }
+
+    /**
+     * @return TypoScriptFrontendController
+     * @SuppressWarnings(PHPMD.Superglobals)
+     */
+    protected function getTypoScriptFrontendController()
+    {
+        return $GLOBALS['TSFE'];
     }
 }
