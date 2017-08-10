@@ -77,7 +77,7 @@ class StudyCourseController extends ActionController
     protected $response = null;
 
     /**
-     * initialize action
+     * Use this instead of __construct, because extbase will inject dependencies *after* construnction of an object
      */
     protected function initializeAction()
     {
@@ -111,7 +111,7 @@ class StudyCourseController extends ActionController
     }
 
     /**
-     * @return void
+     * Strip empty options from incoming (selected) filters
      */
     public function initializeFilterAction()
     {
@@ -123,9 +123,8 @@ class StudyCourseController extends ActionController
 
     /**
      * @param array $searchOptions
-     * @return void
      */
-    public function filterAction($searchOptions = [])
+    public function filterAction(array $searchOptions = [])
     {
         if (!empty($searchOptions)) {
             $this->view->assign('searchedOptions', $searchOptions);
@@ -146,10 +145,7 @@ class StudyCourseController extends ActionController
     }
 
     /**
-     * detail show
-     *
-     * @param StudyCourse $studyCourse
-     * @return void
+     * @param StudyCourse|null $studyCourse
      */
     public function detailAction(StudyCourse $studyCourse = null)
     {
@@ -162,13 +158,35 @@ class StudyCourseController extends ActionController
     }
 
     /**
-     * call page not found if the request throws an exception
-     *
+     * @param array $searchOptions
+     * @return array
+     */
+    protected function processSearch(array $searchOptions)
+    {
+        $mergedOptions = [];
+
+        foreach ($searchOptions as $filterName => $searchedOptions) {
+            $mergedOptions[$this->filters[$filterName]['propertyPath']] = $searchedOptions;
+        }
+
+        if (ConfigurationUtility::isCachingEnabled()) {
+            $cacheIdentifier = $this->getCacheIdentifierForStudyCourses($mergedOptions);
+            $studyCourses = $this->cacheInstance->get($cacheIdentifier);
+
+            if (!$studyCourses) {
+                $studyCourses = $this->searchAndSortStudyCourses($mergedOptions);
+                $this->cacheInstance->set($cacheIdentifier, $studyCourses, ['in2studyfinder']);
+            }
+        } else {
+            $studyCourses = $this->searchAndSortStudyCourses($mergedOptions);
+        }
+
+        return $studyCourses;
+    }
+
+    /**
      * @param RequestInterface $request
      * @param ResponseInterface $response
-     * @throws \Exception|Exception
-     *
-     * @SuppressWarnings(PHPMD.Superglobals)
      */
     public function processRequest(RequestInterface $request, ResponseInterface $response)
     {
@@ -180,17 +198,13 @@ class StudyCourseController extends ActionController
     }
 
     /**
-     * set Filters
+     * Applies all filters set in the Plugin's FlexForm configuration and puts the result in $this->filters
      */
     protected function setFilters()
     {
         foreach ((array)$this->settings['filters'] as $filterName => $filterProperties) {
             if ($filterProperties['type'] && $filterProperties['propertyPath'] && $filterProperties['frontendLabel']) {
-                $frontendLabel = LocalizationUtility::translate(
-                    $filterProperties['frontendLabel'],
-                    'in2studyfinder'
-                );
-
+                $frontendLabel = LocalizationUtility::translate($filterProperties['frontendLabel'], 'in2studyfinder');
                 if ($frontendLabel === null) {
                     $frontendLabel = $filterProperties['frontendLabel'];
                 }
@@ -212,7 +226,7 @@ class StudyCourseController extends ActionController
                             $defaultQuerySettings->setStoragePageIds([$this->settings['settingsPid']]);
                             $defaultQuerySettings->setLanguageOverlayMode(true);
                             $defaultQuerySettings->setLanguageMode('strict');
-                            
+
                             $repository = $this->objectManager->get($fullQualifiedRepositoryClassName);
                             $repository->setDefaultQuerySettings($defaultQuerySettings);
 
@@ -300,33 +314,6 @@ class StudyCourseController extends ActionController
     }
 
     /**
-     * @param $searchOptions
-     * @return array
-     */
-    protected function processSearch($searchOptions)
-    {
-        $mergedOptions = [];
-
-        foreach ($searchOptions as $filterName => $searchedOptions) {
-            $mergedOptions[$this->filters[$filterName]['propertyPath']] = $searchedOptions;
-        }
-
-        if (ConfigurationUtility::isCachingEnabled()) {
-            $cacheIdentifier = $this->getCacheIdentifierForStudyCourses($mergedOptions);
-            $studyCourses = $this->cacheInstance->get($cacheIdentifier);
-
-            if (!$studyCourses) {
-                $studyCourses = $this->searchAndSortStudyCourses($mergedOptions);
-                $this->cacheInstance->set($cacheIdentifier, $studyCourses, ['in2studyfinder']);
-            }
-        } else {
-            $studyCourses = $this->searchAndSortStudyCourses($mergedOptions);
-        }
-
-        return $studyCourses;
-    }
-
-    /**
      * @param array $searchOptions
      * @return array
      */
@@ -344,7 +331,6 @@ class StudyCourseController extends ActionController
     /**
      * @param array $studyCourses
      * @return array
-     * @throws \TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException
      */
     protected function getAvailableFilterOptionsFromQueryResult($studyCourses)
     {
