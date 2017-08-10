@@ -49,6 +49,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Property\Exception;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -456,7 +457,7 @@ class StudyCourseController extends ActionController
         foreach ($this->filters as $filterName => $filter) {
             /** @var $course StudyCourse */
             foreach ($studyCourses as $course) {
-                $property = $this->getPropertyByPropertyPath($course, $filter['propertyPath']);
+                $property = ObjectAccess::getPropertyPath($course, $filter['propertyPath']);
 
                 switch ($filter['type']) {
                     case 'object':
@@ -487,34 +488,6 @@ class StudyCourseController extends ActionController
         }
 
         return $availableOptions;
-    }
-
-    /**
-     * get the property of an object or an sub object by an given path name
-     * e.g academicDegree/graduation
-     *
-     * @param AbstractDomainObject $obj
-     * @param string $propertyPath
-     * @return mixed
-     */
-    protected function getPropertyByPropertyPath(AbstractDomainObject $obj, $propertyPath)
-    {
-        if (strpos($propertyPath, '.')) {
-            $pathSegments = GeneralUtility::trimExplode('.', $propertyPath);
-            $property = null;
-            foreach ($pathSegments as $pathSegment) {
-                if ($property === null) {
-                    $property = $obj->_getProperty($pathSegment);
-                } else {
-                    /** @var AbstractDomainObject $property */
-                    $property = $property->_getProperty($pathSegment);
-                }
-            }
-        } else {
-            $property = $obj->_getProperty($propertyPath);
-        }
-
-        return $property;
     }
 
     /**
