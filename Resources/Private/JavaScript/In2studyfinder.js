@@ -13,8 +13,8 @@
 		/**
 		 * initialize stuff
 		 */
-		this.init = function() {
-			if(dom.length > 0) {
+		this.init = function () {
+			if (dom.length > 0) {
 				var select = new window.In2studyfinder.Select(dom);
 				var filterHandling = new window.In2studyfinder.FilterHandling(dom);
 				var urlHandling = new window.In2studyfinder.UrlHandling(dom);
@@ -26,7 +26,7 @@
 				paginationHandling.init();
 				uiBehaviour.init();
 
-				if (readFilterFromUrl) {
+				if (readFilterFromUrl && document.querySelector('.in2studyfinder__list') !== null) {
 					readFilterFromUrl = false;
 					var paginationPage = urlHandling.loadSelectedOptionsFromUrl();
 					filterHandling.filterChanged(paginationPage);
@@ -44,7 +44,7 @@
 })
 ();
 
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
 	'use strict';
 	var start = new window.In2studyfinder.Start();
 	start.init();
