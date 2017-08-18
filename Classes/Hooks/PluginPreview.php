@@ -78,22 +78,25 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
         array &$row
     ) {
         $this->initialize($row);
-        
-        if (null === $this->settings) {
-            $headerContent = '<b>Please include the in2studyfinder TypoScript Template!</b><br /><br />';
-        } else {
-            switch ($this->row['list_type']) {
-                case 'in2studyfinder_pi1':
-                    $drawItem = false;
-                    $headerContent = '';
-                    $itemContent = $this->getPluginInformation('Pi1');
-                    break;
-                case 'in2studyfinder_pi2':
-                    $drawItem = false;
-                    $headerContent = '';
-                    $itemContent = $this->getPluginInformation('Pi2');
-                    break;
-                default:
+        $listType = $this->row['list_type'];
+
+        if ($this->isStudyfinderListType($listType)) {
+            if (null === $this->settings) {
+                $headerContent = '<b>Please include the in2studyfinder TypoScript Template!</b><br /><br />';
+            } else {
+                switch ($listType) {
+                    case 'in2studyfinder_pi1':
+                        $drawItem = false;
+                        $headerContent = '';
+                        $itemContent = $this->getPluginInformation('Pi1');
+                        break;
+                    case 'in2studyfinder_pi2':
+                        $drawItem = false;
+                        $headerContent = '';
+                        $itemContent = $this->getPluginInformation('Pi2');
+                        break;
+                    default:
+                }
             }
         }
     }
@@ -220,5 +223,15 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
         $this->templatePathAndFile = $this->settings['backend']['pluginPreviewTemplate'];
         $flexFormService = AbstractUtility::getObjectManager()->get(FlexFormService::class);
         $this->flexFormData = $flexFormService->convertFlexFormContentToArray($this->row['pi_flexform']);
+    }
+
+    /**
+     * @param string $listType
+     *
+     * @return boolean
+     */
+    protected function isStudyfinderListType($listType)
+    {
+        return $listType === 'in2studyfinder_pi1' || $listType === 'in2studyfinder_pi2';
     }
 }
