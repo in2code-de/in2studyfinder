@@ -1,4 +1,5 @@
 <?php
+
 namespace In2code\In2studyfinder\Hooks;
 
 /***************************************************************
@@ -82,7 +83,8 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
 
         if ($this->isStudyfinderListType($listType)) {
             if (null === $this->settings) {
-                $headerContent = '<b>Please include the in2studyfinder TypoScript Template!</b><br /><br />';
+                $headerContent = $this->getNoTyposcriptTemplateWarning();
+                //$headerContent = '';
             } else {
                 switch ($listType) {
                     case 'in2studyfinder_pi1':
@@ -233,5 +235,17 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
     protected function isStudyfinderListType($listType)
     {
         return $listType === 'in2studyfinder_pi1' || $listType === 'in2studyfinder_pi2';
+    }
+
+    /**
+     * @return string
+     */
+    protected function getNoTyposcriptTemplateWarning()
+    {
+        return '<div class="callout callout-danger">
+							<h4 class="alert-title">No Typoscript Template!</h4>
+							<div class="callout-body">Please include the in2studyfinder TypoScript Template!</div>
+				</div>
+				';
     }
 }
