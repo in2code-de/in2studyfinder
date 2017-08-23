@@ -29,7 +29,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
         $settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
         $action = 'detail';
         $pageUid = $settings['flexform']['studyCourseDetailPage'];
-
+        
         foreach ($parentOptions as $key => $value) {
             $options[$key]['label'] = $value;
         }
@@ -38,8 +38,9 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
         foreach ($optionsArgument as $value) {
             if ($this->hasArgument('additionalOptionAttributes')) {
                 if ($value instanceof AbstractDomainObject) {
+                    $optionsArrayKey = get_class($value) . ':' . $value->getUid();
                     foreach ($this->arguments['additionalOptionAttributes'] as $attribute => $property) {
-                        $options[$value->getUid()]['additionalAttributes'][$attribute] =
+                        $options[$optionsArrayKey]['additionalAttributes'][$attribute] =
                             \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath(
                                 $value,
                                 $property
@@ -50,7 +51,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
                             ['studyCourse' => $value]
                         );
 
-                        $options[$value->getUid()]['additionalAttributes']['data-url'] = $uri;
+                        $options[$optionsArrayKey]['additionalAttributes']['data-url'] = $uri;
                     }
                 }
             }
