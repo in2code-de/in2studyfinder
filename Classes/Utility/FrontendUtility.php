@@ -8,7 +8,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class FrontendUtility
 {
-
     /**
      * Get current page identifier
      *

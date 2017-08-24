@@ -29,14 +29,14 @@ if (ConfigurationUtility::isEnableGlobalData()) {
                 'endtime' => 'endtime',
             ],
             'searchFields' => 'title,',
-            'iconfile' => $icon
+            'iconfile' => $icon,
         ],
         'interface' => [
             'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, default_preset',
         ],
         'types' => [
             '0' => [
-                'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, default_preset;;1,' . '--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'
+                'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, default_preset;;1, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime',
             ],
         ],
         'palettes' => [
@@ -69,8 +69,8 @@ if (ConfigurationUtility::isEnableGlobalData()) {
                     'default' => 0,
                     'eval' => 'maximumRecordsChecked',
                     'validation' => [
-                        'maximumRecordsChecked' => 1
-                    ]
+                        'maximumRecordsChecked' => 1,
+                    ],
                 ],
             ],
         ],

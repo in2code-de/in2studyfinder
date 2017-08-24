@@ -33,7 +33,6 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class CourseLanguage extends AbstractEntity
 {
-
     /**
      * language
      *
@@ -41,7 +40,7 @@ class CourseLanguage extends AbstractEntity
      * @validate NotEmpty
      */
     protected $language = '';
-    
+
     /**
      * Returns the language
      *
@@ -51,7 +50,7 @@ class CourseLanguage extends AbstractEntity
     {
         return $this->language;
     }
-    
+
     /**
      * Sets the language
      *

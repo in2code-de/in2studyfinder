@@ -33,7 +33,6 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class GlobalData extends AbstractEntity
 {
-
     /**
      * title
      *
@@ -83,5 +82,4 @@ class GlobalData extends AbstractEntity
     {
         $this->defaultPreset = $defaultPreset;
     }
-
 }

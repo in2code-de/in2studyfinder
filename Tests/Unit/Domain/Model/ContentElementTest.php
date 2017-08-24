@@ -1,5 +1,4 @@
 <?php
-
 namespace In2code\In2studyfinder\Tests\Unit\Domain\Model;
 
 /***************************************************************
@@ -36,30 +35,32 @@ namespace In2code\In2studyfinder\Tests\Unit\Domain\Model;
  */
 class ContentElementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
-	/**
-	 * @var \In2code\In2studyfinder\Domain\Model\ContentElement
-	 */
-	protected $subject = NULL;
+    /**
+     * @var \In2code\In2studyfinder\Domain\Model\ContentElement
+     */
+    protected $subject = null;
 
-	public function setUp()
-	{
-		$this->subject = new \In2code\In2studyfinder\Domain\Model\ContentElement();
-	}
+    public function setUp()
+    {
+        $this->subject = new \In2code\In2studyfinder\Domain\Model\ContentElement();
+    }
 
-	public function tearDown()
-	{
-		unset($this->subject);
-	}
+    public function tearDown()
+    {
+        unset($this->subject);
+    }
 
-	/**
-	 * @test
-	 */
-	public function getTtContentUidReturnsInitialValueForInt()
-	{	}
+    /**
+     * @test
+     */
+    public function getTtContentUidReturnsInitialValueForInt()
+    {
+    }
 
-	/**
-	 * @test
-	 */
-	public function setTtContentUidForIntSetsTtContentUid()
-	{	}
+    /**
+     * @test
+     */
+    public function setTtContentUidForIntSetsTtContentUid()
+    {
+    }
 }

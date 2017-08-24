@@ -1,5 +1,4 @@
 <?php
-
 namespace In2code\In2studyfinder\Utility;
 
 /***************************************************************
@@ -38,9 +37,7 @@ class VersionUtility extends AbstractUtility
      */
     public static function getCurrentTypo3MajorVersion()
     {
-
-        $versionArray =
-            VersionNumberUtility::convertVersionStringToArray(VersionNumberUtility::getCurrentTypo3Version());
+        $versionArray = VersionNumberUtility::convertVersionStringToArray(TYPO3_version);
 
         return $versionArray['version_main'];
     }

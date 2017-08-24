@@ -1,5 +1,4 @@
 <?php
-
 namespace In2code\In2studyfinder\Domain\Model;
 
 /***************************************************************
@@ -36,7 +35,6 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  */
 class StudyCourse extends AbstractEntity
 {
-
     /**
      * title
      *

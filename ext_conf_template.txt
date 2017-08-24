@@ -1,6 +1,8 @@
-# cat=basic/enable/010; type=boolean; label= Enable Global Data Fields
+# cat=basic/enable/010; type=boolean; label=Enable Global Data Fields
 enableGlobalData = 0
-# cat=basic/enable/020; type=boolean; label= Enable Typo3 Categorisation for courses
+# cat=basic/enable/020; type=boolean; label=Enable Typo3 Categorisation for courses
 enableCategories = 0
-# cat=basic/enable/030; type=boolean; label= Enable the Caching functionality
+# cat=basic/enable/030; type=boolean; label=Enable the Caching functionality
 enableCaching = 1
+# cat=basic/enable/040; type=boolean; label=Enable saving selected filters in the users's cookie
+enablePersistentFilter = 0

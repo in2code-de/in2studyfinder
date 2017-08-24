@@ -1,5 +1,4 @@
 <?php
-
 namespace In2code\In2studyfinder\Utility;
 
 /***************************************************************
@@ -34,7 +33,6 @@ namespace In2code\In2studyfinder\Utility;
  */
 class ConfigurationUtility extends AbstractUtility
 {
-
     /**
      * Check if feature global data is enabled
      *
@@ -44,7 +42,7 @@ class ConfigurationUtility extends AbstractUtility
     {
         $extensionConfig = AbstractUtility::getExtensionConfiguration();
 
-        return $extensionConfig['enableGlobalData'] === '1';
+        return isset($extensionConfig['enableGlobalData']) && $extensionConfig['enableGlobalData'] === '1';
     }
 
     /**
@@ -56,7 +54,7 @@ class ConfigurationUtility extends AbstractUtility
     {
         $extensionConfig = AbstractUtility::getExtensionConfiguration();
 
-        return $extensionConfig['enableCategories'] === '1';
+        return isset($extensionConfig['enableCategories']) && $extensionConfig['enableCategories'] === '1';
     }
 
     /**
@@ -68,6 +66,18 @@ class ConfigurationUtility extends AbstractUtility
     {
         $extensionConfig = AbstractUtility::getExtensionConfiguration();
 
-        return $extensionConfig['enableCaching'] === '1';
+        return isset($extensionConfig['enableCaching']) && $extensionConfig['enableCaching'] === '1';
+    }
+
+    /**
+     * Check if caching functionality is enabled
+     *
+     * @return bool
+     */
+    public static function isPersistentFilterEnabled()
+    {
+        $extensionConfig = AbstractUtility::getExtensionConfiguration();
+
+        return isset($extensionConfig['enablePersistentFilter']) && $extensionConfig['enablePersistentFilter'] === '1';
     }
 }

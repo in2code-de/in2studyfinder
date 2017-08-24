@@ -1,5 +1,4 @@
 <?php
-
 namespace In2code\In2studyfinder\ViewHelpers;
 
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -7,7 +6,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 class RenderContentElementsViewHelper extends AbstractViewHelper
 {
-
     /**
      * @var ConfigurationManagerInterface
      */

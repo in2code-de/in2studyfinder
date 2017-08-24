@@ -1,4 +1,5 @@
 <?php
+
 namespace In2code\In2studyfinder\Hooks;
 
 /***************************************************************
@@ -40,7 +41,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class PluginPreview implements PageLayoutViewDrawItemHookInterface
 {
-
     /**
      * @var array
      */
@@ -79,19 +79,27 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
         array &$row
     ) {
         $this->initialize($row);
+        $listType = $this->row['list_type'];
 
-        switch ($this->row['list_type']) {
-            case 'in2studyfinder_pi1':
-                $drawItem = false;
-                $headerContent = '';
-                $itemContent = $this->getPluginInformation('Pi1');
-                break;
-            case 'in2studyfinder_pi2':
-                $drawItem = false;
-                $headerContent = '';
-                $itemContent = $this->getPluginInformation('Pi2');
-                break;
-            default:
+        if ($this->isStudyfinderListType($listType)) {
+            if (null === $this->settings) {
+                $headerContent = $this->getNoTyposcriptTemplateWarning();
+                //$headerContent = '';
+            } else {
+                switch ($listType) {
+                    case 'in2studyfinder_pi1':
+                        $drawItem = false;
+                        $headerContent = '';
+                        $itemContent = $this->getPluginInformation('Pi1');
+                        break;
+                    case 'in2studyfinder_pi2':
+                        $drawItem = false;
+                        $headerContent = '';
+                        $itemContent = $this->getPluginInformation('Pi2');
+                        break;
+                    default:
+                }
+            }
         }
     }
 
@@ -131,7 +139,6 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
                     }
                 }
 
-
                 $standaloneView->assignMultiple(
                     [
                         'detailPage' => $detailPageRecord,
@@ -145,10 +152,9 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
                     $this->flexFormData['settings']['flexform']['studyCourseListPage']
                 );
 
-
                 $standaloneView->assignMultiple(
                     [
-                        'listPage' => $listPageRecord
+                        'listPage' => $listPageRecord,
                     ]
                 );
 
@@ -219,5 +225,27 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
         $this->templatePathAndFile = $this->settings['backend']['pluginPreviewTemplate'];
         $flexFormService = AbstractUtility::getObjectManager()->get(FlexFormService::class);
         $this->flexFormData = $flexFormService->convertFlexFormContentToArray($this->row['pi_flexform']);
+    }
+
+    /**
+     * @param string $listType
+     *
+     * @return boolean
+     */
+    protected function isStudyfinderListType($listType)
+    {
+        return $listType === 'in2studyfinder_pi1' || $listType === 'in2studyfinder_pi2';
+    }
+
+    /**
+     * @return string
+     */
+    protected function getNoTyposcriptTemplateWarning()
+    {
+        return '<div class="callout callout-danger">
+							<h4 class="alert-title">No Typoscript Template!</h4>
+							<div class="callout-body">Please include the in2studyfinder TypoScript Template!</div>
+				</div>
+				';
     }
 }

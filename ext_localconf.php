@@ -4,27 +4,18 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
-$extKey = 'in2studyfinder';
-
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'In2code.' . $extKey,
+    'In2code.in2studyfinder',
     'Pi1',
-    [
-        'StudyCourse' => 'list, filter',
-    ], // non-cacheable actions
-    [
-        'StudyCourse' => 'list, filter',
-    ]
+    ['StudyCourse' => 'list, filter'],
+    ['StudyCourse' => 'list, filter']
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'In2code.' . $extKey,
+    'In2code.in2studyfinder',
     'Pi2',
-    [
-        'StudyCourse' => 'detail',
-    ], // non-cacheable actions
-    [//'StudyCourse' => 'detail',
-    ]
+    ['StudyCourse' => 'detail'],
+    []
 );
 
 /*
@@ -49,18 +40,18 @@ if (In2code\In2studyfinder\Utility\ExtensionUtility::isIn2studycoursesExtendLoad
 /**
  * Hook to show PluginInformation under a tt_content element in page module of type powermail
  */
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'][$extKey] =
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['in2studyfinder'] =
     \In2code\In2studyfinder\Hooks\PluginPreview::class;
 
 if (\In2code\In2studyfinder\Utility\ConfigurationUtility::isCachingEnabled()) {
-    if (!is_array($GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey])) {
-        $GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey] = array();
+    if (!is_array($GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations']['in2studyfinder'])) {
+        $GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations']['in2studyfinder'] = array();
     }
-    if (!isset($GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey]['frontend'])) {
-        $GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey]['frontend'] =
+    if (!isset($GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations']['in2studyfinder']['frontend'])) {
+        $GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations']['in2studyfinder']['frontend'] =
             \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class;
     }
-    if (!isset($GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey]['groups'])) {
-        $GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations'][$extKey]['groups'] = array('pages');
+    if (!isset($GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations']['in2studyfinder']['groups'])) {
+        $GLOBALS['TYPO3_CONF_VARS'] ['SYS']['caching']['cacheConfigurations']['in2studyfinder']['groups'] = array('pages');
     }
 }

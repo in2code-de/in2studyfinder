@@ -33,7 +33,6 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class TypeOfStudy extends AbstractEntity
 {
-
     /**
      * type
      *
@@ -41,7 +40,7 @@ class TypeOfStudy extends AbstractEntity
      * @validate NotEmpty
      */
     protected $type = '';
-    
+
     /**
      * Returns the type
      *
@@ -72,5 +71,4 @@ class TypeOfStudy extends AbstractEntity
     {
         return $this->getType();
     }
-
 }

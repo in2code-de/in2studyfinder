@@ -33,7 +33,6 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class Graduation extends AbstractEntity
 {
-
     /**
      * language
      *
@@ -51,7 +50,7 @@ class Graduation extends AbstractEntity
     {
         return $this->title;
     }
-    
+
     /**
      * Sets the language
      *

@@ -1,7 +1,7 @@
 <?php
 namespace In2code\In2studyfinder\Utility\Hook;
 
-use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /***************************************************************
  *
@@ -33,7 +33,6 @@ use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  */
 class WizIcon
 {
-
     /**
      * Path to locallang file (with : as postfix)
      *

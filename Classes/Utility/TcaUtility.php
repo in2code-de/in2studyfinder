@@ -1,5 +1,4 @@
 <?php
-
 namespace In2code\In2studyfinder\Utility;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -52,7 +51,8 @@ class TcaUtility extends AbstractUtility
                     ['', 0],
                 ],
                 'foreign_table' => $table,
-                'foreign_table_where' => 'AND ' . $table . '.pid=###CURRENT_PID### AND ' . $table . '.sys_language_uid IN (-1,0)',
+                'foreign_table_where' => 'AND ' . $table . '.pid=###CURRENT_PID### AND ' . $table
+                                         . '.sys_language_uid IN (-1,0)',
             ],
         ];
     }
@@ -333,7 +333,7 @@ class TcaUtility extends AbstractUtility
             'params' => [
                 'table' => $table,
                 'pid' => $pid,
-                'setValue' => 'prepend'
+                'setValue' => 'prepend',
             ],
             'module' => [
                 'name' => 'wizard_add',
@@ -363,7 +363,7 @@ class TcaUtility extends AbstractUtility
             'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
             'module' => [
                 'name' => 'wizard_edit',
-            ]
+            ],
         ];
 
         if (VersionUtility::isTypo3MajorVersionBelow(7)) {
@@ -396,8 +396,8 @@ class TcaUtility extends AbstractUtility
             'params' => [
                 'blindLinkOptions' => $blindLinkOptions,
                 'allowedExtensions' => $allowedExtensions,
-                'blindLinkFields' => $blindLinkFields
-            ]
+                'blindLinkFields' => $blindLinkFields,
+            ],
         ];
 
         if (VersionUtility::isTypo3MajorVersionBelow(7)) {
@@ -433,16 +433,16 @@ class TcaUtility extends AbstractUtility
             $extbaseType['tx_extbase_type'] = [
                 'exclude' => 1,
                 'l10n_mode' => 'exclude',
-                'label' => 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:' . 'extendedStudycourseLabel',
+                'label' => 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:extendedStudycourseLabel',
                 'config' => [
                     'type' => 'select',
                     'renderType' => 'selectSingle',
                     'items' => [
                         [
                             'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:extendedStudycourse',
-                            $extbaseTypeValue
+                            $extbaseTypeValue,
                         ],
-                        ['LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:defaultStudycourse', '']
+                        ['LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:defaultStudycourse', ''],
                     ],
                     'default' => $extbaseTypeValue,
                     'readOnly' => $readOnly,

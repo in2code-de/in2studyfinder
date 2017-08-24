@@ -1,5 +1,4 @@
 <?php
-
 namespace In2code\In2studyfinder\Utility;
 
 /***************************************************************
@@ -32,14 +31,12 @@ use In2code\In2studyfinder\Domain\Repository\GlobalDataRepository;
 
 class GlobalDataUtility extends AbstractUtility
 {
-
     /**
      * @param GlobalDataRepository
      * @return bool
      */
     public static function existDefaultPreset($globalDataRepository)
     {
-
         if ($globalDataRepository->countDefaultPreset() > 0) {
             $status = true;
         } else {
@@ -53,7 +50,7 @@ class GlobalDataUtility extends AbstractUtility
     }
 
     /**
-     * @param GlobalDataRepository $globalDataRepositoryClass
+     * @param string $globalDataRepositoryClass
      * @return GlobalData|null
      */
     public static function getDefaultPreset($globalDataRepositoryClass = GlobalDataRepository::class)

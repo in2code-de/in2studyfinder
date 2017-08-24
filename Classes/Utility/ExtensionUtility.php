@@ -1,5 +1,4 @@
 <?php
-
 namespace In2code\In2studyfinder\Utility;
 
 /***************************************************************
@@ -32,7 +31,6 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
 class ExtensionUtility extends AbstractUtility
 {
-
     /**
      * @param string $extKey
      * @return mixed
@@ -50,7 +48,6 @@ class ExtensionUtility extends AbstractUtility
      */
     public static function isIn2studycoursesExtendLoaded()
     {
-
         $isLoaded = false;
 
         if (ExtensionManagementUtility::isLoaded('in2studyfinder_extend')) {
@@ -58,15 +55,5 @@ class ExtensionUtility extends AbstractUtility
         }
 
         return $isLoaded;
-    }
-
-    /**
-     * @param $object
-     * @return string
-     */
-    public static function getClassName($object)
-    {
-        $fullQualifiedClassName = get_class($object);
-        return lcfirst(substr($fullQualifiedClassName, strripos($fullQualifiedClassName, "\\") + 1));
     }
 }

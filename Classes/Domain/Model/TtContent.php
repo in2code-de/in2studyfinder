@@ -33,7 +33,6 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class TtContent extends AbstractEntity
 {
-
     /**
      * @var string
      */
@@ -53,84 +52,84 @@ class TtContent extends AbstractEntity
      * @var int
      */
     protected $imageorient = null;
-    
+
     /**
      * @var string
      */
     protected $imagecaption = null;
-    
+
     /**
      * @var int
      */
     protected $imagecols = null;
-    
+
     /**
      * @var int
      */
     protected $imageborder = null;
-    
+
     /**
      * @var string
      */
     protected $media = null;
-    
+
     /**
      * @var string
      */
     protected $layout = null;
-    
+
     /**
      * @var int
      */
     protected $cols = null;
-    
+
     /**
      * @var string
      */
     protected $subheader = null;
-    
+
     /**
      * @var string
      */
     protected $headerLink = null;
-    
+
     /**
      * @var string
      */
     protected $imageLink = null;
-    
+
     /**
      * @var string
      */
     protected $imageZoom = null;
-    
+
     /**
      * @var string
      */
     protected $altText = null;
-    
+
     /**
      * @var string
      */
     protected $titleText = null;
-    
+
     /**
      * @var string
      */
     protected $headerLayout = null;
-    
+
     /**
      * @var string
      */
     protected $listType = null;
-    
+
     /**
      * studycourse
      *
      * @var int
      */
     protected $studycourse = 0;
-    
+
     /**
      * @return string
      */
@@ -138,7 +137,7 @@ class TtContent extends AbstractEntity
     {
         return $this->CType;
     }
-    
+
     /**
      * @param $ctype
      * @return void
@@ -189,7 +188,7 @@ class TtContent extends AbstractEntity
     {
         return $this->imageorient;
     }
-    
+
     /**
      * @param $imageorient
      * @return void
@@ -198,7 +197,7 @@ class TtContent extends AbstractEntity
     {
         $this->imageorient = $imageorient;
     }
-    
+
     /**
      * @return string
      */
@@ -206,7 +205,7 @@ class TtContent extends AbstractEntity
     {
         return $this->imagecaption;
     }
-    
+
     /**
      * @param $imagecaption
      * @return void
@@ -215,7 +214,7 @@ class TtContent extends AbstractEntity
     {
         $this->imagecaption = $imagecaption;
     }
-    
+
     /**
      * @return int
      */
@@ -223,7 +222,7 @@ class TtContent extends AbstractEntity
     {
         return $this->imagecols;
     }
-    
+
     /**
      * @param $imagecols
      * @return void
@@ -232,7 +231,7 @@ class TtContent extends AbstractEntity
     {
         $this->imagecols = $imagecols;
     }
-    
+
     /**
      * @return int
      */
@@ -240,7 +239,7 @@ class TtContent extends AbstractEntity
     {
         return $this->imageborder;
     }
-    
+
     /**
      * @param $imageborder
      * @return void
@@ -249,7 +248,7 @@ class TtContent extends AbstractEntity
     {
         $this->imageborder = $imageborder;
     }
-    
+
     /**
      * @return string
      */
@@ -257,7 +256,7 @@ class TtContent extends AbstractEntity
     {
         return $this->media;
     }
-    
+
     /**
      * @param $media
      * @return void
@@ -266,7 +265,7 @@ class TtContent extends AbstractEntity
     {
         $this->media = $media;
     }
-    
+
     /**
      * @return string
      */
@@ -274,7 +273,7 @@ class TtContent extends AbstractEntity
     {
         return $this->layout;
     }
-    
+
     /**
      * @param $layout
      * @return void
@@ -283,7 +282,7 @@ class TtContent extends AbstractEntity
     {
         $this->layout = $layout;
     }
-    
+
     /**
      * @return int
      */
@@ -291,7 +290,7 @@ class TtContent extends AbstractEntity
     {
         return $this->cols;
     }
-    
+
     /**
      * @param $cols
      * @return void
@@ -300,7 +299,7 @@ class TtContent extends AbstractEntity
     {
         $this->cols = $cols;
     }
-    
+
     /**
      * @return string
      */
@@ -308,7 +307,7 @@ class TtContent extends AbstractEntity
     {
         return $this->subheader;
     }
-    
+
     /**
      * @param $subheader
      * @return void
@@ -317,7 +316,7 @@ class TtContent extends AbstractEntity
     {
         $this->subheader = $subheader;
     }
-    
+
     /**
      * @return string
      */
@@ -325,7 +324,7 @@ class TtContent extends AbstractEntity
     {
         return $this->headerLink;
     }
-    
+
     /**
      * @param $headerLink
      * @return void
@@ -334,7 +333,7 @@ class TtContent extends AbstractEntity
     {
         $this->headerLink = $headerLink;
     }
-    
+
     /**
      * @return string
      */
@@ -342,7 +341,7 @@ class TtContent extends AbstractEntity
     {
         return $this->imageLink;
     }
-    
+
     /**
      * @param $imageLink
      * @return void
@@ -351,7 +350,7 @@ class TtContent extends AbstractEntity
     {
         $this->imageLink = $imageLink;
     }
-    
+
     /**
      * @return string
      */
@@ -359,7 +358,7 @@ class TtContent extends AbstractEntity
     {
         return $this->imageZoom;
     }
-    
+
     /**
      * @param $imageZoom
      * @return void
@@ -368,7 +367,7 @@ class TtContent extends AbstractEntity
     {
         $this->imageZoom = $imageZoom;
     }
-    
+
     /**
      * @return string
      */
@@ -376,7 +375,7 @@ class TtContent extends AbstractEntity
     {
         return $this->altText;
     }
-    
+
     /**
      * @param $altText
      * @return void
@@ -385,7 +384,7 @@ class TtContent extends AbstractEntity
     {
         $this->altText = $altText;
     }
-    
+
     /**
      * @return string
      */
@@ -393,7 +392,7 @@ class TtContent extends AbstractEntity
     {
         return $this->titleText;
     }
-    
+
     /**
      * @param $titleText
      * @return void
@@ -402,7 +401,7 @@ class TtContent extends AbstractEntity
     {
         $this->titleText = $titleText;
     }
-    
+
     /**
      * @return string
      */
@@ -410,7 +409,7 @@ class TtContent extends AbstractEntity
     {
         return $this->headerLayout;
     }
-    
+
     /**
      * @param $headerLayout
      * @return void
@@ -419,7 +418,7 @@ class TtContent extends AbstractEntity
     {
         $this->headerLayout = $headerLayout;
     }
-    
+
     /**
      * @return string
      */
@@ -427,7 +426,7 @@ class TtContent extends AbstractEntity
     {
         return $this->listType;
     }
-    
+
     /**
      * @param $listType
      * @return void
@@ -436,7 +435,7 @@ class TtContent extends AbstractEntity
     {
         $this->listType = $listType;
     }
-    
+
     /**
      * Returns the studycourse
      *
@@ -446,7 +445,7 @@ class TtContent extends AbstractEntity
     {
         return $this->studycourse;
     }
-    
+
     /**
      * Sets the studycourse
      *
@@ -457,5 +456,4 @@ class TtContent extends AbstractEntity
     {
         $this->studycourse = $studycourse;
     }
-
 }
