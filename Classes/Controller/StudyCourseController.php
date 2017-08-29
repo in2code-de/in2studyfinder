@@ -341,7 +341,11 @@ class StudyCourseController extends ActionController
             ->get(StudyCourseRepository::class)
             ->findAllFilteredByOptions($searchOptions)
             ->toArray();
-        usort($studyCourses, array(StudyCourse::class, 'cmpObj'));
+
+        if (array_key_exists(0, $studyCourses)) {
+            usort($studyCourses, array($studyCourses[0], 'cmpObj'));
+        }
+
         return $studyCourses;
     }
 
