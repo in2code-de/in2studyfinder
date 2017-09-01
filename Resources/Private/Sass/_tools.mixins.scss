@@ -1,0 +1,18 @@
+/*------------------------------------*\
+  #TOOLS-MIXINS
+\*------------------------------------*/
+
+/**
+ * The micro clearfix hack (http://nicolasgallagher.com/micro-clearfix-hack/).
+ */
+@mixin in2studyfinder-clearfix {
+  &::before,
+  &::after {
+    display: table;
+    content: ' ';
+  }
+
+  &::after {
+    clear: both;
+  }
+}

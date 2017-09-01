@@ -24,7 +24,7 @@
 				.off('click')
 				.on('click', function() {
 					uiBehaviour.toggleShowFiltersButton();
-					$('.js-in2studyfinder-filter-section').toggleClass('hide');
+					$('.js-in2studyfinder-filter-section').toggleClass('u-in2studyfinder-hide');
 				});
 		};
 
@@ -37,7 +37,7 @@
 					$(this)
 						.toggleClass('opened')
 						.siblings()
-							.toggleClass('hide');
+							.toggleClass('u-in2studyfinder-hide');
 				});
 		};
 
@@ -48,7 +48,7 @@
 				var parent = $(this).parents('.js-in2studyfinder-filter-options');
 
 				if (!parent.hasClass('opened')) {
-					parent.removeClass('hide');
+					parent.removeClass('u-in2studyfinder-hide');
 					filtered = true;
 				}
 			});
@@ -92,7 +92,7 @@
 
 		this.hideFilters = function () {
 			$.each($('.js-in2studyfinder-filter-section'), function () {
-				$(this).addClass('hide');
+				$(this).addClass('u-in2studyfinder-hide');
 			});
 		};
 
@@ -101,12 +101,12 @@
 			var showButton = $('.js-in2studyfinder-filter-button-show');
 			var resetButton = $('.js-in2studyfinder-filter-button-reset');
 
-			if (showButton.hasClass('hide')) {
-				showButton.removeClass('hide');
-				resetButton.addClass('hide');
-			} else if (resetButton.hasClass('hide')) {
-				resetButton.removeClass('hide');
-				showButton.addClass('hide');
+			if (showButton.hasClass('u-in2studyfinder-hide')) {
+				showButton.removeClass('u-in2studyfinder-hide');
+				resetButton.addClass('u-in2studyfinder-hide');
+			} else if (resetButton.hasClass('u-in2studyfinder-hide')) {
+				resetButton.removeClass('u-in2studyfinder-hide');
+				showButton.addClass('u-in2studyfinder-hide');
 			}
 		};
 	}

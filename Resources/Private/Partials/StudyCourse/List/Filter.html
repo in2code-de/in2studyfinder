@@ -7,19 +7,19 @@
 	</button>
 
 	<button type="button"
-	        class="c-in2studyfinder-filter__button c-in2studyfinder-filter__button--reset hide js-in2studyfinder-filter-button-reset">
+	        class="c-in2studyfinder-filter__button c-in2studyfinder-filter__button--reset u-in2studyfinder-hide js-in2studyfinder-filter-button-reset">
 		<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:filter.reset" />
 	</button>
 
 	<f:for each="{filters}" as="filterType" key="filterTypeName">
-		<fieldset class="c-in2studyfinder-filter__section js-in2studyfinder-filter-section hide"
+		<fieldset class="c-in2studyfinder-filter__section js-in2studyfinder-filter-section u-in2studyfinder-hide"
 		          data-filtergroup="{filterTypeName}">
 
 			<legend class="c-in2studyfinder-filter__legend js-in2studyfinder-filter-legend">
 				{filterType.frontendLabel}
 			</legend>
 
-			<div class="c-in2studyfinder-filter__options js-in2studyfinder-filter-options hide">
+			<div class="c-in2studyfinder-filter__options js-in2studyfinder-filter-options u-in2studyfinder-hide">
 				<f:render partial="StudyCourse/List/Filter/CheckboxAll" arguments="{_all}" />
 
 				<f:for each="{filterType.filterOptions}" as="option">
