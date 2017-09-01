@@ -28,11 +28,6 @@
     text-decoration: underline;
   }
 
-  &__filter-section-title {
-    font-weight: bold;
-    border: none;
-  }
-
   &__item-count {
     font-size: 16px;
     font-weight: bold;
@@ -44,15 +39,6 @@
     &:hover {
       background-color: $charcoal;
     }
-  }
-
-  &__filter-header {
-    background-color: $white;
-  }
-
-  &__filter-section {
-    border-style: none;
-    border-bottom: 1px solid $nightrider;
   }
 
   &__letter {

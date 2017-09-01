@@ -1,6 +1,12 @@
+.u-in2studyfinder-hide-if-no-js {
+  .in2studyfinder.no-js & {
+    display: none !important;
+  }
+}
+
 .in2studyfinder {
   .hide {
-    display: none;
+    display: none !important;
   }
 
   //
@@ -19,117 +25,6 @@
       left: 20px;
       right: 25px;
       top: $boxpadding;
-    }
-
-    &--show {
-      &:after {
-        background: url($iconPath + "open-white.png") no-repeat;
-        content: "";
-        display: block;
-        height: 5px;
-        width: 10px;
-        float: right;
-        position: relative;
-        top: 6px;
-        left: 10px;
-      }
-    }
-
-    &--reset {
-      &:after {
-        background: url($iconPath + "closex.png") no-repeat;
-        content: "";
-        display: block;
-        height: 13px;
-        width: 13px;
-        float: right;
-        position: relative;
-        top: 2px;
-        left: 10px;
-      }
-    }
-  }
-
-  &__fast-select {
-    padding: {
-      top: $boxpadding;
-      bottom: $boxpadding;
-    }
-  }
-
-  &__filter {
-    overflow: hidden;
-
-    padding: {
-      bottom: 20px;
-    }
-  }
-
-  &__filter-header {
-    background-color: $white;
-    overflow: hidden;
-  }
-
-  &__filter-section {
-    margin: 0;
-    padding: 15px 15px 15px 15px;
-  }
-
-  &__filter-options {
-    background-color: $gray;
-  }
-
-  &__filter-section-title {
-    cursor: pointer;
-    margin: 0;
-    position: relative;
-    top: 15px;
-    width: 100%;
-
-    padding: {
-      left: 20px;
-    }
-
-    &:before {
-      background: url($iconPath + "open.png") no-repeat;
-      content: "";
-      display: block;
-      height: 5px;
-      width: 10px;
-      position: relative;
-      top: 12px;
-      left: -20px;
-    }
-
-    &.opened:before {
-      background: url($iconPath + "close.png") no-repeat;
-    }
-  }
-
-  &__accordion {
-    margin-top: 15px;
-    -moz-columns: auto 4;
-    -webkit-columns: auto 4;
-    columns: auto 4;
-    -moz-column-gap: 15px;
-    -webkit-column-gap: 15px;
-    column-gap: 15px;
-
-    input {
-      display: none;
-
-      &:checked + .in2studyfinder__checkbox-label {
-        background-image: url($iconPath + "checked.png");
-        background-repeat: no-repeat;
-      }
-
-      &:disabled + .in2studyfinder__checkbox-label {
-        opacity: .5;
-      }
-
-      &:disabled:checked + .in2studyfinder__checkbox-label {
-        opacity: .5;
-      }
     }
   }
 
