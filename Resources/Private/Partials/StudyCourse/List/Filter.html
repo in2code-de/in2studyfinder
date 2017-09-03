@@ -11,29 +11,31 @@
 		<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:filter.reset" />
 	</button>
 
-	<f:for each="{filters}" as="filterType" key="filterTypeName">
-		<fieldset class="c-in2studyfinder-filter__section js-in2studyfinder-filter-section u-in2studyfinder-hide"
-		          data-filtergroup="{filterTypeName}">
+	<div class="c-in2studyfinder-filter__sections">
+		<f:for each="{filters}" as="filterType" key="filterTypeName">
+			<fieldset class="c-in2studyfinder-filter__section js-in2studyfinder-filter-section u-in2studyfinder-hide"
+			          data-filtergroup="{filterTypeName}">
 
-			<legend class="c-in2studyfinder-filter__legend js-in2studyfinder-filter-legend">
-				{filterType.frontendLabel}
-			</legend>
+				<legend class="c-in2studyfinder-filter__legend js-in2studyfinder-filter-legend">
+					{filterType.frontendLabel}
+				</legend>
 
-			<div class="c-in2studyfinder-filter__options js-in2studyfinder-filter-options u-in2studyfinder-hide">
-				<f:render partial="StudyCourse/List/Filter/CheckboxAll" arguments="{_all}" />
+				<div class="c-in2studyfinder-filter__options js-in2studyfinder-filter-options u-in2studyfinder-hide">
+					<f:render partial="StudyCourse/List/Filter/CheckboxAll" arguments="{_all}" />
 
-				<f:for each="{filterType.filterOptions}" as="option">
-					<f:switch expression="{filterType.type}">
-						<f:case value="object">
-							<f:render partial="StudyCourse/List/Filter/TypeObject" arguments="{_all}" />
-						</f:case>
-						<f:case value="boolean">
-							<f:render partial="StudyCourse/List/Filter/TypeBoolean" arguments="{_all}" />
-						</f:case>
-						<f:case default="TRUE">Not supported filter</f:case>
-					</f:switch>
-				</f:for>
-			</div>
-		</fieldset>
-	</f:for>
+					<f:for each="{filterType.filterOptions}" as="option">
+						<f:switch expression="{filterType.type}">
+							<f:case value="object">
+								<f:render partial="StudyCourse/List/Filter/TypeObject" arguments="{_all}" />
+							</f:case>
+							<f:case value="boolean">
+								<f:render partial="StudyCourse/List/Filter/TypeBoolean" arguments="{_all}" />
+							</f:case>
+							<f:case default="TRUE">Not supported filter</f:case>
+						</f:switch>
+					</f:for>
+				</div>
+			</fieldset>
+		</f:for>
+	</div>
 </f:form>
