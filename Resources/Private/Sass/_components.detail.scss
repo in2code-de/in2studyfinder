@@ -1,0 +1,48 @@
+/*------------------------------------*\
+  #COMPONENTS-DETAIL
+\*------------------------------------*/
+
+.in2studyfinder {
+  &__detail {
+    p {
+      margin-bottom: 1em;
+    }
+  }
+
+  &__column {
+    float: left;
+
+    &--half {
+      width: 47.8%;
+
+      &:last-child {
+        margin-left: 4.4%;
+      }
+    }
+  }
+
+  &__content-box {
+    margin-bottom: 40px;
+  }
+
+  &__content-box-content {
+    @include in2studyfinder-clearfix();
+
+    margin: 12px 12px 24px 12px;
+  }
+
+  &__content-box-head {
+    background-color: $color-balihai;
+    padding: 6px 0 4px 4px;
+
+    h3 {
+      color: $color-white;
+      font: {
+        size: 1.2em;
+        weight: normal;
+      };
+      letter-spacing: 0.05em;
+      margin: 4px;
+    }
+  }
+}

@@ -40,7 +40,7 @@ plugin.tx_in2studyfinder {
 
 		css {
 			# cat=plugin.tx_in2studyfinder//a; type=text; label= Css Source from In2studyfinder
-			in2studyfinderCss = EXT:in2studyfinder/Resources/Public/Css/basic.css
+			in2studyfinderCss = EXT:in2studyfinder/Resources/Public/Css/style.css
 		}
 
 		backend {

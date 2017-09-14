@@ -28,24 +28,28 @@ namespace In2code\In2studyfinder\Controller;
  ***************************************************************/
 
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
-use In2code\In2studyfinder\Domain\Repository\StudyCourseListContextRepository;
+use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use In2code\In2studyfinder\Utility\FrontendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
-use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
-use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
+use TYPO3\CMS\Extbase\Mvc\Web\Response;
+use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Property\Exception;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * StudyCourseController
@@ -55,62 +59,42 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 class StudyCourseController extends ActionController
 {
     /**
-     * @var \In2code\In2studyfinder\Domain\Repository\StudyCourseListContextRepository
-     */
-    protected $studyCourseListContextRepository = null;
-
-    /**
      * @var array
      */
     protected $filters = [];
 
     /**
-     * cacheUtility
-     *
-     * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+     * @var FrontendInterface
      */
-    protected $cacheInstance;
+    protected $cacheInstance = null;
 
     /**
-     * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+     * @var Logger
      */
-    protected $cObj;
+    protected $logger = null;
 
     /**
-     * @var \TYPO3\CMS\Core\Log\Logger
+     * @var Response
      */
-    protected $logger;
+    protected $response = null;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Mvc\Web\Response
+     * @var StudyCourseRepository
      */
-    protected $response;
+    protected $studyCourseRepository = null;
 
     /**
-     * initialize action
+     * Use this instead of __construct, because extbase will inject dependencies *after* construnction of an object
      */
     protected function initializeAction()
     {
+        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(static::class);
+        $this->studyCourseRepository = $this->setStudyCourseRepository();
+
         if (ConfigurationUtility::isCachingEnabled()) {
             $this->cacheInstance = GeneralUtility::makeInstance(CacheManager::class)->getCache('in2studyfinder');
-            $this->cObj = $this->configurationManager->getContentObject();
         }
 
-        if (ExtensionUtility::isIn2studycoursesExtendLoaded()) {
-            if (class_exists('\\In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseListContextRepository')) {
-                $this->studyCourseListContextRepository = $this->objectManager->get(
-                    'In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseListContextRepository'
-                );
-            } else {
-                $this->studyCourseListContextRepository = $this->objectManager->get(
-                    'In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository'
-                );
-            }
-        }
-
-        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-
-        // cache $this->filters
         if (ConfigurationUtility::isCachingEnabled()) {
             $cacheIdentifier = $this->getCacheIdentifierForStudyCourses($this->settings['filters']);
 
@@ -126,80 +110,67 @@ class StudyCourseController extends ActionController
     }
 
     /**
-     * Inject Study Course List Context Repository
-     *
-     * @param StudyCourseListContextRepository $studyCourseListContextRepository
-     */
-    public function injectStudyCourseListContextRepository(
-        StudyCourseListContextRepository $studyCourseListContextRepository
-    ) {
-        $this->studyCourseListContextRepository = $studyCourseListContextRepository;
-    }
-
-    /**
-     * action list
-     *
-     * @return void
+     * The list action is nothing else than the filter action but
+     * without any search options (or they are predefined in the FlexForm options)
      */
     public function listAction()
     {
-        $this->assignStudyCourses();
+        $this->filterAction();
     }
 
     /**
-     * @return void
+     * Strip empty options from incoming (selected) filters
      */
     public function initializeFilterAction()
     {
         if ($this->request->hasArgument('searchOptions')) {
-            // filter empty options
-            $sanitizedSearchOptions = array_filter((array)$this->request->getArgument('searchOptions'));
-
-            $this->request->setArgument('searchOptions', $sanitizedSearchOptions);
+            $searchOptions = array_filter((array)$this->request->getArgument('searchOptions'));
+            $this->request->setArgument('searchOptions', $searchOptions);
+            if (ConfigurationUtility::isPersistentFilterEnabled()) {
+                $this
+                    ->getTypoScriptFrontendController()
+                    ->fe_user
+                    ->setAndSaveSessionData('tx_in2studycourse_filter', $searchOptions);
+            }
         }
     }
 
     /**
      * @param array $searchOptions
-     * @return void
      */
-    public function filterAction($searchOptions = [])
+    public function filterAction(array $searchOptions = [])
     {
-        if (!empty($searchOptions)) {
-            if (ConfigurationUtility::isCachingEnabled()) {
-                $cacheIdentifier = $this->getCacheIdentifierForStudyCourses($searchOptions);
-
-                $foundStudyCourses = $this->cacheInstance->get($cacheIdentifier);
-
-                if (!$foundStudyCourses) {
-                    $foundStudyCourses = $this->processSearch($searchOptions);
-                    $this->cacheInstance->set($cacheIdentifier, $foundStudyCourses, ['in2studyfinder']);
+        if (empty($searchOptions)) {
+            $searchOptions = $this->getSelectedFlexformOptions();
+            if (empty($searchOptions) && ConfigurationUtility::isPersistentFilterEnabled()) {
+                // No search options have been provided and no filter have been predefined in the Plugin's FlexForm
+                // so we assume the user came back to the list page through another direct link.
+                // Do not run this in the initializeFilterAction because it must also be applied for listAction.
+                $searchOptions = $this
+                    ->getTypoScriptFrontendController()
+                    ->fe_user
+                    ->getSessionData('tx_in2studycourse_filter');
+                if (empty($searchOptions)) {
+                    $searchOptions = [];
                 }
-            } else {
-                $foundStudyCourses = $this->processSearch($searchOptions);
             }
-
-            $studyCourses = $this->sortStudyCourses($foundStudyCourses);
-
-            $this->view->assignMultiple(
-                [
-                    'searchedOptions' => $searchOptions,
-                    'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($foundStudyCourses),
-                    'studyCourseCount' => count($foundStudyCourses),
-                    'filters' => $this->filters,
-                    'studyCourses' => $studyCourses,
-                ]
-            );
-        } else {
-            $this->assignStudyCourses();
         }
+
+        $studyCourses = $this->processSearch($searchOptions);
+
+        $this->view->assignMultiple(
+            [
+                'searchedOptions' => $searchOptions,
+                'filters' => $this->filters,
+                'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($studyCourses),
+                'studyCourseCount' => count($studyCourses),
+                'studyCourses' => $studyCourses,
+            ]
+        );
     }
 
     /**
-     * detail show
-     *
-     * @param StudyCourse $studyCourse
-     * @return void
+     * @param StudyCourse|null $studyCourse
      */
     public function detailAction(StudyCourse $studyCourse = null)
     {
@@ -212,60 +183,53 @@ class StudyCourseController extends ActionController
     }
 
     /**
-     * call page not found if the request throws an exception
-     *
+     * @param array $searchOptions
+     * @return array
+     */
+    protected function processSearch(array $searchOptions)
+    {
+        $mergedOptions = [];
+
+        foreach ($searchOptions as $filterName => $searchedOptions) {
+            $mergedOptions[$this->filters[$filterName]['propertyPath']] = $searchedOptions;
+        }
+
+        if (ConfigurationUtility::isCachingEnabled()) {
+            $cacheIdentifier = $this->getCacheIdentifierForStudyCourses($mergedOptions);
+            $studyCourses = $this->cacheInstance->get($cacheIdentifier);
+
+            if (!$studyCourses) {
+                $studyCourses = $this->searchAndSortStudyCourses($mergedOptions);
+                $this->cacheInstance->set($cacheIdentifier, $studyCourses, ['in2studyfinder']);
+            }
+        } else {
+            $studyCourses = $this->searchAndSortStudyCourses($mergedOptions);
+        }
+
+        return $studyCourses;
+    }
+
+    /**
      * @param RequestInterface $request
      * @param ResponseInterface $response
-     * @throws \Exception|Exception
-     *
-     * @SuppressWarnings(PHPMD.Superglobals)
      */
     public function processRequest(RequestInterface $request, ResponseInterface $response)
     {
         try {
             parent::processRequest($request, $response);
         } catch (Exception $exception) {
-            if ($exception instanceof Exception) {
-                $GLOBALS['TSFE']->pageNotFoundAndExit();
-            }
-            throw $exception;
+            $this->getTypoScriptFrontendController()->pageNotFoundAndExit();
         }
     }
 
     /**
-     * get the defaultQuerySettings for filters
-     *
-     * @return QuerySettingsInterface
-     */
-    protected function getDefaultQuerySettings()
-    {
-        /** @var QuerySettingsInterface $defaultQuerySettings */
-        $defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
-
-        $defaultQuerySettings->setStoragePageIds(
-            [
-                $this->settings['settingsPid']
-            ]
-        );
-
-        $defaultQuerySettings->setLanguageOverlayMode(true);
-        $defaultQuerySettings->setLanguageMode('strict');
-
-        return $defaultQuerySettings;
-    }
-
-    /**
-     * set Filters
+     * Applies all filters set in the Plugin's FlexForm configuration and puts the result in $this->filters
      */
     protected function setFilters()
     {
-        foreach ($this->settings['filters'] as $filterName => $filterProperties) {
+        foreach ((array)$this->settings['filters'] as $filterName => $filterProperties) {
             if ($filterProperties['type'] && $filterProperties['propertyPath'] && $filterProperties['frontendLabel']) {
-                $frontendLabel = LocalizationUtility::translate(
-                    $filterProperties['frontendLabel'],
-                    'in2studyfinder'
-                );
-
+                $frontendLabel = LocalizationUtility::translate($filterProperties['frontendLabel'], 'in2studyfinder');
                 if ($frontendLabel === null) {
                     $frontendLabel = $filterProperties['frontendLabel'];
                 }
@@ -273,7 +237,7 @@ class StudyCourseController extends ActionController
                 $this->filters[$filterName] = [
                     'type' => $filterProperties['type'],
                     'propertyPath' => $filterProperties['propertyPath'],
-                    'frontendLabel' => $frontendLabel
+                    'frontendLabel' => $frontendLabel,
                 ];
 
                 switch ($filterProperties['type']) {
@@ -283,8 +247,13 @@ class StudyCourseController extends ActionController
                         );
 
                         if (class_exists($fullQualifiedRepositoryClassName)) {
+                            $defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
+                            $defaultQuerySettings->setStoragePageIds([$this->settings['settingsPid']]);
+                            $defaultQuerySettings->setLanguageOverlayMode(true);
+                            $defaultQuerySettings->setLanguageMode('strict');
+
                             $repository = $this->objectManager->get($fullQualifiedRepositoryClassName);
-                            $repository->setDefaultQuerySettings($this->getDefaultQuerySettings());
+                            $repository->setDefaultQuerySettings($defaultQuerySettings);
 
                             $this->filters[$filterName]['repository'] = $repository;
                             $this->filters[$filterName]['filterOptions'] = $repository->findAll();
@@ -307,87 +276,25 @@ class StudyCourseController extends ActionController
     }
 
     /**
-     * assign StudyCourses to the view
-     *
-     * @return void
-     */
-    protected function assignStudyCourses()
-    {
-        $studyCourses = $this->getStudyCourses();
-
-        $this->view->assignMultiple(
-            [
-                'filters' => $this->filters,
-                'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($studyCourses),
-                'studyCourseCount' => count($studyCourses),
-                'studyCourses' => $studyCourses,
-            ]
-        );
-    }
-
-    /**
-     * @return array
-     */
-    protected function getStudyCourses()
-    {
-        $flexformOptions = $this->getSelectedFlexformOptions();
-
-        if (ConfigurationUtility::isCachingEnabled()) {
-            $cacheIdentifier = $this->getCacheIdentifierForStudyCourses($flexformOptions);
-
-            $studyCourses = $this->cacheInstance->get($cacheIdentifier);
-
-            // if no cache entry exists write cache
-            if (!$studyCourses) {
-                $studyCourses = $this->getStudyCoursesFromRepository($flexformOptions);
-                $this->cacheInstance->set($cacheIdentifier, $studyCourses, ['in2studyfinder']);
-            }
-        } else {
-            $studyCourses = $this->getStudyCoursesFromRepository($flexformOptions);
-        }
-
-
-        $studyCourses = $this->sortStudyCourses($studyCourses->toArray());
-
-        return $studyCourses;
-    }
-
-    /**
-     * @param array $flexformOptions
-     * @return array|QueryResultInterface
-     */
-    protected function getStudyCoursesFromRepository($flexformOptions)
-    {
-        if (!empty($flexformOptions)) {
-            $studyCourses = $this->processSearch($flexformOptions);
-        } else {
-            $studyCourses = $this->studyCourseListContextRepository->findAll();
-        }
-
-        return $studyCourses;
-    }
-
-    /**
      * @param array $options
      * @return string
      */
     protected function getCacheIdentifierForStudyCourses($options)
     {
         // create cache Identifier
-        if (!empty($options)) {
-            $cacheIdentifier = md5(
-                FrontendUtility::getCurrentPageIdentifier(
-                ) . '-' . $this->cObj->data['uid'] . '-' . FrontendUtility::getCurrentSysLanguageUid(
-                ) . '-' . json_encode($options)
-            );
+        if (empty($options)) {
+            $optionsIdentifier = 'allStudyCourses';
         } else {
-            $cacheIdentifier = md5(
-                FrontendUtility::getCurrentPageIdentifier() . '-' . FrontendUtility::getCurrentSysLanguageUid(
-                ) . '-' . 'allStudyCourses'
-            );
+            $optionsIdentifier = json_encode($options);
         }
 
-        return $cacheIdentifier;
+        return md5(
+            FrontendUtility::getCurrentPageIdentifier()
+            . '-'
+            . FrontendUtility::getCurrentSysLanguageUid()
+            . '-'
+            . $optionsIdentifier
+        );
     }
 
     /**
@@ -432,30 +339,19 @@ class StudyCourseController extends ActionController
     }
 
     /**
-     * @param $searchOptions
+     * @param array $searchOptions
      * @return array
      */
-    protected function processSearch($searchOptions)
+    protected function searchAndSortStudyCourses(array $searchOptions)
     {
-        $mergedOptions = [];
+        $studyCourses = $this
+            ->getStudyCourseRepository()
+            ->findAllFilteredByOptions($searchOptions)
+            ->toArray();
 
-        // merge filter options to searchedOptions
-        foreach ($searchOptions as $filterName => $searchedOptions) {
-            $mergedOptions[$this->filters[$filterName]['propertyPath']] = $searchOptions[$filterName];
+        if (array_key_exists(0, $studyCourses)) {
+            usort($studyCourses, array($studyCourses[0], 'cmpObj'));
         }
-
-        return $this->studyCourseListContextRepository->findAllFilteredByOptions($mergedOptions)->toArray();
-    }
-
-    /**
-     * @param array $studyCourses
-     *
-     * @return array
-     */
-    protected function sortStudyCourses($studyCourses)
-    {
-        /* sort the Studycourses with usort see: Domain/Model/StudyCourse:cmpObj */
-        usort($studyCourses, array(StudyCourse::class, "cmpObj"));
 
         return $studyCourses;
     }
@@ -463,16 +359,15 @@ class StudyCourseController extends ActionController
     /**
      * @param array $studyCourses
      * @return array
-     * @throws \TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException
      */
     protected function getAvailableFilterOptionsFromQueryResult($studyCourses)
     {
         $availableOptions = [];
 
         foreach ($this->filters as $filterName => $filter) {
-            /** @var $course StudyCourse */
-            foreach ($studyCourses as $course) {
-                $property = $this->getPropertyByPropertyPath($course, $filter['propertyPath']);
+            /** @var $studyCourse StudyCourse */
+            foreach ($studyCourses as $studyCourse) {
+                $property = ObjectAccess::getPropertyPath($studyCourse, $filter['propertyPath']);
 
                 switch ($filter['type']) {
                     case 'object':
@@ -480,12 +375,8 @@ class StudyCourseController extends ActionController
                             foreach ($property as $obj) {
                                 $availableOptions[$filterName][$obj->getUid()] = $obj->getUid();
                             }
-                        } else {
-                            if ($property instanceof AbstractDomainObject) {
-                                $availableOptions[$filterName][$property->getUid()] = $property->getUid();
-                            } else {
-                                // Throw not Supported Object
-                            }
+                        } elseif ($property instanceof AbstractDomainObject) {
+                            $availableOptions[$filterName][$property->getUid()] = $property->getUid();
                         }
                         break;
                     case 'boolean':
@@ -496,7 +387,6 @@ class StudyCourseController extends ActionController
                         }
                         break;
                     default:
-                        // Throw not Supported Filter Type
                         break;
                 }
             }
@@ -506,30 +396,36 @@ class StudyCourseController extends ActionController
     }
 
     /**
-     * get the property of an object or an sub object by an given path name
-     * e.g academicDegree/graduation
-     *
-     * @param AbstractDomainObject $obj
-     * @param string $propertyPath
-     * @return mixed
+     * @return TypoScriptFrontendController
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
-    protected function getPropertyByPropertyPath(AbstractDomainObject $obj, $propertyPath)
+    protected function getTypoScriptFrontendController()
     {
-        if (strpos($propertyPath, '.')) {
-            $pathSegments = GeneralUtility::trimExplode('.', $propertyPath);
-            $property = null;
-            foreach ($pathSegments as $pathSegment) {
-                if ($property === null) {
-                    $property = $obj->_getProperty($pathSegment);
-                } else {
-                    /** @var AbstractDomainObject $property */
-                    $property = $property->_getProperty($pathSegment);
-                }
-            }
-        } else {
-            $property = $obj->_getProperty($propertyPath);
-        }
+        return $GLOBALS['TSFE'];
+    }
 
-        return $property;
+    /**
+     * set the studyCourseRepository
+     */
+    protected function setStudyCourseRepository()
+    {
+        $extendedRepositoryName = '\\In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository';
+
+        if (ExtensionUtility::isIn2studycoursesExtendLoaded()
+            && class_exists($extendedRepositoryName)) {
+            return $this->objectManager->get($extendedRepositoryName);
+        } else {
+            return $this->objectManager->get(StudyCourseRepository::class);
+        }
+    }
+
+    /**
+     * get the studyCourseRepository
+     *
+     * @return StudyCourseRepository|object
+     */
+    protected function getStudyCourseRepository()
+    {
+        return $this->studyCourseRepository;
     }
 }

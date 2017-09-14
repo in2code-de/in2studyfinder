@@ -33,7 +33,6 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class StartOfStudy extends AbstractEntity
 {
-
     /**
      * title
      *
@@ -41,14 +40,14 @@ class StartOfStudy extends AbstractEntity
      * @validate NotEmpty
      */
     protected $title = '';
-    
+
     /**
      * startDate
      *
      * @var string
      */
     protected $startDate = '';
-    
+
     /**
      * Returns the title
      *
@@ -58,7 +57,7 @@ class StartOfStudy extends AbstractEntity
     {
         return $this->title;
     }
-    
+
     /**
      * Sets the title
      *
@@ -69,7 +68,7 @@ class StartOfStudy extends AbstractEntity
     {
         $this->title = $title;
     }
-    
+
     /**
      * Returns the startDate
      *
@@ -79,7 +78,7 @@ class StartOfStudy extends AbstractEntity
     {
         return $this->startDate;
     }
-    
+
     /**
      * Sets the startDate
      *
@@ -100,5 +99,4 @@ class StartOfStudy extends AbstractEntity
     {
         return $this->getTitle();
     }
-
 }

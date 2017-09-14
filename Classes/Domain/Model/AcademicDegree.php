@@ -33,7 +33,6 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class AcademicDegree extends AbstractEntity
 {
-
     /**
      * degree
      *
@@ -75,7 +74,7 @@ class AcademicDegree extends AbstractEntity
     {
         return $this->degree;
     }
-    
+
     /**
      * Sets the degree
      *

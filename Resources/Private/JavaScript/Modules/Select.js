@@ -3,7 +3,7 @@
 
 	function Select(dom) {
 
-		var select = $('.in2studyfinder-js-fast-select');
+		var select = $('.js-in2studyfinder-select2');
 
 		/**
 		 * Init Select2

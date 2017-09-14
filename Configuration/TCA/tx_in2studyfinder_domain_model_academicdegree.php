@@ -1,4 +1,5 @@
 <?php
+
 use In2code\In2studyfinder\Utility\TcaUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
@@ -26,15 +27,14 @@ return [
             'endtime' => 'endtime',
         ],
         'searchFields' => 'degree,',
-        'iconfile' => $icon
+        'iconfile' => $icon,
     ],
     'interface' => [
         'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, degree, graduation',
     ],
     'types' => [
         '0' => [
-            'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, degree, graduation, ' .
-            '--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'
+            'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, degree, graduation, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime',
         ],
     ],
     'palettes' => [
@@ -70,6 +70,6 @@ return [
                 'minitems' => 1,
                 'maxitems' => 1,
             ],
-        ]
+        ],
     ],
 ];

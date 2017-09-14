@@ -33,7 +33,6 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class Department extends AbstractEntity
 {
-
     /**
      * title
      *
@@ -41,7 +40,7 @@ class Department extends AbstractEntity
      * @validate NotEmpty
      */
     protected $title = '';
-    
+
     /**
      * Returns the title
      *
@@ -51,7 +50,7 @@ class Department extends AbstractEntity
     {
         return $this->title;
     }
-    
+
     /**
      * Sets the title
      *

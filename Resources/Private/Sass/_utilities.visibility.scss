@@ -1,0 +1,13 @@
+/*------------------------------------*\
+  #UTILITIES-VISIBILITY
+\*------------------------------------*/
+
+.u-in2studyfinder-hide {
+  display: none !important;
+}
+
+.u-in2studyfinder-hide-if-no-js {
+  .in2studyfinder.no-js & {
+    display: none !important;
+  }
+}

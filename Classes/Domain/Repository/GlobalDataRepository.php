@@ -1,5 +1,4 @@
 <?php
-
 namespace In2code\In2studyfinder\Domain\Repository;
 
 /***************************************************************
@@ -28,9 +27,7 @@ namespace In2code\In2studyfinder\Domain\Repository;
  ***************************************************************/
 
 use In2code\In2studyfinder\Domain\Model\GlobalData;
-use TYPO3\CMS\Core\Log\Logger;
-use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 /**
  * The repository for StudyCourses
@@ -38,19 +35,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class GlobalDataRepository extends AbstractRepository
 {
     /**
-     * @return GlobalData|null
+     * @return GlobalData|null|object
      */
     public function findDefaultPreset()
     {
-        $query = $this->createQuery();
-
-        $query->getQuerySettings()->setRespectStoragePage(false);
-
-        return $query->matching(
-            $query->logicalAnd(
-                $query->equals('default_preset', true),
-                $query->equals('deleted', 0)
-            ))->execute()->getFirst();
+        return $this->getDefaultQuery()->execute()->getFirst();
     }
 
     /**
@@ -58,14 +47,24 @@ class GlobalDataRepository extends AbstractRepository
      */
     public function countDefaultPreset()
     {
+        return $this->getDefaultQuery()->execute()->count();
+    }
+
+    /**
+     * @return QueryInterface
+     */
+    protected function getDefaultQuery()
+    {
         $query = $this->createQuery();
-
         $query->getQuerySettings()->setRespectStoragePage(false);
-
-        return $query->matching(
+        $query->matching(
             $query->logicalAnd(
-                $query->equals('default_preset', true),
-                $query->equals('deleted', 0)
-            ))->execute()->count();
+                array(
+                    $query->equals('default_preset', true),
+                    $query->equals('deleted', 0),
+                )
+            )
+        );
+        return $query;
     }
 }

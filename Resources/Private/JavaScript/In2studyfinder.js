@@ -13,25 +13,24 @@
 		/**
 		 * initialize stuff
 		 */
-		this.init = function() {
-			if(dom.length > 0) {
+		this.init = function () {
+			if (dom.length > 0) {
 				var select = new window.In2studyfinder.Select(dom);
 				var filterHandling = new window.In2studyfinder.FilterHandling(dom);
 				var urlHandling = new window.In2studyfinder.UrlHandling(dom);
 				var uiBehaviour = new window.In2studyfinder.UiBehaviour(dom);
 				var paginationHandling = new window.In2studyfinder.PaginationHandling(dom);
 
+				dom.removeClass('no-js').addClass('js');
 				select.initializeSelect();
 				filterHandling.init();
 				paginationHandling.init();
 				uiBehaviour.init();
 
-				if (readFilterFromUrl) {
+				if (readFilterFromUrl && document.querySelector('.in2studyfinder__list') !== null) {
 					readFilterFromUrl = false;
-					if (window.location.hash) {
-						var paginationPage = urlHandling.loadSelectedOptionsFromUrl();
-						filterHandling.filterChanged(paginationPage);
-					}
+					var paginationPage = urlHandling.loadSelectedOptionsFromUrl();
+					filterHandling.filterChanged(paginationPage);
 				}
 			}
 		};
@@ -46,7 +45,7 @@
 })
 ();
 
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
 	'use strict';
 	var start = new window.In2studyfinder.Start();
 	start.init();
