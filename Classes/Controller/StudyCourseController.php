@@ -1,4 +1,5 @@
 <?php
+
 namespace In2code\In2studyfinder\Controller;
 
 /***************************************************************
@@ -29,6 +30,7 @@ namespace In2code\In2studyfinder\Controller;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 use In2code\In2studyfinder\Utility\ConfigurationUtility;
+use In2code\In2studyfinder\Utility\ExtensionUtility;
 use In2code\In2studyfinder\Utility\FrontendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -77,11 +79,17 @@ class StudyCourseController extends ActionController
     protected $response = null;
 
     /**
+     * @var StudyCourseRepository
+     */
+    protected $studyCourseRepository = null;
+
+    /**
      * Use this instead of __construct, because extbase will inject dependencies *after* construnction of an object
      */
     protected function initializeAction()
     {
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(static::class);
+        $this->studyCourseRepository = $this->setStudyCourseRepository();
 
         if (ConfigurationUtility::isCachingEnabled()) {
             $this->cacheInstance = GeneralUtility::makeInstance(CacheManager::class)->getCache('in2studyfinder');
@@ -337,8 +345,7 @@ class StudyCourseController extends ActionController
     protected function searchAndSortStudyCourses(array $searchOptions)
     {
         $studyCourses = $this
-            ->objectManager
-            ->get(StudyCourseRepository::class)
+            ->getStudyCourseRepository()
             ->findAllFilteredByOptions($searchOptions)
             ->toArray();
 
@@ -395,5 +402,30 @@ class StudyCourseController extends ActionController
     protected function getTypoScriptFrontendController()
     {
         return $GLOBALS['TSFE'];
+    }
+
+    /**
+     * set the studyCourseRepository
+     */
+    protected function setStudyCourseRepository()
+    {
+        $extendedRepositoryName = '\\In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository';
+
+        if (ExtensionUtility::isIn2studycoursesExtendLoaded()
+            && class_exists($extendedRepositoryName)) {
+            return $this->objectManager->get($extendedRepositoryName);
+        } else {
+            return $this->objectManager->get(StudyCourseRepository::class);
+        }
+    }
+
+    /**
+     * get the studyCourseRepository
+     *
+     * @return StudyCourseRepository|object
+     */
+    protected function getStudyCourseRepository()
+    {
+        return $this->studyCourseRepository;
     }
 }

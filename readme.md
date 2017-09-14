@@ -66,6 +66,7 @@ sandra.pohl@in2code.de
 
 | Version    | Date       | State      | Description                                                                  |
 | ---------- | ---------- | ---------- | ---------------------------------------------------------------------------- |
+| 2.1.2      | 2017-08-30 | BUGFIX     | Use the correct repository if the extension is extended                      |
 | 2.1.1      | 2017-08-29 | BUGFIX     | Use correct cmpObj function if the course model has been overwritten         |
 | 2.1.0      | 2017-08-24 | FEATURE    | Add option to save selected filter values, [!!!][TASK] Drop StuyCourseListContextRepository. For more details look at the release commit 2.1.0 |
 | 2.0.4      | 2017-06-28 | BUGFIX     | Always set filter, hide invalid start of study date, use cache API correctly |
