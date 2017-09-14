@@ -21,6 +21,7 @@
 				var uiBehaviour = new window.In2studyfinder.UiBehaviour(dom);
 				var paginationHandling = new window.In2studyfinder.PaginationHandling(dom);
 
+				dom.removeClass('no-js').addClass('js');
 				select.initializeSelect();
 				filterHandling.init();
 				paginationHandling.init();

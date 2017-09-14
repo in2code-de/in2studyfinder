@@ -1,0 +1,58 @@
+/*------------------------------------*\
+  #STYLE
+\*------------------------------------*/
+
+/**
+ * Final main CSS file composed of separated Sass files. New created Sass files
+ * need to be added here to have any effect.
+ *
+ * The order of the import directives is important. Changing the file order
+ * within an import directive however should do no harm in most cases.
+ *
+ * We’re using the CSS Guidelines (https://cssguidelin.es/) in all CSS files for
+ * “writing sane, manageable, scalable CSS”.
+ *
+ * We order CSS properties alphabetically (read
+ * https://meiert.com/en/blog/on-declaration-sorting/ to find out why).
+ */
+
+
+
+
+
+/*------------------------------------*\
+  #SETTINGS
+\*------------------------------------*/
+
+@import
+  'settings.colors',
+  'settings.size',
+  'settings.paths';
+
+
+
+
+
+/*------------------------------------*\
+  #TOOLS
+\*------------------------------------*/
+
+@import
+  'tools.mixins';
+
+
+
+
+
+/*------------------------------------*\
+  #RULES
+\*------------------------------------*/
+
+@import
+  'vendor.select2';
+
+@import
+  'utilities.visibility';
+
+@import
+  'components.loader';
