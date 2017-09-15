@@ -1,8 +1,10 @@
-{namespace in2studyfinder=In2code\In2studyfinder\ViewHelpers}
+<f:if condition="{currentTypo3MajorVersion} >= 8">
+	<f:then>
+		<f:render partial="StudyCourse/List/Checkbox/renderCheckbox" arguments="{_all}" />
+	</f:then>
+	<f:else>
+		<f:render partial="StudyCourse/List/Checkbox/renderCheckboxBelow8" arguments="{_all}" />
+	</f:else>
+</f:if>
 
-<in2studyfinder:form.checkbox name="searchOptions[{filterTypeName}][]" id="{filterTypeName}_{option.uid}"
-                              class="in2studyfinder__checkbox in2studyfinder-js-checkbox" value="{option.uid}"
-                              searchedOptions="{searchedOptions}"
-                              possibleFilters="{availableFilterOptions}"
-/>
 <label for="{filterTypeName}_{option.uid}" class="in2studyfinder__checkbox-label">{option.optionField}</label>
