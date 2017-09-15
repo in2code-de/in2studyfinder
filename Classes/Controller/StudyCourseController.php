@@ -116,7 +116,7 @@ class StudyCourseController extends ActionController
      */
     public function listAction()
     {
-        $this->filterAction();
+        $this->forward('filter');
     }
 
     /**
