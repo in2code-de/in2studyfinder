@@ -18,7 +18,7 @@ class CheckboxBelow8ViewHelper extends AbstractCheckboxViewHelper
         $this->tag->addAttribute('type', 'checkbox');
 
         $nameAttribute = $this->getName();
-        $valueAttribute = $this->getValueAttribute();
+        $valueAttribute = $this->getValue();
         if ($this->isObjectAccessorMode()) {
             if ($this->hasMappingErrorOccurred()) {
                 $propertyValue = $this->getLastSubmittedFormData();
