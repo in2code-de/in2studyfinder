@@ -3,6 +3,7 @@
 namespace In2code\In2studyfinder\ViewHelpers\Form;
 
 use In2code\In2studyfinder\Utility\ExtensionUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 
 class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper
@@ -15,6 +16,12 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
             'additionalOptionAttributes',
             'array',
             'Array which holds "propertyType" => array("uid", ...)" for each option'
+        );
+
+        $this->registerArgument(
+            'detailPageUid',
+            'string',
+            'the uid of the of the detail page'
         );
     }
 
@@ -30,6 +37,10 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
         $settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
         $action = 'detail';
         $pageUid = $settings['flexform']['studyCourseDetailPage'];
+
+        if ($this->hasArgument('detailPageUid')) {
+            $pageUid = $this->arguments['detailPageUid'];
+        }
         $uriBuilder = $this->controllerContext->getUriBuilder();
 
         foreach ($optionsArgument as $value) {
@@ -52,7 +63,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
                     }
                     // Typo3 6.2 and 7.6
                     if (array_key_exists($optionsArrayKey, $parentOptions)) {
-                         $label = $parentOptions[$optionsArrayKey];
+                        $label = $parentOptions[$optionsArrayKey];
                     }
                     $options[$optionsArrayKey]['label'] = $label;
 

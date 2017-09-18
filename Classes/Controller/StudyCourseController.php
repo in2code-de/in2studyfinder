@@ -144,8 +144,7 @@ class StudyCourseController extends ActionController
             $this->settings =
                 array_merge_recursive(
                     $this->settings,
-                    $this->getFlexFormSettings(GeneralUtility::_GP('ce'))
-
+                    ExtensionUtility::getFlexFormSettingsByUid(GeneralUtility::_GP('ce'))
                 );
         } else {
             $this->logger->log(
@@ -458,22 +457,5 @@ class StudyCourseController extends ActionController
     protected function getStudyCourseRepository()
     {
         return $this->studyCourseRepository;
-    }
-
-    /**
-     * get the FlexForm Settings for the given content element uid
-     *
-     * @param $uid integer
-     *
-     * @return array
-     */
-    protected function getFlexFormSettings($uid)
-    {
-        $record = BackendUtility::getRecord('tt_content', $uid);
-        $flexFormService = $this->objectManager->get(FlexFormService::class);
-        $flexFormSettings = $flexFormService->convertFlexFormContentToArray($record['pi_flexform']);
-
-        return $flexFormSettings['settings'];
-
     }
 }
