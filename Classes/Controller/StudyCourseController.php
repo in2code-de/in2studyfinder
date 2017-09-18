@@ -33,6 +33,7 @@ use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use In2code\In2studyfinder\Utility\FrontendUtility;
 use In2code\In2studyfinder\Utility\VersionUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Log\Logger;
@@ -49,6 +50,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Property\Exception;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Extbase\Service\FlexFormService;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -134,6 +136,24 @@ class StudyCourseController extends ActionController
                     ->setAndSaveSessionData('tx_in2studycourse_filter', $searchOptions);
             }
         }
+
+        /*
+         * add the flexform settings to the settings if the request is an ajax request
+         */
+        if (GeneralUtility::_GP('type') === '2308171055' && GeneralUtility::_GP('ce')) {
+            $this->settings =
+                array_merge_recursive(
+                    $this->settings,
+                    $this->getFlexFormSettings(GeneralUtility::_GP('ce'))
+
+                );
+        } else {
+            $this->logger->log(
+                LogLevel::ERROR,
+                'Incorrect parameters of the Ajax request. Flexform settings could not be set! Maybe the extension\'s layout has been overwritten?',
+                []
+            );
+        }
     }
 
     /**
@@ -159,6 +179,14 @@ class StudyCourseController extends ActionController
 
         $studyCourses = $this->processSearch($searchOptions);
 
+        /*
+         * assign the current content element record to the view
+         */
+        if (GeneralUtility::_GP('type') === null) {
+            $contentObj = $this->configurationManager->getContentObject();
+            $this->view->assign('data', $contentObj->data);
+        }
+
         $this->view->assignMultiple(
             [
                 'searchedOptions' => $searchOptions,
@@ -167,6 +195,7 @@ class StudyCourseController extends ActionController
                 'studyCourseCount' => count($studyCourses),
                 'studyCourses' => $studyCourses,
                 'currentTypo3MajorVersion' => VersionUtility::getCurrentTypo3MajorVersion(),
+                'settings' => $this->settings
             ]
         );
     }
@@ -429,5 +458,22 @@ class StudyCourseController extends ActionController
     protected function getStudyCourseRepository()
     {
         return $this->studyCourseRepository;
+    }
+
+    /**
+     * get the FlexForm Settings for the given content element uid
+     *
+     * @param $uid integer
+     *
+     * @return array
+     */
+    protected function getFlexFormSettings($uid)
+    {
+        $record = BackendUtility::getRecord('tt_content', $uid);
+        $flexFormService = $this->objectManager->get(FlexFormService::class);
+        $flexFormSettings = $flexFormService->convertFlexFormContentToArray($record['pi_flexform']);
+
+        return $flexFormSettings['settings'];
+
     }
 }
