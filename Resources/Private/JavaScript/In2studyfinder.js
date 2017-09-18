@@ -27,7 +27,7 @@
 				paginationHandling.init();
 				uiBehaviour.init();
 
-				if (readFilterFromUrl && document.querySelector('.in2studyfinder__list') !== null) {
+				if (readFilterFromUrl && document.querySelector('.in2studyfinder__view-list') !== null) {
 					readFilterFromUrl = false;
 					var paginationPage = urlHandling.loadSelectedOptionsFromUrl();
 					filterHandling.filterChanged(paginationPage);
