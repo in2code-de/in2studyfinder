@@ -37,7 +37,7 @@
 					$(this)
 						.toggleClass('opened')
 						.siblings()
-							.toggleClass('u-in2studyfinder-hide');
+							.toggleClass('is-hidden');
 				});
 		};
 
@@ -48,7 +48,7 @@
 				var parent = $(this).parents('.js-in2studyfinder-filter-options');
 
 				if (!parent.hasClass('opened')) {
-					parent.removeClass('u-in2studyfinder-hide');
+					parent.removeClass('is-hidden');
 					filtered = true;
 				}
 			});
