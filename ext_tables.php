@@ -33,7 +33,7 @@ if (TYPO3_MODE === 'BE') {
         $iconRegistry->registerIcon(
             'in2studyfinder-plugin-icon',
             \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-            ['source' => 'EXT:in2studyfinder/ext_icon.png']
+            ['source' => 'EXT:in2studyfinder/ext_icon.svg']
         );
 
         /**

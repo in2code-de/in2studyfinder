@@ -50,7 +50,7 @@ class RenderContentElementsViewHelper extends AbstractViewHelper
             'dontCheckPid' => 1,
         ];
 
-        return $this->cObj->RECORDS($conf);
+        return $this->cObj->cObjGetSingle('RECORDS', $conf);
     }
 
     /**

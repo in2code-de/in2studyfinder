@@ -27,7 +27,14 @@
 
 		this.filterChanged = function(paginationPage) {
 			var studyFinderForm = $('.js-in2studyfinder-filter');
-			var url = urlHandling.removeUrlParam('cHash', studyFinderForm.attr('action'));
+			var pluginContentElementUid = $('.in2studyfinder').data('plugin-uid');
+			var contentElementUidQuery = '';
+			if (typeof pluginContentElementUid !== 'undefined') {
+				contentElementUidQuery = '&ce=' + pluginContentElementUid;
+			}
+
+
+			var url = 'index.php?type=2308171055' + contentElementUidQuery;
 			if (paginationPage) {
 				url += '&tx_in2studyfinder_pi1%5B%40widget_0%5D%5BcurrentPage%5D=' + paginationPage;
 			}
@@ -40,7 +47,7 @@
 				},
 				success: function (data) {
 					urlHandling.saveSelectedOptionsToUrl(paginationPage);
-					$('.in2studyfinder').html($(data).find('.in2studyfinder').html());
+					$('.in2studyfinder').html($(data).html());
 				},
 				error: function () {
 				},

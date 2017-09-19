@@ -32,6 +32,7 @@ use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use In2code\In2studyfinder\Utility\FrontendUtility;
+use In2code\In2studyfinder\Utility\VersionUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Log\Logger;
@@ -115,7 +116,7 @@ class StudyCourseController extends ActionController
      */
     public function listAction()
     {
-        $this->filterAction();
+        $this->forward('filter');
     }
 
     /**
@@ -132,6 +133,23 @@ class StudyCourseController extends ActionController
                     ->fe_user
                     ->setAndSaveSessionData('tx_in2studycourse_filter', $searchOptions);
             }
+        }
+
+        /*
+         * add the flexform settings to the settings if the request is an ajax request
+         */
+        if (GeneralUtility::_GP('type') === '2308171055' && GeneralUtility::_GP('ce')) {
+            $this->settings =
+                array_merge_recursive(
+                    $this->settings,
+                    ExtensionUtility::getFlexFormSettingsByUid(GeneralUtility::_GP('ce'))
+                );
+        } else {
+            $this->logger->log(
+                LogLevel::ERROR,
+                'Incorrect parameters of the Ajax request. Flexform settings could not be set! Maybe the extension\'s layout has been overwritten?',
+                []
+            );
         }
     }
 
@@ -158,6 +176,14 @@ class StudyCourseController extends ActionController
 
         $studyCourses = $this->processSearch($searchOptions);
 
+        /*
+         * assign the current content element record to the view
+         */
+        if (GeneralUtility::_GP('type') === null) {
+            $contentObj = $this->configurationManager->getContentObject();
+            $this->view->assign('data', $contentObj->data);
+        }
+
         $this->view->assignMultiple(
             [
                 'searchedOptions' => $searchOptions,
@@ -165,6 +191,8 @@ class StudyCourseController extends ActionController
                 'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($studyCourses),
                 'studyCourseCount' => count($studyCourses),
                 'studyCourses' => $studyCourses,
+                'currentTypo3MajorVersion' => VersionUtility::getCurrentTypo3MajorVersion(),
+                'settings' => $this->settings
             ]
         );
     }
