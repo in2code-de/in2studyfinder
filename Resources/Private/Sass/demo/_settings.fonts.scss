@@ -19,3 +19,32 @@ $base-font-size: 1rem;
 $base-font-lineheight: 1.3em;
 $base-font-weight: 400;
 $base-font-weight--bold: 700;
+
+
+$fontsize-p: (
+  (null, 14px),
+  ($phablet, 15px),
+  ($tablet, 16px),
+($widescreen, 19px),
+);
+
+$fontsize-h1: (
+  (null, 24px),
+  ($phablet, 32px),
+  ($tablet, 48px),
+  ($widescreen, 60px),
+);
+
+$fontsize-h2: (
+  (null, 16px),
+  ($phablet, 18px),
+  ($tablet, 22px),
+  ($widescreen, 25px),
+);
+
+$fontsize-h3: (
+  (null, 14px),
+  ($phablet, 15px),
+  ($tablet, 16px),
+  ($widescreen, 19px),
+);

@@ -85,9 +85,10 @@ fieldset {
 
   &__legend {
     cursor: pointer;
+    float:left;
     font-size: 14px;
     font-weight: bold;
-    margin-top: $gap;
+    margin-bottom: $gap;
     padding-right: 32px;
     position: relative;
     display: block;
@@ -101,7 +102,6 @@ fieldset {
 
     &:before {
       content: '';
-      border: none;
       display: inline-block;
       position: absolute;
       top: 0;
@@ -110,7 +110,7 @@ fieldset {
       background: $lightgrey;
       height: 1.5em;
       width: 1.5em;
-      right: -0.25em;
+      right: -5px;
       transition: background .2s ease;
     }
 
@@ -120,8 +120,10 @@ fieldset {
       display: inline-block;
       position: absolute;
       right: 0;
-      font-size: 1.7em;
+      font-size: 1.5em;
       font-weight: normal;
+      line-height: 1;
+
     }
 
     &.opened {
@@ -137,6 +139,7 @@ fieldset {
 
   &__options {
     @include in2studyfinder-clearfix;
+    clear: both;
     padding: 0 0 $gap;
 
     &.is-hidden {
