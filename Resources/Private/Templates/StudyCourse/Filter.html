@@ -4,12 +4,18 @@
 	<div class="in2studyfinder__view-list">
 
 		<f:flashMessages/>
-
-		<f:render partial="StudyCourse/List/SelectionOptions" arguments="{_all}"/>
+		<f:render partial="StudyCourse/List/Filter" arguments="{_all}"/>
 
 		<div class="l-content">
-			<f:render partial="StudyCourse/List/QuickSearch" arguments="{studyCourses: studyCourses}"/>
-			<f:render partial="StudyCourse/List/StudyCourseList" arguments="{_all}"/>
+			<f:render partial="StudyCourse/List/QuickSearch" arguments="{_all}"/>
+			<f:if condition="{studyCourses}">
+				<f:then>
+					<f:render partial="StudyCourse/List/StudyCourseList" arguments="{_all}"/>
+				</f:then>
+				<f:else>
+					<f:render partial="StudyCourse/List/NoStudyCourses" arguments="{_all}"/>
+				</f:else>
+			</f:if>
 		</div>
 	</div>
 </f:section>
