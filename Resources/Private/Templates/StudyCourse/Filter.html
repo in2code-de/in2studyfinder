@@ -7,6 +7,9 @@
 
 		<f:render partial="StudyCourse/List/SelectionOptions" arguments="{_all}"/>
 
-		<f:render partial="StudyCourse/List/StudyCourseList" arguments="{_all}"/>
+		<div class="l-content">
+			<f:render partial="StudyCourse/List/QuickSearch" arguments="{studyCourses: studyCourses}"/>
+			<f:render partial="StudyCourse/List/StudyCourseList" arguments="{_all}"/>
+		</div>
 	</div>
 </f:section>

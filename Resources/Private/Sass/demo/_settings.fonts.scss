@@ -1,0 +1,21 @@
+/*
+Fonts
+
+Markup: ../../../Templates/Styleguide/01_modules/fonts.html
+
+Styleguide 1.2
+*/
+
+$base-font: Helvetica, Arial, sans-serif;
+
+/**
+ * Use relative values like rem, em or %. Otherwise text zoom of IE won't work,
+ * which is an accessibility issue
+ * (http://testen.bitv-test.de/index.php?a=di&iid=52&s=n). Using rem has the
+ * benefit that the value is always equivalent to 16px and not depending on
+ * the location.
+ */
+$base-font-size: 1rem;
+$base-font-lineheight: 1.3em;
+$base-font-weight: 400;
+$base-font-weight--bold: 700;

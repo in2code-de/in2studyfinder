@@ -1,0 +1,150 @@
+/*------------------------------------*\
+  #COMPONENTS-LIST
+\*------------------------------------*/
+
+fieldset {
+  border: none;
+  padding: 0.5em 1em;
+  margin: 0;
+}
+
+.select2-container {
+  margin-bottom: $gap;
+}
+
+.c-in2studyfinder-filter {
+  background: $white;
+
+  @media all and (min-width: $tablet) {
+    width: $side-nav;
+    position: fixed;
+    top: 0;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+
+  input:not([type]),
+  input[type="date"],
+  input[type="datetime-local"],
+  input[type="email"],
+  input[type="file"],
+  input[type="number"],
+  input[type="password"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="text"],
+  input[type="time"],
+  input[type="url"] {
+    margin: 0;
+    outline: 0;
+    -webkit-appearance: none;
+    line-height: 1.25em;
+    padding: .5em 1em;
+    font-size: 1rem;
+    background: #fff;
+    border: 1px solid rgba(34, 36, 38, .15);
+    color: rgba(0, 0, 0, .75);
+    border-radius: .25em;
+    box-shadow: 0 0 0 0 transparent inset;
+    transition: color .1s ease, border-color .1s ease;
+
+    &:focus {
+      color: rgba(0, 0, 0, 1);
+      border-color: rgba(34, 36, 38, .5);
+    }
+  }
+
+  &__button {
+    background: $primaryColor;;
+    border: none;
+    border-radius: 0;
+    color: $white;
+    cursor: pointer;
+    margin: 16px;
+    padding: .75em 1.5em;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 1px;
+    transition: background .2s ease;
+
+    &:hover{
+      background: darken($primaryColor, 20%);
+    }
+  }
+
+  &__sections {
+    border-top: 1px solid $color-verylightgrey;
+  }
+
+  &__section {
+    border-bottom: 1px solid $color-verylightgrey;
+    position: relative;
+    padding: $gap $gap 0;
+  }
+
+  &__legend {
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: $gap;
+    padding-right: 32px;
+    position: relative;
+    display: block;
+    width: 100%;
+
+    &:hover{
+      &:before {
+        background: $primaryColor;
+      }
+    }
+
+    &:before {
+      content: '';
+      border: none;
+      display: inline-block;
+      position: absolute;
+      top: 0;
+      opacity: 1;
+      border-radius: 50%;
+      background: $lightgrey;
+      height: 1.5em;
+      width: 1.5em;
+      right: -0.25em;
+      transition: background .2s ease;
+    }
+
+    &:after {
+      content: '+';
+      color: $white;
+      display: inline-block;
+      position: absolute;
+      right: 0;
+      font-size: 1.7em;
+      font-weight: normal;
+    }
+
+    &.opened {
+      &:before {
+        background: $primaryColor;
+      }
+
+      &:after {
+        content: '–';
+      }
+    }
+  }
+
+  &__options {
+    @include in2studyfinder-clearfix;
+    padding: 0 0 $gap;
+
+    &.is-hidden {
+      display: none !important;
+    }
+  }
+}
+
+.c-in2studyfinder-quick-search {
+  @include container;
+}
