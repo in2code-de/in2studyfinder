@@ -1,0 +1,55 @@
+/*------------------------------------*\
+  #COMPONENTS-DETAIL
+\*------------------------------------*/
+
+.in2studyfinder {
+  &__detail {
+    @include container;
+    margin: 1rem;
+
+    p {
+      margin-bottom: 1em;
+    }
+  }
+
+  &__column {
+    float: left;
+
+    &--half {
+      width: 100%;
+
+      @media all and (min-width: $tablet) {
+        width: 47.8%;
+
+        &:last-child {
+          margin-left: 4.4%;
+        }
+      }
+    }
+  }
+
+  &__content-box {
+    margin-bottom: 40px;
+  }
+
+  &__content-box-content {
+    @include in2studyfinder-clearfix();
+  }
+
+  &__content-box-head {
+    h3 {
+      border-bottom: 1px solid currentColor;
+      color: $primaryColor;
+      font: {
+        size: 1.2em;
+        weight: normal;
+      };
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  &__list{
+    padding-left: 1em;
+  }
+}

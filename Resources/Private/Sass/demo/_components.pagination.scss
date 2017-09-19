@@ -1,0 +1,36 @@
+/*------------------------------------*\
+  #COMPONENTS-PAGINATION
+\*------------------------------------*/
+
+.in2studyfinder {
+  &__pagebrowser {
+    margin: {
+      top: 20px;
+      bottom: 20px;
+    };
+    text-align: center;
+
+    a {
+      color: currentColor;
+      font: {
+        size: 18px;
+        weight: bold;
+      };
+      margin-right: 15px;
+
+      &:hover {
+        color: $primaryColor;
+      }
+    }
+  }
+
+  &__pagebrowser-page {
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &.current {
+      color: $primaryColor;
+    }
+  }
+}

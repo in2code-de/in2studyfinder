@@ -6,9 +6,6 @@
 		var uiBehaviour = this;
 
 		this.init = function() {
-			$('.in2studyfinder__fast-select').removeClass('hide');
-			$('.in2studyfinder__filter').removeClass('hide');
-
 			this.checkboxHandling();
 		};
 
@@ -21,34 +18,42 @@
 		};
 
 		this.toggleOptionFormVisibility = function() {
-			$('.in2studyfinder-js-show-filter-options').on('click', function() {
-				$(this).toggleClass('hide');
-				$(this).siblings().toggleClass('hide');
-				$('.in2studyfinder-js-filter-options').children('.in2studyfinder-js-option-section').toggleClass('hide');
-			});
+			// “Start.init()” is called multiple times, so we’ve to ensure that
+			// it’s not going to add the same event handler more than once.
+			$('.js-in2studyfinder-filter-button-show')
+				.off('click')
+				.on('click', function() {
+					uiBehaviour.toggleShowFiltersButton();
+					$('.js-in2studyfinder-filter-section').toggleClass('u-in2studyfinder-hide');
+				});
 		};
 
 		this.toggleOptionSectionVisibility = function() {
-			$('.in2studyfinder-js-option-legend').on('click', function() {
-				$(this)
-					.toggleClass('opened')
-					.siblings().toggleClass('hide');
-			});
+			// “Start.init()” is called multiple times, so we’ve to ensure that
+			// it’s not going to add the same event handler more than once.
+			$('.js-in2studyfinder-filter-legend')
+				.off('click')
+				.on('click', function() {
+					$(this)
+						.toggleClass('opened')
+						.siblings()
+							.toggleClass('is-hidden');
+				});
 		};
 
 		this.openPreviouslyOpenedFilterSections = function() {
 			var filtered = false;
-			$('.in2studyfinder-js-filter').find('input[type=checkbox]:checked:enabled').each(function () {
+			$('.js-in2studyfinder-filter').find('input[type=checkbox]:checked:enabled').each(function () {
 				$(this).siblings('.in2studyfinder-js-checkbox-all').prop('checked', false).prop('disabled', false);
-				var parent = $(this).parents('.in2studyfinder-js-accordion');
+				var parent = $(this).parents('.js-in2studyfinder-filter-options');
 
 				if (!parent.hasClass('opened')) {
-					parent.removeClass('hide');
+					parent.removeClass('is-hidden');
 					filtered = true;
 				}
 			});
 			if (filtered) {
-				$('.in2studyfinder-js-show-filter-options').click();
+				$('.js-in2studyfinder-filter-button-show').click();
 			}
 		};
 
@@ -86,22 +91,22 @@
 		};
 
 		this.hideFilters = function () {
-			$.each($('.in2studyfinder-js-option-section'), function () {
-				$(this).addClass('hide');
+			$.each($('.js-in2studyfinder-filter-section'), function () {
+				$(this).addClass('u-in2studyfinder-hide');
 			});
 		};
 
 		this.toggleShowFiltersButton = function () {
 
-			var showButton = $('.in2studyfinder-js-show-filter-options');
-			var resetButton = $('.in2studyfinder-js-reset-filter-options');
+			var showButton = $('.js-in2studyfinder-filter-button-show');
+			var resetButton = $('.js-in2studyfinder-filter-button-reset');
 
-			if (showButton.hasClass('hide')) {
-				showButton.removeClass('hide');
-				resetButton.addClass('hide');
-			} else if (resetButton.hasClass('hide')) {
-				resetButton.removeClass('hide');
-				showButton.addClass('hide');
+			if (showButton.hasClass('u-in2studyfinder-hide')) {
+				showButton.removeClass('u-in2studyfinder-hide');
+				resetButton.addClass('u-in2studyfinder-hide');
+			} else if (resetButton.hasClass('u-in2studyfinder-hide')) {
+				resetButton.removeClass('u-in2studyfinder-hide');
+				showButton.addClass('u-in2studyfinder-hide');
 			}
 		};
 	}
@@ -113,4 +118,3 @@
 
 	window.In2studyfinder.UiBehaviour = UiBehaviour;
 })();
-

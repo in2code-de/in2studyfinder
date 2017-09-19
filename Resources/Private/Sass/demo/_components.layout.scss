@@ -1,0 +1,9 @@
+.l-content{
+  padding: $gap;
+
+
+  @media all and (min-width: $tablet) {
+    padding: $gap $gap $gap ($gap+$side-nav);
+  }
+}
+

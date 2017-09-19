@@ -1,0 +1,119 @@
+// http://nicolasgallagher.com/micro-clearfix-hack/
+@mixin in2-clearfix {
+  &::before,
+  &::after {
+    display: table;
+    content: ' ';
+  }
+
+  &::after {
+    clear: both;
+  }
+}
+
+@mixin in2-hide-text {
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+
+@mixin in2-list-inline {
+  padding-left: 0;
+  list-style: none;
+
+  > li {
+    display: inline-block;
+  }
+}
+
+@mixin in2-ghost-vertical-align() {
+  &::before {
+    display: inline-block;
+    width: 0.1px;
+    height: 100%;
+    vertical-align: middle;
+    content: '';
+  }
+}
+
+@mixin in2-center($center-horizontal-too: false) {
+  $transform: translateY(-50%);
+
+  @if($center-horizontal-too) {
+    $transform: #{$transform} translateX(-50%);
+    left: 50%;
+  }
+
+  position: absolute;
+  top: 50%;
+  -webkit-transform: $transform;
+  transform: $transform;
+}
+
+/**
+ * Divider for horizontal menu ("bei welchem die Linien beim Hover nicht
+ * durchblitzen")
+ */
+@mixin in2-navsplitter($color, $height, $left, $right, $bottom) {
+  background-color: $color;
+  height: $height;
+  width: 2px;
+  content: '';
+  display: block;
+  position: absolute;
+  left: $left;
+  right: $right;
+  bottom: $bottom;
+}
+
+// Triangle => http://hackingui.com/front-end/10-best-scss-utilities/
+@mixin in2-triangle($direction, $size: 6px, $color: #222, $scale: 1) {
+  content: '';
+  display: block;
+  position: absolute;
+  height: 0;
+  width: 0;
+  @if ($direction == 'up'){
+    border-right: $scale * $size solid transparent;
+    border-bottom: $size solid $color;
+    border-left: $scale * $size solid transparent;
+  } @else if ($direction == 'down'){
+    border-top: $size solid $color;
+    border-right: $scale * $size solid transparent;
+    border-left: $scale * $size solid transparent;
+  } @else if ($direction == 'left'){
+    border-top: $scale * $size solid transparent;
+    border-right: $size solid $color;
+    border-bottom: $scale * $size solid transparent;
+  } @else if ($direction == 'right'){
+    border-top: $scale * $size solid transparent;
+    border-bottom: $scale * $size solid transparent;
+    border-left: $size solid $color;
+  }
+}
+
+@mixin container{
+  background: $white;
+  padding: $gap;
+  box-shadow: 0 2px 3px 1px $lightgrey;
+  border-radius: 3px;
+  margin-bottom: $gap;
+}
+
+@mixin font-size($fs-map) {
+  @each $val in $fs-map {
+    $fs-breakpoint: nth($val, 1);
+    $fs-font-size: nth($val, 2);
+
+    @if $fs-breakpoint == null {
+      font-size: $fs-font-size;
+    }
+    @else {
+      @media screen and (min-width: $fs-breakpoint) {
+        font-size: $fs-font-size;
+      }
+    }
+  }
+}

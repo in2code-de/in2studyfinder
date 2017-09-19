@@ -1,0 +1,11 @@
+<f:switch expression="{filterType.type}">
+	<f:case value="object">
+		<f:render partial="StudyCourse/List/Filter/TypeObject" arguments="{_all}"/>
+	</f:case>
+	<f:case value="boolean">
+		<f:render partial="StudyCourse/List/Filter/TypeBoolean" arguments="{_all}"/>
+	</f:case>
+	<f:defaultCase>
+		not suported filter
+	</f:defaultCase>
+</f:switch>

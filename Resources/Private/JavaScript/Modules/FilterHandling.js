@@ -26,8 +26,15 @@
 		};
 
 		this.filterChanged = function(paginationPage) {
-			var studyFinderForm = $('.in2studyfinder-js-filter');
-			var url = urlHandling.removeUrlParam('cHash', studyFinderForm.attr('action'));
+			var studyFinderForm = $('.js-in2studyfinder-filter');
+			var pluginContentElementUid = $('.in2studyfinder').data('plugin-uid');
+			var contentElementUidQuery = '';
+			if (typeof pluginContentElementUid !== 'undefined') {
+				contentElementUidQuery = '&ce=' + pluginContentElementUid;
+			}
+
+
+			var url = 'index.php?type=2308171055' + contentElementUidQuery;
 			if (paginationPage) {
 				url += '&tx_in2studyfinder_pi1%5B%40widget_0%5D%5BcurrentPage%5D=' + paginationPage;
 			}
@@ -40,7 +47,7 @@
 				},
 				success: function (data) {
 					urlHandling.saveSelectedOptionsToUrl(paginationPage);
-					$('.in2studyfinder').html($(data).find('.in2studyfinder').html());
+					$('.in2studyfinder').html($(data).html());
 				},
 				error: function () {
 				},
@@ -66,16 +73,19 @@
 		};
 
 		this.resetAllFilterOptions = function() {
-			$('.in2studyfinder-js-reset-filter-options').on('click', function () {
-				if (filterHandling.isAnyFilterSet()) {
-					uiBehaviour.resetAllFilterCheckboxes();
-					filterHandling.filterChanged();
-				} else {
-					uiBehaviour.hideFilters();
-					uiBehaviour.toggleShowFiltersButton();
-				}
-
-			});
+			// “Start.init()” is called multiple times, so we’ve to ensure that
+			// it’s not going to add the same event handler more than once.
+			$('.js-in2studyfinder-filter-button-reset')
+				.off('click')
+				.on('click', function () {
+					if (filterHandling.isAnyFilterSet()) {
+						uiBehaviour.resetAllFilterCheckboxes();
+						filterHandling.filterChanged();
+					} else {
+						uiBehaviour.hideFilters();
+						uiBehaviour.toggleShowFiltersButton();
+					}
+				});
 		};
 
 
