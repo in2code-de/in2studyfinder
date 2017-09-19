@@ -4,6 +4,9 @@
 
 .in2studyfinder {
   &__detail {
+    @include container;
+    margin: 1rem;
+
     p {
       margin-bottom: 1em;
     }
