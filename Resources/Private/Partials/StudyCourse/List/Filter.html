@@ -3,12 +3,12 @@
 
 	<button type="button"
 	        class="c-in2studyfinder-filter__button c-in2studyfinder-filter__button--show js-in2studyfinder-filter-button-show">
-		<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:filter" />
+		<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:filter"/>
 	</button>
 
 	<button type="button"
 	        class="c-in2studyfinder-filter__button c-in2studyfinder-filter__button--reset u-in2studyfinder-hide js-in2studyfinder-filter-button-reset">
-		<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:filter.reset" />
+		<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:filter.reset"/>
 	</button>
 
 	<div class="c-in2studyfinder-filter__sections">
@@ -24,15 +24,14 @@
 					<f:render partial="StudyCourse/List/Filter/CheckboxAll" arguments="{_all}" />
 
 					<f:for each="{filterType.filterOptions}" as="option">
-						<f:switch expression="{filterType.type}">
-							<f:case value="object">
-								<f:render partial="StudyCourse/List/Filter/TypeObject" arguments="{_all}" />
-							</f:case>
-							<f:case value="boolean">
-								<f:render partial="StudyCourse/List/Filter/TypeBoolean" arguments="{_all}" />
-							</f:case>
-							<f:case default="TRUE">Not supported filter</f:case>
-						</f:switch>
+						<f:if condition="{currentTypo3MajorVersion} >= 8">
+							<f:then>
+								<f:render partial="StudyCourse/List/FilterTypeSwitch/FilterTypeSwitch" arguments="{_all}" />
+							</f:then>
+							<f:else>
+								<f:render partial="StudyCourse/List/FilterTypeSwitch/FilterTypeSwitchBelow8" arguments="{_all}" />
+							</f:else>
+						</f:if>
 					</f:for>
 				</div>
 			</fieldset>

@@ -84,6 +84,35 @@ plugin.tx_in2studyfinder {
 # Module configuration
 module.tx_in2studyfinder < plugin.tx_in2studyfinder
 
+
+############################
+# Page type for ajax request
+############################
+in2studyfinderFilterAjax = PAGE
+in2studyfinderFilterAjax {
+	typeNum = 2308171055
+	config {
+		additionalHeaders = Content-type:application/html
+		no_cache = 1
+		disableAllHeaderCode = 1
+		disablePrefixComment = 1
+		xhtml_cleaning = 0
+		admPanel = 0
+		debug = 0
+	}
+
+	10  = USER
+	10 {
+		userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+		extensionName = In2studyfinder
+		pluginName = Pi1
+		vendorName = In2code
+		controller = StudyCourse
+		action = filter
+		features.requireCHashArgumentForActionArguments = 0
+	}
+}
+
 ############################
 # JavaScript and CSS section
 ############################

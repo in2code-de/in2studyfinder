@@ -97,7 +97,7 @@
 			</trans-unit>
 			<trans-unit id="keyData">
 				<source>Key Data</source>
-				<target>Eckdaten</target>
+				<target>Rahmendaten</target>
 			</trans-unit>
 			<trans-unit id="metadata">
 				<source>Metadata</source>
@@ -152,7 +152,7 @@
 			</trans-unit>
 			<trans-unit id="moreAbout">
 				<source>more about the Course</source>
-				<target>Worum geht es in diesem Studiengang?</target>
+				<target>Mehr zu diesem Studiengang</target>
 			</trans-unit>
 			<trans-unit id="readMore">
 				<source>to the Course</source>

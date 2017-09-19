@@ -19,6 +19,7 @@
 
     &:hover{
       background: darken($primaryColor, 20%);
+      text-decoration: none;
     }
   }
 
@@ -188,7 +189,7 @@
     }
 
     span{
-      margin: .25em auto auto;
+      margin: 1px auto auto;
     }
   }
 }

@@ -1,0 +1,21 @@
+{namespace in2studyfinder=In2code\In2studyfinder\ViewHelpers}
+
+<f:if condition="{option}">
+	<f:then>
+		<in2studyfinder:form.checkboxBelow8 name="searchOptions[{filterTypeName}][]" id="{filterTypeName}_true"
+		                              class="in2studyfinder__checkbox in2studyfinder-js-checkbox" value="true"
+		                              searchedOptions="{searchedOptions}"
+		                              possibleFilters="{availableFilterOptions}"
+		/>
+		<label for="{filterTypeName}_true" class="in2studyfinder__checkbox-label"><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:isSet"/></label>
+	</f:then>
+	<f:else>
+		<in2studyfinder:form.checkboxBelow8 name="searchOptions[{filterTypeName}][]" id="{filterTypeName}_false"
+		                              class="in2studyfinder__checkbox in2studyfinder-js-checkbox" value="false"
+		                              searchedOptions="{searchedOptions}"
+		                              possibleFilters="{availableFilterOptions}"
+		/>
+		<label for="{filterTypeName}_false" class="in2studyfinder__checkbox-label"><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:isUnset"/></label>
+	</f:else>
+</f:if>
+
