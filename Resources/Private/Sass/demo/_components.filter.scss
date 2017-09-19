@@ -93,7 +93,7 @@ fieldset {
     position: relative;
     display: block;
     width: 100%;
-    
+
     &:hover{
       &:before {
         background: $primaryColor;
@@ -108,9 +108,9 @@ fieldset {
       opacity: 1;
       border-radius: 50%;
       background: $lightgrey;
-      height: 22px;
-      width: 22px;
-      right: -5px;
+      height: 24px;
+      width: 24px;
+      right: -6px;
       transition: background .2s ease;
     }
 
@@ -119,11 +119,13 @@ fieldset {
       color: $white;
       display: inline-block;
       position: absolute;
-      right: 0;
       top: 0;
       font-size: 1.5em;
       font-weight: normal;
       line-height: 1;
+      height: 24px;
+      width: 24px;
+      right: -12px;
     }
 
     &.opened {
