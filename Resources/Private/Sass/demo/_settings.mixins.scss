@@ -101,3 +101,19 @@
   border-radius: 3px;
   margin-bottom: $gap;
 }
+
+@mixin font-size($fs-map) {
+  @each $val in $fs-map {
+    $fs-breakpoint: nth($val, 1);
+    $fs-font-size: nth($val, 2);
+
+    @if $fs-breakpoint == null {
+      font-size: $fs-font-size;
+    }
+    @else {
+      @media screen and (min-width: $fs-breakpoint) {
+        font-size: $fs-font-size;
+      }
+    }
+  }
+}

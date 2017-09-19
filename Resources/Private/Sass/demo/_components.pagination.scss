@@ -11,7 +11,7 @@
     text-align: center;
 
     a {
-      color: $color-nightrider;
+      color: currentColor;
       font: {
         size: 18px;
         weight: bold;
@@ -19,7 +19,7 @@
       margin-right: 15px;
 
       &:hover {
-        color: $color-balihai;
+        color: $primaryColor;
       }
     }
   }
@@ -30,7 +30,7 @@
     }
 
     &.current {
-      color: $color-denim;
+      color: $primaryColor;
     }
   }
 }
