@@ -16,10 +16,14 @@
     float: left;
 
     &--half {
-      width: 47.8%;
+      width: 100%;
 
-      &:last-child {
-        margin-left: 4.4%;
+      @media all and (min-width: $tablet) {
+        width: 47.8%;
+
+        &:last-child {
+          margin-left: 4.4%;
+        }
       }
     }
   }
@@ -30,22 +34,22 @@
 
   &__content-box-content {
     @include in2studyfinder-clearfix();
-
-    margin: 12px 12px 24px 12px;
   }
 
   &__content-box-head {
-    background-color: $color-balihai;
-    padding: 6px 0 4px 4px;
-
     h3 {
-      color: $color-white;
+      border-bottom: 1px solid currentColor;
+      color: $primaryColor;
       font: {
         size: 1.2em;
         weight: normal;
       };
       letter-spacing: 0.05em;
-      margin: 4px;
+      margin-bottom: 0.5rem;
     }
+  }
+
+  &__list{
+    padding-left: 1em;
   }
 }
