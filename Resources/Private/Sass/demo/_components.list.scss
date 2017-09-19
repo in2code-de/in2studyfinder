@@ -77,7 +77,7 @@
 
     &:before{
       content: '';
-      color: #3070b3;
+      color: $primaryColor;
       position: absolute;
       top: 1px;
       left: 0;
@@ -175,7 +175,7 @@
     display: flex;
     width: 1.5em;
     height: 1.5em;
-    background: #0bf;
+    background: $primaryColor;
     border-radius: 50%;
     color: #fff;
     margin: 1rem auto 0;
