@@ -32,7 +32,7 @@
 		this.saveSelectedOptionsToUrl = function (paginationPage) {
 			var selectionValues = {};
 			var selectionString = '';
-			var selectedOptions = $('.in2studyfinder-js-filter').find('input.in2studyfinder-js-checkbox:checked');
+			var selectedOptions = $('.js-in2studyfinder-filter').find('input.in2studyfinder-js-checkbox:checked');
 			$(selectedOptions).each(function () {
 				var filterGroupAbbreviation = $(this).closest('fieldset').data('filtergroup');
 				if (selectionValues[filterGroupAbbreviation] === undefined) {

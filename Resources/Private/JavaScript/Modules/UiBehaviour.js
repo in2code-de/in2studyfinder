@@ -37,18 +37,19 @@
 					$(this)
 						.toggleClass('opened')
 						.siblings()
-							.toggleClass('is-hidden');
+						.toggleClass('is-hidden');
 				});
 		};
 
 		this.openPreviouslyOpenedFilterSections = function() {
 			var filtered = false;
-			$('.js-in2studyfinder-filter').find('input[type=checkbox]:checked:enabled').each(function () {
+			$('.js-in2studyfinder-filter').find('input[type=checkbox]:checked:enabled').each(function() {
 				$(this).siblings('.in2studyfinder-js-checkbox-all').prop('checked', false).prop('disabled', false);
 				var parent = $(this).parents('.js-in2studyfinder-filter-options');
 
 				if (!parent.hasClass('opened')) {
 					parent.removeClass('is-hidden');
+					parent.siblings().toggleClass('opened');
 					filtered = true;
 				}
 			});
@@ -90,13 +91,13 @@
 			uiBehaviour.toggleOptionSectionVisibility();
 		};
 
-		this.hideFilters = function () {
-			$.each($('.js-in2studyfinder-filter-section'), function () {
+		this.hideFilters = function() {
+			$.each($('.js-in2studyfinder-filter-section'), function() {
 				$(this).addClass('u-in2studyfinder-hide');
 			});
 		};
 
-		this.toggleShowFiltersButton = function () {
+		this.toggleShowFiltersButton = function() {
 
 			var showButton = $('.js-in2studyfinder-filter-button-show');
 			var resetButton = $('.js-in2studyfinder-filter-button-reset');
