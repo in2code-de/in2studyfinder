@@ -437,7 +437,7 @@ class StudyCourseController extends ActionController
      */
     protected function setStudyCourseRepository()
     {
-        $extendedRepositoryName = '\\In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository';
+        $extendedRepositoryName = 'In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository';
 
         if (ExtensionUtility::isIn2studycoursesExtendLoaded()
             && class_exists($extendedRepositoryName)) {
