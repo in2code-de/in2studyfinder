@@ -1,11 +1,11 @@
 <?php
 
-use In2code\In2studyfinder\Utility\TcaUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-
 $ll = 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:';
 $table = 'tx_in2studyfinder_domain_model_academicdegree';
-$icon = ExtensionManagementUtility::extRelPath('in2studyfinder') . 'Resources/Public/Icons/' . $table . '.png';
+$icon =
+    TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath(
+        'in2studyfinder'
+    ) . 'Resources/Public/Icons/' . $table . '.png';
 
 return [
     'ctrl' => [
@@ -42,13 +42,13 @@ return [
     ],
     'columns' => [
 
-        'sys_language_uid' => TcaUtility::getFullTcaForSysLanguageUid(),
-        'l10n_parent' => TcaUtility::getFullTcaForL10nParent($table),
-        'l10n_diffsource' => TcaUtility::getFullTcaForL10nDiffsource(),
-        't3ver_label' => TcaUtility::getFullTcaForT3verLabel(),
-        'hidden' => TcaUtility::getFullTcaForHidden(),
-        'starttime' => TcaUtility::getFullTcaForStartTime(),
-        'endtime' => TcaUtility::getFullTcaForEndTime(),
+        'sys_language_uid' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForSysLanguageUid(),
+        'l10n_parent' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForL10nParent($table),
+        'l10n_diffsource' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForL10nDiffsource(),
+        't3ver_label' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForT3verLabel(),
+        'hidden' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForHidden(),
+        'starttime' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForStartTime(),
+        'endtime' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForEndTime(),
         'degree' => [
             'exclude' => 1,
             'label' => $ll . 'academicDegree.degree',
@@ -66,7 +66,11 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_in2studyfinder_domain_model_graduation',
-                'items' => [TcaUtility::getPleaseChooseOption('tx_in2studyfinder_domain_model_graduation')],
+                'items' => [
+                    In2code\In2studyfinder\Utility\TcaUtility::getPleaseChooseOption(
+                        'tx_in2studyfinder_domain_model_graduation'
+                    )
+                ],
                 'minitems' => 1,
                 'maxitems' => 1,
             ],

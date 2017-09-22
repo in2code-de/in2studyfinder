@@ -17,11 +17,21 @@ fieldset {
 
   @media all and (min-width: $tablet) {
     width: $side-nav;
-    position: fixed;
-    top: 0;
     height: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
+    top: 0;
+    position: fixed;
+
+
+    transition: width .2s ease, height .2s ease;
+
+    .is-closed &{
+      width: 64px;
+      height: 64px;
+      overflow-x: hidden;
+      overflow-y: hidden;
+    }
   }
 
   input:not([type]),
@@ -97,6 +107,7 @@ fieldset {
     &:hover{
       &:before {
         background: $primaryColor;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
       }
     }
 
@@ -111,7 +122,8 @@ fieldset {
       height: 24px;
       width: 24px;
       right: -6px;
-      transition: background .2s ease;
+      transition: background .2s ease, box-shadow .2s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0);
     }
 
     &:after {
@@ -131,6 +143,7 @@ fieldset {
     &.opened {
       &:before {
         background: $primaryColor;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
       }
 
       &:after {

@@ -1,12 +1,10 @@
 <?php
-
-use In2code\In2studyfinder\Utility\ConfigurationUtility;
-use In2code\In2studyfinder\Utility\TcaUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-
 $ll = 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:';
 $table = 'tx_in2studyfinder_domain_model_studycourse';
-$icon = ExtensionManagementUtility::extRelPath('in2studyfinder') . 'Resources/Public/Icons/' . $table . '.png';
+$icon =
+    TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath(
+        'in2studyfinder'
+    ) . 'Resources/Public/Icons/' . $table . '.png';
 
 $tcaConfiguration = [
     'ctrl' => [
@@ -58,13 +56,13 @@ $tcaConfiguration = [
     ],
     'columns' => [
 
-        'sys_language_uid' => TcaUtility::getFullTcaForSysLanguageUid(),
-        'l10n_parent' => TcaUtility::getFullTcaForL10nParent($table),
-        'l10n_diffsource' => TcaUtility::getFullTcaForL10nDiffsource(),
-        't3ver_label' => TcaUtility::getFullTcaForT3verLabel(),
-        'hidden' => TcaUtility::getFullTcaForHidden(),
-        'starttime' => TcaUtility::getFullTcaForStartTime(),
-        'endtime' => TcaUtility::getFullTcaForEndTime(),
+        'sys_language_uid' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForSysLanguageUid(),
+        'l10n_parent' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForL10nParent($table),
+        'l10n_diffsource' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForL10nDiffsource(),
+        't3ver_label' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForT3verLabel(),
+        'hidden' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForHidden(),
+        'starttime' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForStartTime(),
+        'endtime' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForEndTime(),
         'title' => [
             'exclude' => 1,
             'label' => $ll . 'title',
@@ -183,44 +181,47 @@ $tcaConfiguration = [
                 'maxitems' => 9999,
                 'size' => 10,
                 'wizards' => [
-                    'edit' => TcaUtility::getEditWizard(),
-                    'suggest' => TcaUtility::getSuggestWizard(),
+                    'edit' => In2code\In2studyfinder\Utility\TcaUtility::getEditWizard(),
+                    'suggest' => In2code\In2studyfinder\Utility\TcaUtility::getSuggestWizard(),
                 ],
             ],
         ],
-        'academic_degree' => TcaUtility::getFullTcaForSingleSelect(
+        'academic_degree' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForSingleSelect(
             $ll . 'academicDegree',
             'tx_in2studyfinder_domain_model_academicdegree',
             1,
             1
         ),
-        'department' => TcaUtility::getFullTcaForSingleSelect(
+        'department' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForSingleSelect(
             $ll . 'department',
             'tx_in2studyfinder_domain_model_department'
         ),
-        'faculty' => TcaUtility::getFullTcaForSingleSelect($ll . 'faculty', 'tx_in2studyfinder_domain_model_faculty'),
-        'types_of_study' => TcaUtility::getFullTcaForSelectSideBySide(
+        'faculty' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForSingleSelect(
+            $ll . 'faculty',
+            'tx_in2studyfinder_domain_model_faculty'
+        ),
+        'types_of_study' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForSelectSideBySide(
             $ll . 'typeOfStudy',
             'tx_in2studyfinder_domain_model_typeofstudy',
             'tx_in2studyfinder_studycourse_typeofstudy_mm',
             1,
             1
         ),
-        'course_languages' => TcaUtility::getFullTcaForSelectSideBySide(
+        'course_languages' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForSelectSideBySide(
             $ll . 'courseLanguage',
             'tx_in2studyfinder_domain_model_courselanguage',
             'tx_in2studyfinder_studycourse_courselanguage_mm',
             1,
             1
         ),
-        'admission_requirements' => TcaUtility::getFullTcaForSelectSideBySide(
+        'admission_requirements' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForSelectSideBySide(
             $ll . 'admissionRequirements',
             'tx_in2studyfinder_domain_model_admissionrequirement',
             'tx_in2studyfinder_studycourse_admissionrequirement_mm',
             1,
             1
         ),
-        'starts_of_study' => TcaUtility::getFullTcaForSelectCheckBox(
+        'starts_of_study' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForSelectCheckBox(
             $ll . 'startOfStudy',
             'tx_in2studyfinder_domain_model_startofstudy',
             'tx_in2studyfinder_studycourse_startofstudy_mm',
@@ -263,7 +264,7 @@ $tcaConfiguration = [
     ],
 ];
 
-if (ConfigurationUtility::isEnableGlobalData()) {
+if (In2code\In2studyfinder\Utility\ConfigurationUtility::isEnableGlobalData()) {
 
     $tcaConfiguration['columns']['different_preset'] = [
         'exclude' => 1,
@@ -282,7 +283,11 @@ if (ConfigurationUtility::isEnableGlobalData()) {
             'renderType' => 'selectSingle',
             'foreign_table' => 'tx_in2studyfinder_domain_model_globaldata',
             'foreign_table_where' => 'AND sys_language_uid in (-1, 0)',
-            'items' => [TcaUtility::getPleaseChooseOption('tx_in2studyfinder_domain_model_globaldata')],
+            'items' => [
+                In2code\In2studyfinder\Utility\TcaUtility::getPleaseChooseOption(
+                    'tx_in2studyfinder_domain_model_globaldata'
+                )
+            ],
             'minitems' => 1,
             'maxitems' => 1,
         ],

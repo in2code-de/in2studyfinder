@@ -1,9 +1,13 @@
 .l-content{
   padding: $gap;
 
-
   @media all and (min-width: $tablet) {
     padding: $gap $gap $gap ($gap+$side-nav);
+    transition: padding .2s ease;
+
+    .is-closed &{
+      padding: $gap $gap $gap $gap*5;
+    }
   }
 }
 

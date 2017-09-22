@@ -66,6 +66,7 @@ sandra.pohl@in2code.de
 
 | Version    | Date       | State      | Description                                                                  |
 | ---------- | ---------- | ---------- | ---------------------------------------------------------------------------- |
+| 3.0.1      | 2017-09-22 | BUGFIX     | Fix no filter parameter in the URL, remove use statements in TCA to prevent use conflicts, fix broken filter accordion icons, add button highlighting |
 | 3.0.0      | 2017-09-19 | [!!!]TASK  | [!!!] update HTML markup, compatibility for Typo3 8.7 add basic CSS styling, change CSS classes, update javascript handling. For more details look at the release commit 3.0.0 |
 | 2.1.2      | 2017-08-30 | BUGFIX     | Use the correct repository if the extension is extended                      |
 | 2.1.1      | 2017-08-29 | BUGFIX     | Use correct cmpObj function if the course model has been overwritten         |
