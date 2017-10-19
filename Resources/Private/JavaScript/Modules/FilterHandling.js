@@ -28,13 +28,18 @@
 		this.filterChanged = function(paginationPage) {
 			var studyFinderForm = $('.js-in2studyfinder-filter');
 			var pluginContentElementUid = $('.in2studyfinder').data('plugin-uid');
+			var sysLanguageUid = $('.in2studyfinder').data('in2studyfinder-language');
 			var contentElementUidQuery = '';
+			var sysLanguageUidQuery = '';
 			if (typeof pluginContentElementUid !== 'undefined') {
 				contentElementUidQuery = '&ce=' + pluginContentElementUid;
 			}
 
+			if (typeof sysLanguageUid !== 'undefined') {
+				sysLanguageUidQuery = '&L=' + sysLanguageUid;
+			}
 
-			var url = 'index.php?type=2308171055' + contentElementUidQuery;
+			var url = 'index.php?type=2308171055' + contentElementUidQuery + sysLanguageUidQuery;
 			if (paginationPage) {
 				url += '&tx_in2studyfinder_pi1%5B%40widget_0%5D%5BcurrentPage%5D=' + paginationPage;
 			}
