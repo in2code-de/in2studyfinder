@@ -66,6 +66,7 @@ sandra.pohl@in2code.de
 
 | Version    | Date       | State      | Description                                                                  |
 | ---------- | ---------- | ---------- | ---------------------------------------------------------------------------- |
+| 3.0.3      | 2017-10-19 | BUGFIX     | fix broken translations on filter ajax requests. Add a default configuration language configuration 0 = de and 1 = en |
 | 3.0.2      | 2017-10-19 | BUGFIX     | Fix leading slashes for typo3 8 if in2studyfinder_extend is used |
 | 3.0.1      | 2017-09-22 | BUGFIX     | Fix no filter parameter in the URL, remove use statements in TCA to prevent use conflicts, fix broken filter accordion icons, add button highlighting |
 | 3.0.0      | 2017-09-19 | [!!!]TASK  | [!!!] update HTML markup, compatibility for Typo3 8.7 add basic CSS styling, change CSS classes, update javascript handling. For more details look at the release commit 3.0.0 |
