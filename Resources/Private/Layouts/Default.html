@@ -1,4 +1,4 @@
-<div class="in2studyfinder no-js" {f:if(condition: data.uid, then: 'data-plugin-uid="{data.uid}"')}>
+<div class="in2studyfinder no-js" {f:if(condition: data.uid, then: 'data-plugin-uid="{data.uid}"')} {f:if(condition: data.sys_language_uid, then: 'data-in2studyfinder-language="{data.sys_language_uid}"')}>
 	<f:render section="main"/>
 
 	<f:render partial="StudyCourse/Loader" arguments="{_all}"/>

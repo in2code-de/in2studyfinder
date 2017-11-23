@@ -33,6 +33,7 @@ use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use In2code\In2studyfinder\Utility\FrontendUtility;
 use In2code\In2studyfinder\Utility\VersionUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Log\Logger;
@@ -174,7 +175,7 @@ class StudyCourseController extends ActionController
             }
         }
 
-        $studyCourses = $this->processSearch($searchOptions);
+            $studyCourses = $this->processSearch($searchOptions);
 
         /*
          * assign the current content element record to the view
@@ -220,6 +221,10 @@ class StudyCourseController extends ActionController
 
         foreach ($searchOptions as $filterName => $searchedOptions) {
             $mergedOptions[$this->filters[$filterName]['propertyPath']] = $searchedOptions;
+        }
+
+        if ($this->isAjaxRequest()) {
+            $mergedOptions['storagePids'] = $this->getContentElementStoragePids((int)GeneralUtility::_GET('ce'));
         }
 
         if (ConfigurationUtility::isCachingEnabled()) {
@@ -448,6 +453,22 @@ class StudyCourseController extends ActionController
     }
 
     /**
+     * @param integer $contentElementUid
+     * @return array
+     */
+    protected function getContentElementStoragePids($contentElementUid)
+    {
+        $storagePids = [];
+        $pluginRecord = BackendUtility::getRecord('tt_content', $contentElementUid, '*');
+
+        if ($pluginRecord['pages'] !== '') {
+            $storagePids = GeneralUtility::intExplode(',', $pluginRecord['pages']);
+        }
+
+        return $storagePids;
+    }
+
+    /**
      * get the studyCourseRepository
      *
      * @return StudyCourseRepository|object
@@ -455,5 +476,18 @@ class StudyCourseController extends ActionController
     protected function getStudyCourseRepository()
     {
         return $this->studyCourseRepository;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isAjaxRequest()
+    {
+        $isAjaxRequest = false;
+        if ((int)GeneralUtility::_GET('studyFinderAjaxRequest') === 1) {
+            $isAjaxRequest = true;
+        }
+
+        return $isAjaxRequest;
     }
 }

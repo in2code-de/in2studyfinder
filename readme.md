@@ -66,6 +66,7 @@ sandra.pohl@in2code.de
 
 | Version    | Date       | State      | Description                                                                  |
 | ---------- | ---------- | ---------- | ---------------------------------------------------------------------------- |
+| 3.0.4      | 2017-11-23 | BUGFIX     | set the correct storage pids for ajax requests if an "Record Storage Page" selected |
 | 3.0.3      | 2017-10-19 | BUGFIX     | fix broken translations on filter ajax requests. Add a default configuration language configuration 0 = de and 1 = en |
 | 3.0.2      | 2017-10-19 | BUGFIX     | Fix leading slashes for typo3 8 if in2studyfinder_extend is used |
 | 3.0.1      | 2017-09-22 | BUGFIX     | Fix no filter parameter in the URL, remove use statements in TCA to prevent use conflicts, fix broken filter accordion icons, add button highlighting |

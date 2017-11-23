@@ -1,4 +1,5 @@
 <?php
+
 namespace In2code\In2studyfinder\Domain\Repository;
 
 /***************************************************************
@@ -26,6 +27,7 @@ namespace In2code\In2studyfinder\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use In2code\In2studyfinder\Controller\StudyCourseController;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
@@ -51,13 +53,26 @@ class StudyCourseRepository extends AbstractRepository
         $query->getQuerySettings()->setLanguageMode('strict');
 
         /**
-         * Add the Storage Pid for Settings
+         * set storage pids. $options['storagePids'] is filled
+         * if the request is an ajax request
+         *
+         * @see StudyCourseController processSearch(array $searchOptions)
          */
-        $storagePids = $query->getQuerySettings()->getStoragePageIds();
+        if (!empty($options['storagePids'])) {
+            $storagePids = $options['storagePids'];
+        } else {
+            $storagePids = $query->getQuerySettings()->getStoragePageIds();
+        }
+
+        unset($options['storagePids']);
+
         $settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
 
+        /**
+         * add settings pid
+         */
         if (!in_array((int)$settings['settingsPid'], $storagePids)) {
-            array_push($storagePids, $settings['settingsPid']);
+            array_push($storagePids, (int)$settings['settingsPid']);
         }
 
         $query->getQuerySettings()->setStoragePageIds($storagePids);
