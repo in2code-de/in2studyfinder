@@ -497,7 +497,7 @@ class StudyCourse extends AbstractEntity
      * @param \In2code\In2studyfinder\Domain\Model\Faculty $faculty
      * @return void
      */
-    public function setFaculty(Faculty $faculty)
+    public function setFaculty($faculty)
     {
         $this->faculty = $faculty;
     }

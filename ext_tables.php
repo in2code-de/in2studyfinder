@@ -22,6 +22,26 @@ $extKey = 'in2studyfinder';
 
 if (TYPO3_MODE === 'BE') {
 
+    /**
+     * Include Backend Module
+     */
+    if (TYPO3_MODE === 'BE') {
+        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+            'In2code.in2studyfinder',
+            'web',
+            'm1',
+            '',
+            [
+                'Backend' => 'list, export'
+            ],
+            [
+                'access' => 'user,group',
+                'icon' => 'EXT:in2studyfinder/ext_icon.svg',
+                'labels' => 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:wizardItemTitle',
+            ]
+        );
+    }
+
     if (\In2code\In2studyfinder\Utility\VersionUtility::isTypo3MajorVersionAbove(6)) {
 
         /**

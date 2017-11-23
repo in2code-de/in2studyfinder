@@ -1,0 +1,90 @@
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
+
+<f:layout name="Backend"/>
+
+<f:section name="main">
+    <div class="form-section">
+        <f:flashMessages/>
+        <f:for each="{messages}" as="message">
+            <div class="typo3-message message-error"><strong>
+                <f:translate key="tx_mask.content.error"/>
+            </strong> {message}
+            </div>
+        </f:for>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">1. Exporter auswählen</div>
+            <select name="exporter">
+                <optgroup label="system">
+                    <option value="csv">CSV</option>
+                    <option value="xls">XLA</option>
+                </optgroup>
+                <optgroup label="custom">
+                    <option value="pdf">PDF</option>
+                </optgroup>
+            </select>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">2. Studiengänge auswählen</div>
+            <table class="table table-striped table-hover">
+                <thead>
+                <th>
+                    <f:form.checkbox name="selection" value="all"/>
+                </th>
+                <th>Uid</th>
+                <th colspan="2">Title</th>
+                </thead>
+                <tbody>
+                <f:widget.paginate objects="{studyCourses}" as="paginatedCourses" configuration="{itemsPerPage:'10', insertAbove: '0', insertBelow: '1'}">
+                    <f:for each="{paginatedCourses}" as="studyCourse">
+                        <tr>
+                            <td>
+                                <f:form.checkbox name="selection" value="{studyCourse.uid}"/>
+                            </td>
+                            <td>{studyCourse.uid}</td>
+                            <td>{studyCourse.title}</td>
+                            <td class="col-control">
+                                <div class="btn-group" role="group">
+                                    <a href="#" onClick="alert('Ok'); return false;" class="btn btn-default">
+                                        <core:icon identifier="actions-document-open"/>
+                                    </a>
+                                    <a href="#" onClick="alert('Ok'); return false;" class="btn btn-default">
+                                        <core:icon identifier="actions-document-info"/>
+                                    </a>
+                                    <a href="#" onClick="alert('Ok'); return false;" class="btn btn-default">
+                                        <core:icon identifier="actions-edit-hide"/>
+                                    </a>
+                                    <a href="#" onClick="alert('Ok'); return false;" class="btn btn-default">
+                                        <core:icon identifier="actions-edit-delete"/>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </f:for>
+                </f:widget.paginate>
+                </tbody>
+                <tfoot>
+                <td colspan="3">Foot</td>
+                <td>
+                    <label for="itemsPerPage">
+                        Items per Page
+                        <select name="itemsPerPage" title="itemsPerPage">
+                            <option value="25" selected="selected">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="250">250</option>
+                            <option value="500">500</option>
+                        </select>
+                    </label>
+                </td>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">3. zu exportierdene Felder auswählen</div>
+
+        </div>
+    </div>
+</f:section>
