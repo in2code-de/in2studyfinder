@@ -31,7 +31,6 @@
 			var sysLanguageUid = $('.in2studyfinder').data('in2studyfinder-language');
 			var contentElementUidQuery = '';
 			var sysLanguageUidQuery = '';
-			var url = document.location.href;
 			if (typeof pluginContentElementUid !== 'undefined') {
 				contentElementUidQuery = '&ce=' + pluginContentElementUid;
 			}
@@ -40,19 +39,10 @@
 				sysLanguageUidQuery = '&L=' + sysLanguageUid;
 			}
 
-			// if a URL already contains a parameter with ?
-			if (url.indexOf('?') > -1) {
-				url += '&';
-			} else {
-				url += '?';
-			}
-
-			url += 'type=2308171055&studyFinderAjaxRequest=1' + contentElementUidQuery + sysLanguageUidQuery;
-
+			var url = '/?type=2308171055&studyFinderAjaxRequest=1' + contentElementUidQuery + sysLanguageUidQuery;
 			if (paginationPage) {
 				url += '&tx_in2studyfinder_pi1%5B%40widget_0%5D%5BcurrentPage%5D=' + paginationPage;
 			}
-
 			$.ajax({
 				type: 'POST',
 				url: url,

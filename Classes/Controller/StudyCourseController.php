@@ -36,6 +36,7 @@ use In2code\In2studyfinder\Utility\VersionUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Database\QueryGenerator;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -175,7 +176,7 @@ class StudyCourseController extends ActionController
             }
         }
 
-            $studyCourses = $this->processSearch($searchOptions);
+        $studyCourses = $this->processSearch($searchOptions);
 
         /*
          * assign the current content element record to the view
@@ -224,7 +225,10 @@ class StudyCourseController extends ActionController
         }
 
         if ($this->isAjaxRequest()) {
-            $mergedOptions['storagePids'] = $this->getContentElementStoragePids((int)GeneralUtility::_GET('ce'));
+            $storagePids = $this->getContentElementStoragePids((int)GeneralUtility::_GET('ce'));
+            if (!empty($storagePids)) {
+                $mergedOptions['storagePids'] = $storagePids;
+            }
         }
 
         if (ConfigurationUtility::isCachingEnabled()) {
