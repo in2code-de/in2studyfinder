@@ -273,8 +273,14 @@ class StudyCourseController extends ActionController
     protected function getFrontendFilters()
     {
         $filters = [];
+        $selectedFlexformOptions = $this->getSelectedFlexformOptions();
 
         foreach ($this->filters as $filterName => $filter) {
+            // disable filters in the frontend if the same filter is set in the backend plugin
+            if (array_key_exists($filterName, $selectedFlexformOptions)
+                && $selectedFlexformOptions[$filterName] !== '') {
+                $filter['disabledInFrontend'] = 1;
+            }
             if ($filter['disabledInFrontend'] === 0) {
                 $filters[$filterName] = $filter;
             }
