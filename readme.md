@@ -66,6 +66,7 @@ sandra.pohl@in2code.de
 
 | Version    | Date       | State      | Description                                                                  |
 | ---------- | ---------- | ---------- | ---------------------------------------------------------------------------- |
+| 3.0.7      | 2017-12-07 | BUGFIX     | fix filter behavior if a filter is disabled via typoscript and also set in the backend, add the typoscript option disabledInFrontend for filters |
 | 3.0.6      | 2017-11-27 | BUGFIX     | fix wrong ajax URL handling, fix duplicate cache entry if no contentElementStoragePid is set |
 | 3.0.5      | 2017-11-27 | BUGFIX     | fix wrong ajax URL if realUrl or a similar extension is used |
 | 3.0.4      | 2017-11-23 | BUGFIX     | set the correct storage pids for ajax requests if an "Record Storage Page" is selected |

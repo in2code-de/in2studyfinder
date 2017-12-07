@@ -61,6 +61,7 @@ plugin.tx_in2studyfinder {
 				objectModel = In2code\In2studyfinder\Domain\Model\Department
 				propertyPath = department
 				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:department
+#				disabledInFrontend = 1
 			}
 #			credits {
 #				type = boolean

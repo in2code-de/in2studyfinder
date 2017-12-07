@@ -51,6 +51,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Property\Exception;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Extbase\Utility\ArrayUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -160,21 +161,26 @@ class StudyCourseController extends ActionController
      */
     public function filterAction(array $searchOptions = [])
     {
-        if (empty($searchOptions)) {
-            $searchOptions = $this->getSelectedFlexformOptions();
-            if (empty($searchOptions) && ConfigurationUtility::isPersistentFilterEnabled()) {
-                // No search options have been provided and no filter have been predefined in the Plugin's FlexForm
-                // so we assume the user came back to the list page through another direct link.
-                // Do not run this in the initializeFilterAction because it must also be applied for listAction.
-                $searchOptions = $this
-                    ->getTypoScriptFrontendController()
-                    ->fe_user
-                    ->getSessionData('tx_in2studycourse_filter');
-                if (empty($searchOptions)) {
-                    $searchOptions = [];
-                }
+        if (empty($searchOptions) && ConfigurationUtility::isPersistentFilterEnabled()) {
+            // No search options have been provided and no filter have been predefined in the Plugin's FlexForm
+            // so we assume the user came back to the list page through another direct link.
+            // Do not run this in the initializeFilterAction because it must also be applied for listAction.
+            $searchOptions = $this
+                ->getTypoScriptFrontendController()
+                ->fe_user
+                ->getSessionData('tx_in2studycourse_filter');
+            if (empty($searchOptions)) {
+                $searchOptions = [];
             }
         }
+
+        $searchOptions =
+            ArrayUtility::arrayMergeRecursiveOverrule(
+                $searchOptions,
+                $this->getSelectedFlexformOptions(),
+                false,
+                false
+            );
 
         $studyCourses = $this->processSearch($searchOptions);
 
@@ -189,7 +195,7 @@ class StudyCourseController extends ActionController
         $this->view->assignMultiple(
             [
                 'searchedOptions' => $searchOptions,
-                'filters' => $this->filters,
+                'filters' => $this->getFrontendFilters(),
                 'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($studyCourses),
                 'studyCourseCount' => count($studyCourses),
                 'studyCourses' => $studyCourses,
@@ -260,6 +266,30 @@ class StudyCourseController extends ActionController
     }
 
     /**
+     * return the filters for the frontend
+     *
+     * @return array
+     */
+    protected function getFrontendFilters()
+    {
+        $filters = [];
+        $selectedFlexformOptions = $this->getSelectedFlexformOptions();
+
+        foreach ($this->filters as $filterName => $filter) {
+            // disable filters in the frontend if the same filter is set in the backend plugin
+            if (array_key_exists($filterName, $selectedFlexformOptions)
+                && $selectedFlexformOptions[$filterName] !== '') {
+                $filter['disabledInFrontend'] = 1;
+            }
+            if ($filter['disabledInFrontend'] === 0) {
+                $filters[$filterName] = $filter;
+            }
+        }
+
+        return $filters;
+    }
+
+    /**
      * Applies all filters set in the Plugin's FlexForm configuration and puts the result in $this->filters
      */
     protected function setFilters()
@@ -271,10 +301,17 @@ class StudyCourseController extends ActionController
                     $frontendLabel = $filterProperties['frontendLabel'];
                 }
 
+                $disabledInFrontend = 0;
+
+                if ($filterProperties['disabledInFrontend'] === '1') {
+                    $disabledInFrontend = 1;
+                }
+
                 $this->filters[$filterName] = [
                     'type' => $filterProperties['type'],
                     'propertyPath' => $filterProperties['propertyPath'],
                     'frontendLabel' => $frontendLabel,
+                    'disabledInFrontend' => $disabledInFrontend,
                 ];
 
                 switch ($filterProperties['type']) {
