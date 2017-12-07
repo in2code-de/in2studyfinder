@@ -36,8 +36,10 @@ use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use In2code\In2studyfinder\Utility\FrontendUtility;
 use In2code\In2studyfinder\Utility\VersionUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Database\QueryGenerator;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -52,6 +54,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Property\Exception;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Extbase\Utility\ArrayUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -150,21 +153,26 @@ class StudyCourseController extends AbstractController
      */
     public function filterAction(array $searchOptions = [])
     {
-        if (empty($searchOptions)) {
-            $searchOptions = $this->getSelectedFlexformOptions();
-            if (empty($searchOptions) && ConfigurationUtility::isPersistentFilterEnabled()) {
-                // No search options have been provided and no filter have been predefined in the Plugin's FlexForm
-                // so we assume the user came back to the list page through another direct link.
-                // Do not run this in the initializeFilterAction because it must also be applied for listAction.
-                $searchOptions = $this
-                    ->getTypoScriptFrontendController()
-                    ->fe_user
-                    ->getSessionData('tx_in2studycourse_filter');
-                if (empty($searchOptions)) {
-                    $searchOptions = [];
-                }
+        if (empty($searchOptions) && ConfigurationUtility::isPersistentFilterEnabled()) {
+            // No search options have been provided and no filter have been predefined in the Plugin's FlexForm
+            // so we assume the user came back to the list page through another direct link.
+            // Do not run this in the initializeFilterAction because it must also be applied for listAction.
+            $searchOptions = $this
+                ->getTypoScriptFrontendController()
+                ->fe_user
+                ->getSessionData('tx_in2studycourse_filter');
+            if (empty($searchOptions)) {
+                $searchOptions = [];
             }
         }
+
+        $searchOptions =
+            ArrayUtility::arrayMergeRecursiveOverrule(
+                $searchOptions,
+                $this->getSelectedFlexformOptions(),
+                false,
+                false
+            );
 
         $studyCourses = $this->processSearch($searchOptions);
 
@@ -179,7 +187,7 @@ class StudyCourseController extends AbstractController
         $this->view->assignMultiple(
             [
                 'searchedOptions' => $searchOptions,
-                'filters' => $this->filters,
+                'filters' => $this->getFrontendFilters(),
                 'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($studyCourses),
                 'studyCourseCount' => count($studyCourses),
                 'studyCourses' => $studyCourses,
@@ -214,6 +222,13 @@ class StudyCourseController extends AbstractController
             $mergedOptions[$this->filters[$filterName]['propertyPath']] = $searchedOptions;
         }
 
+        if ($this->isAjaxRequest()) {
+            $storagePids = $this->getContentElementStoragePids((int)GeneralUtility::_GET('ce'));
+            if (!empty($storagePids)) {
+                $mergedOptions['storagePids'] = $storagePids;
+            }
+        }
+
         if (ConfigurationUtility::isCachingEnabled()) {
             $cacheIdentifier = $this->getCacheIdentifierForStudyCourses($mergedOptions);
             $studyCourses = $this->cacheInstance->get($cacheIdentifier);
@@ -243,6 +258,30 @@ class StudyCourseController extends AbstractController
     }
 
     /**
+     * return the filters for the frontend
+     *
+     * @return array
+     */
+    protected function getFrontendFilters()
+    {
+        $filters = [];
+        $selectedFlexformOptions = $this->getSelectedFlexformOptions();
+
+        foreach ($this->filters as $filterName => $filter) {
+            // disable filters in the frontend if the same filter is set in the backend plugin
+            if (array_key_exists($filterName, $selectedFlexformOptions)
+                && $selectedFlexformOptions[$filterName] !== '') {
+                $filter['disabledInFrontend'] = 1;
+            }
+            if ($filter['disabledInFrontend'] === 0) {
+                $filters[$filterName] = $filter;
+            }
+        }
+
+        return $filters;
+    }
+
+    /**
      * Applies all filters set in the Plugin's FlexForm configuration and puts the result in $this->filters
      */
     protected function setFilters()
@@ -254,10 +293,17 @@ class StudyCourseController extends AbstractController
                     $frontendLabel = $filterProperties['frontendLabel'];
                 }
 
+                $disabledInFrontend = 0;
+
+                if ($filterProperties['disabledInFrontend'] === '1') {
+                    $disabledInFrontend = 1;
+                }
+
                 $this->filters[$filterName] = [
                     'type' => $filterProperties['type'],
                     'propertyPath' => $filterProperties['propertyPath'],
                     'frontendLabel' => $frontendLabel,
+                    'disabledInFrontend' => $disabledInFrontend,
                 ];
 
                 switch ($filterProperties['type']) {
@@ -422,5 +468,34 @@ class StudyCourseController extends AbstractController
     protected function getTypoScriptFrontendController()
     {
         return $GLOBALS['TSFE'];
+    }
+
+    /**
+     * @param integer $contentElementUid
+     * @return array
+     */
+    protected function getContentElementStoragePids($contentElementUid)
+    {
+        $storagePids = [];
+        $pluginRecord = BackendUtility::getRecord('tt_content', $contentElementUid, '*');
+
+        if ($pluginRecord['pages'] !== '') {
+            $storagePids = GeneralUtility::intExplode(',', $pluginRecord['pages']);
+        }
+
+        return $storagePids;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isAjaxRequest()
+    {
+        $isAjaxRequest = false;
+        if ((int)GeneralUtility::_GET('studyFinderAjaxRequest') === 1) {
+            $isAjaxRequest = true;
+        }
+
+        return $isAjaxRequest;
     }
 }

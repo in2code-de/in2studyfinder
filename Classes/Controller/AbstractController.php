@@ -72,6 +72,12 @@ class AbstractController extends ActionController
      */
     protected $logger = null;
 
+    public function initializeAction()
+    {
+        $this->studyCourseRepository = $this->setStudyCourseRepository();
+        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(static::class);
+    }
+
     /**
      * get the studyCourseRepository
      *
@@ -80,12 +86,6 @@ class AbstractController extends ActionController
     protected function getStudyCourseRepository()
     {
         return $this->studyCourseRepository;
-    }
-
-    public function initializeAction()
-    {
-        $this->studyCourseRepository = $this->setStudyCourseRepository();
-        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(static::class);
     }
 
     /**

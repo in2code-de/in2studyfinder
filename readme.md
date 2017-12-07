@@ -66,6 +66,10 @@ sandra.pohl@in2code.de
 
 | Version    | Date       | State      | Description                                                                  |
 | ---------- | ---------- | ---------- | ---------------------------------------------------------------------------- |
+| 3.0.7      | 2017-12-07 | BUGFIX     | fix filter behavior if a filter is disabled via typoscript and also set in the backend, add the typoscript option disabledInFrontend for filters |
+| 3.0.6      | 2017-11-27 | BUGFIX     | fix wrong ajax URL handling, fix duplicate cache entry if no contentElementStoragePid is set |
+| 3.0.5      | 2017-11-27 | BUGFIX     | fix wrong ajax URL if realUrl or a similar extension is used |
+| 3.0.4      | 2017-11-23 | BUGFIX     | set the correct storage pids for ajax requests if an "Record Storage Page" is selected |
 | 3.0.3      | 2017-10-19 | BUGFIX     | fix broken translations on filter ajax requests. Add a default configuration language configuration 0 = de and 1 = en |
 | 3.0.2      | 2017-10-19 | BUGFIX     | Fix leading slashes for typo3 8 if in2studyfinder_extend is used |
 | 3.0.1      | 2017-09-22 | BUGFIX     | Fix no filter parameter in the URL, remove use statements in TCA to prevent use conflicts, fix broken filter accordion icons, add button highlighting |
