@@ -13,15 +13,11 @@
         </f:for>
 
         <div class="panel panel-default">
-            <div class="panel-heading">1. Exporter auswählen</div>
+            <div class="panel-heading">1. Exportieren als:</div>
             <select name="exporter">
-                <optgroup label="system">
-                    <option value="csv">CSV</option>
-                    <option value="xls">XLA</option>
-                </optgroup>
-                <optgroup label="custom">
-                    <option value="pdf">PDF</option>
-                </optgroup>
+                <f:for each="{exportDataProvider}" as="dataProvider" key="providerName">
+                    <option value="{dataProvider}">{providerName}</option>
+                </f:for>
             </select>
         </div>
 
@@ -36,7 +32,8 @@
                 <th colspan="2">Title</th>
                 </thead>
                 <tbody>
-                <f:widget.paginate objects="{studyCourses}" as="paginatedCourses" configuration="{itemsPerPage:'10', insertAbove: '0', insertBelow: '1'}">
+                <f:widget.paginate objects="{studyCourses}" as="paginatedCourses"
+                                   configuration="{itemsPerPage:'10', insertAbove: '0', insertBelow: '1'}">
                     <f:for each="{paginatedCourses}" as="studyCourse">
                         <tr>
                             <td>
@@ -84,6 +81,14 @@
 
         <div class="panel panel-default">
             <div class="panel-heading">3. zu exportierdene Felder auswählen</div>
+            <ul class="list-tree text-monospace">
+                <li>Title</li>
+                <li>AcademicDegree
+                    <ul class="list-tree text-monospace">
+                        <li>Title</li>
+                    </ul>
+                </li>
+            </ul>
 
         </div>
     </div>

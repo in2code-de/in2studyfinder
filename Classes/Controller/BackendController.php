@@ -60,15 +60,28 @@ class BackendController extends AbstractController
     {
         $studyCourses = $this->getStudyCourseRepository()->findAll();
 
-        $getPossibleExporter = $this->getPossibleExporter();
+        $possibleExportDataProvider = $this->getPossibleExportDataProvider();
         $possibleFieldsToExport = $this->getPossibleFieldsToExportForStudyCourses($studyCourses[0]);
 
-        $this->view->assign('studyCourses', $studyCourses);
+        $this->view->assignMultiple(
+            [
+                'studyCourses' => $studyCourses,
+                'exportDataProvider' => $possibleExportDataProvider
+            ]
+        );
     }
 
-    public function getPossibleExporter()
+    public function getPossibleExportDataProvider()
     {
+        $possibleDataProvider = [];
 
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportProvider'])
+            && is_array($GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportProvider'])
+        ) {
+            $possibleDataProvider = $GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportProvider'];
+        }
+
+        return $possibleDataProvider;
     }
 
     public function exportAction($studyCourses)

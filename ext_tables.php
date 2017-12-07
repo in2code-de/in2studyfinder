@@ -70,6 +70,15 @@ if (TYPO3_MODE === 'BE') {
         $TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['In2code\In2studyfinder\Utility\Hook\WizIcon'] =
             \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extKey) . 'Classes/Utility/Hook/WizIcon.php';
     }
+
+    /*
+     * Register default export provider
+     */
+    $GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportProvider']['CSV'] =
+        \In2code\In2studyfinder\DataProvider\ExportProvider\CsvExportProvider::class;
+    $GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportProvider']['PDF'] =
+        \In2code\In2studyfinder\DataProvider\ExportProvider\PdfExportProvider::class;
+
 }
 
 /**
