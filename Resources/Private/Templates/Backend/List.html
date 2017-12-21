@@ -1,4 +1,5 @@
 {namespace core = TYPO3\CMS\Core\ViewHelpers}
+{namespace in2studyfinder = In2code\In2studyfinder\ViewHelpers}
 
 <f:layout name="Backend"/>
 
@@ -78,18 +79,20 @@
                 </tfoot>
             </table>
         </div>
-
         <div class="panel panel-default">
-            <div class="panel-heading">3. zu exportierdene Felder auswählen</div>
-            <ul class="list-tree text-monospace">
-                <li>Title</li>
-                <li>AcademicDegree
-                    <ul class="list-tree text-monospace">
-                        <li>Title</li>
-                    </ul>
+            <div class="panel-heading">3. zu exportierdene Felder auswählen <span
+                    class="js-in2studyfinder-selected-fields"><span
+                    class="js-in2studyfinder-selected-fields-count">0</span> Selected</span>
+            </div>
+            <ul class="list-tree text-monospace js-in2studyfinder-property-list c-in2studyfinder-property-list">
+                <li>
+                    <f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:studycourse">
+                        Study Course
+                    </f:translate>
+                    <f:render partial="Backend/AvailableFields" section="main"
+                              arguments="{properties:availableFieldsForExport}"/>
                 </li>
             </ul>
-
         </div>
     </div>
 </f:section>

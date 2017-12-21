@@ -1,18 +1,22 @@
 <f:be.container
-		pageTitle="Studyfinder"
-		loadJQuery="true"
+        includeRequireJsModules="{
+   0:'TYPO3/CMS/In2studyfinder/ExportModule'
+}"
+    includeCssFiles="{
+   0:'{f:uri.resource(path:\'Css/backend.css\')}'
+}"
 >
-	<div class="typo3-fullDoc">
-		<div id="typo3-docheader">
-			<div class="typo3-docheader-functions">
-				<f:render partial="Backend/Tabs" />
-			</div>
-		</div>
-		<div id="typo3-docbody">
-			<div id="typo3-inner-docbody">
-				<f:flashMessages/>
-				<f:render section="main"/>
-			</div>
-		</div>
-	</div>
+    <div class="typo3-fullDoc">
+        <div id="typo3-docheader">
+            <div class="typo3-docheader-functions">
+                <f:render partial="Backend/Tabs"/>
+            </div>
+        </div>
+        <div id="typo3-docbody">
+            <div id="typo3-inner-docbody">
+                <f:flashMessages/>
+                <f:render section="main"/>
+            </div>
+        </div>
+    </div>
 </f:be.container>

@@ -28,10 +28,8 @@ namespace In2code\In2studyfinder\Controller;
  ***************************************************************/
 
 use In2code\In2studyfinder\DataProvider\ExportConfiguration;
-use In2code\In2studyfinder\DataProvider\ExportProvider\CsvExportProvider;
-use In2code\In2studyfinder\Domain\Model\StudyCourse;
+use In2code\In2studyfinder\DataProvider\ExportProviderInterface;
 use In2code\In2studyfinder\Domain\Service\ExportService;
-use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
@@ -42,10 +40,27 @@ use TYPO3\CMS\Extbase\Reflection\ReflectionService;
  */
 class BackendController extends AbstractController
 {
+    /**
+     * @var ReflectionService
+     */
+    protected $reflectionService;
+
+    protected $excludedProperties = [
+        '_localizedUid',
+        '_languageUid',
+        '_versionedUid',
+        'globalDataPreset',
+        'globalData',
+        'contentElements',
+        'pid',
+        'uid'
+    ];
+
     public function initializeAction()
     {
         parent::initializeAction();
 
+        $this->reflectionService = $this->objectManager->get(ReflectionService::class);
 
         if ($this->settings['storagePid'] === '') {
             // @Todo: Add Warning Message!
@@ -61,12 +76,18 @@ class BackendController extends AbstractController
         $studyCourses = $this->getStudyCourseRepository()->findAll();
 
         $possibleExportDataProvider = $this->getPossibleExportDataProvider();
-        $possibleFieldsToExport = $this->getPossibleFieldsToExportForStudyCourses($studyCourses[0]);
+
+        $propertyArray = [];
+        $this->getFullPropertyList(
+            $propertyArray,
+            $this->reflectionService->getClassSchema($studyCourses[0])->getProperties()
+        );
 
         $this->view->assignMultiple(
             [
                 'studyCourses' => $studyCourses,
-                'exportDataProvider' => $possibleExportDataProvider
+                'exportDataProvider' => $possibleExportDataProvider,
+                'availableFieldsForExport' => $propertyArray
             ]
         );
     }
@@ -84,7 +105,7 @@ class BackendController extends AbstractController
         return $possibleDataProvider;
     }
 
-    public function exportAction($studyCourses)
+    public function exportAction($exportClass, $studyCourses, $exportFields)
     {
         // Begin Export
 
@@ -98,53 +119,43 @@ class BackendController extends AbstractController
          */
 
         $exporterConfiguration = $this->objectManager->get(ExportConfiguration::class);
-        //$exporterConfiguration->setFields(['uid', 'title', 'ectsCredits']);
-        $exporterConfiguration->setFields(
-            ['uid', 'title', 'ectsCredits', 'academicDegree.graduation.title', 'courseLanguages.language']
-        );
+        $exporterConfiguration->setFields($exportFields);
 
         $exportService = $this->objectManager->get(ExportService::class);
 
-        $exportService->setExporter(new CsvExportProvider);
+        /** @var ExportProviderInterface $exporter */
+        $exporter = $this->objectManager->get($exportClass);
+
+        $exportService->setExporter($exporter);
         $exportService->setExportRecords($studyCourses);
         $exportService->setExportConfiguration($exporterConfiguration);
 
         $exportService->export();
     }
 
-    /**
-     * @param StudyCourse $studyCourse
-     */
-    protected function getPossibleFieldsToExportForStudyCourses($studyCourse)
+    protected function getFullPropertyList(&$propertyArray, $objectProperties)
     {
-        $reflectionService = $this->objectManager->get(ReflectionService::class);
-        $studyCoursePropertyList = $reflectionService->getClassPropertyNames(get_class($studyCourse));
-        $propertyArray = [];
-
-        /* 1. Select Exporter
-         * 2. Select StudyCourses
-         *   2.1 List StudyCourses
-         *    2.1.1 Only Manuel
-         *    2.1.2 Later with special filters?
-         *
-         * 3. Select Fields for Export
-         *
-         * 4. Overview
-         */
-
-        foreach ($studyCoursePropertyList as $propertyName) {
-            $property = $studyCourse->_getProperty($propertyName);
-            if ($property instanceof ObjectStorage) {
-                $propertyArray[$propertyName]['type'] = ObjectStorage::class;
+        foreach ($objectProperties as $propertyName => $propertyInformation) {
+            if (!in_array($propertyName, $this->excludedProperties)) {
+                if ($propertyInformation['type'] === ObjectStorage::class) {
+                    if (class_exists($propertyInformation['elementType'])) {
+                        $this->getFullPropertyList(
+                            $propertyArray[$propertyName],
+                            $this->reflectionService->getClassSchema($propertyInformation['elementType'])
+                                ->getProperties()
+                        );
+                    }
+                } else {
+                    if (class_exists($propertyInformation['type'])) {
+                        $this->getFullPropertyList(
+                            $propertyArray[$propertyName],
+                            $this->reflectionService->getClassSchema($propertyInformation['type'])->getProperties()
+                        );
+                    } else {
+                        $propertyArray[$propertyName] = $propertyName;
+                    }
+                }
             }
-            if ($property instanceof AbstractDomainObject) {
-                $propertyArray[$propertyName]['type'] = AbstractDomainObject::class;
-            }
-            if (gettype($property) !== 'object' && gettype($property) !== 'NULL') {
-                $propertyArray[$propertyName]['type'] = gettype($property);
-            }
-
-            $propertyArray[$propertyName]['property'] = $property;
         }
     }
 }
