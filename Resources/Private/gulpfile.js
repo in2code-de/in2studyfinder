@@ -28,7 +28,7 @@ gulp.task('js', function() {
 			.pipe(plumber())
 			.pipe(uglify())
 			.pipe(rename({
-				suffix: '.min'
+				suffix: ''
 			}))
 			.pipe(gulp.dest('../Public/JavaScript'));
 });
