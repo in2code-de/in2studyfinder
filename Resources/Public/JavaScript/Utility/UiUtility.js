@@ -1,0 +1,1 @@
+define([],function(){"use strict";var n={};return n.toggleClassForElement=function(n,s){n.classList.contains(s)?n.classList.remove(s):n.classList.add(s)},n.hideElement=function(n){n.style.display="none"},n.showElement=function(n){n.style.display="inline-block"},n});

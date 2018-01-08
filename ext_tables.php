@@ -38,6 +38,7 @@ if (TYPO3_MODE === 'BE') {
                 'access' => 'user,group',
                 'icon' => 'EXT:in2studyfinder/ext_icon.svg',
                 'labels' => 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:wizardItemTitle',
+                'navigationComponentId' => '',
             ]
         );
     }

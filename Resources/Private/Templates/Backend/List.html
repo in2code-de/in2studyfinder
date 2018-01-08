@@ -22,9 +22,13 @@
             </select>
         </div>
 
-        <div class="panel panel-default">
-            <div class="panel-heading">2. Studiengänge auswählen</div>
-            <table class="table table-striped table-hover">
+        <div class="panel panel-default js-in2studyfinder-select-course-container">
+            <div class="panel-heading">2. Studiengänge auswählen
+                <span
+                        class="js-in2studyfinder-selected-courses"><span
+                        class="js-in2studyfinder-selected-courses-count">0</span> Selected</span>
+            </div>
+            <table class="table table-striped table-hover js-in2studyfinder-course-table">
                 <thead>
                 <th>
                     <f:form.checkbox name="selection" value="all"/>
@@ -32,13 +36,14 @@
                 <th>Uid</th>
                 <th colspan="2">Title</th>
                 </thead>
-                <tbody>
-                <f:widget.paginate objects="{studyCourses}" as="paginatedCourses"
-                                   configuration="{itemsPerPage:'10', insertAbove: '0', insertBelow: '1'}">
+                <tbody class="js-in2studyfinder-course-list">
+                <in2studyfinder:widget.paginate objects="{studyCourses}" as="paginatedCourses"
+                                                configuration="{itemsPerPage:'25'}">
                     <f:for each="{paginatedCourses}" as="studyCourse">
-                        <tr>
+                        <tr data-in2studyfinder-course-uid="{studyCourse.uid}">
                             <td>
-                                <f:form.checkbox name="selection" value="{studyCourse.uid}"/>
+                                <f:form.checkbox name="selection" value="{studyCourse.uid}"
+                                                 class="js-in2studyfinder-select-course"/>
                             </td>
                             <td>{studyCourse.uid}</td>
                             <td>{studyCourse.title}</td>
@@ -60,7 +65,7 @@
                             </td>
                         </tr>
                     </f:for>
-                </f:widget.paginate>
+                </in2studyfinder:widget.paginate>
                 </tbody>
                 <tfoot>
                 <td colspan="3">Foot</td>
@@ -81,8 +86,8 @@
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">3. zu exportierdene Felder auswählen <span
-                    class="js-in2studyfinder-selected-fields"><span
-                    class="js-in2studyfinder-selected-fields-count">0</span> Selected</span>
+                    class="js-in2studyfinder-selected-properties"><span
+                    class="js-in2studyfinder-selected-properties-count">0</span> Selected</span>
             </div>
             <ul class="list-tree text-monospace js-in2studyfinder-property-list c-in2studyfinder-property-list">
                 <li>
@@ -94,5 +99,6 @@
                 </li>
             </ul>
         </div>
+        <button class="js-in2studyfinder-export-courses">Finish</button>
     </div>
 </f:section>
