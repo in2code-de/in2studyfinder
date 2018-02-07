@@ -258,6 +258,14 @@
 				<source>Studyfinder</source>
 				<target>Studiengangsfinder</target>
 			</trans-unit>
+			<trans-unit id="messages.noCourses.title">
+				<source>no courses existing</source>
+				<target>keine Studiengänge vorhanden</target>
+			</trans-unit>
+			<trans-unit id="messages.noCourses.body">
+				<source>current are no courses available</source>
+				<target>aktuell keine Studiengänge vorhanden</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

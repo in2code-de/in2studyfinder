@@ -129,6 +129,12 @@
 			<trans-unit id="isUnset">
 				<source>is unset</source>
 			</trans-unit>
+			<trans-unit id="messages.noCourses.title">
+				<source>no courses existing</source>
+			</trans-unit>
+			<trans-unit id="messages.noCourses.body">
+				<source>current are no courses available</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

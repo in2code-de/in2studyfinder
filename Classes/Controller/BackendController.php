@@ -30,8 +30,10 @@ namespace In2code\In2studyfinder\Controller;
 use In2code\In2studyfinder\DataProvider\ExportConfiguration;
 use In2code\In2studyfinder\DataProvider\ExportProviderInterface;
 use In2code\In2studyfinder\Domain\Service\ExportService;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * StudyCourseController
@@ -74,14 +76,21 @@ class BackendController extends AbstractController
     public function listAction()
     {
         $studyCourses = $this->getStudyCourseRepository()->findAll();
-
         $possibleExportDataProvider = $this->getPossibleExportDataProvider();
-
         $propertyArray = [];
-        $this->getFullPropertyList(
-            $propertyArray,
-            $this->reflectionService->getClassSchema($studyCourses->getFirst())->getProperties()
-        );
+
+        if ($studyCourses->getFirst() !== null) {
+            $this->getFullPropertyList(
+                $propertyArray,
+                $this->reflectionService->getClassSchema($studyCourses->getFirst())->getProperties()
+            );
+        } else {
+            $this->addFlashMessage(
+                LocalizationUtility::translate('messages.noCourses.body', 'in2studyfinder'),
+                LocalizationUtility::translate('messages.noCourses.title', 'in2studyfinder'),
+                AbstractMessage::WARNING
+            );
+        }
 
         $this->view->assignMultiple(
             [
