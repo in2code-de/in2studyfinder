@@ -204,6 +204,18 @@
 			<trans-unit id="messages.noCourses.body">
 				<source>current are no courses available</source>
 			</trans-unit>
+			<trans-unit id="messages.noStoragePid.title">
+				<source>missing storage pid</source>
+			</trans-unit>
+			<trans-unit id="messages.noStoragePid.body">
+				<source>no storage pid for courses set</source>
+			</trans-unit>
+			<trans-unit id="messages.noSettingsPid.title">
+				<source>missing settings pid</source>
+			</trans-unit>
+			<trans-unit id="messages.noSettingsPid.body">
+				<source>no settings pid set</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

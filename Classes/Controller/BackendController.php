@@ -33,6 +33,7 @@ use In2code\In2studyfinder\Domain\Service\ExportService;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -63,18 +64,12 @@ class BackendController extends AbstractController
         parent::initializeAction();
 
         $this->reflectionService = $this->objectManager->get(ReflectionService::class);
-
-        if ($this->settings['storagePid'] === '') {
-            // @Todo: Add Warning Message!
-        }
-
-        if ($this->settings['settingsPid'] === '') {
-            // @Todo: Add Warning Message!
-        }
     }
 
     public function listAction()
     {
+        $this->validateSettings();
+
         $studyCourses = $this->getStudyCourseRepository()->findAll();
         $possibleExportDataProvider = $this->getPossibleExportDataProvider();
         $propertyArray = [];
@@ -168,5 +163,22 @@ class BackendController extends AbstractController
         }
     }
 
+    protected function validateSettings()
+    {
+        if (!isset($this->settings['storagePid']) || empty($this->settings['storagePid'])) {
+            $this->addFlashMessage(
+                LocalizationUtility::translate('messages.noStoragePid.body', 'in2studyfinder'),
+                LocalizationUtility::translate('messages.noStoragePid.title', 'in2studyfinder'),
+                AbstractMessage::ERROR
+            );
+        }
 
+        if (!isset($this->settings['settingsPid']) || empty($this->settings['settingsPid'])) {
+            $this->addFlashMessage(
+                LocalizationUtility::translate('messages.noSettingsPid.body', 'in2studyfinder'),
+                LocalizationUtility::translate('messages.noSettingsPid.title', 'in2studyfinder'),
+                AbstractMessage::ERROR
+            );
+        }
+    }
 }
