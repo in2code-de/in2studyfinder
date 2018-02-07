@@ -27,10 +27,12 @@ namespace In2code\In2studyfinder\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Codeception\Util\Debug;
 use In2code\In2studyfinder\DataProvider\ExportConfiguration;
 use In2code\In2studyfinder\DataProvider\ExportProviderInterface;
 use In2code\In2studyfinder\Domain\Service\ExportService;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
@@ -89,7 +91,7 @@ class BackendController extends AbstractController
 
         $this->view->assignMultiple(
             [
-                'studyCourses' => $studyCourses,
+                'studyCourses' => $studyCourses->toArray(),
                 'exportDataProvider' => $possibleExportDataProvider,
                 'availableFieldsForExport' => $propertyArray
             ]
