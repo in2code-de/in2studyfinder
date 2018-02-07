@@ -80,7 +80,7 @@ class BackendController extends AbstractController
         $propertyArray = [];
         $this->getFullPropertyList(
             $propertyArray,
-            $this->reflectionService->getClassSchema($studyCourses[0])->getProperties()
+            $this->reflectionService->getClassSchema($studyCourses->getFirst())->getProperties()
         );
 
         $this->view->assignMultiple(
