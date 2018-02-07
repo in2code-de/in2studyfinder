@@ -38,7 +38,7 @@
                 </thead>
                 <tbody class="js-in2studyfinder-course-list">
                 <in2studyfinder:widget.paginate objects="{studyCourses}" as="paginatedCourses"
-                                                configuration="{itemsPerPage:'25'}">
+                                                configuration="{itemsPerPage:itemsPerPage}">
                     <f:for each="{paginatedCourses}" as="studyCourse">
                         <tr data-in2studyfinder-course-uid="{studyCourse.uid}">
                             <td>
@@ -72,12 +72,19 @@
                 <td>
                     <label for="itemsPerPage">
                         Items per Page
-                        <select name="itemsPerPage" title="itemsPerPage">
-                            <option value="25" selected="selected">25</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                            <option value="250">250</option>
-                            <option value="500">500</option>
+                        <select name="itemsPerPage" title="itemsPerPage" class="js-in2studyfinder-itemsPerPage">
+                            <option value="10" {f:if(condition:'{itemsPerPage} == 10', then: 'selected')}
+                            data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:10}')}">10</option>
+                            <option value="25" {f:if(condition:'{itemsPerPage} == 25', then: 'selected')}
+                            data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:25}')}">25</option>
+                            <option value="50" {f:if(condition:'{itemsPerPage} == 50', then: 'selected')}
+                            data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:50}')}">50</option>
+                            <option value="100" {f:if(condition:'{itemsPerPage} == 100', then: 'selected')}
+                            data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:100}')}">100</option>
+                            <option value="250" {f:if(condition:'{itemsPerPage} == 250', then: 'selected')}
+                            data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:250}')}">250</option>
+                            <option value="500" {f:if(condition:'{itemsPerPage} == 500', then: 'selected')}
+                            data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:500}')}">500</option>
                         </select>
                     </label>
                 </td>
@@ -102,3 +109,4 @@
         <button class="js-in2studyfinder-export-courses">Finish</button>
     </div>
 </f:section>
+

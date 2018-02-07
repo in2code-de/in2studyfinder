@@ -1,4 +1,4 @@
-define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/Utility/AjaxUtility'], function(UiUtility, AjaxUtility) {
+define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/Utility/AjaxUtility', 'TYPO3/CMS/In2studyfinder/Utility/UrlUtility'], function(UiUtility, AjaxUtility, UrlUtility) {
 	'use strict';
 
 	var SelectCoursesForExportService = {
@@ -12,8 +12,15 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
 	 * @return {void}
 	 */
 	SelectCoursesForExportService.initialize = function() {
+		SelectCoursesForExportService.prepareSelectedCourses();
 		SelectCoursesForExportService.addEventListenerToPropertyList();
 		SelectCoursesForExportService.addPaginationEventListener();
+		SelectCoursesForExportService.addChangeItemsPerPageEventListener();
+	};
+
+	SelectCoursesForExportService.prepareSelectedCourses = function() {
+		//console.log(SelectCoursesForExportService.coursesList);
+		SelectCoursesForExportService.coursesList.each(console.log('test'));
 	};
 
 	/**
@@ -25,6 +32,24 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
 	};
 
 	/**
+	 * @return {void}
+	 */
+	SelectCoursesForExportService.addChangeItemsPerPageEventListener = function() {
+		var itemsPerPageSelect = document.querySelector('.js-in2studyfinder-itemsPerPage');
+		itemsPerPageSelect.onchange = function(event) {
+			SelectCoursesForExportService.updateItemsPerPage(event);
+		};
+	};
+
+	SelectCoursesForExportService.updateItemsPerPage = function(event) {
+		var selectedOptions = event.target.selectedOptions;
+		var url = selectedOptions[0].getAttribute('data-action');
+		if (typeof url !== 'undefined') {
+			SelectCoursesForExportService.paginationAjaxCall(url);
+		}
+	};
+
+	/**
 	 *
 	 * @param event
 	 *
@@ -33,8 +58,14 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
 	SelectCoursesForExportService.callPagination = function(event) {
 		event.preventDefault();
 		var url = event.target.href;
+		var itemsPerPage = document.querySelector('.js-in2studyfinder-itemsPerPage').value;
 
 		if (typeof url !== 'undefined') {
+			url = UrlUtility.addAttributeToUrl(
+				url,
+				'tx_in2studyfinder_web_in2studyfinderm1[@widget_0][itemsPerPage]',
+				itemsPerPage
+			);
 			SelectCoursesForExportService.paginationAjaxCall(url);
 		}
 	};
@@ -136,7 +167,7 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
 		var element = document.querySelector('.js-in2studyfinder-selected-courses-count');
 		element.innerHTML = SelectCoursesForExportService.selectedCoursesCount;
 	};
-	
+
 	/**
 	 * @returns {Array}
 	 */

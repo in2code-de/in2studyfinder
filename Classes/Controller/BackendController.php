@@ -83,11 +83,19 @@ class BackendController extends AbstractController
             $this->reflectionService->getClassSchema($studyCourses[0])->getProperties()
         );
 
+        $itemsPerPage = $this->settings['pagination']['itemsPerPage'];
+
+        if ($this->request->hasArgument('itemsPerPage')) {
+            $itemsPerPage = $this->request->getArgument('itemsPerPage');
+        }
+
+
         $this->view->assignMultiple(
             [
                 'studyCourses' => $studyCourses,
                 'exportDataProvider' => $possibleExportDataProvider,
-                'availableFieldsForExport' => $propertyArray
+                'availableFieldsForExport' => $propertyArray,
+                'itemsPerPage' => $itemsPerPage
             ]
         );
     }
