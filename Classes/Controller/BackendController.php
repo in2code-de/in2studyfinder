@@ -105,7 +105,18 @@ class BackendController extends AbstractController
         if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportProvider'])
             && is_array($GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportProvider'])
         ) {
-            $possibleDataProvider = $GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportProvider'];
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportProvider'] as $providerName => $providerClass) {
+                if (!class_exists($providerClass)) {
+                    $this->addFlashMessage(
+                        'export provider class "' . $providerClass . '" was not found',
+                        'export provider class not found',
+                        AbstractMessage::ERROR
+                    );
+                } else {
+                    $possibleDataProvider[$providerName] = $providerClass;
+                }
+            }
+
         }
 
         return $possibleDataProvider;
