@@ -216,6 +216,21 @@
 			<trans-unit id="messages.noSettingsPid.body">
 				<source>no settings pid set</source>
 			</trans-unit>
+			<trans-unit id="courseLanguages">
+				<source>Course Language</source>
+			</trans-unit>
+			<trans-unit id="startsOfStudy">
+				<source>Start Of Study</source>
+			</trans-unit>
+			<trans-unit id="typesOfStudy">
+				<source>Type Of Study</source>
+			</trans-unit>
+			<trans-unit id="metaPagetitle">
+				<source>Page Title Tag</source>
+			</trans-unit>
+			<trans-unit id="sysLanguageUid">
+				<source>sys Language uid</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

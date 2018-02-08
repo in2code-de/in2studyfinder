@@ -4,46 +4,19 @@
     <ul class="list-tree text-monospace">
         <f:for each="{properties}" as="property" key="propertyName">
             <f:if condition="{in2studyfinder:isArray( variable: '{property}' )}">
+                <f:comment>
+                    if the property is an array (an own domain object)
+                </f:comment>
                 <f:then>
                     <li>
-                        <f:if condition="{f:translate(key: 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:{propertyName}', default: 'false')} == 'false'">
-                            <f:then>
-                                nicht
-                                <f:translate
-                                        key="LLL:EXT:in2studyfinder_extend/Resources/Private/Language/locallang_db.xlf:{propertyName}">
-                                    {propertyName}
-                                </f:translate>
-                            </f:then>
-                            <f:else>
-                                schon
-                                <f:translate
-                                        key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:{propertyName}">
-                                    {propertyName}
-                                </f:translate>
-                            </f:else>
-                        </f:if>
+                        <f:render section="renderLabel" arguments="{propertyName:propertyName}" />
                         <f:render section="subProperty"
-                                  arguments="{properties:property propertyNamePath:propertyName}"/>
+                                  arguments="{properties:property, propertyNamePath:propertyName}"/>
                     </li>
                 </f:then>
                 <f:else>
                     <li data-in2studyfinder-property-path="{propertyName}" data-in2studyfinder-is-selectable="true" data-in2studyfinder-is-selected="false" class="c-in2studyfinder-property-list-item">
-                        <f:if condition="{f:translate(key: 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:{propertyName}', default: 'false')} == 'false'">
-                            <f:then>
-                                nicht
-                                <f:translate
-                                        key="LLL:EXT:in2studyfinder_extend/Resources/Private/Language/locallang_db.xlf:{propertyName}">
-                                    {propertyName}
-                                </f:translate>
-                            </f:then>
-                            <f:else>
-                                schon
-                                <f:translate
-                                        key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:{propertyName}">
-                                    {propertyName}
-                                </f:translate>
-                            </f:else>
-                        </f:if>
+                        <f:render section="renderLabel" arguments="{propertyName:propertyName}" />
                     </li>
                 </f:else>
             </f:if>
@@ -57,30 +30,45 @@
             <f:if condition="{in2studyfinder:isArray( variable: '{subProperty}' )}">
                 <f:then>
                     <f:render section="subProperty"
-                              arguments="{properties:subProperty propertyNamePath:'{propertyNamePath}.{subPropertyName}'}"/>
+                              arguments="{properties:subProperty, propertyNamePath:'{propertyNamePath}.{subPropertyName}'}"/>
                 </f:then>
                 <f:else>
                     <li data-in2studyfinder-property-path="{propertyNamePath}.{subPropertyName}" data-in2studyfinder-is-selectable="true" data-in2studyfinder-is-selected="false"
                         class="c-in2studyfinder-property-list-item">
-                        <f:if condition="{f:translate(key: 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:{subPropertyName}', default: 'false')} == 'false'">
-                            <f:then>
-                                nicht
-                                <f:translate
-                                        key="LLL:EXT:in2studyfinder_extend/Resources/Private/Language/locallang_db.xlf:{subPropertyName}">
-                                    {propertyName}
-                                </f:translate>
-                            </f:then>
-                            <f:else>
-                                schon
-                                <f:translate
-                                        key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:{subPropertyName}">
-                                    {propertyName}
-                                </f:translate>
-                            </f:else>
-                        </f:if>
+                        <f:render section="renderLabel" arguments="{propertyName:subPropertyName}" />
                     </li>
                 </f:else>
             </f:if>
         </f:for>
     </ul>
+</f:section>
+
+<f:section name="renderLabel">
+    <f:if condition="{f:translate(key: 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:{propertyName}', default: 'false')} == 'false'">
+        <f:then>
+            <f:comment>
+                if the language label exists in the in2studyfinder locallang_db.xlf
+            </f:comment>
+            <f:translate
+                    key="LLL:EXT:in2studyfinder_extend/Resources/Private/Language/locallang_db.xlf:{propertyName}">
+                {propertyName}
+            </f:translate>
+        </f:then>
+        <f:else>
+            <f:if condition="{f:translate(key: 'LLL:EXT:in2studyfinder_extend/Resources/Private/Language/locallang_db.xlf:{propertyName}', default: 'false')} == 'false'">
+                <f:then>
+                    <f:comment>
+                        if no language label exist
+                    </f:comment>
+                    {propertyName}
+                </f:then>
+                <f:else>
+                    <f:translate
+                            key="LLL:EXT:in2studyfinder_extend/Resources/Private/Language/locallang_db.xlf:{propertyName}">
+                        {propertyName}
+                    </f:translate>
+                </f:else>
+            </f:if>
+        </f:else>
+    </f:if>
 </f:section>

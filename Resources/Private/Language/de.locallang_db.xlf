@@ -282,6 +282,26 @@
 				<source>no settings pid set</source>
 				<target>SettingsPid ist nicht gesetzt</target>
 			</trans-unit>
+			<trans-unit id="courseLanguages">
+				<source>Course Language</source>
+				<target>Unterrichtssprache</target>
+			</trans-unit>
+			<trans-unit id="startsOfStudy">
+				<source>Start Of Study</source>
+				<target>Studienbeginn</target>
+			</trans-unit>
+			<trans-unit id="typesOfStudy">
+				<source>Type Of Study</source>
+				<target>Studientyp</target>
+			</trans-unit>
+			<trans-unit id="metaPagetitle">
+				<source>Page Title Tag</source>
+				<target>Seiten Title Tag</target>
+			</trans-unit>
+			<trans-unit id="sysLanguageUid">
+				<source>sys Language uid</source>
+				<target>Sys Language Uid</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
