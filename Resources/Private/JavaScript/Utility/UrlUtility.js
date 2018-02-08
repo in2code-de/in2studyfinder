@@ -53,5 +53,25 @@ define([], function() {
 		return value;
 	};
 
+	/**
+	 *
+	 * @param url
+	 * @param attribute
+	 * @param value
+	 * @returns {string|*}
+	 */
+	UrlUtility.addAttributeToUrl = function(url, attribute, value) {
+
+		var divider = '?';
+
+		if (url.indexOf('?') !== -1) {
+			divider = '&';
+		}
+
+		url += divider + attribute + '=' + value;
+
+		return url;
+	};
+
 	return UrlUtility;
 });
