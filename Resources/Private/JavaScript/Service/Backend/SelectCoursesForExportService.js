@@ -18,9 +18,19 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
 		SelectCoursesForExportService.addChangeItemsPerPageEventListener();
 	};
 
+    /**
+	 * Set the Checkboxes checked for the available courses in the courseList
+     */
 	SelectCoursesForExportService.prepareSelectedCourses = function() {
-		//console.log(SelectCoursesForExportService.coursesList);
-		SelectCoursesForExportService.coursesList.each(console.log('test'));
+		var courseList = SelectCoursesForExportService.coursesList;
+
+		if (courseList.length > 0) {
+            console.log(courseList.length);
+            // if courseList !== empty
+            // set every existing course from this page in the courseList to active
+            console.log(SelectCoursesForExportService.coursesList);
+            //SelectCoursesForExportService.coursesList.each(console.log('test'));
+        }
 	};
 
 	/**

@@ -1,14 +1,13 @@
 <?php
 
-namespace In2code\In2studyfinder\DataProvider\ExportProvider;
+namespace In2code\In2studyfinder\Export;
 
-use In2code\In2studyfinder\DataProvider\ExportConfiguration;
-use In2code\In2studyfinder\DataProvider\ExportProviderInterface;
+use In2code\In2studyfinder\Export\Configuration\ExportConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
-class AbstractExportProvider implements ExportProviderInterface
+class AbstractExport implements ExportInterface
 {
     /**
      * @var ExportConfiguration
@@ -19,6 +18,16 @@ class AbstractExportProvider implements ExportProviderInterface
      * @var ObjectManagerInterface
      */
     protected $objectManager = null;
+
+    /**
+     * @var string
+     */
+    protected $contentType = 'application/force-download';
+
+    /**
+     * @var string
+     */
+    protected $fileExtension = '';
 
     public function __construct()
     {
@@ -47,6 +56,10 @@ class AbstractExportProvider implements ExportProviderInterface
     }
 
     public function export(array $exportRecords, ExportConfiguration $exportConfiguration)
+    {
+    }
+
+    public function getFileType()
     {
     }
 }

@@ -18,8 +18,11 @@ define(['TYPO3/CMS/In2studyfinder/Service/Backend/SelectPropertiesForExportServi
 	ExportModule.exportCourses = function() {
 		var propertiesForExport = SelectPropertiesForExportService.getPropertyList();
 		var coursesForExport = SelectCoursesForExportService.getCourseList();
-		console.log(propertiesForExport);
-		console.log(coursesForExport);
+		var selectedPropertiesElement = document.querySelector('.in2studyfinder-selected-properties');
+		var selectedCoursesElement = document.querySelector('.in2studyfinder-selected-courses');
+
+        selectedPropertiesElement.value = JSON.stringify(Object.assign({}, propertiesForExport));
+        selectedCoursesElement.value = JSON.stringify(Object.assign({}, coursesForExport));
 	};
 
 	/**

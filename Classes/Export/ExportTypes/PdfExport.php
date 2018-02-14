@@ -1,12 +1,17 @@
 <?php
 
-namespace In2code\In2studyfinder\DataProvider\ExportProvider;
+namespace In2code\In2studyfinder\Export\ExportTypes;
 
-use In2code\In2studyfinder\DataProvider\ExportConfiguration;
-use In2code\In2studyfinder\DataProvider\ExportProviderInterface;
+use In2code\In2studyfinder\Export\Configuration\ExportConfiguration;
+use In2code\In2studyfinder\Export\ExportInterface;
 
-class PdfExportProvider implements ExportProviderInterface
+class PdfExport implements ExportInterface
 {
+    /**
+     * @var string
+     */
+    protected $fileType = 'pdf';
+
     public function export(array $exportRecords, ExportConfiguration $exportConfiguration)
     {
         \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($exportRecords, __CLASS__ . ' in der Zeile ' . __LINE__);
@@ -17,5 +22,13 @@ class PdfExportProvider implements ExportProviderInterface
         //                      0 => ExportRecord:1
         //                      1 => ExportRecord:2
         //                    ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getFileType()
+    {
+        return $this->fileType;
     }
 }

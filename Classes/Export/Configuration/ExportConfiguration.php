@@ -1,6 +1,6 @@
 <?php
 
-namespace In2code\In2studyfinder\DataProvider;
+namespace In2code\In2studyfinder\Export\Configuration;
 
 /***************************************************************
  *
@@ -27,33 +27,97 @@ namespace In2code\In2studyfinder\DataProvider;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use In2code\In2studyfinder\Export\ExportInterface;
+
 /**
  * ExportConfiguration
  */
 class ExportConfiguration
 {
-    protected $fields = [];
+    /**
+     * @var array
+     */
+    protected $propertiesToExport = [];
 
+    /**
+     * @var bool
+     */
     protected $includeHidden = false;
 
+    /**
+     * @var bool
+     */
     protected $includeDeleted = false;
 
+    /**
+     * @var string
+     */
     protected $exportLocation = 'fileadmin/';
+
+    /**
+     * @var ExportInterface
+     */
+    protected $exporter = null;
+
+    /**
+     * @var array
+     */
+    protected $recordsToExport = [];
 
     /**
      * @return array
      */
-    public function getFields()
+    public function getPropertiesToExport()
     {
-        return $this->fields;
+        return $this->propertiesToExport;
     }
 
     /**
-     * @param array $fields
+     * @param array $propertiesToExport
+     *
+     * @return $this
      */
-    public function setFields($fields)
+    public function setPropertiesToExport($propertiesToExport)
     {
-        $this->fields = $fields;
+        $this->propertiesToExport = $propertiesToExport;
+        return $this;
+    }
+
+    /**
+     * @param ExportInterface $exporter
+     *
+     * @return $this
+     */
+    public function setExporter(ExportInterface $exporter)
+    {
+        $this->exporter = $exporter;
+        return $this;
+    }
+
+    /**
+     * @return ExportInterface
+     */
+    public function getExporter()
+    {
+        return $this->exporter;
+    }
+
+    /**
+     * @param array $recordsToExport
+     *
+     * @return $this
+     */
+    public function setRecordsToExport(array $recordsToExport) {
+        $this->recordsToExport = $recordsToExport;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRecordsToExport()
+    {
+        return $this->recordsToExport;
     }
 
     /**
@@ -66,10 +130,13 @@ class ExportConfiguration
 
     /**
      * @param bool $includeHidden
+     *
+     * @return $this
      */
     public function setIncludeHidden($includeHidden)
     {
         $this->includeHidden = $includeHidden;
+        return $this;
     }
 
     /**
@@ -82,10 +149,13 @@ class ExportConfiguration
 
     /**
      * @param bool $includeDeleted
+     *
+     * @return $this
      */
     public function setIncludeDeleted($includeDeleted)
     {
         $this->includeDeleted = $includeDeleted;
+        return $this;
     }
 
     /**
@@ -98,9 +168,12 @@ class ExportConfiguration
 
     /**
      * @param string $exportLocation
+     *
+     * @return $this
      */
     public function setExportLocation($exportLocation)
     {
         $this->exportLocation = $exportLocation;
+        return $this;
     }
 }

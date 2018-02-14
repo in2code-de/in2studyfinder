@@ -27,12 +27,10 @@ namespace In2code\In2studyfinder\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Codeception\Util\Debug;
-use In2code\In2studyfinder\DataProvider\ExportConfiguration;
-use In2code\In2studyfinder\DataProvider\ExportProviderInterface;
-use In2code\In2studyfinder\Domain\Service\ExportService;
+use In2code\In2studyfinder\Export\Configuration\ExportConfiguration;
+use In2code\In2studyfinder\Export\ExportInterface;
+use In2code\In2studyfinder\Service\ExportService;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
-use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
@@ -110,10 +108,10 @@ class BackendController extends AbstractController
     {
         $possibleDataProvider = [];
 
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportProvider'])
-            && is_array($GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportProvider'])
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportTypes'])
+            && is_array($GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportTypes'])
         ) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportProvider'] as $providerName => $providerClass) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportTypes'] as $providerName => $providerClass) {
                 if (!class_exists($providerClass)) {
                     $this->addFlashMessage(
                         'export provider class "' . $providerClass . '" was not found',
@@ -130,8 +128,39 @@ class BackendController extends AbstractController
         return $possibleDataProvider;
     }
 
-    public function exportAction($exportClass, $studyCourses, $exportFields)
+    /**
+     * @param string $exporter
+     * @param string $selection
+     * @param string $properties
+     * @param string $courseList
+     */
+    public function exportAction($exporter, $selection, $properties, $courseList)
     {
+        $courses = $this->studyCourseRepository->getCoursesWithUidIn(json_decode($courseList, true))->toArray();
+        $fileName = 'export.csv';
+        $return =  $this->doExport($exporter, $courses, json_decode($properties, true));
+
+        $headers = array(
+            'Pragma'                    => 'public',
+            'Expires'                   => 0,
+            'Cache-Control'             => 'must-revalidate, post-check=0, pre-check=0',
+            'Content-Disposition'       => 'attachment; filename="'. $fileName .'"',
+            'Content-Description'       => 'File Transfer',
+            'Content-Type'              => 'text/plain',
+            'Content-Transfer-Encoding' => 'binary',
+            'Content-Length'            => filesize($return)
+        );
+
+        foreach($headers as $header => $data)
+            $this->response->setHeader($header, $data);
+
+        $this->response->sendHeaders();
+
+        print trim($return);
+        exit;
+    }
+
+    protected function doExport($exportClass, $studyCourses, $exportFields) {
         // Begin Export
 
         /*
@@ -143,19 +172,19 @@ class BackendController extends AbstractController
          *  - als was soll exportiert werden
          */
 
-        $exporterConfiguration = $this->objectManager->get(ExportConfiguration::class);
-        $exporterConfiguration->setFields($exportFields);
-
-        $exportService = $this->objectManager->get(ExportService::class);
-
-        /** @var ExportProviderInterface $exporter */
+        /** @var ExportInterface $exporter */
         $exporter = $this->objectManager->get($exportClass);
 
-        $exportService->setExporter($exporter);
-        $exportService->setExportRecords($studyCourses);
-        $exportService->setExportConfiguration($exporterConfiguration);
+        $exportConfiguration = $this->objectManager->get(ExportConfiguration::class);
+        $exportConfiguration
+            ->setPropertiesToExport($exportFields)
+            ->setRecordsToExport($studyCourses)
+            ->setExporter($exporter);
 
-        $exportService->export();
+        $exportService = $this->objectManager->get(ExportService::class);
+        $exportService->setExportConfiguration($exportConfiguration);
+
+        return $exportService->export();
     }
 
     protected function getFullPropertyList(&$propertyArray, $objectProperties)

@@ -72,13 +72,13 @@ if (TYPO3_MODE === 'BE') {
             \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extKey) . 'Classes/Utility/Hook/WizIcon.php';
     }
 
-    /*
-     * Register default export provider
+    /**
+     * Register default export types
      */
-    $GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportProvider']['CSV'] =
-        \In2code\In2studyfinder\DataProvider\ExportProvider\CsvExportProvider::class;
-    $GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportProvider']['PDF'] =
-        \In2code\In2studyfinder\DataProvider\ExportProvider\PdfExportProvider::class;
+    $GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportTypes']['CSV'] =
+        \In2code\In2studyfinder\Export\ExportTypes\CsvExport::class;
+    $GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportTypes']['PDF'] =
+        \In2code\In2studyfinder\Export\ExportTypes\PdfExport::class;
 
 }
 

@@ -105,4 +105,17 @@ class StudyCourseRepository extends AbstractRepository
 
         return $query->execute();
     }
+
+    /**
+     * @param array $list
+     * @return array|QueryResultInterface
+     */
+    public function getCoursesWithUidIn($list)
+    {
+        $query = $this->createQuery();
+
+        $query->matching($query->in('uid', $list));
+
+        return $query->execute();
+    }
 }

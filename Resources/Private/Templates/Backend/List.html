@@ -12,102 +12,106 @@
         </div>
     </f:for>
     <f:if condition="{studyCourses}">
-        <div class="form-section">
-            <div class="panel panel-default">
-                <div class="panel-heading">1. Exportieren als:</div>
-                <select name="exporter">
-                    <f:for each="{exportDataProvider}" as="dataProvider" key="providerName">
-                        <option value="{dataProvider}">{providerName}</option>
-                    </f:for>
-                </select>
-            </div>
-
-            <div class="panel panel-default js-in2studyfinder-select-course-container">
-                <div class="panel-heading">2. Studiengänge auswählen
-                    <span
-                            class="js-in2studyfinder-selected-courses"><span
-                            class="js-in2studyfinder-selected-courses-count">0</span> Selected</span>
-                </div>
-                <table class="table table-striped table-hover js-in2studyfinder-course-table">
-                    <thead>
-                    <th>
-                        <f:form.checkbox name="selection" value="all"/>
-                    </th>
-                    <th>Uid</th>
-                    <th colspan="2">Title</th>
-                    </thead>
-                    <tbody class="js-in2studyfinder-course-list">
-                    <in2studyfinder:widget.paginate objects="{studyCourses}" as="paginatedCourses"
-                                                    configuration="{itemsPerPage:itemsPerPage}">
-                        <f:for each="{paginatedCourses}" as="studyCourse">
-                            <tr data-in2studyfinder-course-uid="{studyCourse.uid}">
-                                <td>
-                                    <f:form.checkbox name="selection" value="{studyCourse.uid}"
-                                                     class="js-in2studyfinder-select-course"/>
-                                </td>
-                                <td>{studyCourse.uid}</td>
-                                <td>{studyCourse.title}</td>
-                                <td class="col-control">
-                                    <div class="btn-group" role="group">
-                                        <a href="#" onClick="alert('Ok'); return false;" class="btn btn-default">
-                                            <core:icon identifier="actions-document-open"/>
-                                        </a>
-                                        <a href="#" onClick="alert('Ok'); return false;" class="btn btn-default">
-                                            <core:icon identifier="actions-document-info"/>
-                                        </a>
-                                        <a href="#" onClick="alert('Ok'); return false;" class="btn btn-default">
-                                            <core:icon identifier="actions-edit-hide"/>
-                                        </a>
-                                        <a href="#" onClick="alert('Ok'); return false;" class="btn btn-default">
-                                            <core:icon identifier="actions-edit-delete"/>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
+        <f:form action="export" controller="Backend">
+            <div class="form-section">
+                <div class="panel panel-default">
+                    <div class="panel-heading">1. Exportieren als:</div>
+                    <f:form.select name="exporter">
+                        <f:for each="{exportDataProvider}" as="dataProvider" key="providerName">
+                            <option value="{dataProvider}">{providerName}</option>
                         </f:for>
-                    </in2studyfinder:widget.paginate>
-                    </tbody>
-                    <tfoot>
-                    <td colspan="3">Foot</td>
-                    <td>
-                        <label for="itemsPerPage">
-                            Items per Page
-                            <select name="itemsPerPage" title="itemsPerPage" class="js-in2studyfinder-itemsPerPage">
-                                <option value="10" {f:if(condition:'{itemsPerPage} == 10', then: 'selected')}
-                            data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:10}')}">10</option>
-                            <option value="25" {f:if(condition:'{itemsPerPage} == 25', then: 'selected')}
-                            data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:25}')}">25</option>
-                                <option value="50" {f:if(condition:'{itemsPerPage} == 50', then: 'selected')}
-                            data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:50}')}">50</option>
-                                <option value="100" {f:if(condition:'{itemsPerPage} == 100', then: 'selected')}
-                            data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:100}')}">100</option>
-                                <option value="250" {f:if(condition:'{itemsPerPage} == 250', then: 'selected')}
-                            data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:250}')}">250</option>
-                                <option value="500" {f:if(condition:'{itemsPerPage} == 500', then: 'selected')}
-                            data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:500}')}">500</option>
-                            </select>
-                        </label>
-                    </td>
-                    </tfoot>
-                </table>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">3. zu exportierdene Felder auswählen <span
-                        class="js-in2studyfinder-selected-properties"><span
-                        class="js-in2studyfinder-selected-properties-count">0</span> Selected</span>
+                    </f:form.select>
                 </div>
-                <ul class="list-tree text-monospace js-in2studyfinder-property-list c-in2studyfinder-property-list">
-                    <li>
-                        <f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:studycourse">
-                            Study Course
-                        </f:translate>
-                        <f:render partial="Backend/AvailableFields" section="main"
-                                  arguments="{properties:availableFieldsForExport}"/>
-                    </li>
-                </ul>
+
+                <div class="panel panel-default js-in2studyfinder-select-course-container">
+                    <div class="panel-heading">2. Studiengänge auswählen
+                        <span
+                                class="js-in2studyfinder-selected-courses"><span
+                                class="js-in2studyfinder-selected-courses-count">0</span> Selected</span>
+                    </div>
+                    <table class="table table-striped table-hover js-in2studyfinder-course-table">
+                        <thead>
+                        <th>
+                            <f:form.checkbox name="selection" value="all"/>
+                        </th>
+                        <th>Uid</th>
+                        <th colspan="2">Title</th>
+                        </thead>
+                        <tbody class="js-in2studyfinder-course-list">
+                        <in2studyfinder:widget.paginate objects="{studyCourses}" as="paginatedCourses"
+                                                        configuration="{itemsPerPage:itemsPerPage}">
+                            <f:for each="{paginatedCourses}" as="studyCourse">
+                                <tr data-in2studyfinder-course-uid="{studyCourse.uid}">
+                                    <td>
+                                        <f:form.checkbox name="selection" value="{studyCourse.uid}"
+                                                         class="js-in2studyfinder-select-course"/>
+                                    </td>
+                                    <td>{studyCourse.uid}</td>
+                                    <td>{studyCourse.title}</td>
+                                    <td class="col-control">
+                                        <div class="btn-group" role="group">
+                                            <a href="#" onClick="alert('Ok'); return false;" class="btn btn-default">
+                                                <core:icon identifier="actions-document-open"/>
+                                            </a>
+                                            <a href="#" onClick="alert('Ok'); return false;" class="btn btn-default">
+                                                <core:icon identifier="actions-document-info"/>
+                                            </a>
+                                            <a href="#" onClick="alert('Ok'); return false;" class="btn btn-default">
+                                                <core:icon identifier="actions-edit-hide"/>
+                                            </a>
+                                            <a href="#" onClick="alert('Ok'); return false;" class="btn btn-default">
+                                                <core:icon identifier="actions-edit-delete"/>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </f:for>
+                        </in2studyfinder:widget.paginate>
+                        </tbody>
+                        <tfoot>
+                        <td colspan="3">Foot</td>
+                        <td>
+                            <label for="itemsPerPage">
+                                Items per Page
+                                <select name="itemsPerPage" title="itemsPerPage" class="js-in2studyfinder-itemsPerPage">
+                                    <option value="10" {f:if(condition:'{itemsPerPage} == 10', then: 'selected')}
+                                data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:10}')}">10</option>
+                                <option value="25" {f:if(condition:'{itemsPerPage} == 25', then: 'selected')}
+                                data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:25}')}">25</option>
+                                    <option value="50" {f:if(condition:'{itemsPerPage} == 50', then: 'selected')}
+                                data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:50}')}">50</option>
+                                    <option value="100" {f:if(condition:'{itemsPerPage} == 100', then: 'selected')}
+                                data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:100}')}">100</option>
+                                    <option value="250" {f:if(condition:'{itemsPerPage} == 250', then: 'selected')}
+                                data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:250}')}">250</option>
+                                    <option value="500" {f:if(condition:'{itemsPerPage} == 500', then: 'selected')}
+                                data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:500}')}">500</option>
+                                </select>
+                            </label>
+                        </td>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">3. zu exportierdene Felder auswählen <span
+                            class="js-in2studyfinder-selected-properties"><span
+                            class="js-in2studyfinder-selected-properties-count">0</span> Selected</span>
+                    </div>
+                    <ul class="list-tree text-monospace js-in2studyfinder-property-list c-in2studyfinder-property-list">
+                        <li>
+                            <f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:studycourse">
+                                Study Course
+                            </f:translate>
+                            <f:render partial="Backend/AvailableFields" section="main"
+                                      arguments="{properties:availableFieldsForExport}"/>
+                        </li>
+                    </ul>
+                </div>
+                <f:form.hidden name="properties" class="in2studyfinder-selected-properties" />
+                <f:form.hidden name="courseList" class="in2studyfinder-selected-courses" />
+                <f:form.submit class="js-in2studyfinder-export-courses">Export</f:form.submit>
             </div>
-            <button class="js-in2studyfinder-export-courses">Finish</button>
-        </div>
+        </f:form>
     </f:if>
 </f:section>
 

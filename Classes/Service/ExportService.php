@@ -1,10 +1,9 @@
 <?php
 
-namespace In2code\In2studyfinder\Domain\Service;
+namespace In2code\In2studyfinder\Service;
 
-use In2code\In2studyfinder\DataProvider\ExportConfiguration;
-use In2code\In2studyfinder\DataProvider\ExportProviderInterface;
-use In2code\In2studyfinder\Domain\Model\StudyCourse;
+use In2code\In2studyfinder\Export\Configuration\ExportConfiguration;
+use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -12,33 +11,31 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 class ExportService
 {
     /**
-     * @var ExportProviderInterface
-     */
-    protected $exporter = null;
-
-    /**
      * @var ExportConfiguration
      */
     protected $exportConfiguration = null;
-
-    /**
-     * @var array
-     */
-    protected $exportRecords = [];
 
     public function __construct()
     {
     }
 
+    /**
+     * @return mixed
+     * @throws Exception
+     */
     public function export()
     {
         $exportRecords = [];
 
-        foreach ($this->getExportRecords() as $record) {
+        if ($this->exportConfiguration === null) {
+            throw new Exception('No export Configuration is set!');
+        }
+
+        foreach ($this->exportConfiguration->getRecordsToExport() as $record) {
             $exportRecords[] = $this->getFieldsForExportFromRecord($record);
         }
 
-        $this->exporter->export($exportRecords, $this->exportConfiguration);
+        return $this->exportConfiguration->getExporter()->export($exportRecords, $this->exportConfiguration);
     }
 
     /**
@@ -50,7 +47,7 @@ class ExportService
     {
         $exportData = [];
 
-        foreach ($this->exportConfiguration->getFields() as $field) {
+        foreach ($this->exportConfiguration->getPropertiesToExport() as $field) {
             if ($this->isPropertyPath($field)) {
                 $exportData[$field] = $this->getPropertyByPropertyPath($record, $this->propertyPathToArray($field));
             } else {
@@ -126,42 +123,6 @@ class ExportService
 
         return false;
     }
-
-    /**
-     * @param ExportProviderInterface $exporter
-     */
-    public function setExporter(
-        ExportProviderInterface $exporter
-    ) {
-        $this->exporter = $exporter;
-    }
-
-    /**
-     * @return ExportProviderInterface
-     */
-    public function getExporter()
-    {
-        return $this->exporter;
-    }
-
-
-    /**
-     * @param array $exportRecords
-     */
-    public function setExportRecords(
-        array $exportRecords
-    ) {
-        $this->exportRecords = $exportRecords;
-    }
-
-    /**
-     * @return array
-     */
-    public function getExportRecords()
-    {
-        return $this->exportRecords;
-    }
-
 
     /**
      * @return ExportConfiguration
