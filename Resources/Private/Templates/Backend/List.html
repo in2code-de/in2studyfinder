@@ -107,12 +107,12 @@
                     <div class="form-wizards-element">
                         <div class="form-multigroup-wrap t3js-formengine-field-group">
                             <div class="form-multigroup-item form-multigroup-element">
-                                <label>
+                                <label for="propertiesSelected">
                                     Selected Items
                                 </label>
                                 <div class="form-wizards-wrap form-wizards-aside">
                                     <div class="form-wizards-element">
-                                        <select size="30" multiple="multiple"></select>
+                                        <select name="propertiesSelected" title="propertiesSelected" size="30" multiple="multiple"></select>
                                     </div>
                                     <div class="form-wizards-items-aside">
                                         <div class="btn-group-vertical">
@@ -176,10 +176,10 @@
                                 </div>
                             </div>
                             <div class="form-multigroup-item form-multigroup-element">
-                                <label>
+                                <label for="propertiesAvailable">
                                     Available Items
                                 </label>
-                                <select class="form-control t3js-formengine-select-itemstoselect" size="30">
+                                <select name="propertiesAvailable" title="propertiesAvailable" class="form-control t3js-formengine-select-itemstoselect" size="30">
                                     <optgroup label="studyCourse" style="font-weight: bold"></optgroup>
                                     <f:render partial="Backend/AvailableFields" section="main"
                                               arguments="{properties:availableFieldsForExport}"/>
