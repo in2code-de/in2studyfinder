@@ -74,18 +74,24 @@
                             <label for="itemsPerPage">
                                 Items per Page
                                 <select name="itemsPerPage" title="itemsPerPage" class="js-in2studyfinder-itemsPerPage">
-                                    <option value="10" {f:if(condition:'{itemsPerPage} == 10', then: 'selected')}
-                                data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:10}')}">10</option>
-                                <option value="25" {f:if(condition:'{itemsPerPage} == 25', then: 'selected')}
-                                data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:25}')}">25</option>
-                                    <option value="50" {f:if(condition:'{itemsPerPage} == 50', then: 'selected')}
-                                data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:50}')}">50</option>
-                                    <option value="100" {f:if(condition:'{itemsPerPage} == 100', then: 'selected')}
-                                data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:100}')}">100</option>
-                                    <option value="250" {f:if(condition:'{itemsPerPage} == 250', then: 'selected')}
-                                data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:250}')}">250</option>
-                                    <option value="500" {f:if(condition:'{itemsPerPage} == 500', then: 'selected')}
-                                data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:500}')}">500</option>
+                                    <option value="10" {f:if(condition:
+                                    '{itemsPerPage} == 10', then: 'selected')}
+                                    data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:10}')}">10</option>
+                                    <option value="25" {f:if(condition:
+                                    '{itemsPerPage} == 25', then: 'selected')}
+                                    data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:25}')}">25</option>
+                                    <option value="50" {f:if(condition:
+                                    '{itemsPerPage} == 50', then: 'selected')}
+                                    data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:50}')}">50</option>
+                                    <option value="100" {f:if(condition:
+                                    '{itemsPerPage} == 100', then: 'selected')}
+                                    data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:100}')}">100</option>
+                                    <option value="250" {f:if(condition:
+                                    '{itemsPerPage} == 250', then: 'selected')}
+                                    data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:250}')}">250</option>
+                                    <option value="500" {f:if(condition:
+                                    '{itemsPerPage} == 500', then: 'selected')}
+                                    data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:500}')}">500</option>
                                 </select>
                             </label>
                         </td>
@@ -97,18 +103,92 @@
                             class="js-in2studyfinder-selected-properties"><span
                             class="js-in2studyfinder-selected-properties-count">0</span> Selected</span>
                     </div>
-                    <ul class="list-tree text-monospace js-in2studyfinder-property-list c-in2studyfinder-property-list">
-                        <li>
-                            <f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:studycourse">
-                                Study Course
-                            </f:translate>
-                            <f:render partial="Backend/AvailableFields" section="main"
-                                      arguments="{properties:availableFieldsForExport}"/>
-                        </li>
-                    </ul>
-                </div>
-                <f:form.hidden name="properties" class="in2studyfinder-selected-properties" />
-                <f:form.hidden name="courseList" class="in2studyfinder-selected-courses" />
+
+                    <div class="form-wizards-element">
+                        <div class="form-multigroup-wrap t3js-formengine-field-group">
+                            <div class="form-multigroup-item form-multigroup-element">
+                                <label>
+                                    Selected Items
+                                </label>
+                                <div class="form-wizards-wrap form-wizards-aside">
+                                    <div class="form-wizards-element">
+                                        <select size="30" multiple="multiple"></select>
+                                    </div>
+                                    <div class="form-wizards-items-aside">
+                                        <div class="btn-group-vertical">
+                                            <a href="#" class="btn btn-default t3js-btn-moveoption-top"
+                                               data-fieldname="data[tx_news_domain_model_news][425][fe_group]"
+                                               title="Move selected items to top">
+<span class="t3js-icon icon icon-size-small icon-state-default icon-actions-move-to-top"
+      data-identifier="actions-move-to-top">
+	<span class="icon-markup">
+<img src="/typo3/sysext/core/Resources/Public/Icons/T3Icons/actions/actions-move-to-top.svg" width="16" height="16">
+	</span>
+
+</span>
+                                            </a>
+                                            <a href="#" class="btn btn-default t3js-btn-moveoption-up"
+                                               data-fieldname="data[tx_news_domain_model_news][425][fe_group]"
+                                               title="Move selected items upwards">
+<span class="t3js-icon icon icon-size-small icon-state-default icon-actions-move-up" data-identifier="actions-move-up">
+	<span class="icon-markup">
+<img src="/typo3/sysext/core/Resources/Public/Icons/T3Icons/actions/actions-move-up.svg" width="16" height="16">
+	</span>
+
+</span>
+                                            </a>
+                                            <a href="#" class="btn btn-default t3js-btn-moveoption-down"
+                                               data-fieldname="data[tx_news_domain_model_news][425][fe_group]"
+                                               title="Move selected items downwards">
+<span class="t3js-icon icon icon-size-small icon-state-default icon-actions-move-down"
+      data-identifier="actions-move-down">
+	<span class="icon-markup">
+<img src="/typo3/sysext/core/Resources/Public/Icons/T3Icons/actions/actions-move-down.svg" width="16" height="16">
+	</span>
+
+</span>
+                                            </a>
+                                            <a href="#" class="btn btn-default t3js-btn-moveoption-bottom"
+                                               data-fieldname="data[tx_news_domain_model_news][425][fe_group]"
+                                               title="Move selected items to bottom">
+<span class="t3js-icon icon icon-size-small icon-state-default icon-actions-move-to-bottom"
+      data-identifier="actions-move-to-bottom">
+	<span class="icon-markup">
+<img src="/typo3/sysext/core/Resources/Public/Icons/T3Icons/actions/actions-move-to-bottom.svg" width="16" height="16">
+	</span>
+
+</span>
+                                            </a>
+                                            <a href="#" class="btn btn-default t3js-btn-removeoption"
+                                               data-fieldname="data[tx_news_domain_model_news][425][fe_group]"
+                                               title="Remove selected items">
+<span class="t3js-icon icon icon-size-small icon-state-default icon-actions-selection-delete"
+      data-identifier="actions-selection-delete">
+	<span class="icon-markup">
+<img src="/typo3/sysext/core/Resources/Public/Icons/T3Icons/actions/actions-selection-delete.svg" width="16"
+     height="16">
+	</span>
+
+</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-multigroup-item form-multigroup-element">
+                                <label>
+                                    Available Items
+                                </label>
+                                <select class="form-control t3js-formengine-select-itemstoselect" size="30">
+                                    <optgroup label="studyCourse" style="font-weight: bold"></optgroup>
+                                    <f:render partial="Backend/AvailableFields" section="main"
+                                              arguments="{properties:availableFieldsForExport}"/>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                <f:form.hidden name="properties" class="in2studyfinder-selected-properties"/>
+                <f:form.hidden name="courseList" class="in2studyfinder-selected-courses"/>
                 <f:form.submit class="js-in2studyfinder-export-courses">Export</f:form.submit>
             </div>
         </f:form>
