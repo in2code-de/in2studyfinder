@@ -52,7 +52,7 @@ class ExportConfiguration
     /**
      * @var string
      */
-    protected $exportLocation = 'fileadmin/';
+    protected $exportLocation = PATH_site . 'typo3temp/tx_in2studyfinder/';
 
     /**
      * @var ExportInterface

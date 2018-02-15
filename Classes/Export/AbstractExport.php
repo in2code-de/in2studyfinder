@@ -55,7 +55,7 @@ class AbstractExport implements ExportInterface
         $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
     }
 
-    public function export(array $exportRecords, ExportConfiguration $exportConfiguration)
+    public function export(ExportConfiguration $exportConfiguration)
     {
     }
 

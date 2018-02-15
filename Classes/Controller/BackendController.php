@@ -133,34 +133,13 @@ class BackendController extends AbstractController
      * @param string $selection
      * @param string $properties
      * @param string $courseList
+     * @throws \TYPO3\CMS\Core\Exception
      */
     public function exportAction($exporter, $selection, $properties, $courseList)
     {
         $courses = $this->studyCourseRepository->getCoursesWithUidIn(json_decode($courseList, true))->toArray();
         $fileName = 'export.csv';
-        $return =  $this->doExport($exporter, $courses, json_decode($properties, true));
 
-        $headers = array(
-            'Pragma'                    => 'public',
-            'Expires'                   => 0,
-            'Cache-Control'             => 'must-revalidate, post-check=0, pre-check=0',
-            'Content-Disposition'       => 'attachment; filename="'. $fileName .'"',
-            'Content-Description'       => 'File Transfer',
-            'Content-Type'              => 'text/plain',
-            'Content-Transfer-Encoding' => 'binary',
-            'Content-Length'            => filesize($return)
-        );
-
-        foreach($headers as $header => $data)
-            $this->response->setHeader($header, $data);
-
-        $this->response->sendHeaders();
-
-        print trim($return);
-        exit;
-    }
-
-    protected function doExport($exportClass, $studyCourses, $exportFields) {
         // Begin Export
 
         /*
@@ -172,19 +151,37 @@ class BackendController extends AbstractController
          *  - als was soll exportiert werden
          */
 
-        /** @var ExportInterface $exporter */
-        $exporter = $this->objectManager->get($exportClass);
-
+        /** @var ExportInterface $exportType */
+        $exportType = $this->objectManager->get($exporter);
         $exportConfiguration = $this->objectManager->get(ExportConfiguration::class);
         $exportConfiguration
-            ->setPropertiesToExport($exportFields)
-            ->setRecordsToExport($studyCourses)
-            ->setExporter($exporter);
+            ->setPropertiesToExport(json_decode($properties, true))
+            ->setExporter($exportType);
 
-        $exportService = $this->objectManager->get(ExportService::class);
-        $exportService->setExportConfiguration($exportConfiguration);
+        $exportService =  $this->objectManager->get(ExportService::class, $exportConfiguration);
+        $processedRecords = $exportService->prepareRecordsForExport($courses);
+        $exportConfiguration->setRecordsToExport($processedRecords);
 
-        return $exportService->export();
+        $file = $exportService->export();
+
+        $headers = array(
+            'Pragma'                    => 'public',
+            'Expires'                   => 0,
+            'Cache-Control'             => 'must-revalidate, post-check=0, pre-check=0',
+            'Content-Disposition'       => 'attachment; filename="'. $fileName .'"',
+            'Content-Description'       => 'File Transfer',
+            'Content-Type'              => 'text/plain',
+            'Content-Transfer-Encoding' => 'binary',
+            'Content-Length'            => filesize($file)
+        );
+
+        foreach($headers as $header => $data)
+            $this->response->setHeader($header, $data);
+
+        $this->response->sendHeaders();
+
+        @readfile($file);
+        exit;
     }
 
     protected function getFullPropertyList(&$propertyArray, $objectProperties)

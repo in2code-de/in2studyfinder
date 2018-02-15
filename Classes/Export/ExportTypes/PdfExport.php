@@ -2,17 +2,18 @@
 
 namespace In2code\In2studyfinder\Export\ExportTypes;
 
+use In2code\In2studyfinder\Export\AbstractExport;
 use In2code\In2studyfinder\Export\Configuration\ExportConfiguration;
 use In2code\In2studyfinder\Export\ExportInterface;
 
-class PdfExport implements ExportInterface
+class PdfExport extends AbstractExport implements ExportInterface
 {
     /**
      * @var string
      */
     protected $fileType = 'pdf';
 
-    public function export(array $exportRecords, ExportConfiguration $exportConfiguration)
+    public function export(ExportConfiguration $exportConfiguration)
     {
         \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($exportRecords, __CLASS__ . ' in der Zeile ' . __LINE__);
         \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($exportConfiguration, __CLASS__ . ' in der Zeile ' . __LINE__);

@@ -3,7 +3,6 @@
 namespace In2code\In2studyfinder\Service;
 
 use In2code\In2studyfinder\Export\Configuration\ExportConfiguration;
-use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -15,27 +14,32 @@ class ExportService
      */
     protected $exportConfiguration = null;
 
-    public function __construct()
+    public function __construct(ExportConfiguration $exportConfiguration)
     {
+        $this->setExportConfiguration($exportConfiguration);
     }
 
     /**
-     * @return mixed
-     * @throws Exception
+     * @return string
      */
     public function export()
     {
-        $exportRecords = [];
+        return $this->exportConfiguration->getExporter()->export($this->exportConfiguration);
+    }
 
-        if ($this->exportConfiguration === null) {
-            throw new Exception('No export Configuration is set!');
+    /**
+     * @param array $courses
+     * @return array
+     */
+    public function prepareRecordsForExport($courses)
+    {
+        $processedRecords = [];
+
+        foreach ($courses as $record) {
+            $processedRecords[] = $this->getFieldsForExportFromRecord($record);
         }
 
-        foreach ($this->exportConfiguration->getRecordsToExport() as $record) {
-            $exportRecords[] = $this->getFieldsForExportFromRecord($record);
-        }
-
-        return $this->exportConfiguration->getExporter()->export($exportRecords, $this->exportConfiguration);
+        return $processedRecords;
     }
 
     /**
