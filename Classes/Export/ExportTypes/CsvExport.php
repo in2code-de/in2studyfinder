@@ -52,29 +52,7 @@ class CsvExport extends AbstractExport implements ExportInterface
      */
     protected function getExportFileContent($recordRows)
     {
-        $standaloneView = $this->objectManager->get(StandaloneView::class);
-
-        $standaloneView->setLayoutRootPaths(
-            [
-                0 => GeneralUtility::getFileAbsFileName('EXT:in2studyfinder/Resources/Private/Layouts/')
-            ]
-        );
-
-        $standaloneView->setTemplateRootPaths(
-            [
-                0 => GeneralUtility::getFileAbsFileName('EXT:in2studyfinder/Resources/Private/Templates/')
-            ]
-        );
-
-        $standaloneView->setPartialRootPaths(
-            [
-                0 => GeneralUtility::getFileAbsFileName('EXT:in2studyfinder/Resources/Private/Partials/')
-            ]
-        );
-
-        $standaloneView->setTemplatePathAndFilename(
-            GeneralUtility::getFileAbsFileName('EXT:in2studyfinder/Resources/Private/Templates/Exporter/Csv.html')
-        );
+        $standaloneView = $this->getStandaloneView('EXT:in2studyfinder/Resources/Private/Templates/Exporter/Csv.html');
 
         $standaloneView->assign('records', $recordRows);
 
