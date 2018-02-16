@@ -32,6 +32,14 @@ define([], function() {
 
     /**
      * @param element
+     * @return void
+     */
+    UiUtility.showElementAsBlock = function(element) {
+        element.style.display = 'block';
+    };
+
+    /**
+     * @param element
 	 * @return void
      */
 	UiUtility.removeStyles = function (element) {

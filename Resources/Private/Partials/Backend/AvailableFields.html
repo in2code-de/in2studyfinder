@@ -15,7 +15,7 @@
                           arguments="{properties:property, propertyNamePath:propertyName, margin: '30', parentPropertyLabel: '{f:render(section: \'renderLabel\', arguments: \'{propertyName:propertyName}\')}'}"/>
             </f:then>
             <f:else>
-                <option name="{propertyName}"
+                <option value="{propertyName}"
                         class="c-in2studyfinder-property-list-item"
                         data-in2studyfinder-property-selectable="true">
                     <f:render section="renderLabel" arguments="{propertyName:propertyName}" />
@@ -39,7 +39,7 @@
             </f:then>
             <f:else>
                 <option
-                        name="{propertyNamePath}.{subPropertyName}"
+                        value="{propertyNamePath}.{subPropertyName}"
                         class="c-in2studyfinder-property-list-item"
                         data-in2studyfinder-property-selectable="true"
                         data-in2studyfinder-parent-property-label="{parentPropertyLabel}"
