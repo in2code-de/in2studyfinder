@@ -30,5 +30,13 @@ define([], function() {
 		element.style.display = 'inline-block';
 	};
 
+    /**
+     * @param element
+	 * @return void
+     */
+	UiUtility.removeStyles = function (element) {
+		element.removeAttribute("style");
+    };
+
 	return UiUtility;
 });
