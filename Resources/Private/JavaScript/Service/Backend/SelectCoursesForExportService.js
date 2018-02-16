@@ -17,7 +17,36 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
 		SelectCoursesForExportService.addEventListenerToPropertyList();
 		SelectCoursesForExportService.addPaginationEventListener();
 		SelectCoursesForExportService.addChangeItemsPerPageEventListener();
+		SelectCoursesForExportService.addSelectAllEventListener();
 	};
+
+    /**
+	 * add event listener
+     */
+	SelectCoursesForExportService.addSelectAllEventListener = function () {
+		var selectAllCheckbox = document.querySelector('.js-in2studyfinder-check-all');
+        selectAllCheckbox.addEventListener('click', SelectCoursesForExportService.toggleAllCoursesSelect);
+    };
+
+    /**
+	 * toggles the selection of all courses
+     * @param event
+     */
+	SelectCoursesForExportService.toggleAllCoursesSelect = function (event) {
+		var checkboxes = document.querySelectorAll('.js-in2studyfinder-select-course');
+		var selectAllCheckbox = event.target;
+		var status;
+
+		if (selectAllCheckbox.checked) {
+			status = 1;
+		} else {
+            status = 0;
+		}
+
+        checkboxes.forEach(function (checkbox) {
+            checkbox.checked = status;
+        });
+    };
 
     /**
 	 * Set the Checkboxes checked for the available courses in the courseList
