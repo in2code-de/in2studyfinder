@@ -14,18 +14,31 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
 	SelectCoursesForExportService.initialize = function() {
 		SelectCoursesForExportService.preparePagination();
 		SelectCoursesForExportService.prepareSelectedCourses();
-		SelectCoursesForExportService.addEventListenerToPropertyList();
-		SelectCoursesForExportService.addPaginationEventListener();
-		SelectCoursesForExportService.addChangeItemsPerPageEventListener();
-		SelectCoursesForExportService.addSelectAllEventListener();
+		SelectCoursesForExportService.addEventListener();
 	};
 
     /**
-	 * add event listener
+	 * initializes all event listeners
      */
-	SelectCoursesForExportService.addSelectAllEventListener = function () {
-		var selectAllCheckbox = document.querySelector('.js-in2studyfinder-check-all');
+	SelectCoursesForExportService.addEventListener = function () {
+
+		// event listener for select all courses checkbox
+        var selectAllCheckbox = document.querySelector('.js-in2studyfinder-check-all');
         selectAllCheckbox.addEventListener('click', SelectCoursesForExportService.toggleAllCoursesSelect);
+
+        // event listener for pagination
+        var paginationList = document.querySelector('.js-in2studyfinder-pagebrowser');
+        paginationList.addEventListener('click', SelectCoursesForExportService.callPagination);
+
+        // event listener for update the items per page
+        var itemsPerPageSelect = document.querySelector('.js-in2studyfinder-itemsPerPage');
+        itemsPerPageSelect.onchange = function(event) {
+            SelectCoursesForExportService.updateItemsPerPage(event);
+        };
+
+        // event listener for the selection of courses
+        var propertyList = document.querySelector('.js-in2studyfinder-course-list');
+        propertyList.addEventListener('click', SelectCoursesForExportService.toggleCourseSelection);
     };
 
     /**
@@ -63,24 +76,10 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
         }
 	};
 
-	/**
-	 * @return {void}
-	 */
-	SelectCoursesForExportService.addPaginationEventListener = function() {
-		var paginationList = document.querySelector('.js-in2studyfinder-pagebrowser');
-		paginationList.addEventListener('click', SelectCoursesForExportService.callPagination);
-	};
-
-	/**
-	 * @return {void}
-	 */
-	SelectCoursesForExportService.addChangeItemsPerPageEventListener = function() {
-		var itemsPerPageSelect = document.querySelector('.js-in2studyfinder-itemsPerPage');
-		itemsPerPageSelect.onchange = function(event) {
-			SelectCoursesForExportService.updateItemsPerPage(event);
-		};
-	};
-
+    /**
+	 * updates the results for the shown courses
+     * @param event
+     */
 	SelectCoursesForExportService.updateItemsPerPage = function(event) {
 		var selectedOptions = event.target.selectedOptions;
 		var url = selectedOptions[0].getAttribute('data-action');
@@ -153,14 +152,6 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
 	};
 
 	/**
-	 * @return {void}
-	 */
-	SelectCoursesForExportService.addEventListenerToPropertyList = function() {
-		var propertyList = document.querySelector('.js-in2studyfinder-course-list');
-		propertyList.addEventListener('click', SelectCoursesForExportService.toggleCourseSelection);
-	};
-
-	/**
 	 * @param event
 	 *
 	 * @return {void}
@@ -201,7 +192,7 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
 	};
 
 	/**
-	 *
+	 * updates the selected courses count
 	 */
 	SelectCoursesForExportService.updateSelectedCoursesCount = function() {
 		var element = document.querySelector('.js-in2studyfinder-selected-courses-count');
@@ -215,6 +206,9 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
 		return SelectCoursesForExportService.coursesList;
 	};
 
+    /**
+	 * move the pagination to the right spot in the dom
+     */
 	SelectCoursesForExportService.preparePagination = function () {
         var pagination = document.querySelector('.js-in2studyfinder-pagebrowser');
         document.querySelector('.js-in2studyfinder-pagination').appendChild(pagination);
