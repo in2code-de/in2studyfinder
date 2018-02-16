@@ -26,55 +26,18 @@
                                     <div class="form-wizards-wrap">
                                         <div class="form-wizards-element">
                                             <div class="input-group">
-                                                <span class="input-group-addon input-group-icon">
-                                                <span alt="Master" title="Master">
-                                                    <span
-                                                            class="t3js-icon icon icon-size-small icon-state-default icon-tcarecords-tx_in2studyfinder_domain_model_graduation-default"
-                                                            data-identifier="tcarecords-tx_in2studyfinder_domain_model_graduation-default">
-                                                    <span class="icon-markup">
-                                                <img src="/typo3conf/ext/in2studyfinder/Resources/Public/Icons/tx_in2studyfinder_domain_model_graduation.png"
-                                                     width="16"
-                                                     height="16">
-                                                    </span>
-
-                                                </span></span>
-                                                </span>
-                                                <select id="tceforms-select-5a85afcce2254034497831"
-                                                        name="data[tx_in2studyfinder_domain_model_academicdegree][1][graduation]"
-                                                        data-formengine-validation-rules="[{&quot;type&quot;:&quot;select&quot;,&quot;minItems&quot;:1,&quot;maxItems&quot;:1}]"
-                                                        class="form-control form-control-adapt">
-                                                    <option value=""
-                                                            data-icon="<span alt=&quot;&quot; title=&quot;&quot;><span class=&quot;t3js-icon icon icon-size-small icon-state-default icon-default-not-found&quot; data-identifier=&quot;default-not-found&quot;>
-	<span class=&quot;icon-markup&quot;>
-<img src=&quot;/typo3/sysext/core/Resources/Public/Icons/T3Icons/default/default-not-found.svg&quot; width=&quot;16&quot; height=&quot;16&quot; />
-	</span>
-
-</span></span>"></option>
-                                                    <option value="1"
-                                                            data-icon="<span alt=&quot;Master&quot; title=&quot;Master&quot;><span class=&quot;t3js-icon icon icon-size-small icon-state-default icon-tcarecords-tx_in2studyfinder_domain_model_graduation-default&quot; data-identifier=&quot;tcarecords-tx_in2studyfinder_domain_model_graduation-default&quot;>
-	<span class=&quot;icon-markup&quot;>
-<img src=&quot;/typo3conf/ext/in2studyfinder/Resources/Public/Icons/tx_in2studyfinder_domain_model_graduation.png&quot; width=&quot;16&quot; height=&quot;16&quot; />
-	</span>
-
-</span></span>" selected="selected">Master
-                                                    </option>
-                                                </select>
+                                                <f:form.select name="exporter" class="form-control form-control-adapt">
+                                                    <f:for each="{exportDataProvider}" as="dataProvider" key="providerName">
+                                                        <option value="{dataProvider}">{providerName}</option>
+                                                    </f:for>
+                                                </f:form.select>
                                             </div>
-                                        </div>
-                                        <div class="form-wizards-items-bottom">
-
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </fieldset>
-
-                    <f:form.select name="exporter">
-                        <f:for each="{exportDataProvider}" as="dataProvider" key="providerName">
-                            <option value="{dataProvider}">{providerName}</option>
-                        </f:for>
-                    </f:form.select>
                 </div>
 
                 <div class="panel panel-default js-in2studyfinder-select-course-container">
