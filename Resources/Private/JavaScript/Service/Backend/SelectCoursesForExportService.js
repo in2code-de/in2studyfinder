@@ -12,6 +12,7 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
 	 * @return {void}
 	 */
 	SelectCoursesForExportService.initialize = function() {
+		SelectCoursesForExportService.preparePagination();
 		SelectCoursesForExportService.prepareSelectedCourses();
 		SelectCoursesForExportService.addEventListenerToPropertyList();
 		SelectCoursesForExportService.addPaginationEventListener();
@@ -184,6 +185,11 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
 	SelectCoursesForExportService.getCourseList = function() {
 		return SelectCoursesForExportService.coursesList;
 	};
+
+	SelectCoursesForExportService.preparePagination = function () {
+        var pagination = document.querySelector('.js-in2studyfinder-pagebrowser');
+        document.querySelector('.js-in2studyfinder-pagination').appendChild(pagination);
+    };
 
 	SelectCoursesForExportService.initialize();
 	return SelectCoursesForExportService;
