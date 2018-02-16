@@ -13,9 +13,62 @@
     </f:for>
     <f:if condition="{studyCourses}">
         <f:form action="export" controller="Backend">
+
             <div class="form-section">
                 <div class="panel panel-default">
                     <div class="panel-heading">1. Exportieren als:</div>
+
+                    <fieldset class="form-section">
+                        <div class="form-group t3js-formengine-validation-marker t3js-formengine-palette-field">
+                            <div class="formengine-field-item t3js-formengine-field-item">
+
+                                <div class="form-control-wrap">
+                                    <div class="form-wizards-wrap">
+                                        <div class="form-wizards-element">
+                                            <div class="input-group">
+                                                <span class="input-group-addon input-group-icon">
+                                                <span alt="Master" title="Master">
+                                                    <span
+                                                        class="t3js-icon icon icon-size-small icon-state-default icon-tcarecords-tx_in2studyfinder_domain_model_graduation-default"
+                                                        data-identifier="tcarecords-tx_in2studyfinder_domain_model_graduation-default">
+                                                    <span class="icon-markup">
+                                                <img src="/typo3conf/ext/in2studyfinder/Resources/Public/Icons/tx_in2studyfinder_domain_model_graduation.png" width="16"
+                                                     height="16">
+                                                    </span>
+
+                                                </span></span>
+                                                </span>
+                                                <select id="tceforms-select-5a85afcce2254034497831"
+                                                        name="data[tx_in2studyfinder_domain_model_academicdegree][1][graduation]"
+                                                        data-formengine-validation-rules="[{&quot;type&quot;:&quot;select&quot;,&quot;minItems&quot;:1,&quot;maxItems&quot;:1}]"
+                                                        class="form-control form-control-adapt">
+                                                    <option value=""
+                                                            data-icon="<span alt=&quot;&quot; title=&quot;&quot;><span class=&quot;t3js-icon icon icon-size-small icon-state-default icon-default-not-found&quot; data-identifier=&quot;default-not-found&quot;>
+	<span class=&quot;icon-markup&quot;>
+<img src=&quot;/typo3/sysext/core/Resources/Public/Icons/T3Icons/default/default-not-found.svg&quot; width=&quot;16&quot; height=&quot;16&quot; />
+	</span>
+
+</span></span>"></option>
+                                                    <option value="1"
+                                                            data-icon="<span alt=&quot;Master&quot; title=&quot;Master&quot;><span class=&quot;t3js-icon icon icon-size-small icon-state-default icon-tcarecords-tx_in2studyfinder_domain_model_graduation-default&quot; data-identifier=&quot;tcarecords-tx_in2studyfinder_domain_model_graduation-default&quot;>
+	<span class=&quot;icon-markup&quot;>
+<img src=&quot;/typo3conf/ext/in2studyfinder/Resources/Public/Icons/tx_in2studyfinder_domain_model_graduation.png&quot; width=&quot;16&quot; height=&quot;16&quot; />
+	</span>
+
+</span></span>" selected="selected">Master
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-wizards-items-bottom">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
                     <f:form.select name="exporter">
                         <f:for each="{exportDataProvider}" as="dataProvider" key="providerName">
                             <option value="{dataProvider}">{providerName}</option>
@@ -99,9 +152,7 @@
                     </table>
                 </div>
                 <div class="panel panel-default">
-                    <div class="panel-heading">3. zu exportierdene Felder auswählen <span
-                            class="js-in2studyfinder-selected-properties"><span
-                            class="js-in2studyfinder-selected-properties-count">0</span> Selected</span>
+                    <div class="panel-heading">3. zu exportierdene Felder auswählen
                     </div>
 
                     <div class="form-wizards-element">
@@ -112,7 +163,13 @@
                                 </label>
                                 <div class="form-wizards-wrap form-wizards-aside">
                                     <div class="form-wizards-element">
-                                        <select name="propertiesSelected" title="propertiesSelected" size="30" multiple="multiple"></select>
+                                        <select name="propertiesSelected"
+                                                title="propertiesSelected"
+                                                size="30"
+                                                class="form-control tceforms-multiselect js-in2studyfinder-selected-properties-list"
+                                                multiple="multiple">
+                                            <optgroup label="studyCourse" style="font-weight: bold"></optgroup>
+                                        </select>
                                     </div>
                                     <div class="form-wizards-items-aside">
                                         <div class="btn-group-vertical">
@@ -179,7 +236,8 @@
                                 <label for="propertiesAvailable">
                                     Available Items
                                 </label>
-                                <select name="propertiesAvailable" title="propertiesAvailable" class="form-control t3js-formengine-select-itemstoselect" size="30">
+                                <select name="propertiesAvailable" title="propertiesAvailable"
+                                        class="form-control t3js-formengine-select-itemstoselect js-in2studyfinder-property-list" size="30">
                                     <optgroup label="studyCourse" style="font-weight: bold"></optgroup>
                                     <f:render partial="Backend/AvailableFields" section="main"
                                               arguments="{properties:availableFieldsForExport}"/>
@@ -187,10 +245,10 @@
                             </div>
                         </div>
                     </div>
-                <f:form.hidden name="properties" class="in2studyfinder-selected-properties"/>
-                <f:form.hidden name="courseList" class="in2studyfinder-selected-courses"/>
-                <f:form.submit class="js-in2studyfinder-export-courses" value="Export" />
-            </div>
+                    <f:form.hidden name="properties" class="in2studyfinder-selected-properties"/>
+                    <f:form.hidden name="courseList" class="in2studyfinder-selected-courses"/>
+                    <f:form.submit class="js-in2studyfinder-export-courses" value="Export"/>
+                </div>
         </f:form>
     </f:if>
 </f:section>

@@ -69,16 +69,28 @@
 			<trans-unit id="academicDegree.degree">
 				<source>Degree</source>
 			</trans-unit>
+			<trans-unit id="degree">
+				<source>Degree</source>
+			</trans-unit>
 			<trans-unit id="typeOfStudy">
 				<source>Type Of Study</source>
 			</trans-unit>
 			<trans-unit id="typeOfStudy.type">
 				<source>Type</source>
 			</trans-unit>
+			<trans-unit id="type">
+				<source>Type</source>
+			</trans-unit>
 			<trans-unit id="courseLanguage.language">
 				<source>Language</source>
 			</trans-unit>
+			<trans-unit id="language">
+				<source>Language</source>
+			</trans-unit>
 			<trans-unit id="startOfStudy.startDate">
+				<source>Start Date</source>
+			</trans-unit>
+			<trans-unit id="startDate">
 				<source>Start Date</source>
 			</trans-unit>
 			<trans-unit id="keyData">

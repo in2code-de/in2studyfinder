@@ -87,6 +87,10 @@
 				<source>Degree</source>
 				<target>Abschluss</target>
 			</trans-unit>
+			<trans-unit id="degree">
+				<source>Degree</source>
+				<target>Abschluss</target>
+			</trans-unit>
 			<trans-unit id="typeOfStudy">
 				<source>Type Of Study</source>
 				<target>Studientyp</target>
@@ -95,11 +99,23 @@
 				<source>Type</source>
 				<target>Typ</target>
 			</trans-unit>
+			<trans-unit id="type">
+				<source>Type</source>
+				<target>Typ</target>
+			</trans-unit>
 			<trans-unit id="courseLanguage.language">
 				<source>Language</source>
 				<target>Sprache</target>
 			</trans-unit>
+			<trans-unit id="language">
+				<source>Language</source>
+				<target>Sprache</target>
+			</trans-unit>
 			<trans-unit id="startOfStudy.startDate">
+				<source>Start Date</source>
+				<target>Start Datum</target>
+			</trans-unit>
+			<trans-unit id="startDate">
 				<source>Start Date</source>
 				<target>Start Datum</target>
 			</trans-unit>
