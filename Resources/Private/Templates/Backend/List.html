@@ -168,7 +168,7 @@
                                                 size="30"
                                                 class="form-control tceforms-multiselect js-in2studyfinder-selected-properties-list"
                                                 multiple="multiple">
-                                            <optgroup label="studyCourse" style="font-weight: bold"></optgroup>
+                                            <optgroup label="{f:translate( key: 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:studycourse')}" style="font-weight: bold"></optgroup>
                                         </select>
                                     </div>
                                     <div class="form-wizards-items-aside">
@@ -238,7 +238,7 @@
                                 </label>
                                 <select name="propertiesAvailable" title="propertiesAvailable"
                                         class="form-control t3js-formengine-select-itemstoselect js-in2studyfinder-property-list" size="30">
-                                    <optgroup label="studyCourse" style="font-weight: bold"></optgroup>
+                                    <optgroup label="{f:translate( key: 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:studycourse')}" style="font-weight: bold"></optgroup>
                                     <f:render partial="Backend/AvailableFields" section="main"
                                               arguments="{properties:availableFieldsForExport}"/>
                                 </select>
