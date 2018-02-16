@@ -140,17 +140,6 @@ class BackendController extends AbstractController
         $courses = $this->studyCourseRepository->getCoursesWithUidIn(json_decode($courseList, true))->toArray();
         $fileName = 'export.csv';
 
-        // Begin Export
-
-        /*
-         * Was muss exportiert werden
-         *
-         *  - welche Felder
-         *  - welche Models
-         *  - welche Studiengänge
-         *  - als was soll exportiert werden
-         */
-
         /** @var ExportInterface $exportType */
         $exportType = $this->objectManager->get($exporter);
         $exportConfiguration = $this->objectManager->get(ExportConfiguration::class);
