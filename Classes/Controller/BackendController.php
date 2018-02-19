@@ -27,16 +27,13 @@ namespace In2code\In2studyfinder\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Codeception\Util\Debug;
 use In2code\In2studyfinder\Export\Configuration\ExportConfiguration;
 use In2code\In2studyfinder\Export\ExportInterface;
 use In2code\In2studyfinder\Service\ExportService;
 use In2code\In2studyfinder\Utility\FileUtility;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -50,17 +47,6 @@ class BackendController extends AbstractController
      * @var ReflectionService
      */
     protected $reflectionService;
-
-    protected $excludedProperties = [
-        '_localizedUid',
-        '_languageUid',
-        '_versionedUid',
-        'globalDataPreset',
-        'globalData',
-        'contentElements',
-        'pid',
-        'uid'
-    ];
 
     public function initializeAction()
     {
@@ -187,8 +173,9 @@ class BackendController extends AbstractController
 
     protected function getFullPropertyList(&$propertyArray, $objectProperties)
     {
+
         foreach ($objectProperties as $propertyName => $propertyInformation) {
-            if (!in_array($propertyName, $this->excludedProperties)) {
+            if (!in_array($propertyName, $this->settings['backend']['excludedPropertiesForExport'])) {
                 if ($propertyInformation['type'] === ObjectStorage::class) {
                     if (class_exists($propertyInformation['elementType'])) {
                         $this->getFullPropertyList(
