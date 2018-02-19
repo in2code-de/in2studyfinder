@@ -13,8 +13,7 @@
     </f:for>
     <f:if condition="{studyCourses}">
         <f:form action="export" controller="Backend">
-            <div class="form-section">
-                <div class="panel panel-default">
+            <div class="panel panel-default">
                     <div class="panel-heading">1. Exportieren als:</div>
 
                     <fieldset class="form-section">
@@ -39,7 +38,7 @@
                     </fieldset>
                 </div>
 
-                <div class="panel panel-default js-in2studyfinder-select-course-container">
+            <div class="panel panel-default js-in2studyfinder-select-course-container">
                     <div class="panel-heading">2. Studiengänge auswählen
                         <span class="js-in2studyfinder-selected-courses">
                             <span class="js-in2studyfinder-selected-courses-count">0</span> Selected
@@ -114,87 +113,93 @@
                         </tfoot>
                     </table>
                 </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">3. zu exportierdene Felder auswählen
+            <div class="panel panel-default">
+                <div class="panel-heading">3. zu exportierdene Felder auswählen
                     </div>
 
-                    <fieldset class="form-section">
+                <fieldset class="form-section">
                         <div class="form-wizards-element">
-                        <div class="form-multigroup-wrap">
-                            <div class="form-multigroup-item form-multigroup-element">
-                                <label for="propertiesSelected">
-                                    Selected Items
-                                </label>
-                                <div class="form-wizards-wrap form-wizards-aside">
-                                    <div class="form-wizards-element">
-                                        <f:form.select name="selectedProperties"
-                                                       multiple="multiple"
-                                                       title="propertiesSelected"
-                                                       size="30"
-                                                       class="form-control tceforms-multiselect js-in2studyfinder-selected-properties-list">
-                                            <optgroup
-                                                    label="{f:translate( key: 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:studycourse')}"
-                                                    style="font-weight: bold"></optgroup>
-                                        </f:form.select>
-                                    </div>
-                                    <div class="form-wizards-items-aside">
-                                        <div class="btn-group-vertical">
-                                            <a href="#" class="btn btn-default js-in2studyfinder-move-item-begin"
-                                               title="Move selected items to top">
-                                                <core:icon identifier="actions-move-to-top" size="small" />
-                                            </a>
-                                            <a href="#" class="btn btn-default js-in2studyfinder-move-item-up"
-                                               title="Move selected items upwards">
-                                                <core:icon identifier="actions-move-up" size="small" />
-                                            </a>
-                                            <a href="#" class="btn btn-default js-in2studyfinder-move-item-down"
-                                               title="Move selected items downwards">
-                                                <core:icon identifier="actions-move-down" size="small" />
-                                            </a>
-                                            <a href="#" class="btn btn-default js-in2studyfinder-move-item-end"
-                                               title="Move selected items to bottom">
-                                                <core:icon identifier="actions-move-to-bottom" size="small" />
-                                            </a>
-                                            <a href="#" class="btn btn-default js-in2studyfinder-remove-item"
-                                               title="Remove selected items">
-                                                <core:icon identifier="actions-selection-delete" size="small" />
-                                            </a>
+                            <div class="form-multigroup-wrap">
+                                <div class="form-multigroup-item form-multigroup-element">
+                                    <label for="propertiesSelected">
+                                        Selected Items
+                                    </label>
+                                    <div class="form-wizards-wrap form-wizards-aside">
+                                        <div class="form-wizards-element">
+                                            <f:form.select name="selectedProperties"
+                                                           multiple="multiple"
+                                                           title="propertiesSelected"
+                                                           size="30"
+                                                           class="form-control tceforms-multiselect js-in2studyfinder-selected-properties-list">
+                                                <optgroup
+                                                        label="{f:translate( key: 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:studycourse')}"
+                                                        style="font-weight: bold"></optgroup>
+                                            </f:form.select>
+                                        </div>
+                                        <div class="form-wizards-items-aside">
+                                            <div class="btn-group-vertical">
+                                                <a href="#" class="btn btn-default js-in2studyfinder-move-item-begin"
+                                                   title="Move selected items to top">
+                                                    <core:icon identifier="actions-move-to-top" size="small" />
+                                                </a>
+                                                <a href="#" class="btn btn-default js-in2studyfinder-move-item-up"
+                                                   title="Move selected items upwards">
+                                                    <core:icon identifier="actions-move-up" size="small" />
+                                                </a>
+                                                <a href="#" class="btn btn-default js-in2studyfinder-move-item-down"
+                                                   title="Move selected items downwards">
+                                                    <core:icon identifier="actions-move-down" size="small" />
+                                                </a>
+                                                <a href="#" class="btn btn-default js-in2studyfinder-move-item-end"
+                                                   title="Move selected items to bottom">
+                                                    <core:icon identifier="actions-move-to-bottom" size="small" />
+                                                </a>
+                                                <a href="#" class="btn btn-default js-in2studyfinder-remove-item"
+                                                   title="Remove selected items">
+                                                    <core:icon identifier="actions-selection-delete" size="small" />
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-multigroup-item form-multigroup-element">
+                                    <label for="propertiesAvailable">
+                                        Available Items
+                                    </label>
+                                    <select multiple="multiple" name="propertiesAvailable" title="propertiesAvailable"
+                                            class="form-control tceforms-multiselect js-in2studyfinder-property-list"
+                                            size="30">
+                                        <optgroup
+                                                label="{f:translate( key: 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:studycourse')}"
+                                                style="font-weight: bold"></optgroup>
+                                        <f:render partial="Backend/AvailableFields" section="main"
+                                                  arguments="{properties:availableFieldsForExport}"/>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="form-multigroup-item form-multigroup-element">
-                                <label for="propertiesAvailable">
-                                    Available Items
-                                </label>
-                                <select multiple="multiple" name="propertiesAvailable" title="propertiesAvailable"
-                                        class="form-control tceforms-multiselect js-in2studyfinder-property-list"
-                                        size="30">
-                                    <optgroup
-                                            label="{f:translate( key: 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:studycourse')}"
-                                            style="font-weight: bold"></optgroup>
-                                    <f:render partial="Backend/AvailableFields" section="main"
-                                              arguments="{properties:availableFieldsForExport}"/>
-                                </select>
+                        </div>
+
+                        <f:form.hidden name="courseList" class="in2studyfinder-selected-courses"/>
+                    </fieldset>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">4. Exportieren
+                </div>
+
+                <fieldset class="form-section">
+                    <div class="form-group">
+                        <div class="formengine-field-item">
+                            <div class="form-control-wrap">
+                                <div class="form-wizards-wrap">
+                                    <div class="form-wizards-element">
+                                        <f:form.submit class="js-in2studyfinder-export-courses" value="Export" />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                        <f:form.hidden name="courseList" class="in2studyfinder-selected-courses"/>
-
-                        <div class="form-group">
-                            <div class="formengine-field-item">
-                                <div class="form-control-wrap">
-                                    <div class="form-wizards-wrap">
-                                        <div class="form-wizards-element">
-                                            <f:form.submit class="js-in2studyfinder-export-courses" value="Export" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </fieldset>
-                </div>
+                </fieldset>
             </div>
         </f:form>
     </f:if>
