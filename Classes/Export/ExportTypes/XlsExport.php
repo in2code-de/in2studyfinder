@@ -11,7 +11,7 @@ class XlsExport extends AbstractExport implements ExportInterface
     /**
      * @var string
      */
-    protected $fileType = 'xls';
+    protected $fileName = 'export.xls';
 
     public function export(ExportConfiguration $exportConfiguration)
     {

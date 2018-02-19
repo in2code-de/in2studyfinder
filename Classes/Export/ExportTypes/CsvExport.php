@@ -14,6 +14,11 @@ class CsvExport extends AbstractExport implements ExportInterface
 {
 
     /**
+     * @var string
+     */
+    protected $fileName = 'export.csv';
+
+    /**
      * @param ExportConfiguration $exportConfiguration
      * @return string
      * @throws Exception
@@ -31,15 +36,13 @@ class CsvExport extends AbstractExport implements ExportInterface
             $recordRows[$row] .= PHP_EOL;
         }
 
-        $fileName = 'test.csv';
-
         FileUtility::createFolderIfNotExists($this->exportConfiguration->getExportLocation());
 
-        if (!GeneralUtility::writeFile($this->exportConfiguration->getExportLocation() . $fileName, $this->getExportFileContent($recordRows), true)) {
+        if (!GeneralUtility::writeFile($this->exportConfiguration->getExportLocation() . $this->fileName, $this->getExportFileContent($recordRows), true)) {
             throw new Exception('Export file could not be created!');
         }
 
-        return $this->exportConfiguration->getExportLocation() . $fileName;
+        return $this->exportConfiguration->getExportLocation() . $this->fileName;
     }
 
     /**
