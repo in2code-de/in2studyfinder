@@ -16,12 +16,4 @@ class XlsExport extends AbstractExport implements ExportInterface
     public function export(ExportConfiguration $exportConfiguration)
     {
     }
-
-    /**
-     * @return string
-     */
-    public function getFileType()
-    {
-        return $this->fileType;
-    }
 }

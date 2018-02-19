@@ -12,10 +12,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 class CsvExport extends AbstractExport implements ExportInterface
 {
-    /**
-     * @var string
-     */
-    protected $fileType = 'csv';
 
     /**
      * @param ExportConfiguration $exportConfiguration
@@ -57,13 +53,5 @@ class CsvExport extends AbstractExport implements ExportInterface
         $standaloneView->assign('records', $recordRows);
 
         return trim($standaloneView->render());
-    }
-
-    /**
-     * @return string
-     */
-    public function getFileType()
-    {
-        return $this->fileType;
     }
 }

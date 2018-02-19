@@ -43,13 +43,6 @@ class AbstractExport implements ExportInterface
     }
 
     /**
-     *
-     */
-    public function getFileType()
-    {
-    }
-
-    /**
      * @return ExportConfiguration
      */
     public function getExportConfiguration()
