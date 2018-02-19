@@ -12,23 +12,44 @@ define(['TYPO3/CMS/In2studyfinder/Service/Backend/SelectExportPropertiesService'
 	 * @return {void}
 	 */
 	ExportModule.initialize = function() {
-		ExportModule.addEventListenerStartExport();
+		ExportModule.addEventListener();
 	};
 
-	ExportModule.exportCourses = function() {
+    /**
+     * Initialize event listener
+     */
+    ExportModule.addEventListener = function() {
+
+    	// export button
+    	var exportButton = document.querySelector('.js-in2studyfinder-export-courses');
+        exportButton.addEventListener('click', ExportModule.exportCourses);
+
+    };
+
+    /**
+	 * export courses
+     * @param event
+     */
+    ExportModule.exportCourses = function(event) {
 		var coursesForExport = SelectCoursesForExportService.getCourseList();
 		var selectedCoursesElement = document.querySelector('.in2studyfinder-selected-courses');
+
+		ExportModule.addSelectionToSelectedPropertiesList();
 
         selectedCoursesElement.value = JSON.stringify(Object.assign({}, coursesForExport));
 	};
 
-	/**
-	 *
-	 */
-	ExportModule.addEventListenerStartExport = function() {
-		var element = document.querySelector('.js-in2studyfinder-export-courses');
-		element.addEventListener('click', ExportModule.exportCourses);
-	};
+    /**
+	 * selects all items from the selected items select box
+     */
+    ExportModule.addSelectionToSelectedPropertiesList = function () {
+        var selectedCoursesList = document.querySelector('.js-in2studyfinder-selected-properties-list');
+
+        // set all elements to selected
+        for (var i = 0; i < selectedCoursesList.options.length; i++) {
+            selectedCoursesList.options[i].selected = true;
+        }
+    };
 
 	ExportModule.initialize();
 	return ExportModule;

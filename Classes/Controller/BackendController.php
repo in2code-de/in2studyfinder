@@ -31,6 +31,7 @@ use In2code\In2studyfinder\Export\Configuration\ExportConfiguration;
 use In2code\In2studyfinder\Export\ExportInterface;
 use In2code\In2studyfinder\Service\ExportService;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
@@ -130,13 +131,12 @@ class BackendController extends AbstractController
 
     /**
      * @param string $exporter
-     * @param string $selection
-     * @param string $properties
+     * @param array $selectedProperties
      * @param string $courseList
-     * @throws \TYPO3\CMS\Core\Exception
      */
-    public function exportAction($exporter, $selection, $properties, $courseList)
+    public function exportAction($exporter, $selectedProperties, $courseList)
     {
+
         $courses = $this->studyCourseRepository->getCoursesWithUidIn(json_decode($courseList, true))->toArray();
         $fileName = 'export.csv';
 
@@ -144,7 +144,7 @@ class BackendController extends AbstractController
         $exportType = $this->objectManager->get($exporter);
         $exportConfiguration = $this->objectManager->get(ExportConfiguration::class);
         $exportConfiguration
-            ->setPropertiesToExport(json_decode($properties, true))
+            ->setPropertiesToExport($selectedProperties)
             ->setExporter($exportType);
 
         $exportService =  $this->objectManager->get(ExportService::class, $exportConfiguration);

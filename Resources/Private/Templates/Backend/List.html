@@ -48,7 +48,7 @@
                     <table class="table table-striped table-hover js-in2studyfinder-course-table">
                         <thead>
                         <th>
-                            <f:form.checkbox name="selection" class="js-in2studyfinder-check-all" value="all"/>
+                            <input type="checkbox" name="selection" class="js-in2studyfinder-check-all" value="all"/>
                         </th>
                         <th>Uid</th>
                         <th colspan="2">Title</th>
@@ -59,7 +59,7 @@
                             <f:for each="{paginatedCourses}" as="studyCourse">
                                 <tr data-in2studyfinder-course-uid="{studyCourse.uid}">
                                     <td>
-                                        <f:form.checkbox name="selection" value="{studyCourse.uid}"
+                                        <input type="checkbox" name="selection" value="{studyCourse.uid}"
                                                          class="js-in2studyfinder-select-course"/>
                                     </td>
                                     <td>{studyCourse.uid}</td>
@@ -127,15 +127,15 @@
                                 </label>
                                 <div class="form-wizards-wrap form-wizards-aside">
                                     <div class="form-wizards-element">
-                                        <select name="propertiesSelected"
-                                                title="propertiesSelected"
-                                                size="30"
-                                                class="form-control tceforms-multiselect js-in2studyfinder-selected-properties-list"
-                                                multiple="multiple">
+                                        <f:form.select name="selectedProperties"
+                                                       multiple="multiple"
+                                                       title="propertiesSelected"
+                                                       size="30"
+                                                       class="form-control tceforms-multiselect js-in2studyfinder-selected-properties-list">
                                             <optgroup
                                                     label="{f:translate( key: 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:studycourse')}"
                                                     style="font-weight: bold"></optgroup>
-                                        </select>
+                                        </f:form.select>
                                     </div>
                                     <div class="form-wizards-items-aside">
                                         <div class="btn-group-vertical">
@@ -167,7 +167,7 @@
                                 <label for="propertiesAvailable">
                                     Available Items
                                 </label>
-                                <select name="propertiesAvailable" title="propertiesAvailable"
+                                <select multiple="multiple" name="propertiesAvailable" title="propertiesAvailable"
                                         class="form-control tceforms-multiselect js-in2studyfinder-property-list"
                                         size="30">
                                     <optgroup
@@ -179,7 +179,6 @@
                             </div>
                         </div>
                     </div>
-                        <f:form.hidden name="properties" class="in2studyfinder-selected-properties"/>
                         <f:form.hidden name="courseList" class="in2studyfinder-selected-courses"/>
 
                         <div class="form-group">
