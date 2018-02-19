@@ -134,12 +134,22 @@ class BackendController extends AbstractController
     /**
      * @param string $exporter
      * @param array $selectedProperties
-     * @param string $courseList
+     * @param array $courseList
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      */
     public function exportAction($exporter, $selectedProperties, $courseList)
     {
+        if (empty($selectedProperties) || empty($courseList)) {
+            $this->addFlashMessage(
+                LocalizationUtility::translate('messages.notAllRequiredFieldsSet.body', 'in2studyfinder'),
+                LocalizationUtility::translate('messages.notAllRequiredFieldsSet.title', 'in2studyfinder'),
+                AbstractMessage::ERROR
+            );
 
-        $courses = $this->studyCourseRepository->getCoursesWithUidIn(json_decode($courseList, true))->toArray();
+            $this->forward('list');
+        }
+
+        $courses = $this->studyCourseRepository->getCoursesWithUidIn($courseList)->toArray();
 
         /** @var ExportInterface $exportType */
         $exportType = $this->objectManager->get($exporter);

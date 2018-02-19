@@ -58,8 +58,8 @@
                             <f:for each="{paginatedCourses}" as="studyCourse">
                                 <tr data-in2studyfinder-course-uid="{studyCourse.uid}">
                                     <td>
-                                        <input type="checkbox" name="selection" value="{studyCourse.uid}"
-                                                         class="js-in2studyfinder-select-course"/>
+                                        <f:form.checkbox name="courseList" value="{studyCourse.uid}" multiple="multiple"
+                                        class="js-in2studyfinder-select-course"/>
                                     </td>
                                     <td>{studyCourse.uid}</td>
                                     <td>{studyCourse.title}</td>
@@ -178,8 +178,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <f:form.hidden name="courseList" class="in2studyfinder-selected-courses"/>
                     </fieldset>
             </div>
 

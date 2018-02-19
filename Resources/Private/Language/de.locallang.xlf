@@ -190,6 +190,14 @@
 				<source>no settings pid set</source>
 				<target>SettingsPid ist nicht gesetzt</target>
 			</trans-unit>
+			<trans-unit id="messages.notAllRequiredFieldsSet.title">
+				<source>missing required field</source>
+				<target>Nicht alle nötigen Felder gefüllt</target>
+			</trans-unit>
+			<trans-unit id="messages.notAllRequiredFieldsSet.body">
+				<source>At least one course and one field must be selected for export!</source>
+				<target>Es muss jeweils mindestens ein Studiengang und ein Feld zum Export ausgewählt werden!</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

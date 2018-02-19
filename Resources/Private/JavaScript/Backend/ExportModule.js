@@ -28,15 +28,9 @@ define(['TYPO3/CMS/In2studyfinder/Service/Backend/SelectExportPropertiesService'
 
     /**
 	 * export courses
-     * @param event
      */
-    ExportModule.exportCourses = function(event) {
-		var coursesForExport = SelectCoursesForExportService.getCourseList();
-		var selectedCoursesElement = document.querySelector('.in2studyfinder-selected-courses');
-
+    ExportModule.exportCourses = function() {
 		ExportModule.addSelectionToSelectedPropertiesList();
-
-        selectedCoursesElement.value = JSON.stringify(Object.assign({}, coursesForExport));
 	};
 
     /**

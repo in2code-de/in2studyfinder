@@ -147,6 +147,12 @@
 			<trans-unit id="messages.noSettingsPid.body">
 				<source>no settings pid set</source>
 			</trans-unit>
+			<trans-unit id="messages.notAllRequiredFieldsSet.title">
+				<source>missing required field</source>
+			</trans-unit>
+			<trans-unit id="messages.notAllRequiredFieldsSet.body">
+				<source>At least one course and one field must be selected for export!</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
