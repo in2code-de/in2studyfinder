@@ -77,8 +77,6 @@ if (TYPO3_MODE === 'BE') {
      */
     $GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportTypes']['CSV'] =
         \In2code\In2studyfinder\Export\ExportTypes\CsvExport::class;
-    $GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportTypes']['XLS'] =
-        \In2code\In2studyfinder\Export\ExportTypes\XlsExport::class;
 
 }
 
