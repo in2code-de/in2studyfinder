@@ -180,7 +180,8 @@
                                     <label for="propertiesAvailable">
                                         <f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:availableItems" />
                                     </label>
-                                    <select multiple="multiple" name="propertiesAvailable" title="propertiesAvailable"
+                                    <div class="form-wizards-element">
+                                        <select multiple="multiple" name="propertiesAvailable" title="propertiesAvailable"
                                             class="form-control tceforms-multiselect js-in2studyfinder-property-list"
                                             size="30">
                                         <optgroup
@@ -189,6 +190,7 @@
                                         <f:render partial="Backend/AvailableFields" section="main"
                                                   arguments="{properties:availableFieldsForExport}"/>
                                     </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
