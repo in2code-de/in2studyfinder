@@ -59,7 +59,10 @@ class BackendController extends AbstractController
     {
         $this->validateSettings();
 
-        $studyCourses = $this->getStudyCourseRepository()->findAll();
+        $studyCourses =  $this->getStudyCourseRepository()->findAllForExport(
+            $this->settings['backend']['export']['includeDeleted'],
+            $this->settings['backend']['export']['includeHidden']
+        );
         $possibleExportDataProvider = $this->getPossibleExportDataProvider();
         $propertyArray = [];
 
@@ -175,7 +178,7 @@ class BackendController extends AbstractController
     {
 
         foreach ($objectProperties as $propertyName => $propertyInformation) {
-            if (!in_array($propertyName, $this->settings['backend']['excludedPropertiesForExport'])) {
+            if (!in_array($propertyName, $this->settings['backend']['export']['excludedPropertiesForExport'])) {
                 if ($propertyInformation['type'] === ObjectStorage::class) {
                     if (class_exists($propertyInformation['elementType'])) {
                         $this->getFullPropertyList(

@@ -50,7 +50,9 @@
                             <input type="checkbox" name="selection" class="js-in2studyfinder-check-all" value="all"/>
                         </th>
                         <th>Uid</th>
-                        <th colspan="2">Title</th>
+                        <th>Title</th>
+                        <th>Hidden</th>
+                        <th>Deleted</th>
                         </thead>
                         <tbody class="js-in2studyfinder-course-list">
                         <in2studyfinder:widget.paginate objects="{studyCourses}" as="paginatedCourses"
@@ -63,8 +65,18 @@
                                     </td>
                                     <td>{studyCourse.uid}</td>
                                     <td>{studyCourse.title}</td>
-                                    <td class="col-control">
-                                        <f:comment>
+                                    <td>
+                                        <f:if condition="{studyCourse.hidden}">
+                                            <core:icon identifier="actions-check" size="small" />
+                                        </f:if>
+                                    </td>
+                                    <td>
+                                        <f:if condition="{studyCourse.deleted}">
+                                            <core:icon identifier="actions-check" size="small" />
+                                        </f:if>
+                                    </td>
+                                    <f:comment>
+                                        <td class="col-control">
                                             <div class="btn-group" role="group">
                                                 <a href="#" onClick="alert('Ok'); return false;" class="btn btn-default">
                                                     <core:icon identifier="actions-document-open"/>
@@ -79,14 +91,14 @@
                                                     <core:icon identifier="actions-edit-delete"/>
                                                 </a>
                                             </div>
-                                        </f:comment>
-                                    </td>
+                                        </td>
+                                    </f:comment>
                                 </tr>
                             </f:for>
                         </in2studyfinder:widget.paginate>
                         </tbody>
                         <tfoot>
-                        <td colspan="3" class="js-in2studyfinder-pagination"></td>
+                        <td colspan="4" class="js-in2studyfinder-pagination"></td>
                         <td>
                             <label for="itemsPerPage">
                                 <f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:itemsPerPage" />

@@ -183,6 +183,16 @@ class StudyCourse extends AbstractEntity
     protected $globalDataPreset = null;
 
     /**
+     * @var boolean
+     */
+    protected $hidden = false;
+
+    /**
+     * @var boolean
+     */
+    protected $deleted = false;
+
+    /**
      * @param int $uid
      */
     public function setUid($uid)
@@ -775,6 +785,38 @@ class StudyCourse extends AbstractEntity
     public function getTitleWithAcademicDegree()
     {
         return $this->getTitle() . ' - ' . $this->getAcademicDegree()->getDegree();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHidden()
+    {
+        return $this->hidden;
+    }
+
+    /**
+     * @param bool $hidden
+     */
+    public function setHidden($hidden)
+    {
+        $this->hidden = $hidden;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * @param bool $deleted
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
     }
 
     /**

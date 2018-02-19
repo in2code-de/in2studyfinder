@@ -118,4 +118,27 @@ class StudyCourseRepository extends AbstractRepository
 
         return $query->execute();
     }
+
+    /**
+     * finds courses for the given parameters
+     *
+     * @param bool $includeDeleted
+     * @param bool $ignoreEnableFields
+     * @return array|QueryResultInterface
+     */
+    public function findAllForExport($includeDeleted = false, $ignoreEnableFields = false) {
+        $query = $this->createQuery();
+
+        $query->getQuerySettings()->setRespectStoragePage(false);
+
+        if ($includeDeleted) {
+            $query->getQuerySettings()->setIncludeDeleted(true);
+        }
+
+        if ($ignoreEnableFields) {
+            $query->getQuerySettings()->setIgnoreEnableFields(true);
+        }
+
+        return $query->execute();
+    }
 }
