@@ -27,9 +27,11 @@ namespace In2code\In2studyfinder\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Codeception\Util\Debug;
 use In2code\In2studyfinder\Export\Configuration\ExportConfiguration;
 use In2code\In2studyfinder\Export\ExportInterface;
 use In2code\In2studyfinder\Service\ExportService;
+use In2code\In2studyfinder\Utility\FileUtility;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -138,7 +140,6 @@ class BackendController extends AbstractController
     {
 
         $courses = $this->studyCourseRepository->getCoursesWithUidIn(json_decode($courseList, true))->toArray();
-        $fileName = 'export.csv';
 
         /** @var ExportInterface $exportType */
         $exportType = $this->objectManager->get($exporter);
@@ -151,17 +152,18 @@ class BackendController extends AbstractController
         $processedRecords = $exportService->prepareRecordsForExport($courses);
         $exportConfiguration->setRecordsToExport($processedRecords);
 
-        $file = $exportService->export();
+        $filenameAndPath = $exportService->export();
+        $filename = FileUtility::getFilenameFromFileWithPath($filenameAndPath);
 
         $headers = array(
             'Pragma'                    => 'public',
             'Expires'                   => 0,
             'Cache-Control'             => 'must-revalidate, post-check=0, pre-check=0',
-            'Content-Disposition'       => 'attachment; filename="'. $fileName .'"',
+            'Content-Disposition'       => 'attachment; filename="'. $filename .'"',
             'Content-Description'       => 'File Transfer',
             'Content-Type'              => 'text/plain',
             'Content-Transfer-Encoding' => 'binary',
-            'Content-Length'            => filesize($file)
+            'Content-Length'            => filesize($filenameAndPath)
         );
 
         foreach($headers as $header => $data)
@@ -169,7 +171,7 @@ class BackendController extends AbstractController
 
         $this->response->sendHeaders();
 
-        @readfile($file);
+        @readfile($filenameAndPath);
         exit;
     }
 

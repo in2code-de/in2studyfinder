@@ -67,6 +67,19 @@ class FileUtility extends AbstractUtility
     }
 
     /**
+     * returns the filename from a given path
+     * e.g. typo3temp/tx_in2studyfinder/export.csv -> export.csv
+     *
+     * @param string $fileWithPath
+     *
+     * @return string
+     */
+    public static function getFilenameFromFileWithPath($fileWithPath)
+    {
+        return basename($fileWithPath);
+    }
+
+    /**
      * Prepend content to the beginning of a file
      *
      * @param string $pathAndFile
