@@ -249,6 +249,30 @@
 			<trans-unit id="sysLanguageUid">
 				<source>sys Language uid</source>
 			</trans-unit>
+			<trans-unit id="exportAs">
+				<source>Export as</source>
+			</trans-unit>
+			<trans-unit id="selectCourses">
+				<source>Select Courses</source>
+			</trans-unit>
+			<trans-unit id="selected">
+				<source>Selected</source>
+			</trans-unit>
+			<trans-unit id="selectProperties">
+				<source>select fields for export</source>
+			</trans-unit>
+			<trans-unit id="itemsPerPage">
+				<source>Items per Page</source>
+			</trans-unit>
+			<trans-unit id="export">
+				<source>Export</source>
+			</trans-unit>
+			<trans-unit id="selectedItems">
+				<source>Selected Items</source>
+			</trans-unit>
+			<trans-unit id="availableItems">
+				<source>Available Items</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

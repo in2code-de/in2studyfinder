@@ -326,6 +326,38 @@
 				<source>sys Language uid</source>
 				<target>Sys Language Uid</target>
 			</trans-unit>
+			<trans-unit id="exportAs">
+				<source>Export as</source>
+				<target>Exportieren als</target>
+			</trans-unit>
+			<trans-unit id="selectCourses">
+				<source>Select Courses</source>
+				<target>Studiengänge auswählen</target>
+			</trans-unit>
+			<trans-unit id="selected">
+				<source>Selected</source>
+				<target>Ausgewählt</target>
+			</trans-unit>
+			<trans-unit id="selectProperties">
+				<source>select fields for export</source>
+				<target>zu exportierdene Felder auswählen</target>
+			</trans-unit>
+			<trans-unit id="itemsPerPage">
+				<source>Items per Page</source>
+				<target>Studiengänge per Seite</target>
+			</trans-unit>
+			<trans-unit id="export">
+				<source>Export</source>
+				<target>Exportieren</target>
+			</trans-unit>
+			<trans-unit id="selectedItems">
+				<source>Selected Items</source>
+				<target>Ausgewählte Felder</target>
+			</trans-unit>
+			<trans-unit id="availableItems">
+				<source>Available Items</source>
+				<target>Verfügbare Felder</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
