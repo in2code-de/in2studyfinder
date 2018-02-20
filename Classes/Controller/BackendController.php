@@ -27,10 +27,12 @@ namespace In2code\In2studyfinder\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Export\Configuration\ExportConfiguration;
 use In2code\In2studyfinder\Export\ExportInterface;
 use In2code\In2studyfinder\Service\ExportService;
 use In2code\In2studyfinder\Utility\FileUtility;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
@@ -59,25 +61,23 @@ class BackendController extends AbstractController
     {
         $this->validateSettings();
 
-        $studyCourses =  $this->getStudyCourseRepository()->findAllForExport(
-            $this->settings['backend']['export']['includeDeleted'],
-            $this->settings['backend']['export']['includeHidden']
-        );
+        $studyCourses = $this->getStudyCoursesForExport();
+
         $possibleExportDataProvider = $this->getPossibleExportDataProvider();
         $propertyArray = [];
 
-        if ($studyCourses->getFirst() !== null) {
-            $this->getFullPropertyList(
-                $propertyArray,
-                $this->reflectionService->getClassSchema($studyCourses->getFirst())->getProperties()
-            );
-        } else {
+        if ($studyCourses !== null && empty($studyCourses)) {
             $this->addFlashMessage(
                 LocalizationUtility::translate('messages.noCourses.body', 'in2studyfinder'),
                 LocalizationUtility::translate('messages.noCourses.title', 'in2studyfinder'),
                 AbstractMessage::WARNING
             );
         }
+
+        $this->getFullPropertyList(
+            $propertyArray,
+            $this->reflectionService->getClassSchema(StudyCourse::class)->getProperties()
+        );
 
         $itemsPerPage = $this->settings['pagination']['itemsPerPage'];
 
@@ -88,12 +88,38 @@ class BackendController extends AbstractController
 
         $this->view->assignMultiple(
             [
-                'studyCourses' => $studyCourses->toArray(),
+                'studyCourses' => $studyCourses,
                 'exportDataProvider' => $possibleExportDataProvider,
                 'availableFieldsForExport' => $propertyArray,
                 'itemsPerPage' => $itemsPerPage
             ]
         );
+    }
+
+    /**
+     * @return array|null
+     */
+    protected function getStudyCoursesForExport()
+    {
+        $where = '';
+        $includeDeleted = (int)$this->settings['backend']['export']['includeDeleted'];
+        $includeHidden = (int)$this->settings['backend']['export']['includeHidden'];
+
+        if (!$includeDeleted) {
+            $where .= ' deleted = 0';
+        }
+
+        if (!$includeHidden) {
+            if (!$includeDeleted) {
+                $where .= ' and';
+            }
+            $where .= ' hidden = 0';
+        }
+
+        /** @var DatabaseConnection $databaseConnection */
+        $databaseConnection = $GLOBALS['TYPO3_DB'];
+
+        return $databaseConnection->exec_SELECTgetRows('uid, title, hidden, deleted', StudyCourse::TABLE, $where);
     }
 
     public function getPossibleExportDataProvider()

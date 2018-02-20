@@ -83,6 +83,8 @@ plugin.tx_in2studyfinder {
 					5 = contentElements
 					6 = pid
 					7 = uid
+					8 = deleted
+					9 = hidden
 				}
 
 				includeDeleted = 0

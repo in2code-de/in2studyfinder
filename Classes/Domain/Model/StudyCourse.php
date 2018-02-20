@@ -35,6 +35,8 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  */
 class StudyCourse extends AbstractEntity
 {
+    const TABLE = 'tx_in2studyfinder_domain_model_studycourse';
+
     /**
      * title
      *
