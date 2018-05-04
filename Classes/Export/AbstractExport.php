@@ -11,11 +11,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 class AbstractExport implements ExportInterface
 {
     /**
-     * @var ExportConfiguration
-     */
-    protected $exportConfiguration = null;
-
-    /**
      * @var ObjectManagerInterface
      */
     protected $objectManager = null;
@@ -40,22 +35,6 @@ class AbstractExport implements ExportInterface
      */
     public function export(ExportConfiguration $exportConfiguration)
     {
-    }
-
-    /**
-     * @return ExportConfiguration
-     */
-    public function getExportConfiguration()
-    {
-        return $this->exportConfiguration;
-    }
-
-    /**
-     * @param ExportConfiguration $exportConfiguration
-     */
-    public function setExportConfiguration($exportConfiguration)
-    {
-        $this->exportConfiguration = $exportConfiguration;
     }
 
     protected function setObjectManager()

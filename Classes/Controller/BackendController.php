@@ -166,38 +166,9 @@ class BackendController extends AbstractController
 
         $courses = $this->studyCourseRepository->getCoursesWithUidIn($courseList)->toArray();
 
-        /** @var ExportInterface $exportType */
-        $exportType = $this->objectManager->get($exporter);
-        $exportConfiguration = $this->objectManager->get(ExportConfiguration::class);
-        $exportConfiguration
-            ->setPropertiesToExport($selectedProperties)
-            ->setExporter($exportType);
+        $exportService =  $this->objectManager->get(ExportService::class, $exporter, $selectedProperties, $courses);
 
-        $exportService =  $this->objectManager->get(ExportService::class, $exportConfiguration);
-        $processedRecords = $exportService->prepareRecordsForExport($courses);
-        $exportConfiguration->setRecordsToExport($processedRecords);
-
-        $filenameAndPath = $exportService->export();
-        $filename = FileUtility::getFilenameFromFileWithPath($filenameAndPath);
-
-        $headers = array(
-            'Pragma'                    => 'public',
-            'Expires'                   => 0,
-            'Cache-Control'             => 'must-revalidate, post-check=0, pre-check=0',
-            'Content-Disposition'       => 'attachment; filename="'. $filename .'"',
-            'Content-Description'       => 'File Transfer',
-            'Content-Type'              => 'text/plain',
-            'Content-Transfer-Encoding' => 'binary',
-            'Content-Length'            => filesize($filenameAndPath)
-        );
-
-        foreach($headers as $header => $data)
-            $this->response->setHeader($header, $data);
-
-        $this->response->sendHeaders();
-
-        @readfile($filenameAndPath);
-        exit;
+        $exportService->export();
     }
 
     protected function getFullPropertyList(&$propertyArray, $objectProperties)

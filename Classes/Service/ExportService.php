@@ -3,6 +3,8 @@
 namespace In2code\In2studyfinder\Service;
 
 use In2code\In2studyfinder\Export\Configuration\ExportConfiguration;
+use In2code\In2studyfinder\Export\ExportInterface;
+use In2code\In2studyfinder\Utility\FileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -14,17 +16,51 @@ class ExportService
      */
     protected $exportConfiguration = null;
 
-    public function __construct(ExportConfiguration $exportConfiguration)
+    /**
+     * ExportService constructor.
+     *
+     * @param string $exporterType
+     * @param array $selectedProperties
+     * @param array $courses
+     */
+    public function __construct($exporterType, array $selectedProperties, array $courses)
     {
-        $this->setExportConfiguration($exportConfiguration);
+        /** @var ExportInterface $exporter */
+        $exporter = GeneralUtility::makeInstance($exporterType);
+        $this->setExportConfiguration(GeneralUtility::makeInstance(ExportConfiguration::class));
+
+        $this->exportConfiguration
+            ->setPropertiesToExport($selectedProperties)
+            ->setExporter($exporter);
+
+        $this->exportConfiguration->setRecordsToExport($this->prepareRecordsForExport($courses));
     }
 
     /**
-     * @return string
+     * @return void filename of the exported file
      */
     public function export()
     {
-        return $this->exportConfiguration->getExporter()->export($this->exportConfiguration);
+        $fullQualifiedFileName = $this->exportConfiguration->getExporter()->export($this->exportConfiguration);
+        $filename = FileUtility::getFilenameFromFileWithPath($fullQualifiedFileName);
+
+        $headers = array(
+            'Pragma'                    => 'public',
+            'Expires'                   => 0,
+            'Cache-Control'             => 'must-revalidate, post-check=0, pre-check=0',
+            'Content-Disposition'       => 'attachment; filename="'. $filename .'"',
+            'Content-Description'       => 'File Transfer',
+            'Content-Type'              => 'text/plain',
+            'Content-Transfer-Encoding' => 'binary',
+            'Content-Length'            => filesize($fullQualifiedFileName)
+        );
+
+        foreach($headers as $header => $data) {
+            header($header . ': ' . $data);
+        }
+
+        @readfile($fullQualifiedFileName);
+        exit;
     }
 
     /**
@@ -65,7 +101,7 @@ class ExportService
     /**
      * @todo refactor
      *
-     * @param $record
+     * @param string $record
      * @param array $propertyPath
      * @return string
      */
@@ -73,7 +109,7 @@ class ExportService
     {
         foreach ($propertyPath as $propertyName) {
             if ($record instanceof ObjectStorage) {
-                $recordArray =  $record->toArray();
+                $recordArray = $record->toArray();
                 $value = '';
                 foreach ($recordArray as $item) {
                     $value .= $item->_getProperty($propertyName) . ', ';
@@ -101,7 +137,7 @@ class ExportService
 
     /**
      * @param AbstractDomainObject|ObjectStorage $record
-     * @param $property
+     * @param string $property
      * @return mixed
      * @throws \Exception
      */

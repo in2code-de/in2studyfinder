@@ -26,23 +26,21 @@ class CsvExport extends AbstractExport implements ExportInterface
      */
     public function export(ExportConfiguration $exportConfiguration)
     {
-        $this->setExportConfiguration($exportConfiguration);
-
         $recordRows = [];
-        foreach ($this->exportConfiguration->getRecordsToExport() as $row => $record) {
+        foreach ($exportConfiguration->getRecordsToExport() as $row => $record) {
             foreach ($record as $propertyName => $property) {
                 $recordRows[$row] .= $property . ';';
             }
             $recordRows[$row] .= PHP_EOL;
         }
 
-        FileUtility::createFolderIfNotExists($this->exportConfiguration->getExportLocation());
+        FileUtility::createFolderIfNotExists($exportConfiguration->getExportLocation());
 
-        if (!GeneralUtility::writeFile($this->exportConfiguration->getExportLocation() . $this->fileName, $this->getExportFileContent($recordRows), true)) {
+        if (!GeneralUtility::writeFile($exportConfiguration->getExportLocation() . $this->fileName, $this->getExportFileContent($recordRows), true)) {
             throw new Exception('Export file could not be created!');
         }
 
-        return $this->exportConfiguration->getExportLocation() . $this->fileName;
+        return $exportConfiguration->getExportLocation() . $this->fileName;
     }
 
     /**
