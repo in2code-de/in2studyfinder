@@ -141,7 +141,7 @@ class StudyCourseController extends ActionController
         /*
          * add the flexform settings to the settings if the request is an ajax request
          */
-        if (GeneralUtility::_GP('type') === '2308171055' && GeneralUtility::_GP('ce')) {
+        if (GeneralUtility::_GP('type') === '1308171055' && GeneralUtility::_GP('ce')) {
             $this->settings =
                 array_merge_recursive(
                     $this->settings,
