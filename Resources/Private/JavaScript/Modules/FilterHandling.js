@@ -39,7 +39,7 @@
 				sysLanguageUidQuery = '&L=' + sysLanguageUid;
 			}
 
-			var url = '/?type=2308171055&studyFinderAjaxRequest=1' + contentElementUidQuery + sysLanguageUidQuery;
+			var url = '/?type=1308171055&studyFinderAjaxRequest=1' + contentElementUidQuery + sysLanguageUidQuery;
 			if (paginationPage) {
 				url += '&tx_in2studyfinder_pi1%5B%40widget_0%5D%5BcurrentPage%5D=' + paginationPage;
 			}
