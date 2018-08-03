@@ -119,7 +119,9 @@ class ExportService
 
                 $record = $value;
             } else {
-                $record = $record->_getProperty($propertyName);
+                if ($record !== null) {
+                    $record = $record->_getProperty($propertyName);
+                }
             }
         }
 
