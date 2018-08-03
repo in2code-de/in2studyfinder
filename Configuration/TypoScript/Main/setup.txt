@@ -89,7 +89,7 @@ plugin.tx_in2studyfinder {
 				}
 
 				includeDeleted = 0
-				includeHidden = 1
+				includeHidden = 0
 			}
 		}
 
