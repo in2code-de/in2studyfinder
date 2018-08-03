@@ -82,7 +82,9 @@ class BackendController extends AbstractController
 
         $this->getFullPropertyList(
             $propertyArray,
-            $this->reflectionService->getClassSchema(StudyCourse::class)->getProperties()
+            $this->reflectionService->getClassSchema(
+                $this->getStudyCourseRepository()->findOneByDeleted(0)
+            )->getProperties()
         );
 
         $itemsPerPage = $this->settings['pagination']['itemsPerPage'];
