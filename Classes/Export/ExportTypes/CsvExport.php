@@ -36,9 +36,13 @@ class CsvExport extends AbstractExport implements ExportInterface
 
         FileUtility::createFolderIfNotExists($exportConfiguration->getExportLocation());
 
+        $fluidVariables = [
+            'records' => $recordRows
+        ];
+
         if (!GeneralUtility::writeFile(
             $exportConfiguration->getExportLocation() . $this->fileName,
-            $this->getExportFileContent($recordRows),
+            $this->getExportFileContent($fluidVariables),
             true
         )) {
             throw new Exception('Export file could not be created!');
@@ -48,14 +52,16 @@ class CsvExport extends AbstractExport implements ExportInterface
     }
 
     /**
-     * @param $recordRows
+     * @param array $variables
      * @return string
      */
-    protected function getExportFileContent($recordRows)
+    protected function getExportFileContent(array $variables)
     {
         $standaloneView = $this->getStandaloneView('EXT:in2studyfinder/Resources/Private/Templates/Exporter/Csv.html');
 
-        $standaloneView->assign('records', $recordRows);
+        foreach ($variables as $key => $variable) {
+            $standaloneView->assign($key, $variable);
+        }
 
         return trim($standaloneView->render());
     }
