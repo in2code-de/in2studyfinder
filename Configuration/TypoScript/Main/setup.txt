@@ -85,6 +85,7 @@ plugin.tx_in2studyfinder {
 					7 = uid
 					8 = deleted
 					9 = hidden
+					10 = sorting
 				}
 
 				includeDeleted = 0
