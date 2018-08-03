@@ -29,7 +29,7 @@ class CsvExport extends AbstractExport implements ExportInterface
         $recordRows = [];
         foreach ($exportConfiguration->getRecordsToExport() as $row => $record) {
             foreach ($record as $propertyName => $property) {
-                $recordRows[$row] .= $property . ';';
+                $recordRows[$row] .= '"' . $property . '";';
             }
             $recordRows[$row] .= PHP_EOL;
         }

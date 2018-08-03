@@ -1,4 +1,6 @@
-<f:layout name="Export" />
+<f:layout name="Export"/>
 <f:section name="main">
-	<f:for each="{records}" as="row">{row}</f:for>
+	<f:for each="{records}" as="row">
+		<f:format.raw>{row}</f:format.raw>
+	</f:for>
 </f:section>
