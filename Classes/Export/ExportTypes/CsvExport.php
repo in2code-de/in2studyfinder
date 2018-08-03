@@ -37,6 +37,7 @@ class CsvExport extends AbstractExport implements ExportInterface
         FileUtility::createFolderIfNotExists($exportConfiguration->getExportLocation());
 
         $fluidVariables = [
+            'header' => '"' . implode('";"', $exportConfiguration->getPropertiesToExport()) . '";',
             'records' => $recordRows
         ];
 
