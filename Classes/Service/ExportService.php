@@ -45,17 +45,17 @@ class ExportService
         $filename = FileUtility::getFilenameFromFileWithPath($fullQualifiedFileName);
 
         $headers = array(
-            'Pragma'                    => 'public',
-            'Expires'                   => 0,
-            'Cache-Control'             => 'must-revalidate, post-check=0, pre-check=0',
-            'Content-Disposition'       => 'attachment; filename="'. $filename .'"',
-            'Content-Description'       => 'File Transfer',
-            'Content-Type'              => 'text/plain',
+            'Pragma' => 'public',
+            'Expires' => 0,
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            'Content-Description' => 'File Transfer',
+            'Content-Type' => 'text/plain',
             'Content-Transfer-Encoding' => 'binary',
-            'Content-Length'            => filesize($fullQualifiedFileName)
+            'Content-Length' => filesize($fullQualifiedFileName)
         );
 
-        foreach($headers as $header => $data) {
+        foreach ($headers as $header => $data) {
             header($header . ': ' . $data);
         }
 

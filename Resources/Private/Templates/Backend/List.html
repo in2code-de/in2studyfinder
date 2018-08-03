@@ -1,221 +1,267 @@
 {namespace core = TYPO3\CMS\Core\ViewHelpers}
 {namespace in2studyfinder = In2code\In2studyfinder\ViewHelpers}
+{namespace beUser = TYPO3\CMS\Beuser\ViewHelpers}
 
 <f:layout name="Backend"/>
 
 <f:section name="main">
-    <f:flashMessages/>
-    <f:for each="{messages}" as="message">
-        <div class="typo3-message message-error"><strong>
-            <f:translate key="tx_mask.content.error"/>
-        </strong> {message}
-        </div>
-    </f:for>
-    <f:if condition="{studyCourses}">
-        <f:form action="export" controller="Backend">
-            <div class="panel panel-default">
-                    <div class="panel-heading">1. <f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:exportAs" /></div>
+	<f:flashMessages/>
+	<f:for each="{messages}" as="message">
+		<div class="typo3-message message-error"><strong>
+			<f:translate key="tx_mask.content.error"/>
+		</strong> {message}
+		</div>
+	</f:for>
+	<f:if condition="{studyCourses}">
+		<f:form action="export" controller="Backend">
 
-                    <fieldset class="form-section">
-                        <div class="form-group">
-                            <div class="formengine-field-item">
+			<div class="panel panel-default">
+				<div class="panel-heading">1.
+					<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:exportAs"/>
+				</div>
 
-                                <div class="form-control-wrap">
-                                    <div class="form-wizards-wrap">
-                                        <div class="form-wizards-element">
-                                            <div class="input-group">
-                                                <f:form.select name="exporter" class="form-control form-control-adapt">
-                                                    <f:for each="{exportDataProvider}" as="dataProvider" key="providerName">
-                                                        <option value="{dataProvider}">{providerName}</option>
-                                                    </f:for>
-                                                </f:form.select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
-                </div>
+				<fieldset class="form-section">
+					<div class="form-group">
+						<div class="formengine-field-item">
 
-            <div class="panel panel-default js-in2studyfinder-select-course-container">
-                    <div class="panel-heading">2. <f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:selectCourses" />
-                        <span class="js-in2studyfinder-selected-courses">
-                            <span class="js-in2studyfinder-selected-courses-count">0</span> <f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:selected" />
+							<div class="form-control-wrap">
+								<div class="form-wizards-wrap">
+									<div class="form-wizards-element">
+										<div class="input-group">
+											<f:form.select name="exporter" class="form-control form-control-adapt">
+												<f:for each="{exportDataProvider}" as="dataProvider" key="providerName">
+													<option value="{dataProvider}">{providerName}</option>
+												</f:for>
+											</f:form.select>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+
+			<div class="panel panel-default">
+				<div class="panel-heading">2.
+					<f:translate
+							key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:selectLanguage"/>
+				</div>
+
+				<fieldset class="form-section">
+					<div class="form-group">
+						<div class="formengine-field-item">
+
+							<div class="form-control-wrap">
+								<div class="form-wizards-wrap">
+									<div class="form-wizards-element">
+										<div class="input-group">
+
+											<f:form.select name="recordLanguage"
+														   class="form-control form-control-adapt js-in2studyfinder-recordLanguage">
+												<f:for each="{sysLanguages}" as="sysLanguage" key="sysLanguageUid">
+													<option value="{sysLanguageUid}"
+															data-action="{f:uri.action(action:'list',arguments:'{recordLanguage:sysLanguageUid}')}">
+														{sysLanguage}
+													</option>
+												</f:for>
+											</f:form.select>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			<div class="panel panel-default js-in2studyfinder-select-course-container">
+				<div class="panel-heading">3.
+					<f:translate
+							key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:selectCourses"/>
+					<span class="js-in2studyfinder-selected-courses">
+                            <span class="js-in2studyfinder-selected-courses-count">0</span> <f:translate
+							key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:selected"/>
                         </span>
-                    </div>
-                    <table class="table table-striped table-hover js-in2studyfinder-course-table">
-                        <thead>
-                        <th>
-                            <input type="checkbox" name="selection" class="js-in2studyfinder-check-all" value="all"/>
-                        </th>
-                        <th>Uid</th>
-                        <th>Title</th>
-                        <th>Hidden</th>
-                        <th>Deleted</th>
-                        </thead>
-                        <tbody class="js-in2studyfinder-course-list">
-                        <in2studyfinder:widget.paginate objects="{studyCourses}" as="paginatedCourses"
-                                                        configuration="{itemsPerPage:itemsPerPage, insertAbove: 0, insertBelow: 1}">
-                            <f:for each="{paginatedCourses}" as="studyCourse">
-                                <tr data-in2studyfinder-course-uid="{studyCourse.uid}">
-                                    <td>
-                                        <f:form.checkbox name="courseList" value="{studyCourse.uid}" multiple="multiple"
-                                        class="js-in2studyfinder-select-course"/>
-                                    </td>
-                                    <td>{studyCourse.uid}</td>
-                                    <td>{studyCourse.title}</td>
-                                    <td>
-                                        <f:if condition="{studyCourse.hidden}">
-                                            <core:icon identifier="actions-check" size="small" />
-                                        </f:if>
-                                    </td>
-                                    <td>
-                                        <f:if condition="{studyCourse.deleted}">
-                                            <core:icon identifier="actions-check" size="small" />
-                                        </f:if>
-                                    </td>
-                                    <f:comment>
-                                        <td class="col-control">
-                                            <div class="btn-group" role="group">
-                                                <a href="#" onClick="alert('Ok'); return false;" class="btn btn-default">
-                                                    <core:icon identifier="actions-document-open"/>
-                                                </a>
-                                                <a href="#" onClick="alert('Ok'); return false;" class="btn btn-default">
-                                                    <core:icon identifier="actions-document-info"/>
-                                                </a>
-                                                <a href="#" onClick="alert('Ok'); return false;" class="btn btn-default">
-                                                    <core:icon identifier="actions-edit-hide"/>
-                                                </a>
-                                                <a href="#" onClick="alert('Ok'); return false;" class="btn btn-default">
-                                                    <core:icon identifier="actions-edit-delete"/>
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </f:comment>
-                                </tr>
-                            </f:for>
-                        </in2studyfinder:widget.paginate>
-                        </tbody>
-                        <tfoot>
-                        <td colspan="4" class="js-in2studyfinder-pagination"></td>
-                        <td>
-                            <label for="itemsPerPage">
-                                <f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:itemsPerPage" />
-                                <select name="itemsPerPage" title="itemsPerPage" class="js-in2studyfinder-itemsPerPage">
-                                    <option value="10" {f:if(condition:
-                                    '{itemsPerPage} == 10', then: 'selected')}
-                                    data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:10}')}">10</option>
-                                    <option value="25" {f:if(condition:
-                                    '{itemsPerPage} == 25', then: 'selected')}
-                                    data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:25}')}">25</option>
-                                    <option value="50" {f:if(condition:
-                                    '{itemsPerPage} == 50', then: 'selected')}
-                                    data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:50}')}">50</option>
-                                    <option value="100" {f:if(condition:
-                                    '{itemsPerPage} == 100', then: 'selected')}
-                                    data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:100}')}">100</option>
-                                    <option value="250" {f:if(condition:
-                                    '{itemsPerPage} == 250', then: 'selected')}
-                                    data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:250}')}">250</option>
-                                    <option value="500" {f:if(condition:
-                                    '{itemsPerPage} == 500', then: 'selected')}
-                                    data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:500}')}">500</option>
-                                </select>
-                            </label>
-                        </td>
-                        </tfoot>
-                    </table>
-                </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">3. <f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:selectProperties" />
-                    </div>
+				</div>
+				<table class="table table-striped table-hover js-in2studyfinder-course-table">
+					<thead>
+					<th>
+						<input type="checkbox" name="selection" class="js-in2studyfinder-check-all" value="all"/>
+					</th>
+					<th>Uid</th>
+					<th>Title</th>
+					<th>Hidden</th>
+					<th>Deleted</th>
+					</thead>
+					<tbody class="js-in2studyfinder-course-list">
+					<in2studyfinder:widget.paginate objects="{studyCourses}" as="paginatedCourses"
+													configuration="{itemsPerPage:itemsPerPage, insertAbove: 0, insertBelow: 1}">
+						<f:for each="{paginatedCourses}" as="studyCourse">
+							<tr data-in2studyfinder-course-uid="{studyCourse.uid}">
+								<td>
+									<f:form.checkbox name="courseList" value="{f:if(condition: '{studyCourse.l10n_parent} != 0', then: '{studyCourse.l10n_parent}', else: '{studyCourse.uid}')}" multiple="multiple"
+													 class="js-in2studyfinder-select-course"/>
+								</td>
+								<td>{studyCourse.uid}</td>
+								<td>{studyCourse.title}</td>
+								<td>
+									<f:if condition="{studyCourse.hidden}">
+										<core:icon identifier="actions-check" size="small"/>
+									</f:if>
+								</td>
+								<td>
+									<f:if condition="{studyCourse.deleted}">
+										<core:icon identifier="actions-check" size="small"/>
+									</f:if>
+								</td>
+								<f:comment>
+									<td class="col-control">
+										<div class="btn-group" role="group">
+											<a href="#" onClick="alert('Ok'); return false;" class="btn btn-default">
+												<core:icon identifier="actions-document-open"/>
+											</a>
+											<a href="#" onClick="alert('Ok'); return false;" class="btn btn-default">
+												<core:icon identifier="actions-document-info"/>
+											</a>
+											<a href="#" onClick="alert('Ok'); return false;" class="btn btn-default">
+												<core:icon identifier="actions-edit-hide"/>
+											</a>
+											<a href="#" onClick="alert('Ok'); return false;" class="btn btn-default">
+												<core:icon identifier="actions-edit-delete"/>
+											</a>
+										</div>
+									</td>
+								</f:comment>
+							</tr>
+						</f:for>
+					</in2studyfinder:widget.paginate>
+					</tbody>
+					<tfoot>
+					<td colspan="4" class="js-in2studyfinder-pagination"></td>
+					<td>
+						<label for="itemsPerPage">
+							<f:translate
+									key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:itemsPerPage"/>
+							<select name="itemsPerPage" title="itemsPerPage" class="js-in2studyfinder-itemsPerPage">
+								<option value="10" {f:if(condition:
+								'{itemsPerPage} == 10', then: 'selected')}
+								data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:10}')}">10</option>
+								<option value="25" {f:if(condition:
+								'{itemsPerPage} == 25', then: 'selected')}
+								data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:25}')}">25</option>
+								<option value="50" {f:if(condition:
+								'{itemsPerPage} == 50', then: 'selected')}
+								data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:50}')}">50</option>
+								<option value="100" {f:if(condition:
+								'{itemsPerPage} == 100', then: 'selected')}
+								data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:100}')}">100</option>
+								<option value="250" {f:if(condition:
+								'{itemsPerPage} == 250', then: 'selected')}
+								data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:250}')}">250</option>
+								<option value="500" {f:if(condition:
+								'{itemsPerPage} == 500', then: 'selected')}
+								data-action="{f:uri.action(action:'list',arguments:'{itemsPerPage:500}')}">500</option>
+							</select>
+						</label>
+					</td>
+					</tfoot>
+				</table>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">4.
+					<f:translate
+							key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:selectProperties"/>
+				</div>
 
-                <fieldset class="form-section">
-                        <div class="form-wizards-element">
-                            <div class="form-multigroup-wrap">
-                                <div class="form-multigroup-item form-multigroup-element">
-                                    <label for="propertiesSelected">
-                                        <f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:selectedItems" />
-                                    </label>
-                                    <div class="form-wizards-wrap form-wizards-aside">
-                                        <div class="form-wizards-element">
-                                            <f:form.select name="selectedProperties"
-                                                           multiple="multiple"
-                                                           title="propertiesSelected"
-                                                           size="30"
-                                                           class="form-control tceforms-multiselect js-in2studyfinder-selected-properties-list">
-                                                <optgroup
-                                                        label="{f:translate( key: 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:studycourse')}"
-                                                        style="font-weight: bold"></optgroup>
-                                            </f:form.select>
-                                        </div>
-                                        <div class="form-wizards-items-aside">
-                                            <div class="btn-group-vertical">
-                                                <a href="#" class="btn btn-default js-in2studyfinder-move-item-begin"
-                                                   title="Move selected items to top">
-                                                    <core:icon identifier="actions-move-to-top" size="small" />
-                                                </a>
-                                                <a href="#" class="btn btn-default js-in2studyfinder-move-item-up"
-                                                   title="Move selected items upwards">
-                                                    <core:icon identifier="actions-move-up" size="small" />
-                                                </a>
-                                                <a href="#" class="btn btn-default js-in2studyfinder-move-item-down"
-                                                   title="Move selected items downwards">
-                                                    <core:icon identifier="actions-move-down" size="small" />
-                                                </a>
-                                                <a href="#" class="btn btn-default js-in2studyfinder-move-item-end"
-                                                   title="Move selected items to bottom">
-                                                    <core:icon identifier="actions-move-to-bottom" size="small" />
-                                                </a>
-                                                <a href="#" class="btn btn-default js-in2studyfinder-remove-item"
-                                                   title="Remove selected items">
-                                                    <core:icon identifier="actions-selection-delete" size="small" />
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-multigroup-item form-multigroup-element">
-                                    <label for="propertiesAvailable">
-                                        <f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:availableItems" />
-                                    </label>
-                                    <div class="form-wizards-element">
-                                        <select multiple="multiple" name="propertiesAvailable" title="propertiesAvailable"
-                                            class="form-control tceforms-multiselect js-in2studyfinder-property-list"
-                                            size="30">
-                                        <optgroup
-                                                label="{f:translate( key: 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:studycourse')}"
-                                                style="font-weight: bold"></optgroup>
-                                        <f:render partial="Backend/AvailableFields" section="main"
-                                                  arguments="{properties:availableFieldsForExport}"/>
-                                    </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
-            </div>
+				<fieldset class="form-section">
+					<div class="form-wizards-element">
+						<div class="form-multigroup-wrap">
+							<div class="form-multigroup-item form-multigroup-element">
+								<label for="propertiesSelected">
+									<f:translate
+											key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:selectedItems"/>
+								</label>
+								<div class="form-wizards-wrap form-wizards-aside">
+									<div class="form-wizards-element">
+										<f:form.select name="selectedProperties"
+													   multiple="multiple"
+													   title="propertiesSelected"
+													   size="30"
+													   class="form-control tceforms-multiselect js-in2studyfinder-selected-properties-list">
+											<optgroup
+													label="{f:translate( key: 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:studycourse')}"
+													style="font-weight: bold"></optgroup>
+										</f:form.select>
+									</div>
+									<div class="form-wizards-items-aside">
+										<div class="btn-group-vertical">
+											<a href="#" class="btn btn-default js-in2studyfinder-move-item-begin"
+											   title="Move selected items to top">
+												<core:icon identifier="actions-move-to-top" size="small"/>
+											</a>
+											<a href="#" class="btn btn-default js-in2studyfinder-move-item-up"
+											   title="Move selected items upwards">
+												<core:icon identifier="actions-move-up" size="small"/>
+											</a>
+											<a href="#" class="btn btn-default js-in2studyfinder-move-item-down"
+											   title="Move selected items downwards">
+												<core:icon identifier="actions-move-down" size="small"/>
+											</a>
+											<a href="#" class="btn btn-default js-in2studyfinder-move-item-end"
+											   title="Move selected items to bottom">
+												<core:icon identifier="actions-move-to-bottom" size="small"/>
+											</a>
+											<a href="#" class="btn btn-default js-in2studyfinder-remove-item"
+											   title="Remove selected items">
+												<core:icon identifier="actions-selection-delete" size="small"/>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-multigroup-item form-multigroup-element">
+								<label for="propertiesAvailable">
+									<f:translate
+											key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:availableItems"/>
+								</label>
+								<div class="form-wizards-element">
+									<select multiple="multiple" name="propertiesAvailable" title="propertiesAvailable"
+											class="form-control tceforms-multiselect js-in2studyfinder-property-list"
+											size="30">
+										<optgroup
+												label="{f:translate( key: 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:studycourse')}"
+												style="font-weight: bold"></optgroup>
+										<f:render partial="Backend/AvailableFields" section="main"
+												  arguments="{properties:availableFieldsForExport}"/>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
 
-            <div class="panel panel-default">
-                <div class="panel-heading">4. <f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:export" />
-                </div>
+			<div class="panel panel-default">
+				<div class="panel-heading">5.
+					<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:export"/>
+				</div>
 
-                <fieldset class="form-section">
-                    <div class="form-group">
-                        <div class="formengine-field-item">
-                            <div class="form-control-wrap">
-                                <div class="form-wizards-wrap">
-                                    <div class="form-wizards-element">
-                                        <f:form.submit class="js-in2studyfinder-export-courses" value="{f:translate( key: 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:export')}" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
-            </div>
-        </f:form>
-    </f:if>
+				<fieldset class="form-section">
+					<div class="form-group">
+						<div class="formengine-field-item">
+							<div class="form-control-wrap">
+								<div class="form-wizards-wrap">
+									<div class="form-wizards-element">
+										<f:form.submit class="js-in2studyfinder-export-courses"
+													   value="{f:translate( key: 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:export')}"/>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+		</f:form>
+	</f:if>
 </f:section>
 

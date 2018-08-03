@@ -43,7 +43,8 @@ class StudyCourseRepository extends AbstractRepository
 
     /**
      * @param $options
-     * @return QueryResultInterface
+     * @return array|QueryResultInterface
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      */
     public function findAllFilteredByOptions($options)
     {
@@ -108,14 +109,34 @@ class StudyCourseRepository extends AbstractRepository
 
     /**
      * @param array $list
+     * @param integer $languageUid
      * @return array|QueryResultInterface
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      */
-    public function getCoursesWithUidIn($list)
+    public function getCoursesWithUidIn($list, $languageUid = 0)
     {
         $query = $this->createQuery();
 
+//        $query->getQuerySettings()->setRespectSysLanguage(true);
+        //$query->getQuerySettings()->setLanguageOverlayMode(true);
+        //$query->getQuerySettings()->setLanguageMode('strict');
+        //$query->getQuerySettings()->setLanguageUid($languageUid);
+
         $query->matching($query->in('uid', $list));
 
+        /**
+         * Workaround
+         *
+         * the field $GLOBALS['TSFE']->gr_list must also be set in the backend context.
+         * This is an bug in the Core PageRepository because it does not check whether
+         * you are in the frontend or backend context. The FrontendRestrictionContainer
+         * is always called.
+         */
+/*
+        if ($GLOBALS['TSFE']->gr_list === null) {
+            $GLOBALS['TSFE']->gr_list = '';
+        }
+*/
         return $query->execute();
     }
 
@@ -126,7 +147,8 @@ class StudyCourseRepository extends AbstractRepository
      * @param bool $ignoreEnableFields
      * @return array|QueryResultInterface
      */
-    public function findAllForExport($includeDeleted = false, $ignoreEnableFields = false) {
+    public function findAllForExport($includeDeleted = false, $ignoreEnableFields = false)
+    {
         $query = $this->createQuery();
 
         $query->getQuerySettings()->setRespectStoragePage(false);

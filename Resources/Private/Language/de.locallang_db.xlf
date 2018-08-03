@@ -326,6 +326,10 @@
 				<source>sys Language uid</source>
 				<target>Sys Language Uid</target>
 			</trans-unit>
+			<trans-unit id="selectLanguage">
+				<source>Select Language for exportet records</source>
+				<target>Sprache für zu exportierende Datensätze auswählen</target>
+			</trans-unit>
 			<trans-unit id="exportAs">
 				<source>Export as</source>
 				<target>Exportieren als</target>

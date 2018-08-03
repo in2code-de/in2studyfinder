@@ -249,6 +249,9 @@
 			<trans-unit id="sysLanguageUid">
 				<source>sys Language uid</source>
 			</trans-unit>
+			<trans-unit id="selectLanguage">
+				<source>Select Language for exportet records</source>
+			</trans-unit>
 			<trans-unit id="exportAs">
 				<source>Export as</source>
 			</trans-unit>

@@ -133,6 +133,40 @@ in2studyfinderFilterAjax {
 }
 
 ############################
+# WORKAROUND
+#
+# ajax request for the export
+#
+# @see BackendController->exportAction
+############################
+in2studyfinderGetCourseJson = PAGE
+in2studyfinderGetCourseJson {
+	typeNum = 2308171056
+	config {
+		additionalHeaders.10.header = Content-Type: application/json
+		no_cache = 1
+		disableAllHeaderCode = 1
+		disablePrefixComment = 1
+		xhtml_cleaning = 0
+		admPanel = 0
+		debug = 0
+	}
+
+	10 = USER
+	10 {
+		userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+		extensionName = In2studyfinder
+		pluginName = Pi1
+		vendorName = In2code
+		controller = StudyCourse
+		switchableControllerActions.StudyCourse.1 = getCoursesJson
+		features.requireCHashArgumentForActionArguments = 0
+	}
+}
+
+
+
+############################
 # JavaScript and CSS section
 ############################
 

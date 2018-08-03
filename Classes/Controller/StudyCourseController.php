@@ -74,13 +74,16 @@ class StudyCourseController extends AbstractController
 
     /**
      * Use this instead of __construct, because extbase will inject dependencies *after* construnction of an object
+     *
+     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      */
     public function initializeAction()
     {
         parent::initializeAction();
 
         if (ConfigurationUtility::isCachingEnabled()) {
-            $this->cacheInstance = GeneralUtility::makeInstance(CacheManager::class)->getCache('in2studyfinder');
+            $this->cacheInstance =
+                GeneralUtility::makeInstance(CacheManager::class)->getCache('in2studyfinder');
         }
 
         if (ConfigurationUtility::isCachingEnabled()) {
@@ -100,6 +103,8 @@ class StudyCourseController extends AbstractController
     /**
      * The list action is nothing else than the filter action but
      * without any search options (or they are predefined in the FlexForm options)
+     *
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      */
     public function listAction()
     {
@@ -108,6 +113,9 @@ class StudyCourseController extends AbstractController
 
     /**
      * Strip empty options from incoming (selected) filters
+     *
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
     public function initializeFilterAction()
     {
@@ -142,6 +150,7 @@ class StudyCourseController extends AbstractController
 
     /**
      * @param array $searchOptions
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      */
     public function filterAction(array $searchOptions = [])
     {
@@ -190,7 +199,42 @@ class StudyCourseController extends AbstractController
     }
 
     /**
+     * WORKAROUND
+     *
+     * @see BackendController->listAction
+     *
+     * @return string
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     */
+    public function getCoursesJsonAction()
+    {
+
+        if ($this->request->hasArgument('courseList')) {
+            $language = 0;
+
+            if (!empty(GeneralUtility::_GET('L'))) {
+                $language = (int)GeneralUtility::_GET('L');
+            }
+
+            $courses = $this->studyCourseRepository->getCoursesWithUidIn(
+                (array)$this->request->getArgument('courseList'),
+                $language
+            )->toArray();
+
+            $return = serialize($courses);
+
+        } else {
+            $return = 'the Required Arguments "courseList" is not set';
+        }
+
+        return json_encode($return);
+    }
+
+    /**
      * @param StudyCourse|null $studyCourse
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      */
     public function detailAction(StudyCourse $studyCourse = null)
     {
@@ -204,7 +248,8 @@ class StudyCourseController extends AbstractController
 
     /**
      * @param array $searchOptions
-     * @return array
+     * @return array|mixed
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      */
     protected function processSearch(array $searchOptions)
     {
@@ -239,6 +284,7 @@ class StudyCourseController extends AbstractController
     /**
      * @param RequestInterface $request
      * @param ResponseInterface $response
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      */
     public function processRequest(RequestInterface $request, ResponseInterface $response)
     {
@@ -399,6 +445,7 @@ class StudyCourseController extends AbstractController
     /**
      * @param array $searchOptions
      * @return array
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      */
     protected function searchAndSortStudyCourses(array $searchOptions)
     {

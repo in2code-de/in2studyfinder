@@ -28,10 +28,7 @@ namespace In2code\In2studyfinder\Controller;
  ***************************************************************/
 
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
-use In2code\In2studyfinder\Export\Configuration\ExportConfiguration;
-use In2code\In2studyfinder\Export\ExportInterface;
 use In2code\In2studyfinder\Service\ExportService;
-use In2code\In2studyfinder\Utility\FileUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -57,11 +54,20 @@ class BackendController extends AbstractController
         $this->reflectionService = $this->objectManager->get(ReflectionService::class);
     }
 
+    /**
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     */
     public function listAction()
     {
         $this->validateSettings();
 
-        $studyCourses = $this->getStudyCoursesForExport();
+        $recordLanguage = 0;
+
+        if ($this->request->hasArgument('recordLanguage')) {
+            $recordLanguage = (int)$this->request->getArgument('recordLanguage');
+        }
+
+        $studyCourses = $this->getStudyCoursesForExportList($recordLanguage);
 
         $possibleExportDataProvider = $this->getPossibleExportDataProvider();
         $propertyArray = [];
@@ -91,37 +97,85 @@ class BackendController extends AbstractController
                 'studyCourses' => $studyCourses,
                 'exportDataProvider' => $possibleExportDataProvider,
                 'availableFieldsForExport' => $propertyArray,
+                'sysLanguages' => $this->getSysLanguages(),
                 'itemsPerPage' => $itemsPerPage
             ]
         );
     }
 
     /**
+     * @return array
+     */
+    protected function getSysLanguages()
+    {
+        $sysLanguages = [
+            0 => 'default'
+        ];
+
+        /*
+         * @todo: replace with an query Builder call instead of exec_SELECTgetRows if the TYPO3 6.2 support is dropped
+         *
+         *         $queryBuilder
+         *              ->select('*')
+         *              ->from('sys_language')
+         *              ->where($queryBuilder->expr()->eq('hidden', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)))
+         *              ->orderBy('sorting')
+         *              ->execute();
+         */
+
+        /** @var DatabaseConnection $databaseConnection */
+        $databaseConnection = $GLOBALS['TYPO3_DB'];
+        $languageRecords = $databaseConnection->exec_SELECTgetRows('*', 'sys_language', 'hidden = 0');
+
+        foreach ($languageRecords as $languageRecord) {
+            $sysLanguages[(int)$languageRecord['uid']] =
+                LocalizationUtility::translate(
+                    'LLL:EXT:core/Resources/Private/Language/db.xlf:sys_language.language_isocode.' .
+                    $languageRecord['language_isocode']
+                );
+        }
+
+        return $sysLanguages;
+    }
+
+    /**
+     * @param int $languageUid
      * @return array|null
      */
-    protected function getStudyCoursesForExport()
+    protected function getStudyCoursesForExportList($languageUid = 0)
     {
-        $where = '';
+        /**
+         * @todo: replace with an query Builder call instead of exec_SELECTgetRows if the TYPO3 6.2 support is dropped
+         */
+
         $includeDeleted = (int)$this->settings['backend']['export']['includeDeleted'];
         $includeHidden = (int)$this->settings['backend']['export']['includeHidden'];
+        $storagePid = (int)$this->settings['storagePid'];
+        $where = 'sys_language_uid = ' . $languageUid . ' and pid = ' . $storagePid;
 
         if (!$includeDeleted) {
-            $where .= ' deleted = 0';
+            $where .= ' and deleted = 0';
         }
 
         if (!$includeHidden) {
-            if (!$includeDeleted) {
-                $where .= ' and';
-            }
-            $where .= ' hidden = 0';
+            $where .= ' and hidden = 0';
         }
 
         /** @var DatabaseConnection $databaseConnection */
         $databaseConnection = $GLOBALS['TYPO3_DB'];
 
-        return $databaseConnection->exec_SELECTgetRows('uid, title, hidden, deleted', StudyCourse::TABLE, $where);
+        return $databaseConnection->exec_SELECTgetRows(
+            'uid, l10n_parent, title, hidden, deleted',
+            StudyCourse::TABLE,
+            $where,
+            '',
+            'title'
+        );
     }
 
+    /**
+     * @return array
+     */
     public function getPossibleExportDataProvider()
     {
         $possibleDataProvider = [];
@@ -148,11 +202,13 @@ class BackendController extends AbstractController
 
     /**
      * @param string $exporter
+     * @param integer $recordLanguage
      * @param array $selectedProperties
      * @param array $courseList
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      */
-    public function exportAction($exporter, $selectedProperties, $courseList)
+    public function exportAction($exporter, $recordLanguage, $selectedProperties, $courseList)
     {
         if (empty($selectedProperties) || empty($courseList)) {
             $this->addFlashMessage(
@@ -164,13 +220,57 @@ class BackendController extends AbstractController
             $this->forward('list');
         }
 
-        $courses = $this->studyCourseRepository->getCoursesWithUidIn($courseList)->toArray();
+        /**
+         * WORKAROUND
+         *
+         * see @getCoursesForExport
+         */
+        $courses = $this->getCoursesForExport($courseList, $recordLanguage);
 
-        $exportService =  $this->objectManager->get(ExportService::class, $exporter, $selectedProperties, $courses);
+        $exportService = $this->objectManager->get(ExportService::class, $exporter, $selectedProperties, $courses);
 
         $exportService->export();
     }
 
+    /**
+     * WORKAROUND
+     *
+     * we make an frontend request because returns the attached records of the course always in the default language.
+     * This function will be removed if i found a other solution.
+     *
+     * @param array $courseList
+     * @param int $recordLanguage
+     *
+     * @return array
+     */
+    protected function getCoursesForExport(array $courseList, $recordLanguage)
+    {
+        $content['tx_in2studyfinder_pi1']['courseList'] = $courseList;
+
+        $opts = [
+            'http' => [
+                'method' => 'POST',
+                'header' => 'Content-Type: application/x-www-form-urlencoded',
+                'content' => http_build_query($content)
+            ],
+        ];
+
+        $context = stream_context_create($opts);
+        $baseUri = rtrim($this->request->getBaseUri(), 'typo3/');
+
+        $result = file_get_contents(
+            $baseUri . '/?type=2308171056&L=' . $recordLanguage,
+            false,
+            $context
+        );
+
+        return unserialize(json_decode($result));
+    }
+
+    /**
+     * @param $propertyArray
+     * @param $objectProperties
+     */
     protected function getFullPropertyList(&$propertyArray, $objectProperties)
     {
 
@@ -198,6 +298,9 @@ class BackendController extends AbstractController
         }
     }
 
+    /**
+     * @return void
+     */
     protected function validateSettings()
     {
         if (!isset($this->settings['storagePid']) || empty($this->settings['storagePid'])) {

@@ -17,35 +17,41 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
 		SelectCoursesForExportService.addEventListener();
 	};
 
-    /**
+	/**
 	 * initializes all event listeners
-     */
-	SelectCoursesForExportService.addEventListener = function () {
+	 */
+	SelectCoursesForExportService.addEventListener = function() {
 
 		// event listener for select all courses checkbox
-        var selectAllCheckbox = document.querySelector('.js-in2studyfinder-check-all');
-        selectAllCheckbox.addEventListener('click', SelectCoursesForExportService.toggleAllCoursesSelect);
+		var selectAllCheckbox = document.querySelector('.js-in2studyfinder-check-all');
+		selectAllCheckbox.addEventListener('click', SelectCoursesForExportService.toggleAllCoursesSelect);
 
-        // event listener for pagination
-        var paginationList = document.querySelector('.js-in2studyfinder-pagebrowser');
-        paginationList.addEventListener('click', SelectCoursesForExportService.callPagination);
+		// event listener for pagination
+		var paginationList = document.querySelector('.js-in2studyfinder-pagebrowser');
+		paginationList.addEventListener('click', SelectCoursesForExportService.callPagination);
 
-        // event listener for update the items per page
-        var itemsPerPageSelect = document.querySelector('.js-in2studyfinder-itemsPerPage');
-        itemsPerPageSelect.onchange = function(event) {
-            SelectCoursesForExportService.updateItemsPerPage(event);
-        };
+		// event listener for update the items per page
+		var itemsPerPageSelect = document.querySelector('.js-in2studyfinder-itemsPerPage');
+		itemsPerPageSelect.onchange = function(event) {
+			SelectCoursesForExportService.updateItemsPerPage(event);
+		};
 
-        // event listener for the selection of courses
-        var propertyList = document.querySelector('.js-in2studyfinder-course-list');
-        propertyList.addEventListener('click', SelectCoursesForExportService.toggleCourseSelection);
-    };
+		// event listener for update the record language
+		var recordLanguageSelect = document.querySelector('.js-in2studyfinder-recordLanguage');
+		recordLanguageSelect.onchange = function(event) {
+			SelectCoursesForExportService.updateRecordLanguage(event);
+		};
 
-    /**
+		// event listener for the selection of courses
+		var propertyList = document.querySelector('.js-in2studyfinder-course-list');
+		propertyList.addEventListener('click', SelectCoursesForExportService.toggleCourseSelection);
+	};
+
+	/**
 	 * toggles the selection of all courses
-     * @param event
-     */
-	SelectCoursesForExportService.toggleAllCoursesSelect = function (event) {
+	 * @param event
+	 */
+	SelectCoursesForExportService.toggleAllCoursesSelect = function(event) {
 		var checkboxes = document.querySelectorAll('.js-in2studyfinder-select-course');
 		var selectAllCheckbox = event.target;
 		var status;
@@ -53,36 +59,51 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
 		if (selectAllCheckbox.checked) {
 			status = 1;
 		} else {
-            status = 0;
+			status = 0;
 		}
 
-        checkboxes.forEach(function (checkbox) {
-            checkbox.checked = status;
-        });
-    };
+		checkboxes.forEach(function(checkbox) {
+			checkbox.checked = status;
+		});
+	};
 
-    /**
+	/**
 	 * Set the Checkboxes checked for the available courses in the courseList
-     */
+	 */
 	SelectCoursesForExportService.prepareSelectedCourses = function() {
 		var courseList = SelectCoursesForExportService.coursesList;
 
 		if (courseList.length > 0) {
-            console.log(courseList.length);
-            // if courseList !== empty
-            // set every existing course from this page in the courseList to active
-            console.log(SelectCoursesForExportService.coursesList);
-            //SelectCoursesForExportService.coursesList.each(console.log('test'));
-        }
+			console.log(courseList.length);
+			// if courseList !== empty
+			// set every existing course from this page in the courseList to active
+			console.log(SelectCoursesForExportService.coursesList);
+			//SelectCoursesForExportService.coursesList.each(console.log('test'));
+		}
 	};
 
-    /**
+	/**
 	 * updates the results for the shown courses
-     * @param event
-     */
+	 * @param event
+	 */
 	SelectCoursesForExportService.updateItemsPerPage = function(event) {
 		var selectedOptions = event.target.selectedOptions;
 		var url = selectedOptions[0].getAttribute('data-action');
+		if (typeof url !== 'undefined') {
+			SelectCoursesForExportService.paginationAjaxCall(url);
+		}
+	};
+
+	/**
+	 * updates the results for the shown courses
+	 * @param event
+	 */
+	SelectCoursesForExportService.updateRecordLanguage = function(event) {
+		var selectedOptions = event.target.selectedOptions;
+		var url = selectedOptions[0].getAttribute('data-action');
+
+		console.log(url);
+
 		if (typeof url !== 'undefined') {
 			SelectCoursesForExportService.paginationAjaxCall(url);
 		}
@@ -206,13 +227,13 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
 		return SelectCoursesForExportService.coursesList;
 	};
 
-    /**
+	/**
 	 * move the pagination to the right spot in the dom
-     */
-	SelectCoursesForExportService.preparePagination = function () {
-        var pagination = document.querySelector('.js-in2studyfinder-pagebrowser');
-        document.querySelector('.js-in2studyfinder-pagination').appendChild(pagination);
-    };
+	 */
+	SelectCoursesForExportService.preparePagination = function() {
+		var pagination = document.querySelector('.js-in2studyfinder-pagebrowser');
+		document.querySelector('.js-in2studyfinder-pagination').appendChild(pagination);
+	};
 
 	SelectCoursesForExportService.initialize();
 	return SelectCoursesForExportService;

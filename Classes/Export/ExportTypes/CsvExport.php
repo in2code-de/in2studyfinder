@@ -36,7 +36,11 @@ class CsvExport extends AbstractExport implements ExportInterface
 
         FileUtility::createFolderIfNotExists($exportConfiguration->getExportLocation());
 
-        if (!GeneralUtility::writeFile($exportConfiguration->getExportLocation() . $this->fileName, $this->getExportFileContent($recordRows), true)) {
+        if (!GeneralUtility::writeFile(
+            $exportConfiguration->getExportLocation() . $this->fileName,
+            $this->getExportFileContent($recordRows),
+            true
+        )) {
             throw new Exception('Export file could not be created!');
         }
 
