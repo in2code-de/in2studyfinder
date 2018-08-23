@@ -33,7 +33,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * StudyCourse
  */
-class StudyCourse extends AbstractEntity
+class StudyCourse extends AbstractEntity implements StudyCourseInterface
 {
     /**
      * title
@@ -399,7 +399,7 @@ class StudyCourse extends AbstractEntity
     /**
      * Adds a ContentElement
      *
-     * @param \In2code\In2studyfinder\Domain\Model\TtContent $contentElement
+     * @param TtContentInterface $contentElement
      * @return void
      */
     public function addContentElement($contentElement)
@@ -410,7 +410,7 @@ class StudyCourse extends AbstractEntity
     /**
      * Removes a ContentElement
      *
-     * @param \In2code\In2studyfinder\Domain\Model\TtContent $contentElementToRemove The TtContent to be removed
+     * @param TtContentInterface $contentElementToRemove The TtContent to be removed
      * @return void
      */
     public function removeContentElement($contentElementToRemove)
@@ -442,7 +442,7 @@ class StudyCourse extends AbstractEntity
     /**
      * Returns the academicDegree
      *
-     * @return \In2code\In2studyfinder\Domain\Model\AcademicDegree $academicDegree
+     * @return AcademicDegreeInterface $academicDegree
      */
     public function getAcademicDegree()
     {
@@ -452,10 +452,10 @@ class StudyCourse extends AbstractEntity
     /**
      * Sets the academicDegree
      *
-     * @param \In2code\In2studyfinder\Domain\Model\AcademicDegree $academicDegree
+     * @param \In2code\In2studyfinder\Domain\Model\AcademicDegreeInterface $academicDegree
      * @return void
      */
-    public function setAcademicDegree(AcademicDegree $academicDegree)
+    public function setAcademicDegree(AcademicDegreeInterface $academicDegree)
     {
         $this->academicDegree = $academicDegree;
     }
@@ -463,7 +463,7 @@ class StudyCourse extends AbstractEntity
     /**
      * Returns the department
      *
-     * @return \In2code\In2studyfinder\Domain\Model\Department $department
+     * @return DepartmentInterface $department
      */
     public function getDepartment()
     {
@@ -473,10 +473,10 @@ class StudyCourse extends AbstractEntity
     /**
      * Sets the department
      *
-     * @param \In2code\In2studyfinder\Domain\Model\Department $department
+     * @param DepartmentInterface $department
      * @return void
      */
-    public function setDepartment(Department $department)
+    public function setDepartment(DepartmentInterface $department)
     {
         $this->department = $department;
     }
@@ -484,7 +484,7 @@ class StudyCourse extends AbstractEntity
     /**
      * Returns the faculty
      *
-     * @return \In2code\In2studyfinder\Domain\Model\Faculty $faculty
+     * @return FacultyInterface $faculty
      */
     public function getFaculty()
     {
@@ -494,10 +494,10 @@ class StudyCourse extends AbstractEntity
     /**
      * Sets the faculty
      *
-     * @param \In2code\In2studyfinder\Domain\Model\Faculty $faculty
+     * @param FacultyInterface $faculty
      * @return void
      */
-    public function setFaculty(Faculty $faculty)
+    public function setFaculty(FacultyInterface $faculty)
     {
         $this->faculty = $faculty;
     }
@@ -526,7 +526,7 @@ class StudyCourse extends AbstractEntity
     /**
      * Adds a type of study
      *
-     * @param \In2code\In2studyfinder\Domain\Model\TypeOfStudy $typeOfStudy
+     * @param TypeOfStudyInterface $typeOfStudy
      * @return void
      */
     public function addTypeOfStudy($typeOfStudy)
@@ -537,7 +537,7 @@ class StudyCourse extends AbstractEntity
     /**
      * Removes a type of study
      *
-     * @param \In2code\In2studyfinder\Domain\Model\TypeOfStudy $typeOfStudyToRemove The type of study to be removed
+     * @param TypeOfStudyInterface $typeOfStudyToRemove The type of study to be removed
      * @return void
      */
     public function removeTypeOfStudy($typeOfStudyToRemove)
@@ -569,7 +569,7 @@ class StudyCourse extends AbstractEntity
     /**
      * Adds a CourseLanguage
      *
-     * @param \In2code\In2studyfinder\Domain\Model\CourseLanguage $courseLanguage
+     * @param CourseLanguageInterface $courseLanguage
      * @return void
      */
     public function addCourseLanguage($courseLanguage)
@@ -580,7 +580,7 @@ class StudyCourse extends AbstractEntity
     /**
      * Removes a CourseLanguage
      *
-     * @param \In2code\In2studyfinder\Domain\Model\CourseLanguage $courseLanguageToRemove The Course Language to be
+     * @param CourseLanguageInterface $courseLanguageToRemove The Course Language to be
      *     removed
      * @return void
      */
@@ -613,7 +613,7 @@ class StudyCourse extends AbstractEntity
     /**
      * Adds a admissionRequirement
      *
-     * @param \In2code\In2studyfinder\Domain\Model\AdmissionRequirement $admissionRequirement
+     * @param AdmissionRequirementInterface $admissionRequirement
      * @return void
      */
     public function addAdmissionRequirement($admissionRequirement)
@@ -624,7 +624,7 @@ class StudyCourse extends AbstractEntity
     /**
      * Removes a admissionRequirement
      *
-     * @param \In2code\In2studyfinder\Domain\Model\AdmissionRequirement $admissionRequirementToRemove The type of study
+     * @param AdmissionRequirementInterface $admissionRequirementToRemove The type of study
      *     to be removed
      * @return void
      */
@@ -657,7 +657,7 @@ class StudyCourse extends AbstractEntity
     /**
      * Adds a StartOfStudy
      *
-     * @param \In2code\In2studyfinder\Domain\Model\StartOfStudy $startOfStudy
+     * @param StartOfStudyInterface $startOfStudy
      * @return void
      */
     public function addStartOfStudy($startOfStudy)
@@ -668,7 +668,7 @@ class StudyCourse extends AbstractEntity
     /**
      * Removes a startOfStudy
      *
-     * @param \In2code\In2studyfinder\Domain\Model\StartOfStudy $startOfStudyToRemove The start of study to be removed
+     * @param StartOfStudyInterface $startOfStudyToRemove The start of study to be removed
      * @return void
      */
     public function removeStartOfStudy($startOfStudyToRemove)
@@ -725,7 +725,7 @@ class StudyCourse extends AbstractEntity
     }
 
     /**
-     * @return GlobalData
+     * @return GlobalDataInterface
      */
     public function getGlobalDataPreset()
     {
@@ -733,7 +733,7 @@ class StudyCourse extends AbstractEntity
     }
 
     /**
-     * @param GlobalData $globalDataPreset
+     * @param GlobalDataInterface $globalDataPreset
      */
     public function setGlobalDataPreset($globalDataPreset)
     {
@@ -757,7 +757,7 @@ class StudyCourse extends AbstractEntity
     }
 
     /**
-     * @return GlobalData|null
+     * @return GlobalDataInterface|null
      */
     public function getGlobalData()
     {
@@ -801,8 +801,8 @@ class StudyCourse extends AbstractEntity
      * würde erst nach Titel alphabetisch und danach nach dem Akademischem Grad ("sorting" im Backend durch den
      * Redakteur gepflegt) sortieren.
      *
-     * @param $studyCourseA StudyCourse
-     * @param $studyCourseB StudyCourse
+     * @param $studyCourseA StudyCourseInterface
+     * @param $studyCourseB StudyCourseInterface
      * @return int
      */
     public static function cmpObj($studyCourseA, $studyCourseB)

@@ -31,7 +31,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 /**
  * AcademicDegree
  */
-class AcademicDegree extends AbstractEntity
+class AcademicDegree extends AbstractEntity implements AcademicDegreeInterface
 {
     /**
      * degree
@@ -89,7 +89,7 @@ class AcademicDegree extends AbstractEntity
     /**
      * Returns the graduation
      *
-     * @return \In2code\In2studyfinder\Domain\Model\Graduation $graduation
+     * @return Graduation $graduation
      */
     public function getGraduation()
     {
@@ -99,10 +99,10 @@ class AcademicDegree extends AbstractEntity
     /**
      * Sets the graduation
      *
-     * @param \In2code\In2studyfinder\Domain\Model\Graduation $graduation
+     * @param GraduationInterface $graduation
      * @return void
      */
-    public function setGraduation(Graduation $graduation)
+    public function setGraduation(GraduationInterface $graduation)
     {
         $this->graduation = $graduation;
     }

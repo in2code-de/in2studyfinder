@@ -31,7 +31,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 /**
  * TypeOfStudy
  */
-class TypeOfStudy extends AbstractEntity
+class TypeOfStudy extends AbstractEntity implements TypeOfStudyInterface
 {
     /**
      * type

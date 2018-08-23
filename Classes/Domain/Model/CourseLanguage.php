@@ -31,7 +31,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 /**
  * CourseLanguage
  */
-class CourseLanguage extends AbstractEntity
+class CourseLanguage extends AbstractEntity implements CourseLanguageInterface
 {
     /**
      * language

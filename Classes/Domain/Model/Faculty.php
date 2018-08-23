@@ -31,7 +31,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 /**
  * Faculty
  */
-class Faculty extends AbstractEntity
+class Faculty extends AbstractEntity implements FacultyInterface
 {
     /**
      * title
