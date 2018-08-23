@@ -28,6 +28,7 @@ namespace In2code\In2studyfinder\Controller;
  ***************************************************************/
 
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
+use In2code\In2studyfinder\Domain\Model\StudyCourseInterface;
 use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
@@ -206,9 +207,9 @@ class StudyCourseController extends ActionController
     }
 
     /**
-     * @param StudyCourse|null $studyCourse
+     * @param StudyCourseInterface|null $studyCourse
      */
-    public function detailAction(StudyCourse $studyCourse = null)
+    public function detailAction(StudyCourseInterface $studyCourse = null)
     {
         if ($studyCourse) {
             $this->writePageMetadata($studyCourse);
@@ -390,7 +391,7 @@ class StudyCourseController extends ActionController
     }
 
     /**
-     * @param StudyCourse $studyCourse
+     * @param StudyCourseInterface $studyCourse
      *
      * @return void
      */
@@ -439,7 +440,7 @@ class StudyCourseController extends ActionController
         $availableOptions = [];
 
         foreach ($this->filters as $filterName => $filter) {
-            /** @var $studyCourse StudyCourse */
+            /** @var $studyCourse StudyCourseInterface */
             foreach ($studyCourses as $studyCourse) {
                 $property = ObjectAccess::getPropertyPath($studyCourse, $filter['propertyPath']);
 

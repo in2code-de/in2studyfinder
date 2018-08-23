@@ -27,6 +27,7 @@ namespace In2code\In2studyfinder\Utility;
  ***************************************************************/
 
 use In2code\In2studyfinder\Domain\Model\GlobalData;
+use In2code\In2studyfinder\Domain\Model\GlobalDataInterface;
 use In2code\In2studyfinder\Domain\Repository\GlobalDataRepository;
 
 class GlobalDataUtility extends AbstractUtility
@@ -51,7 +52,7 @@ class GlobalDataUtility extends AbstractUtility
 
     /**
      * @param string $globalDataRepositoryClass
-     * @return GlobalData|null
+     * @return GlobalDataInterface|null
      */
     public static function getDefaultPreset($globalDataRepositoryClass = GlobalDataRepository::class)
     {
