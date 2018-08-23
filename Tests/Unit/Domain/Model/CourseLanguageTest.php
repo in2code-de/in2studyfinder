@@ -1,6 +1,8 @@
 <?php
 namespace In2code\In2studyfinder\Tests\Unit\Domain\Model;
 
+use In2code\In2studyfinder\Domain\Model\CourseLanguageInterface;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -36,7 +38,7 @@ namespace In2code\In2studyfinder\Tests\Unit\Domain\Model;
 class CourseLanguageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
     /**
-     * @var \In2code\In2studyfinder\Domain\Model\CourseLanguage
+     * @var CourseLanguageInterface
      */
     protected $subject = null;
 
