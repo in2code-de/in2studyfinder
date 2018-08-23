@@ -452,10 +452,10 @@ class StudyCourse extends AbstractEntity
     /**
      * Sets the academicDegree
      *
-     * @param \In2code\In2studyfinder\Domain\Model\AcademicDegree $academicDegree
+     * @param \In2code\In2studyfinder\Domain\Model\AcademicDegreeInterface $academicDegree
      * @return void
      */
-    public function setAcademicDegree(AcademicDegree $academicDegree)
+    public function setAcademicDegree(AcademicDegreeInterface $academicDegree)
     {
         $this->academicDegree = $academicDegree;
     }
