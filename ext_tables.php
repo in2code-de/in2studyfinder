@@ -25,7 +25,7 @@ if (TYPO3_MODE === 'BE') {
     /**
      * Include Backend Module
      */
-    if (TYPO3_MODE === 'BE') {
+    if (TYPO3_MODE === 'BE' && \In2code\In2studyfinder\Utility\ConfigurationUtility::isBackendModuleEnabled()) {
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
             'In2code.in2studyfinder',
             'web',

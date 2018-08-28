@@ -1,4 +1,5 @@
 <?php
+
 namespace In2code\In2studyfinder\Utility;
 
 /***************************************************************
@@ -79,5 +80,17 @@ class ConfigurationUtility extends AbstractUtility
         $extensionConfig = AbstractUtility::getExtensionConfiguration();
 
         return isset($extensionConfig['enablePersistentFilter']) && $extensionConfig['enablePersistentFilter'] === '1';
+    }
+
+    /**
+     * Check if the backend module is enabled
+     *
+     * @return bool
+     */
+    public static function isBackendModuleEnabled()
+    {
+        $extensionConfig = AbstractUtility::getExtensionConfiguration();
+
+        return isset($extensionConfig['enableBackendModule']) && $extensionConfig['enableBackendModule'] === '1';
     }
 }
