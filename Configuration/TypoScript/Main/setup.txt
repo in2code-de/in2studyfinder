@@ -110,7 +110,7 @@ module.tx_in2studyfinder < plugin.tx_in2studyfinder
 ############################
 in2studyfinderFilterAjax = PAGE
 in2studyfinderFilterAjax {
-	typeNum = 2308171055
+	typeNum = 1308171055
 	config {
 		additionalHeaders = Content-type:application/html
 		no_cache = 1

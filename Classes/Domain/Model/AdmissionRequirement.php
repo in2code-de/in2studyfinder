@@ -31,7 +31,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 /**
  * AdmissionRequirement
  */
-class AdmissionRequirement extends AbstractEntity
+class AdmissionRequirement extends AbstractEntity implements AdmissionRequirementInterface
 {
     /**
      * title

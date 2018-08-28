@@ -27,7 +27,7 @@ namespace In2code\In2studyfinder\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use In2code\In2studyfinder\Domain\Model\StudyCourse;
+use In2code\In2studyfinder\Domain\Model\StudyCourseInterface;
 use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use In2code\In2studyfinder\Utility\FrontendUtility;
@@ -133,7 +133,7 @@ class StudyCourseController extends AbstractController
         /*
          * add the flexform settings to the settings if the request is an ajax request
          */
-        if (GeneralUtility::_GP('type') === '2308171055' && GeneralUtility::_GP('ce')) {
+        if (GeneralUtility::_GP('type') === '1308171055' && GeneralUtility::_GP('ce')) {
             $this->settings =
                 array_merge_recursive(
                     $this->settings,
@@ -232,11 +232,11 @@ class StudyCourseController extends AbstractController
     }
 
     /**
-     * @param StudyCourse|null $studyCourse
+     * @param StudyCourseInterface|null $studyCourse
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      */
-    public function detailAction(StudyCourse $studyCourse = null)
+    public function detailAction(StudyCourseInterface $studyCourse = null)
     {
         if ($studyCourse) {
             $this->writePageMetadata($studyCourse);
@@ -420,7 +420,7 @@ class StudyCourseController extends AbstractController
     }
 
     /**
-     * @param StudyCourse $studyCourse
+     * @param StudyCourseInterface $studyCourse
      *
      * @return void
      */
@@ -470,7 +470,7 @@ class StudyCourseController extends AbstractController
         $availableOptions = [];
 
         foreach ($this->filters as $filterName => $filter) {
-            /** @var $studyCourse StudyCourse */
+            /** @var $studyCourse StudyCourseInterface */
             foreach ($studyCourses as $studyCourse) {
                 $property = ObjectAccess::getPropertyPath($studyCourse, $filter['propertyPath']);
 

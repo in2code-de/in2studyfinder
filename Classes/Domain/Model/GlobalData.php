@@ -31,7 +31,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 /**
  * StudyCourse
  */
-class GlobalData extends AbstractEntity
+class GlobalData extends AbstractEntity implements GlobalDataInterface
 {
     /**
      * title

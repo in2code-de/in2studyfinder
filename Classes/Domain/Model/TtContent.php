@@ -31,7 +31,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 /**
  * Model of tt_content
  */
-class TtContent extends AbstractEntity
+class TtContent extends AbstractEntity implements TtContentInterface
 {
     /**
      * @var string

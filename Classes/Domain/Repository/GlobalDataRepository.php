@@ -27,6 +27,7 @@ namespace In2code\In2studyfinder\Domain\Repository;
  ***************************************************************/
 
 use In2code\In2studyfinder\Domain\Model\GlobalData;
+use In2code\In2studyfinder\Domain\Model\GlobalDataInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 /**
@@ -35,7 +36,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 class GlobalDataRepository extends AbstractRepository
 {
     /**
-     * @return GlobalData|null|object
+     * @return GlobalDataInterface|null|object
      */
     public function findDefaultPreset()
     {
