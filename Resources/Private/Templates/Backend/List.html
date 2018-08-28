@@ -100,7 +100,7 @@
 							<tr data-in2studyfinder-course-uid="{studyCourse.uid}">
 								<td>
 									<f:form.checkbox name="courseList" value="{f:if(condition: '{studyCourse.l10n_parent} != 0', then: '{studyCourse.l10n_parent}', else: '{studyCourse.uid}')}" multiple="multiple"
-													 class="js-in2studyfinder-select-course"/>
+													 class="js-in2studyfinder-select-course" id="course-{studyCourse.uid}" additionalAttributes="{data-in2studyfinder-course-uid: studyCourse.uid}"/>
 								</td>
 								<td>{studyCourse.uid}</td>
 								<td>{studyCourse.title}</td>

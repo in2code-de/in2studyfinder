@@ -2,7 +2,6 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
 	'use strict';
 
 	var SelectCoursesForExportService = {
-		selectedCoursesCount: 0,
 		coursesList: []
 	};
 
@@ -63,8 +62,22 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
 		}
 
 		checkboxes.forEach(function(checkbox) {
+			var courseUid = checkbox.getAttribute('data-in2studyfinder-course-uid');
+			if (status === 0 && checkbox.checked) {
+				if (courseUid) {
+					SelectCoursesForExportService.removeCourseFromList(courseUid);
+				}
+			}
+
+			if (status === 1 && !checkbox.checked) {
+				if (courseUid) {
+					SelectCoursesForExportService.addCourseToList(courseUid);
+				}
+			}
 			checkbox.checked = status;
 		});
+
+		SelectCoursesForExportService.updateSelectedCoursesCount();
 	};
 
 	/**
@@ -74,11 +87,14 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
 		var courseList = SelectCoursesForExportService.coursesList;
 
 		if (courseList.length > 0) {
-			console.log(courseList.length);
 			// if courseList !== empty
 			// set every existing course from this page in the courseList to active
-			console.log(SelectCoursesForExportService.coursesList);
-			//SelectCoursesForExportService.coursesList.each(console.log('test'));
+			SelectCoursesForExportService.coursesList.forEach(function(data) {
+				var checkbox = document.querySelector('#course-' + data);
+				if (checkbox !== null) {
+					checkbox.checked = 1;
+				}
+			});
 		}
 	};
 
@@ -102,10 +118,10 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
 		var selectedOptions = event.target.selectedOptions;
 		var url = selectedOptions[0].getAttribute('data-action');
 
-		console.log(url);
-
 		if (typeof url !== 'undefined') {
-			SelectCoursesForExportService.paginationAjaxCall(url);
+			if (SelectCoursesForExportService.resetCourseList()) {
+				SelectCoursesForExportService.paginationAjaxCall(url);
+			}
 		}
 	};
 
@@ -137,7 +153,11 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
 	 * @return {void}
 	 */
 	SelectCoursesForExportService.paginationAjaxCall = function(url) {
-		AjaxUtility.ajaxCall(url, SelectCoursesForExportService.onPaginationCallStart, SelectCoursesForExportService.onPaginationCallSuccess);
+		AjaxUtility.ajaxCall(
+			url,
+			SelectCoursesForExportService.onPaginationCallStart,
+			SelectCoursesForExportService.onPaginationCallSuccess
+		);
 	};
 
 	/**
@@ -183,10 +203,8 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
 		if (selectedElement.classList.contains('js-in2studyfinder-select-course')) {
 			if (selectedElement.checked) {
 				SelectCoursesForExportService.addCourseToList(selectedElement.value);
-				SelectCoursesForExportService.selectedCoursesCount++;
 			} else {
 				SelectCoursesForExportService.removeCourseFromList(selectedElement.value);
-				SelectCoursesForExportService.selectedCoursesCount--;
 			}
 
 			SelectCoursesForExportService.updateSelectedCoursesCount();
@@ -209,7 +227,7 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
 	 * @return void
 	 */
 	SelectCoursesForExportService.removeCourseFromList = function(courseUid) {
-		SelectCoursesForExportService.coursesList.push(courseUid);
+		SelectCoursesForExportService.coursesList.pop(courseUid);
 	};
 
 	/**
@@ -217,7 +235,7 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
 	 */
 	SelectCoursesForExportService.updateSelectedCoursesCount = function() {
 		var element = document.querySelector('.js-in2studyfinder-selected-courses-count');
-		element.innerHTML = SelectCoursesForExportService.selectedCoursesCount;
+		element.innerHTML = SelectCoursesForExportService.coursesList.length;
 	};
 
 	/**
@@ -233,6 +251,24 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
 	SelectCoursesForExportService.preparePagination = function() {
 		var pagination = document.querySelector('.js-in2studyfinder-pagebrowser');
 		document.querySelector('.js-in2studyfinder-pagination').appendChild(pagination);
+	};
+
+	/**
+	 * @returns {boolean}
+	 */
+	SelectCoursesForExportService.resetCourseList = function() {
+		var status = true;
+
+		if (SelectCoursesForExportService.coursesList.length > 0) {
+			if (confirm('all currently selected courses will be deselected. Will you proceed?')) {
+				SelectCoursesForExportService.coursesList = [];
+				SelectCoursesForExportService.updateSelectedCoursesCount();
+			} else {
+				status = false;
+			}
+		}
+
+		return status;
 	};
 
 	SelectCoursesForExportService.initialize();
