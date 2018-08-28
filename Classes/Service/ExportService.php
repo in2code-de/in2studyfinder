@@ -44,7 +44,7 @@ class ExportService
         $fullQualifiedFileName = $this->exportConfiguration->getExporter()->export($this->exportConfiguration);
         $filename = FileUtility::getFilenameFromFileWithPath($fullQualifiedFileName);
 
-        $headers = array(
+        $headers = [
             'Pragma' => 'public',
             'Expires' => 0,
             'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
@@ -53,7 +53,7 @@ class ExportService
             'Content-Type' => 'text/plain',
             'Content-Transfer-Encoding' => 'binary',
             'Content-Length' => filesize($fullQualifiedFileName)
-        );
+        ];
 
         foreach ($headers as $header => $data) {
             header($header . ': ' . $data);

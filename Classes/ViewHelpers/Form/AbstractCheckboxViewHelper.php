@@ -11,14 +11,14 @@ abstract class AbstractCheckboxViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\F
             'array',
             'Array which holds "propertyType" => array("uid", ...)" for each available filter option',
             true,
-            array()
+            []
         );
         $this->registerArgument(
             'searchedOptions',
             'array',
             'Array of the previously selected filter options',
             true,
-            array()
+            []
         );
     }
 

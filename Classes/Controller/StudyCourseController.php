@@ -455,7 +455,7 @@ class StudyCourseController extends AbstractController
             ->toArray();
 
         if (array_key_exists(0, $studyCourses)) {
-            usort($studyCourses, array($studyCourses[0], 'cmpObj'));
+            usort($studyCourses, [$studyCourses[0], 'cmpObj']);
         }
 
         return $studyCourses;

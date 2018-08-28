@@ -16,11 +16,11 @@ class ForViewHelper extends AbstractViewHelper
     public function render($for, $as, $letter = 'letter')
     {
         if (is_array($for)) {
-            $sortedStudyCourses = array();
+            $sortedStudyCourses = [];
             foreach ($for as $studyCourse) {
                 $sortedStudyCourses[substr(strtoupper($studyCourse->getTitle()), 0, 1)][] = $studyCourse;
             }
-            $results = array();
+            $results = [];
             foreach ($sortedStudyCourses as $capitalLetter => $course) {
                 $this->setVariable($letter, $capitalLetter);
                 $this->setVariable($as, $course);

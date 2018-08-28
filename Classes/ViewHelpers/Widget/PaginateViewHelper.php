@@ -78,12 +78,12 @@ class PaginateViewHelper extends AbstractWidgetViewHelper
     public function render(
         $objects,
         $as,
-        array $configuration = array(
+        array $configuration = [
             'itemsPerPage' => 10,
             'insertAbove' => false,
             'insertBelow' => true,
             'maximumNumberOfLinks' => 99,
-        )
+        ]
     ) {
         return $this->initiateSubRequest();
     }

@@ -1,6 +1,6 @@
 <?php
 
-$EM_CONF['in2studyfinder'] = array(
+$EM_CONF['in2studyfinder'] = [
     'title' => 'in2studyfinder',
     'description' => '',
     'category' => 'plugin',
@@ -12,11 +12,11 @@ $EM_CONF['in2studyfinder'] = array(
     'createDirs' => '',
     'clearCacheOnLoad' => 0,
     'version' => '4.1.0',
-    'constraints' => array(
-        'depends' => array(
+    'constraints' => [
+        'depends' => [
             'typo3' => '6.2.0-8.7.99',
-        ),
-        'conflicts' => array(),
-        'suggests' => array(),
-    ),
-);
+        ],
+        'conflicts' => [],
+        'suggests' => [],
+    ],
+];

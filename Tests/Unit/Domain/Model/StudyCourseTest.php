@@ -233,8 +233,8 @@ class StudyCourseTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $contentElement = new \In2code\In2studyfinder\Domain\Model\TtContent();
         $contentElementsObjectStorageMock = $this->getMock(
             'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage',
-            array('attach'),
-            array(),
+            ['attach'],
+            [],
             '',
             false
         );
@@ -254,8 +254,8 @@ class StudyCourseTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $contentElement = new \In2code\In2studyfinder\Domain\Model\TtContent();
         $contentElementsObjectStorageMock = $this->getMock(
             'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage',
-            array('detach'),
-            array(),
+            ['detach'],
+            [],
             '',
             false
         );

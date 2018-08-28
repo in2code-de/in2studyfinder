@@ -46,17 +46,17 @@ class WizIcon
      * @param array $wizardItems
      * @return array
      */
-    public function proc($wizardItems = array())
+    public function proc($wizardItems = [])
     {
-        $wizardItems['plugins_tx_in2studyfinder_pi1'] = array(
+        $wizardItems['plugins_tx_in2studyfinder_pi1'] = [
             'icon' => ExtensionManagementUtility::extRelPath('in2studyfinder') . 'ext_icon.png',
             'title' => $GLOBALS['LANG']->sL($this->locallangPath . 'wizardItemTitle', true),
             'description' => $GLOBALS['LANG']->sL($this->locallangPath . 'wizardItemDescription', true),
             'params' => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=in2studyfinder_pi1',
-            'tt_content_defValues' => array(
+            'tt_content_defValues' => [
                 'CType' => 'list',
-            ),
-        );
+            ],
+        ];
 
         return $wizardItems;
     }
