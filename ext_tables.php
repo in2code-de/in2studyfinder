@@ -73,19 +73,20 @@ if (TYPO3_MODE === 'BE') {
 /**
  * Include Flexform
  */
-$pluginSignature = str_replace('_', '', $extKey) . '_pi1';
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
-    $pluginSignature,
-    'FILE:EXT:' . $extKey . '/Configuration/FlexForms/FlexformStudyfinderList.xml'
-);
+$flexformConfiguration = [
+    str_replace('_', '', $extKey) . '_pi1' =>
+        'FILE:EXT:' . $extKey . '/Configuration/FlexForms/FlexformStudyfinderList.xml',
+    str_replace('_', '', $extKey) . '_pi2' =>
+        'FILE:EXT:' . $extKey . '/Configuration/FlexForms/FlexformStudyfinderDetail.xml'
+];
 
-$pluginSignature = str_replace('_', '', $extKey) . '_pi2';
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
-    $pluginSignature,
-    'FILE:EXT:' . $extKey . '/Configuration/FlexForms/FlexformStudyfinderDetail.xml'
-);
+foreach ($flexformConfiguration as $pluginSignature => $flexformPath) {
+    $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
+        $pluginSignature,
+        $flexformPath
+    );
+}
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
     $extKey,
