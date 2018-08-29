@@ -36,6 +36,7 @@ class AbstractRepository extends Repository
     /**
      * @param array $options
      * @return array
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      */
     protected function optionsToConstraints($options = [])
     {
