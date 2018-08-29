@@ -43,34 +43,24 @@ if (TYPO3_MODE === 'BE') {
         );
     }
 
-    if (\In2code\In2studyfinder\Utility\VersionUtility::isTypo3MajorVersionAbove(6)) {
+    /**
+     * Register Icons
+     */
+    $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        \TYPO3\CMS\Core\Imaging\IconRegistry::class
+    );
+    $iconRegistry->registerIcon(
+        'in2studyfinder-plugin-icon',
+        \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+        ['source' => 'EXT:in2studyfinder/ext_icon.svg']
+    );
 
-        /**
-         * Register Icons
-         */
-        $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            \TYPO3\CMS\Core\Imaging\IconRegistry::class
-        );
-        $iconRegistry->registerIcon(
-            'in2studyfinder-plugin-icon',
-            \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-            ['source' => 'EXT:in2studyfinder/ext_icon.svg']
-        );
-
-        /**
-         * Add to ContentElementWizard
-         */
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
-            '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:in2studyfinder/Configuration/TSConfig/ContentElementWizard.typoscript">'
-        );
-    } else {
-
-        /**
-         * Add to ContentElementWizard
-         */
-        $TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['In2code\In2studyfinder\Utility\Hook\WizIcon'] =
-            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extKey) . 'Classes/Utility/Hook/WizIcon.php';
-    }
+    /**
+     * Add to ContentElementWizard
+     */
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
+        '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:in2studyfinder/Configuration/TSConfig/ContentElementWizard.typoscript">'
+    );
 
     /**
      * Register default export types
