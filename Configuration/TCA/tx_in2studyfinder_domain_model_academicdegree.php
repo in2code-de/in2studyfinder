@@ -1,7 +1,7 @@
 <?php
 
 $ll = 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:';
-$table = 'tx_in2studyfinder_domain_model_academicdegree';
+$table = \In2code\In2studyfinder\Domain\Model\AcademicDegree::TABLE;
 $icon =
     TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath(
         'in2studyfinder'
@@ -65,10 +65,10 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'foreign_table' => 'tx_in2studyfinder_domain_model_graduation',
+                'foreign_table' => \In2code\In2studyfinder\Domain\Model\Graduation::TABLE,
                 'items' => [
                     In2code\In2studyfinder\Utility\TcaUtility::getPleaseChooseOption(
-                        'tx_in2studyfinder_domain_model_graduation'
+                        \In2code\In2studyfinder\Domain\Model\Graduation::TABLE
                     )
                 ],
                 'minitems' => 1,

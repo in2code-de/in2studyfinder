@@ -28,6 +28,7 @@ namespace In2code\In2studyfinder\Controller;
  ***************************************************************/
 
 use In2code\In2studyfinder\Domain\Model\StudyCourseInterface;
+use In2code\In2studyfinder\Domain\Model\TtContent;
 use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use In2code\In2studyfinder\Utility\FrontendUtility;
@@ -516,7 +517,7 @@ class StudyCourseController extends AbstractController
     protected function getContentElementStoragePids($contentElementUid)
     {
         $storagePids = [];
-        $pluginRecord = BackendUtility::getRecord('tt_content', $contentElementUid, '*');
+        $pluginRecord = BackendUtility::getRecord(TtContent::TABLE, $contentElementUid, '*');
 
         if ($pluginRecord['pages'] !== '') {
             $storagePids = GeneralUtility::intExplode(',', $pluginRecord['pages']);

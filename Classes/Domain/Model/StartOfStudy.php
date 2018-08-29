@@ -33,6 +33,8 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class StartOfStudy extends AbstractEntity implements StartOfStudyInterface
 {
+    const TABLE = 'tx_in2studyfinder_domain_model_startofstudy';
+
     /**
      * title
      *

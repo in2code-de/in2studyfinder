@@ -33,6 +33,8 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class Department extends AbstractEntity implements DepartmentInterface
 {
+    const TABLE = 'tx_in2studyfinder_domain_model_department';
+
     /**
      * title
      *

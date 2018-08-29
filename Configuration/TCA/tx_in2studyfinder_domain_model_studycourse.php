@@ -1,6 +1,6 @@
 <?php
 $ll = 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:';
-$table = 'tx_in2studyfinder_domain_model_studycourse';
+$table = \In2code\In2studyfinder\Domain\Model\StudyCourse::TABLE;
 $icon =
     TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath(
         'in2studyfinder'
@@ -175,8 +175,8 @@ $tcaConfiguration = [
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
-                'allowed' => 'tt_content',
-                'foreign_table' => 'tt_content',
+                'allowed' => \In2code\In2studyfinder\Domain\Model\TtContent::TABLE,
+                'foreign_table' => \In2code\In2studyfinder\Domain\Model\TtContent::TABLE,
                 'MM' => 'tx_in2studyfinder_studycourse_ttcontent_mm',
                 'maxitems' => 9999,
                 'size' => 10,
@@ -188,42 +188,42 @@ $tcaConfiguration = [
         ],
         'academic_degree' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForSingleSelect(
             $ll . 'academicDegree',
-            'tx_in2studyfinder_domain_model_academicdegree',
+            \In2code\In2studyfinder\Domain\Model\AcademicDegree::TABLE,
             1,
             1
         ),
         'department' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForSingleSelect(
             $ll . 'department',
-            'tx_in2studyfinder_domain_model_department'
+            \In2code\In2studyfinder\Domain\Model\Department::TABLE
         ),
         'faculty' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForSingleSelect(
             $ll . 'faculty',
-            'tx_in2studyfinder_domain_model_faculty'
+            \In2code\In2studyfinder\Domain\Model\Faculty::TABLE
         ),
         'types_of_study' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForSelectSideBySide(
             $ll . 'typeOfStudy',
-            'tx_in2studyfinder_domain_model_typeofstudy',
+            \In2code\In2studyfinder\Domain\Model\TypeOfStudy::TABLE,
             'tx_in2studyfinder_studycourse_typeofstudy_mm',
             1,
             1
         ),
         'course_languages' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForSelectSideBySide(
             $ll . 'courseLanguage',
-            'tx_in2studyfinder_domain_model_courselanguage',
+            \In2code\In2studyfinder\Domain\Model\CourseLanguage::TABLE,
             'tx_in2studyfinder_studycourse_courselanguage_mm',
             1,
             1
         ),
         'admission_requirements' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForSelectSideBySide(
             $ll . 'admissionRequirements',
-            'tx_in2studyfinder_domain_model_admissionrequirement',
+            \In2code\In2studyfinder\Domain\Model\AdmissionRequirement::TABLE,
             'tx_in2studyfinder_studycourse_admissionrequirement_mm',
             1,
             1
         ),
         'starts_of_study' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForSelectCheckBox(
             $ll . 'startOfStudy',
-            'tx_in2studyfinder_domain_model_startofstudy',
+            \In2code\In2studyfinder\Domain\Model\StartOfStudy::TABLE,
             'tx_in2studyfinder_studycourse_startofstudy_mm',
             1,
             1
@@ -281,11 +281,11 @@ if (In2code\In2studyfinder\Utility\ConfigurationUtility::isEnableGlobalData()) {
         'config' => [
             'type' => 'select',
             'renderType' => 'selectSingle',
-            'foreign_table' => 'tx_in2studyfinder_domain_model_globaldata',
+            'foreign_table' => \In2code\In2studyfinder\Domain\Model\GlobalData::TABLE,
             'foreign_table_where' => 'AND sys_language_uid in (-1, 0)',
             'items' => [
                 In2code\In2studyfinder\Utility\TcaUtility::getPleaseChooseOption(
-                    'tx_in2studyfinder_domain_model_globaldata'
+                    \In2code\In2studyfinder\Domain\Model\GlobalData::TABLE
                 )
             ],
             'minitems' => 1,

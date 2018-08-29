@@ -33,6 +33,8 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class GlobalData extends AbstractEntity implements GlobalDataInterface
 {
+    const TABLE = 'tx_in2studyfinder_domain_model_globaldata';
+
     /**
      * title
      *

@@ -100,15 +100,15 @@ $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$pluginSignat
 );
 
 $tables = [
-    'tx_in2studyfinder_domain_model_studycourse',
-    'tx_in2studyfinder_domain_model_academicdegree',
-    'tx_in2studyfinder_domain_model_department',
-    'tx_in2studyfinder_domain_model_faculty',
-    'tx_in2studyfinder_domain_model_typeofstudy',
-    'tx_in2studyfinder_domain_model_courselanguage',
-    'tx_in2studyfinder_domain_model_admissionrequirement',
-    'tx_in2studyfinder_domain_model_startofstudy',
-    'tx_in2studyfinder_domain_model_graduation',
+    \In2code\In2studyfinder\Domain\Model\StudyCourse::TABLE,
+    \In2code\In2studyfinder\Domain\Model\AcademicDegree::TABLE,
+    \In2code\In2studyfinder\Domain\Model\Department::TABLE,
+    \In2code\In2studyfinder\Domain\Model\Faculty::TABLE,
+    \In2code\In2studyfinder\Domain\Model\TypeOfStudy::TABLE,
+    \In2code\In2studyfinder\Domain\Model\CourseLanguage::TABLE,
+    \In2code\In2studyfinder\Domain\Model\AdmissionRequirement::TABLE,
+    \In2code\In2studyfinder\Domain\Model\StartOfStudy::TABLE,
+    \In2code\In2studyfinder\Domain\Model\Graduation::TABLE,
 ];
 
 foreach ($tables as $table) {
@@ -124,6 +124,6 @@ foreach ($tables as $table) {
 if (\In2code\In2studyfinder\Utility\ConfigurationUtility::isCategorisationEnabled()) {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable(
         $extKey,
-        'tx_in2studyfinder_domain_model_studycourse'
+        \In2code\In2studyfinder\Domain\Model\StudyCourse::TABLE
     );
 }

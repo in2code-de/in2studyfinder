@@ -1,6 +1,6 @@
 <?php
 $ll = 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:';
-$table = 'tx_in2studyfinder_domain_model_graduation';
+$table = \In2code\In2studyfinder\Domain\Model\Graduation::TABLE;
 $icon =
     TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath(
         'in2studyfinder'

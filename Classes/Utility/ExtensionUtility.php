@@ -26,6 +26,7 @@ namespace In2code\In2studyfinder\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use In2code\In2studyfinder\Domain\Model\TtContent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -68,7 +69,7 @@ class ExtensionUtility extends AbstractUtility
      */
     public static function getFlexFormSettingsByUid($uid)
     {
-        $record = BackendUtility::getRecord('tt_content', $uid);
+        $record = BackendUtility::getRecord(TtContent::TABLE, $uid);
         $flexFormService = self::getObjectManager()->get(FlexFormService::class);
         $flexFormSettings = $flexFormService->convertFlexFormContentToArray($record['pi_flexform']);
 
