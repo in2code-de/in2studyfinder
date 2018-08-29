@@ -211,17 +211,9 @@ class StudyCourseController extends AbstractController
     {
 
         if ($this->request->hasArgument('courseList')) {
-            $language = 0;
-
-            if (!empty(GeneralUtility::_GET('L'))) {
-                $language = (int)GeneralUtility::_GET('L');
-            }
-
             $courses = $this->studyCourseRepository->getCoursesWithUidIn(
-                (array)$this->request->getArgument('courseList'),
-                $language
+                (array)$this->request->getArgument('courseList')
             )->toArray();
-
             $return = serialize($courses);
 
         } else {

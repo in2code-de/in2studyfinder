@@ -109,34 +109,14 @@ class StudyCourseRepository extends AbstractRepository
 
     /**
      * @param array $list
-     * @param integer $languageUid
      * @return array|QueryResultInterface
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      */
-    public function getCoursesWithUidIn($list, $languageUid = 0)
+    public function getCoursesWithUidIn($list)
     {
         $query = $this->createQuery();
-
-//        $query->getQuerySettings()->setRespectSysLanguage(true);
-        //$query->getQuerySettings()->setLanguageOverlayMode(true);
-        //$query->getQuerySettings()->setLanguageMode('strict');
-        //$query->getQuerySettings()->setLanguageUid($languageUid);
-
         $query->matching($query->in('uid', $list));
 
-        /**
-         * Workaround
-         *
-         * the field $GLOBALS['TSFE']->gr_list must also be set in the backend context.
-         * This is an bug in the Core PageRepository because it does not check whether
-         * you are in the frontend or backend context. The FrontendRestrictionContainer
-         * is always called.
-         */
-/*
-        if ($GLOBALS['TSFE']->gr_list === null) {
-            $GLOBALS['TSFE']->gr_list = '';
-        }
-*/
         return $query->execute();
     }
 
