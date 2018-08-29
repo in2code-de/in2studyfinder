@@ -37,6 +37,7 @@ class ExtensionUtility extends AbstractUtility
     /**
      * @param string $extKey
      * @return mixed
+     * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      */
     public static function getExtensionSettings($extKey)
     {

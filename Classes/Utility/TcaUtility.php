@@ -406,7 +406,7 @@ class TcaUtility extends AbstractUtility
                 ],
             ];
 
-            ExtensionManagementUtility::addTCAcolumns($table, $extbaseType, 1);
+            ExtensionManagementUtility::addTCAcolumns($table, $extbaseType);
         }
 
         ExtensionManagementUtility::addToAllTCAtypes(

@@ -1,4 +1,5 @@
 <?php
+
 namespace In2code\In2studyfinder\ViewHelpers\Widget;
 
 /*                                                                        *
@@ -20,6 +21,7 @@ namespace In2code\In2studyfinder\ViewHelpers\Widget;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper;
@@ -37,9 +39,9 @@ use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper;
  * </code>
  *
  * <code title="full configuration">
- * <f:widget.paginate objects="{blogs}" as="paginatedBlogs" configuration="{itemsPerPage: 5, insertAbove: 1, insertBelow: 0, maximumNumberOfLinks: 10}">
- * use {paginatedBlogs} as you used {blogs} before, most certainly inside
- * a <f:for> loop.
+ * <f:widget.paginate objects="{blogs}" as="paginatedBlogs" configuration="{itemsPerPage: 5, insertAbove: 1,
+ * insertBelow: 0, maximumNumberOfLinks: 10}"> use {paginatedBlogs} as you used {blogs} before, most certainly inside a
+ * <f:for> loop.
  * </f:widget.paginate>
  * </code>
  *
@@ -74,6 +76,8 @@ class PaginateViewHelper extends AbstractWidgetViewHelper
      * @param string $as
      * @param array $configuration
      * @return string
+     *
+     * @SuppressWarnings(PHPMD.ShortVariable)
      */
     public function render(
         $objects,

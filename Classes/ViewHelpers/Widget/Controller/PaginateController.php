@@ -21,8 +21,8 @@ namespace In2code\In2studyfinder\ViewHelpers\Widget\Controller;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController;
@@ -76,6 +76,7 @@ class PaginateController extends AbstractWidgetController
 
     /**
      * @return void
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
     public function initializeAction()
     {
@@ -94,7 +95,7 @@ class PaginateController extends AbstractWidgetController
         if (!isset($itemsPerPage) || $itemsPerPage === '' || $itemsPerPage === 0) {
             $itemsPerPage = (int)$this->configuration['itemsPerPage'];
         }
-        
+
         $this->numberOfPages = $itemsPerPage > 0 ? ceil(count($this->objects) / $itemsPerPage) : 0;
         $this->maximumNumberOfLinks = (int)$this->configuration['maximumNumberOfLinks'];
     }
@@ -219,7 +220,8 @@ class PaginateController extends AbstractWidgetController
             throw new \InvalidArgumentException(
                 'The view helper "' . get_class($this)
                 . '" accepts as argument "QueryResultInterface", "\SplObjectStorage", "ObjectStorage" or an array. '
-                . 'given: ' . get_class($this->objects), 1385547291
+                . 'given: ' . get_class($this->objects),
+                1385547291
             );
         }
     }

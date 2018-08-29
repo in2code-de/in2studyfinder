@@ -70,6 +70,7 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
      * @param string $itemContent Item content
      * @param array $row Record row of tt_content
      * @return void
+     * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      */
     public function preProcess(
         PageLayoutView &$parentObject,
@@ -106,6 +107,7 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
     /**
      * @param string @pluginName
      * @return string
+     * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      */
     protected function getPluginInformation($pluginName)
     {
@@ -181,6 +183,8 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
 
     /**
      * @return array
+     * @SuppressWarnings(PHPMD.LongVariable)
+     * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      */
     protected function getRecordStoragePages()
     {

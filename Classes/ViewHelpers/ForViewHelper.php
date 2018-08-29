@@ -1,4 +1,5 @@
 <?php
+
 namespace In2code\In2studyfinder\ViewHelpers;
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -12,6 +13,8 @@ class ForViewHelper extends AbstractViewHelper
      * @param string $as
      * @param string $letter
      * @return string
+     *
+     * @SuppressWarnings(PHPMD.ShortVariable)
      */
     public function render($for, $as, $letter = 'letter')
     {

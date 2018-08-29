@@ -107,7 +107,8 @@ class ExportConfiguration
      *
      * @return $this
      */
-    public function setRecordsToExport(array $recordsToExport) {
+    public function setRecordsToExport(array $recordsToExport)
+    {
         $this->recordsToExport = $recordsToExport;
         return $this;
     }

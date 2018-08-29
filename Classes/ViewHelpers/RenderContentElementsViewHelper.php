@@ -1,4 +1,5 @@
 <?php
+
 namespace In2code\In2studyfinder\ViewHelpers;
 
 use In2code\In2studyfinder\Domain\Model\TtContent;

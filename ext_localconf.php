@@ -19,10 +19,10 @@ if (!defined('TYPO3_MODE')) {
 );
 
 /**
- * Hook to show PluginInformation under a tt_content element in page module of type powermail
+ * Hook to show PluginInformation under a tt_content element in page module of type in2studyfinder
  */
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['in2studyfinder'] =
-    \In2code\In2studyfinder\Hooks\PluginPreview::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['in2studyfinder']
+    = \In2code\In2studyfinder\Hooks\PluginPreview::class;
 
 if (\In2code\In2studyfinder\Utility\ConfigurationUtility::isCachingEnabled()) {
     if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['in2studyfinder'])) {
