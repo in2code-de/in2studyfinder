@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: in2marcus
- * Date: 23.08.18
- * Time: 12:43
- */
 
 namespace In2code\In2studyfinder\Domain\Model;
-
 
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
