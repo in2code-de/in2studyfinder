@@ -80,14 +80,14 @@ class BackendController extends AbstractController
                 LocalizationUtility::translate('messages.noCourses.title', 'in2studyfinder'),
                 AbstractMessage::WARNING
             );
+        } else {
+            $this->getFullPropertyList(
+                $propertyArray,
+                $this->reflectionService->getClassSchema(
+                    $this->getStudyCourseRepository()->findOneByDeleted(0)
+                )->getProperties()
+            );
         }
-
-        $this->getFullPropertyList(
-            $propertyArray,
-            $this->reflectionService->getClassSchema(
-                $this->getStudyCourseRepository()->findOneByDeleted(0)
-            )->getProperties()
-        );
 
         $itemsPerPage = $this->settings['pagination']['itemsPerPage'];
 
