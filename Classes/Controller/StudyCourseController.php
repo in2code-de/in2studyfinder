@@ -121,8 +121,7 @@ class StudyCourseController extends AbstractController
             $searchOptions = array_filter((array)$this->request->getArgument('searchOptions'));
             $this->request->setArgument('searchOptions', $searchOptions);
             if (ConfigurationUtility::isPersistentFilterEnabled()) {
-                $this
-                    ->getTypoScriptFrontendController()
+                FrontendUtility::getTyposcriptFrontendController()
                     ->fe_user
                     ->setAndSaveSessionData('tx_in2studycourse_filter', $searchOptions);
             }
@@ -158,10 +157,10 @@ class StudyCourseController extends AbstractController
             // No search options have been provided and no filter have been predefined in the Plugin's FlexForm
             // so we assume the user came back to the list page through another direct link.
             // Do not run this in the initializeFilterAction because it must also be applied for listAction.
-            $searchOptions = $this
-                ->getTypoScriptFrontendController()
-                ->fe_user
-                ->getSessionData('tx_in2studycourse_filter');
+            $searchOptions =
+                FrontendUtility::getTyposcriptFrontendController()
+                    ->fe_user
+                    ->getSessionData('tx_in2studycourse_filter');
             if (empty($searchOptions)) {
                 $searchOptions = [];
             }
@@ -281,7 +280,7 @@ class StudyCourseController extends AbstractController
         try {
             parent::processRequest($request, $response);
         } catch (Exception $exception) {
-            $this->getTypoScriptFrontendController()->pageNotFoundAndExit();
+            FrontendUtility::getTyposcriptFrontendController()->pageNotFoundAndExit();
         }
     }
 
@@ -488,15 +487,6 @@ class StudyCourseController extends AbstractController
         }
 
         return $availableOptions;
-    }
-
-    /**
-     * @return TypoScriptFrontendController
-     * @SuppressWarnings(PHPMD.Superglobals)
-     */
-    protected function getTypoScriptFrontendController()
-    {
-        return $GLOBALS['TSFE'];
     }
 
     /**
