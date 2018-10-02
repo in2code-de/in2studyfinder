@@ -36,6 +36,7 @@ use In2code\In2studyfinder\Utility\VersionUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -74,6 +75,11 @@ class StudyCourseController extends AbstractController
     protected $response = null;
 
     /**
+     * @var array
+     */
+    protected $pluginRecord;
+
+    /**
      * Use this instead of __construct, because extbase will inject dependencies *after* construnction of an object
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
@@ -87,6 +93,8 @@ class StudyCourseController extends AbstractController
                 GeneralUtility::makeInstance(CacheManager::class)->getCache('in2studyfinder');
         }
 
+        $this->setPluginRecord();
+
         if (ConfigurationUtility::isCachingEnabled()) {
             $cacheIdentifier = $this->getCacheIdentifierForStudyCourses($this->settings['filters']);
 
@@ -99,17 +107,6 @@ class StudyCourseController extends AbstractController
         } else {
             $this->setFilters();
         }
-    }
-
-    /**
-     * The list action is nothing else than the filter action but
-     * without any search options (or they are predefined in the FlexForm options)
-     *
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
-     */
-    public function listAction()
-    {
-        $this->forward('filter');
     }
 
     /**
@@ -134,18 +131,20 @@ class StudyCourseController extends AbstractController
         /*
          * add the flexform settings to the settings if the request is an ajax request
          */
-        if (GeneralUtility::_GP('type') === '1308171055' && GeneralUtility::_GP('ce')) {
-            $this->settings =
-                array_merge_recursive(
-                    $this->settings,
-                    ExtensionUtility::getFlexFormSettingsByUid(GeneralUtility::_GP('ce'))
+        if ($this->isAjaxRequest()) {
+            if (GeneralUtility::_GP('type') === '1308171055' && GeneralUtility::_GP('ce')) {
+                $this->settings =
+                    array_merge_recursive(
+                        $this->settings,
+                        ExtensionUtility::getFlexFormSettingsByUid(GeneralUtility::_GP('ce'))
+                    );
+            } else {
+                $this->logger->log(
+                    LogLevel::ERROR,
+                    'Incorrect parameters of the Ajax request. Flexform settings could not be set! Maybe the extension\'s layout has been overwritten?',
+                    []
                 );
-        } else {
-            $this->logger->log(
-                LogLevel::ERROR,
-                'Incorrect parameters of the Ajax request. Flexform settings could not be set! Maybe the extension\'s layout has been overwritten?',
-                []
-            );
+            }
         }
     }
 
@@ -178,14 +177,6 @@ class StudyCourseController extends AbstractController
 
         $studyCourses = $this->processSearch($searchOptions);
 
-        /*
-         * assign the current content element record to the view
-         */
-        if (GeneralUtility::_GP('type') === null) {
-            $contentObj = $this->configurationManager->getContentObject();
-            $this->view->assign('data', $contentObj->data);
-        }
-
         $this->view->assignMultiple(
             [
                 'searchedOptions' => $searchOptions,
@@ -194,7 +185,8 @@ class StudyCourseController extends AbstractController
                 'studyCourseCount' => count($studyCourses),
                 'studyCourses' => $studyCourses,
                 'currentTypo3MajorVersion' => VersionUtility::getCurrentTypo3MajorVersion(),
-                'settings' => $this->settings
+                'settings' => $this->settings,
+                'data' => $this->pluginRecord
             ]
         );
     }
@@ -529,5 +521,43 @@ class StudyCourseController extends AbstractController
         }
 
         return $isAjaxRequest;
+    }
+
+    /**
+     *
+     */
+    protected function setPluginRecord()
+    {
+        $pluginRecord = [];
+
+        if (empty(GeneralUtility::_GP('type'))) {
+            $contentObj = $this->configurationManager->getContentObject();
+            $pluginRecord = $contentObj->data;
+        } else {
+            if (!empty(GeneralUtility::_GP('ce'))) {
+                $queryBuilder =
+                    $this->objectManager->get(ConnectionPool::class)->getQueryBuilderForTable(TtContent::TABLE);
+                $record = $queryBuilder
+                    ->select('*')
+                    ->from(TtContent::TABLE)
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            'uid',
+                            $queryBuilder->createNamedParameter((int)GeneralUtility::_GP('ce'), \PDO::PARAM_INT)
+                        )
+                    )
+                    ->execute()->fetch();
+
+                $pluginRecord = $record;
+            } else {
+                $this->logger->log(
+                    LogLevel::ERROR,
+                    'No url parameter ce is set. Please check the ajax request in your network analyse tool if an filter is set',
+                    []
+                );
+            }
+        }
+
+        $this->pluginRecord = $pluginRecord;
     }
 }

@@ -1,0 +1,1 @@
+define("In2studyfinder/Frontend/FrontendModule",["jquery"],function(n){"use strict";console.log("call"),console.log(n(".js-in2studyfinder-select2"));var e={};return e.initialize=function(){console.log("läuft")},e});

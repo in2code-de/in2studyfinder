@@ -182,6 +182,7 @@ page.includeCSS.in2studyfinderCss = {$plugin.tx_in2studyfinder.settings.css.in2s
 
 # add In2studyfinder JavaScripts
 page {
+/*
 	includeJSFooter {
 		in2studyfinderSelect2 = {$plugin.tx_in2studyfinder.settings.javascript.in2studyfinderSelect2}
 		in2studyfinderJavaScriptBasic = EXT:in2studyfinder/Resources/Public/JavaScript/In2studyfinder.js
@@ -193,6 +194,32 @@ page {
 		in2studyfinderJavaScriptModulesPaginationHandling = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/PaginationHandling.js
 
 		in2studyfinderJavaScriptSelect2Language = EXT:in2studyfinder/Resources/Public/JavaScript/i18n/.js
+	}
+	*/
+
+	# requirejs
+	footerData.1497382690 = COA
+	footerData.1497382690 {
+		10 = TEXT
+		10 {
+			wrap = <script>|</script>
+			value = requireJsBasePath = '/{path:EXT:in2studyfinder/Resources/Public/JavaScript/}'
+			stdWrap.insertData = 1
+		}
+		20 = TEXT
+		20 {
+			value = /typo3/sysext/core/Resources/Public/JavaScript/Contrib/require.js
+			stdWrap.insertData = 1
+			wrap = <script src="|"
+			noTrimWrap = | ||
+		}
+		30 = TEXT
+		30 {
+			value = /{path:EXT:in2studyfinder/Resources/Public/JavaScript/main.js}
+			stdWrap.insertData = 1
+			wrap = data-main="|"></script>
+			noTrimWrap = | ||
+		}
 	}
 }
 

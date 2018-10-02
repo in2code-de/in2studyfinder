@@ -1,7 +1,7 @@
 define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility'], function (UiUtility) {
     'use strict';
 
-    var SelectExportPropertiesService = {
+    var SelectPropertiesModule = {
         selectedPropertiesList: document.querySelector('.js-in2studyfinder-selected-properties-list'),
         availablePropertiesList: document.querySelector('.js-in2studyfinder-property-list')
     };
@@ -11,38 +11,38 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility'], function (UiUtility) {
      *
      * @return {void}
      */
-    SelectExportPropertiesService.initialize = function () {
-        SelectExportPropertiesService.addEventListener();
+    SelectPropertiesModule.initialize = function () {
+        SelectPropertiesModule.addEventListener();
     };
 
     /**
      * initialize event listener
      */
-    SelectExportPropertiesService.addEventListener = function () {
+    SelectPropertiesModule.addEventListener = function () {
 
         // click on an available item
         var propertyList = document.querySelector('.js-in2studyfinder-property-list');
-        propertyList.addEventListener('click', SelectExportPropertiesService.addPropertyToSelectedProperties);
+        propertyList.addEventListener('click', SelectPropertiesModule.addPropertyToSelectedProperties);
 
         // click on the remove item button
         var deleteButton = document.querySelector('.js-in2studyfinder-remove-item');
-        deleteButton.addEventListener('click', SelectExportPropertiesService.removeSelectedItems);
+        deleteButton.addEventListener('click', SelectPropertiesModule.removeSelectedItems);
 
         // click on move up button
         var moveUpButton = document.querySelector('.js-in2studyfinder-move-item-up');
-        moveUpButton.addEventListener('click', SelectExportPropertiesService.moveSelectedItemsUp);
+        moveUpButton.addEventListener('click', SelectPropertiesModule.moveSelectedItemsUp);
 
         // click on move down button
         var moveDownButton = document.querySelector('.js-in2studyfinder-move-item-down');
-        moveDownButton.addEventListener('click', SelectExportPropertiesService.moveSelectedItemsDown);
+        moveDownButton.addEventListener('click', SelectPropertiesModule.moveSelectedItemsDown);
 
         // click on move to the end button
         var moveToEndButton = document.querySelector('.js-in2studyfinder-move-item-end');
-        moveToEndButton.addEventListener('click', SelectExportPropertiesService.moveSelectedItemsToEnd);
+        moveToEndButton.addEventListener('click', SelectPropertiesModule.moveSelectedItemsToEnd);
 
         // click on move to the beginning button
         var moveToBeginButton = document.querySelector('.js-in2studyfinder-move-item-begin');
-        moveToBeginButton.addEventListener('click', SelectExportPropertiesService.moveSelectedItemsToBegin);
+        moveToBeginButton.addEventListener('click', SelectPropertiesModule.moveSelectedItemsToBegin);
     };
 
     /**
@@ -50,7 +50,7 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility'], function (UiUtility) {
      *
      * @param event
      */
-    SelectExportPropertiesService.addPropertyToSelectedProperties = function (event) {
+    SelectPropertiesModule.addPropertyToSelectedProperties = function (event) {
         var targetOption = event.target;
 
         if (targetOption.getAttribute('data-in2studyfinder-property-selectable') === 'true') {
@@ -68,20 +68,20 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility'], function (UiUtility) {
                     copiedOption.getAttribute('data-in2studyfinder-parent-property-label')
                 );
             }
-            SelectExportPropertiesService.selectedPropertiesList.add(copiedOption);
+            SelectPropertiesModule.selectedPropertiesList.add(copiedOption);
         }
     };
 
     /**
      * remove selected items from selected items list
      */
-    SelectExportPropertiesService.removeSelectedItems = function () {
-        var currentSelection = SelectExportPropertiesService.getSelectionFromSelectedPropertiesList();
+    SelectPropertiesModule.removeSelectedItems = function () {
+        var currentSelection = SelectPropertiesModule.getSelectionFromSelectedPropertiesList();
 
         if (currentSelection.length) {
             currentSelection.forEach(function (optionElement) {
-                SelectExportPropertiesService.selectedPropertiesList.options[optionElement.index].remove();
-                SelectExportPropertiesService.showPropertyOnAvailablePropertiesList(optionElement.value);
+                SelectPropertiesModule.selectedPropertiesList.options[optionElement.index].remove();
+                SelectPropertiesModule.showPropertyOnAvailablePropertiesList(optionElement.value);
             })
         }
     };
@@ -89,9 +89,9 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility'], function (UiUtility) {
     /**
      * moves the selected items one position up
      */
-    SelectExportPropertiesService.moveSelectedItemsUp = function () {
-        var selection = SelectExportPropertiesService.getSelectionFromSelectedPropertiesList();
-        var selectedPropertiesList = SelectExportPropertiesService.selectedPropertiesList;
+    SelectPropertiesModule.moveSelectedItemsUp = function () {
+        var selection = SelectPropertiesModule.getSelectionFromSelectedPropertiesList();
+        var selectedPropertiesList = SelectPropertiesModule.selectedPropertiesList;
 
         if (selection.length) {
             for (var i = 0; i < selection.length; i++) {
@@ -114,9 +114,9 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility'], function (UiUtility) {
     /**
      * moves the selected items one position up
      */
-    SelectExportPropertiesService.moveSelectedItemsDown = function () {
-        var selection = SelectExportPropertiesService.getSelectionFromSelectedPropertiesList();
-        var selectedPropertiesList = SelectExportPropertiesService.selectedPropertiesList;
+    SelectPropertiesModule.moveSelectedItemsDown = function () {
+        var selection = SelectPropertiesModule.getSelectionFromSelectedPropertiesList();
+        var selectedPropertiesList = SelectPropertiesModule.selectedPropertiesList;
 
         if (selection.length) {
             for (var i = selection.length-1; i >= 0; i--) {
@@ -139,9 +139,9 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility'], function (UiUtility) {
     /**
      * moves the selected items to the end of the list
      */
-    SelectExportPropertiesService.moveSelectedItemsToEnd = function () {
-        var selection = SelectExportPropertiesService.getSelectionFromSelectedPropertiesList();
-        var selectedPropertiesList = SelectExportPropertiesService.selectedPropertiesList;
+    SelectPropertiesModule.moveSelectedItemsToEnd = function () {
+        var selection = SelectPropertiesModule.getSelectionFromSelectedPropertiesList();
+        var selectedPropertiesList = SelectPropertiesModule.selectedPropertiesList;
 
         if (selection.length) {
             for (var i = selection.length-1; i >= 0; i--) {
@@ -154,9 +154,9 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility'], function (UiUtility) {
     /**
      * moves the selected items to the begin of the list
      */
-    SelectExportPropertiesService.moveSelectedItemsToBegin = function () {
-        var selection = SelectExportPropertiesService.getSelectionFromSelectedPropertiesList();
-        var selectedPropertiesList = SelectExportPropertiesService.selectedPropertiesList;
+    SelectPropertiesModule.moveSelectedItemsToBegin = function () {
+        var selection = SelectPropertiesModule.getSelectionFromSelectedPropertiesList();
+        var selectedPropertiesList = SelectPropertiesModule.selectedPropertiesList;
 
         if (selection.length) {
             for (var i = 0; i < selection.length; i++) {
@@ -171,8 +171,8 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility'], function (UiUtility) {
      *
      * @param propertyValue
      */
-    SelectExportPropertiesService.showPropertyOnAvailablePropertiesList = function (propertyValue) {
-        var property = SelectExportPropertiesService.availablePropertiesList.querySelector('option[value="' + propertyValue + '"]');
+    SelectPropertiesModule.showPropertyOnAvailablePropertiesList = function (propertyValue) {
+        var property = SelectPropertiesModule.availablePropertiesList.querySelector('option[value="' + propertyValue + '"]');
         UiUtility.showElementAsBlock(property);
     };
 
@@ -181,15 +181,15 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility'], function (UiUtility) {
      *
      * @returns {Array}
      */
-    SelectExportPropertiesService.getSelectionFromSelectedPropertiesList = function () {
+    SelectPropertiesModule.getSelectionFromSelectedPropertiesList = function () {
         var selection = [];
-        var selectedPropertiesList = SelectExportPropertiesService.selectedPropertiesList;
+        var selectedPropertiesList = SelectPropertiesModule.selectedPropertiesList;
         /*
          * get current selection from selectedPropertiesList
          * we use this method to get the current selection because
          * "selectedOptions" do not work on IE
          */
-        for (var i = 0; i < SelectExportPropertiesService.selectedPropertiesList.length; i++) {
+        for (var i = 0; i < SelectPropertiesModule.selectedPropertiesList.length; i++) {
             if (selectedPropertiesList.options[i].selected) {
                 selection.push(selectedPropertiesList.options[i]);
             }
@@ -198,6 +198,5 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility'], function (UiUtility) {
         return selection;
     };
 
-    SelectExportPropertiesService.initialize();
-    return SelectExportPropertiesService;
+    return SelectPropertiesModule;
 });
