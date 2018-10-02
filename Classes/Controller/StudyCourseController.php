@@ -202,6 +202,7 @@ class StudyCourseController extends AbstractController
      */
     public function getCoursesJsonAction()
     {
+        $return = '';
 
         if ($this->request->hasArgument('courseList')) {
             $courses = $this->studyCourseRepository->getCoursesWithUidIn(
@@ -210,7 +211,11 @@ class StudyCourseController extends AbstractController
             $return = serialize($courses);
 
         } else {
-            $return = 'the Required Arguments "courseList" is not set';
+            $this->logger->log(
+                LogLevel::ERROR,
+                'the Requested Argument "courseList" is not set.',
+                [__METHOD__ . ' on Line ' . __LINE__]
+            );
         }
 
         return json_encode($return);
