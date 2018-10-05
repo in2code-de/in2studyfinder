@@ -179,7 +179,6 @@ class BackendController extends AbstractController
      * @param array $selectedProperties
      * @param array $courseList
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      */
     public function exportAction($exporter, $recordLanguage, $selectedProperties, $courseList)
     {
