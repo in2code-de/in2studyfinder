@@ -2,7 +2,8 @@
 namespace In2code\In2studyfinder\ViewHelpers;
 
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
 class RenderContentElementsViewHelper extends AbstractViewHelper
 {
@@ -62,18 +63,21 @@ class RenderContentElementsViewHelper extends AbstractViewHelper
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
         $this->configurationManager = $configurationManager;
-        $this->cObj = $this->configurationManager->getContentObject();
+        $this->cObj = $this->configurationManager->getContentObjectRenderer();
     }
 
     public function findTtContentUidsByMmTable($domainObjectUid, $table)
     {
-        $uidArray = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-            'uid_foreign as uid',
-            $table,
-            'uid_local=' . (int)$domainObjectUid,
-            '',
-            'sorting, sorting_foreign'
-        );
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tt_content');
+
+        $uidArray = $queryBuilder
+            ->select('uid_foreign as uid')
+            ->from('tt_content')
+            ->where('uid_local=' . (int)$domainObjectUid)
+            ->orderBy('sorting')
+            ->addOrderBy('sorting_foreign');
 
         return $uidArray;
     }

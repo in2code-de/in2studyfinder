@@ -155,7 +155,9 @@ class TcaUtility extends AbstractUtility
 
         if ($table !== '') {
             $icon =
-                ExtensionManagementUtility::extRelPath('in2studyfinder') . 'Resources/Public/Icons/' . $table . '.png';
+                \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
+                    'EXT:in2studyfinder/Resources/Public/Icons' . $table . '.png'
+                );
         }
 
         return [

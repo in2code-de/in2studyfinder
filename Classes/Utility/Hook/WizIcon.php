@@ -48,10 +48,15 @@ class WizIcon
      */
     public function proc($wizardItems = array())
     {
+        $icon =
+            TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
+                'EXT:in2studyfinder/ext_icon.png'
+            );
+
         $wizardItems['plugins_tx_in2studyfinder_pi1'] = array(
-            'icon' => ExtensionManagementUtility::extRelPath('in2studyfinder') . 'ext_icon.png',
-            'title' => $GLOBALS['LANG']->sL($this->locallangPath . 'wizardItemTitle', true),
-            'description' => $GLOBALS['LANG']->sL($this->locallangPath . 'wizardItemDescription', true),
+            'icon' => $icon,
+            'title' => $GLOBALS['LANG']->sL($this->locallangPath . 'wizardItemTitle'),
+            'description' => $GLOBALS['LANG']->sL($this->locallangPath . 'wizardItemDescription'),
             'params' => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=in2studyfinder_pi1',
             'tt_content_defValues' => array(
                 'CType' => 'list',

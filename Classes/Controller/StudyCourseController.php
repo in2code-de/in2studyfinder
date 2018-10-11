@@ -176,11 +176,9 @@ class StudyCourseController extends ActionController
         }
 
         $searchOptions =
-            ArrayUtility::arrayMergeRecursiveOverrule(
+            array_replace_recursive(
                 $searchOptions,
-                $this->getSelectedFlexformOptions(),
-                false,
-                false
+                $this->getSelectedFlexformOptions()
             );
 
         $studyCourses = $this->processSearch($searchOptions);
@@ -189,7 +187,7 @@ class StudyCourseController extends ActionController
          * assign the current content element record to the view
          */
         if (GeneralUtility::_GP('type') === null) {
-            $contentObj = $this->configurationManager->getContentObject();
+            $contentObj = $this->configurationManager->getContentObjectRenderer();
             $this->view->assign('data', $contentObj->data);
         }
 
