@@ -1,7 +1,7 @@
 <?php
 namespace In2code\In2studyfinder\Utility\Hook;
 
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  *
@@ -49,7 +49,7 @@ class WizIcon
     public function proc($wizardItems = array())
     {
         $icon =
-            TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
+            GeneralUtility::getFileAbsFileName(
                 'EXT:in2studyfinder/ext_icon.png'
             );
 
