@@ -1,1 +1,0 @@
-define(["Utility/UiUtility","Utility/AjaxUtility","Utility/UrlUtility"],function(i,t,l){console.log(l.test())});

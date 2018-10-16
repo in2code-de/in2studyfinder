@@ -1,1 +1,0 @@
-define("In2studyfinder/Frontend/FilterModule",[],function(){"use strict";var i={initialize2:function(){console.log("läuft noch"),this.initialize3()},initialize3:function(){console.log("läuft noch weiter!")}};return i.initialize=function(){console.log("läuft"),this.initialize2()},i});
