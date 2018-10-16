@@ -52,10 +52,12 @@ function watch() {
 	gulp.watch(paths.styles.src, styles);
 }
 
-exports.styles = styles;
-exports.scripts = scripts;
 exports.watch = watch;
 
-var build = gulp.series(clean, gulp.parallel(styles, scripts));
+var buildTask = gulp.series(clean, gulp.parallel(styles, scripts));
+var stylesTask = gulp.series(clean, gulp.parallel(styles));
+var scriptsTask = gulp.series(clean, gulp.parallel(scripts));
 
-gulp.task('build (css, js)', build);
+gulp.task('build (css, js)', buildTask);
+gulp.task('styles (css)', stylesTask);
+gulp.task('scripts (js)', scriptsTask);
