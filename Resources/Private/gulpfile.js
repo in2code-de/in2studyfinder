@@ -52,7 +52,6 @@ function watch() {
 	gulp.watch(paths.styles.src, styles);
 }
 
-//exports.clean = clean;
 exports.styles = styles;
 exports.scripts = scripts;
 exports.watch = watch;
