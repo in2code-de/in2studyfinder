@@ -207,9 +207,9 @@ class StudyCourseController extends ActionController
     }
 
     /**
-     * @param StudyCourseInterface|null $studyCourse
+     * @param StudyCourse|null $studyCourse
      */
-    public function detailAction(StudyCourseInterface $studyCourse = null)
+    public function detailAction(StudyCourse $studyCourse = null)
     {
         if ($studyCourse) {
             $this->writePageMetadata($studyCourse);
