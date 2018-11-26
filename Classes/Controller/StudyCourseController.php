@@ -37,7 +37,6 @@ use In2code\In2studyfinder\Utility\VersionUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Database\QueryGenerator;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -207,9 +206,9 @@ class StudyCourseController extends ActionController
     }
 
     /**
-     * @param StudyCourseInterface|null $studyCourse
+     * @param StudyCourse|null $studyCourse
      */
-    public function detailAction(StudyCourseInterface $studyCourse = null)
+    public function detailAction(StudyCourse $studyCourse = null)
     {
         if ($studyCourse) {
             $this->writePageMetadata($studyCourse);
