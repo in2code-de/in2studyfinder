@@ -27,7 +27,9 @@ namespace In2code\In2studyfinder\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Domain\Model\StudyCourseInterface;
+use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use In2code\In2studyfinder\Utility\FrontendUtility;
@@ -35,10 +37,13 @@ use In2code\In2studyfinder\Utility\VersionUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogLevel;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
@@ -55,7 +60,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  *
  * @SuppressWarnings(PHPMD.LongVariable)
  */
-class StudyCourseController extends AbstractController
+class StudyCourseController extends ActionController
 {
     /**
      * @var array
@@ -68,22 +73,30 @@ class StudyCourseController extends AbstractController
     protected $cacheInstance = null;
 
     /**
+     * @var Logger
+     */
+    protected $logger = null;
+
+    /**
      * @var Response
      */
     protected $response = null;
 
     /**
-     * Use this instead of __construct, because extbase will inject dependencies *after* construnction of an object
-     *
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
+     * @var StudyCourseRepository
      */
-    public function initializeAction()
+    protected $studyCourseRepository = null;
+
+    /**
+     * Use this instead of __construct, because extbase will inject dependencies *after* construnction of an object
+     */
+    protected function initializeAction()
     {
-        parent::initializeAction();
+        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(static::class);
+        $this->studyCourseRepository = $this->setStudyCourseRepository();
 
         if (ConfigurationUtility::isCachingEnabled()) {
-            $this->cacheInstance =
-                GeneralUtility::makeInstance(CacheManager::class)->getCache('in2studyfinder');
+            $this->cacheInstance = GeneralUtility::makeInstance(CacheManager::class)->getCache('in2studyfinder');
         }
 
         if (ConfigurationUtility::isCachingEnabled()) {
@@ -103,8 +116,6 @@ class StudyCourseController extends AbstractController
     /**
      * The list action is nothing else than the filter action but
      * without any search options (or they are predefined in the FlexForm options)
-     *
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      */
     public function listAction()
     {
@@ -113,9 +124,6 @@ class StudyCourseController extends AbstractController
 
     /**
      * Strip empty options from incoming (selected) filters
-     *
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
     public function initializeFilterAction()
     {
@@ -150,7 +158,6 @@ class StudyCourseController extends AbstractController
 
     /**
      * @param array $searchOptions
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      */
     public function filterAction(array $searchOptions = [])
     {
@@ -199,36 +206,9 @@ class StudyCourseController extends AbstractController
     }
 
     /**
-     * WORKAROUND
-     *
-     * @see BackendController->listAction
-     *
-     * @return string
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     * @param StudyCourse|null $studyCourse
      */
-    public function getCoursesJsonAction()
-    {
-
-        if ($this->request->hasArgument('courseList')) {
-            $courses = $this->studyCourseRepository->getCoursesWithUidIn(
-                (array)$this->request->getArgument('courseList')
-            )->toArray();
-            $return = serialize($courses);
-
-        } else {
-            $return = 'the Required Arguments "courseList" is not set';
-        }
-
-        return json_encode($return);
-    }
-
-    /**
-     * @param StudyCourseInterface|null $studyCourse
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
-     */
-    public function detailAction(StudyCourseInterface $studyCourse = null)
+    public function detailAction(StudyCourse $studyCourse = null)
     {
         if ($studyCourse) {
             $this->writePageMetadata($studyCourse);
@@ -240,8 +220,7 @@ class StudyCourseController extends AbstractController
 
     /**
      * @param array $searchOptions
-     * @return array|mixed
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     * @return array
      */
     protected function processSearch(array $searchOptions)
     {
@@ -276,7 +255,6 @@ class StudyCourseController extends AbstractController
     /**
      * @param RequestInterface $request
      * @param ResponseInterface $response
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      */
     public function processRequest(RequestInterface $request, ResponseInterface $response)
     {
@@ -437,7 +415,6 @@ class StudyCourseController extends AbstractController
     /**
      * @param array $searchOptions
      * @return array
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      */
     protected function searchAndSortStudyCourses(array $searchOptions)
     {
@@ -502,6 +479,21 @@ class StudyCourseController extends AbstractController
     }
 
     /**
+     * set the studyCourseRepository
+     */
+    protected function setStudyCourseRepository()
+    {
+        $extendedRepositoryName = 'In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository';
+
+        if (ExtensionUtility::isIn2studycoursesExtendLoaded()
+            && class_exists($extendedRepositoryName)) {
+            return $this->objectManager->get($extendedRepositoryName);
+        } else {
+            return $this->objectManager->get(StudyCourseRepository::class);
+        }
+    }
+
+    /**
      * @param integer $contentElementUid
      * @return array
      */
@@ -515,6 +507,16 @@ class StudyCourseController extends AbstractController
         }
 
         return $storagePids;
+    }
+
+    /**
+     * get the studyCourseRepository
+     *
+     * @return StudyCourseRepository|object
+     */
+    protected function getStudyCourseRepository()
+    {
+        return $this->studyCourseRepository;
     }
 
     /**
