@@ -224,11 +224,11 @@ class StudyCourseController extends AbstractController
     }
 
     /**
-     * @param StudyCourseInterface|null $studyCourse
+     * @param StudyCourse|null $studyCourse
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      */
-    public function detailAction(StudyCourseInterface $studyCourse = null)
+    public function detailAction(StudyCourse $studyCourse = null)
     {
         if ($studyCourse) {
             $this->writePageMetadata($studyCourse);
