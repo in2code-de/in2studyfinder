@@ -192,7 +192,7 @@ page {
 		in2studyfinderJavaScriptModulesUiBehaviour = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/UiBehaviour.js
 		in2studyfinderJavaScriptModulesPaginationHandling = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/PaginationHandling.js
 
-		in2studyfinderJavaScriptSelect2Language = EXT:in2studyfinder/Resources/Public/JavaScript/i18n/.js
+		in2studyfinderJavaScriptSelect2Language = EXT:in2studyfinder/Resources/Public/JavaScript/i18n/de.js
 	}
 }
 
