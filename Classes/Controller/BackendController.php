@@ -68,7 +68,6 @@ class BackendController extends AbstractController
         }
 
         $studyCourses = $this->getStudyCoursesForExportList($recordLanguage);
-
         $possibleExportDataProvider = $this->getPossibleExportDataProvider();
         $propertyArray = [];
 
@@ -78,21 +77,20 @@ class BackendController extends AbstractController
                 LocalizationUtility::translate('messages.noCourses.title', 'in2studyfinder'),
                 AbstractMessage::WARNING
             );
+        } else {
+            $this->getFullPropertyList(
+                $propertyArray,
+                $this->reflectionService->getClassSchema(
+                    $this->getStudyCourseRepository()->findOneByDeleted(0)
+                )->getProperties()
+            );
         }
-
-        $this->getFullPropertyList(
-            $propertyArray,
-            $this->reflectionService->getClassSchema(
-                $this->getStudyCourseRepository()->findOneByDeleted(0)
-            )->getProperties()
-        );
 
         $itemsPerPage = $this->settings['pagination']['itemsPerPage'];
 
         if ($this->request->hasArgument('itemsPerPage')) {
             $itemsPerPage = $this->request->getArgument('itemsPerPage');
         }
-
 
         $this->view->assignMultiple(
             [
