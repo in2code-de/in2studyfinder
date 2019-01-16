@@ -30,6 +30,8 @@ namespace In2code\In2studyfinder\Controller;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Service\ExportService;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
@@ -206,7 +208,7 @@ class BackendController extends AbstractController
      * @param array $selectedProperties
      * @param array $courseList
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     * @throws Exception
      */
     public function exportAction($exporter, $recordLanguage, $selectedProperties, $courseList)
     {
@@ -242,6 +244,7 @@ class BackendController extends AbstractController
      * @param int $recordLanguage
      *
      * @return array
+     * @throws Exception
      */
     protected function getCoursesForExport(array $courseList, $recordLanguage)
     {
@@ -256,23 +259,57 @@ class BackendController extends AbstractController
         ];
 
         $context = stream_context_create($opts);
-        $baseUri = rtrim($this->request->getBaseUri(), 'typo3/');
 
-        $result = file_get_contents(
-            $baseUri . '/?type=2308171056&L=' . $recordLanguage,
-            false,
-            $context
-        );
+        $result = $this->executeFrontendRequest($this->request->getBaseUri(), $recordLanguage, $context);
 
         return unserialize(json_decode($result));
+    }
+
+    /**
+     * @param $url
+     * @param $recordLanguage
+     * @param $context
+     * @return bool|string
+     * @throws Exception
+     */
+    protected function executeFrontendRequest($url, $recordLanguage, $context)
+    {
+        $urlParts = parse_url($url);
+        $result = false;
+
+        if ($urlParts['scheme'] === 'https') {
+            $result = file_get_contents(
+                $urlParts['scheme'] . '://' . $urlParts['host'] . '/?type=2308171056&L=' . $recordLanguage,
+                false,
+                $context
+            );
+        }
+
+
+        // if the scheme is http or the request returning an error with https
+        if ($result === false || $urlParts['scheme'] === 'http') {
+            $result = file_get_contents(
+                'http://' . $urlParts['host'] . '/?type=2308171056&L=' . $recordLanguage,
+                false,
+                $context
+            );
+        }
+
+        if ($result === false) {
+            throw new Exception('Error at frontend request of selected programs', 1547629143);
+        }
+
+        return $result;
     }
 
     /**
      * @param $propertyArray
      * @param $objectProperties
      */
-    protected function getFullPropertyList(&$propertyArray, $objectProperties)
-    {
+    protected function getFullPropertyList(
+        &$propertyArray,
+        $objectProperties
+    ) {
 
         foreach ($objectProperties as $propertyName => $propertyInformation) {
             if (!in_array($propertyName, $this->settings['backend']['export']['excludedPropertiesForExport'])) {
