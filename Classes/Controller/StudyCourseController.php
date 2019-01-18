@@ -27,6 +27,7 @@ namespace In2code\In2studyfinder\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Domain\Model\StudyCourseInterface;
 use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
