@@ -1,1 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="283.46" height="208.46" viewBox="0 0 283.46 208.46"><path d="M267.95 74.96l-126.22 55.25-94.74-41.23 94.74-14.02-.48-4.905L39.43 85.43 15.51 74.96 141.73 19.71"/><path d="M63 102.96l78.73 35.698 77.77-35.698v65.5s-66 45.5-156.5 0v-65.5zM38.628 91.333v77.5s-10.5 5.5 0 14.5l-4.667 14.223h17.235l-5.067-14.223s9.536-8.14-.974-15.238l.258-74.26-6.784-2.502z"/><circle fill="#FFF" cx="139.41" cy="72.552" r="5.389"/></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 256 256" style="enable-background:new 0 0 256 256;" xml:space="preserve">
+<style type="text/css">
+	.st0{clip-path:url(#SVGID_2_);}
+	.st1{fill:#A5C75A;}
+	.st2{fill:#FFFFFF;}
+</style>
+<g>
+	<defs>
+		<rect id="SVGID_1_" width="256" height="256"/>
+	</defs>
+	<clipPath id="SVGID_2_">
+		<use xlink:href="#SVGID_1_"  style="overflow:visible;"/>
+	</clipPath>
+	<g class="st0">
+		<rect x="-1" y="-1" class="st1" width="258.5" height="258.5"/>
+		<path class="st2" d="M253,95.9l-125.2,55.2l-94-41.2l94-14l-0.5-4.9l-101,15.4L2.5,95.9l125.2-55.2"/>
+		<path class="st2" d="M49.6,123.9l78.1,35.7l77.2-35.7v65.5c0,0-65.5,45.5-155.3,0V123.9L49.6,123.9z M25.4,112.3v77.5
+			c0,0-10.4,5.5,0,14.5l-4.6,14.2h17.1l-5-14.2c0,0,9.5-8.1-1-15.2l0.3-74.2L25.4,112.3L25.4,112.3z"/>
+		<path class="st1" d="M120.1,93.5c0-3,2.4-5.4,5.3-5.4s5.3,2.4,5.3,5.4c0,3-2.4,5.4-5.3,5.4S120.1,96.5,120.1,93.5z"/>
+	</g>
+</g>
+</svg>
