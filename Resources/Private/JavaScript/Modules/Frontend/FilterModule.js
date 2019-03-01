@@ -1,318 +1,329 @@
 define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/Utility/UrlUtility', 'TYPO3/CMS/In2studyfinder/Utility/AjaxUtility'], function(UiUtility, UrlUtility, AjaxUtility) {
-	'use strict';
+  'use strict';
 
-	var FilterModule = {
-		identifiers: {
-			in2studyfinderContainer: '.in2studyfinder',
-			filterForm: '.js-in2studyfinder-filter',
-			filterContainer: '.js-in2studyfinder-filter-options',
-			filterFieldset: '.js-in2studyfinder-filter-section',
-			filterLegend: '.js-in2studyfinder-filter-legend',
-			filterCheckbox: '.in2studyfinder-js-checkbox',
-			filterCheckboxAll: '.in2studyfinder-js-checkbox-all',
-			showFilterButton: '.js-in2studyfinder-filter-button-show',
-			hideFilterButton: '.js-in2studyfinder-filter-button-reset',
-			hideElement: '.u-in2studyfinder-hide',
-			isHidden: '.is-hidden'
-		},
-		filter: []
-	};
+  var FilterModule = {
+    identifiers: {
+      in2studyfinderContainer: '.in2studyfinder',
+      filterForm: '.js-in2studyfinder-filter',
+      filterContainer: '.js-in2studyfinder-filter-options',
+      filterFieldset: '.js-in2studyfinder-filter-section',
+      filterLegend: '.js-in2studyfinder-filter-legend',
+      filterCheckbox: '.in2studyfinder-js-checkbox',
+      filterCheckboxAll: '.in2studyfinder-js-checkbox-all',
+      showFilterButton: '.js-in2studyfinder-filter-button-show',
+      hideFilterButton: '.js-in2studyfinder-filter-button-reset',
+      hideElement: '.u-in2studyfinder-hide',
+      isHidden: '.is-hidden'
+    },
+    filter: []
+  };
 
-	/**
-	 * initialize function
-	 *
-	 * @return {void}
-	 */
-	FilterModule.initialize = function() {
-		FilterModule.setEventListener();
-		FilterModule.prepareFilter();
+  /**
+   * initialize function
+   *
+   * @return {void}
+   */
+  FilterModule.initialize = function() {
+    FilterModule.setEventListener();
+    FilterModule.prepareFilter();
+  };
 
-	};
+  FilterModule.prepareFilter = function() {
+    FilterModule.prepareCheckboxes();
 
-	FilterModule.prepareFilter = function() {
-		FilterModule.prepareCheckboxes();
+    // open selected filter sections
+    if (FilterModule.filter.length > 0) {
+      FilterModule.toggleFilterVisibility();
 
-		// open selected filter sections
-		if (FilterModule.filter.length > 0) {
-			FilterModule.filter.forEach(function(value) {
-				FilterModule.toggleFilterVisibility();
+      FilterModule.filter.forEach(function(value) {
+        var filterFieldset = document.querySelector('[data-filtergroup="' + value + '"]');
+        var filter = filterFieldset.querySelector(FilterModule.identifiers.filterContainer);
 
-				var filterFieldset = document.querySelector('[data-filtergroup="' + value + '"]');
-				var filter = filterFieldset.querySelector(FilterModule.identifiers.filterContainer);
+        UiUtility.toggleClassForElement(filter, FilterModule.identifiers.isHidden.substr(1));
+      });
+    }
+  };
 
-				UiUtility.toggleClassForElement(filter, FilterModule.identifiers.isHidden.substr(1));
-			});
-		}
-	};
+  /**
+   * sets event listeners
+   */
+  FilterModule.setEventListener = function() {
+    // hide filter button
+    var hideFilter = document.querySelector(FilterModule.identifiers.hideFilterButton);
+    hideFilter.addEventListener('click', FilterModule.resetAllFilter);
 
-	/**
-	 * sets event listeners
-	 */
-	FilterModule.setEventListener = function() {
-		// hide filter button
-		var hideFilter = document.querySelector(FilterModule.identifiers.hideFilterButton);
-		hideFilter.addEventListener('click', FilterModule.toggleFilterVisibility);
+    // show filter button
+    var showFilter = document.querySelector(FilterModule.identifiers.showFilterButton);
+    showFilter.addEventListener('click', FilterModule.toggleFilterVisibility);
 
-		// show filter button
-		var showFilter = document.querySelector(FilterModule.identifiers.showFilterButton);
-		showFilter.addEventListener('click', FilterModule.toggleFilterVisibility);
+    // toggle filter section visibility
+    FilterModule.setFilterVisibilityEventListener();
 
-		// toggle filter section visibility
-		FilterModule.setFilterVisibilityEventListener();
+    // set eventListener for filter checkboxes
+    FilterModule.setFilterCheckboxEventListener();
+  };
 
-		// set eventListener for filter checkboxes
-		FilterModule.setFilterCheckboxEventListener();
-	};
+  FilterModule.setFilterCheckboxEventListener = function() {
+    document.querySelector('.c-in2studyfinder-filter__sections').addEventListener('click', function(evt) {
+        var target = evt.target;
 
-	FilterModule.setFilterCheckboxEventListener = function() {
-		// set eventlistener für alle nicht disableten checkboxen
-		// wenn eine all checkbox geklickt wird wird der filter zurückgesetzt
-		// wenn eine andere checkbox geklickt wird wird dieser filter gesetzt
+        if (target.tagName === 'INPUT') {
+          // if an show all checkbox is clicked
+          if (target.classList.contains(FilterModule.identifiers.filterCheckboxAll.substr(1))) {
+            var filterContainer = target.parentNode;
+            FilterModule.resetFilter(filterContainer);
+          }
 
-		document.querySelector('.c-in2studyfinder-filter__sections').addEventListener('click', function(evt) {
-				var target = evt.target;
+          // if an specific filter checkbox is clicked
+          if (target.classList.contains(FilterModule.identifiers.filterCheckbox.substr(1))) {
+            var showAllCheckbox = target.parentNode.querySelector(FilterModule.identifiers.filterCheckboxAll);
+            showAllCheckbox.checked = false;
+            showAllCheckbox.disabled = false;
+          }
 
-				if (target.tagName === 'INPUT') {
-					// if an show all checkbox is clicked
-					if (target.classList.contains(FilterModule.identifiers.filterCheckboxAll.substr(1))) {
-						var filterContainer = target.parentNode;
-						FilterModule.resetFilter(filterContainer);
-						// @todo remove filter from selected filter list!
-					}
+          FilterModule.updateFilter();
+        }
+      }
+    );
+  };
 
-					// if an specific filter checkbox is clicked
-					if (target.classList.contains(FilterModule.identifiers.filterCheckbox.substr(1))) {
-						var showAllCheckbox = target.parentNode.querySelector(FilterModule.identifiers.filterCheckboxAll);
-						showAllCheckbox.checked = false;
-						showAllCheckbox.disabled = false;
-						// @todo add filter to selected filter list!
-					}
+  FilterModule.resetAllFilter = function() {
+    var filterContainers = document.querySelectorAll(FilterModule.identifiers.filterContainer);
+    FilterModule.toggleFilterVisibility();
 
-					FilterModule.updateFilter();
-				}
-			}
-		);
-	};
+    for (var i = 0; i < filterContainers.length; i++) {
+      FilterModule.resetFilter(filterContainers[i]);
+    }
 
-	FilterModule.resetFilter = function(filterContainer) {
-		var showAllCheckbox = filterContainer.querySelector(FilterModule.identifiers.filterCheckboxAll);
-		var filterCheckboxes = filterContainer.querySelectorAll(FilterModule.identifiers.filterCheckbox);
+    FilterModule.updateFilter();
+  };
 
-		showAllCheckbox.checked = true;
-		showAllCheckbox.disabled = true;
+  FilterModule.resetFilter = function(filterContainer) {
+    var showAllCheckbox = filterContainer.querySelector(FilterModule.identifiers.filterCheckboxAll);
+    var filterCheckboxes = filterContainer.querySelectorAll(FilterModule.identifiers.filterCheckbox);
 
-		filterCheckboxes.forEach(function(checkbox) {
-			checkbox.checked = false;
-		});
-	};
+    showAllCheckbox.checked = true;
+    showAllCheckbox.disabled = true;
 
+    filterCheckboxes.forEach(function(checkbox) {
+      checkbox.checked = false;
+    });
 
-	FilterModule.updateFilter = function() {
-		var in2studyfinderContainer = document.querySelector(FilterModule.identifiers.in2studyfinderContainer);
-		var filterForm = document.querySelector(FilterModule.identifiers.filterForm);
-		var pluginUid = in2studyfinderContainer.getAttribute('data-plugin-uid');
-		var sysLanguageUid = in2studyfinderContainer.getAttribute('data-in2studyfinder-language');
-		var paginationPage = 1;
+    var index = FilterModule.filter.indexOf(filterContainer.parentNode.getAttribute('data-filtergroup'));
+    if (index !== -1) {
+      FilterModule.filter.splice(index, 1);
+    }
+  };
 
-		var pluginUidArgument = '';
-		var languageArgument = '';
-		var paginationArgument = '';
+  FilterModule.updateFilter = function() {
+    var in2studyfinderContainer = document.querySelector(FilterModule.identifiers.in2studyfinderContainer);
+    var filterForm = document.querySelector(FilterModule.identifiers.filterForm);
+    var pluginUid = in2studyfinderContainer.getAttribute('data-plugin-uid');
+    var sysLanguageUid = in2studyfinderContainer.getAttribute('data-in2studyfinder-language');
+    var paginationPage = 1;
 
-		if (typeof pluginUid !== 'undefined') {
-			pluginUidArgument = '&ce=' + pluginUid;
-		}
+    var pluginUidArgument = '';
+    var languageArgument = '';
+    var paginationArgument = '';
 
-		if (typeof sysLanguageUid !== 'undefined' && sysLanguageUid !== null) {
-			languageArgument = '&L=' + sysLanguageUid;
-		}
+    if (typeof pluginUid !== 'undefined') {
+      pluginUidArgument = '&ce=' + pluginUid;
+    }
 
-		if (typeof paginationPage !== 'undefined') {
-			paginationArgument = '&tx_in2studyfinder_pi1[@widget_0][currentPage]=' + paginationPage;
-		}
+    if (typeof sysLanguageUid !== 'undefined' && sysLanguageUid !== null) {
+      languageArgument = '&L=' + sysLanguageUid;
+    }
 
-		var url = '/?type=1308171055&studyFinderAjaxRequest=1' + pluginUidArgument + languageArgument + paginationArgument;
+    if (typeof paginationPage !== 'undefined') {
+      paginationArgument = '&tx_in2studyfinder_pi1[@widget_0][currentPage]=' + paginationPage;
+    }
 
-		var xhttp = new XMLHttpRequest();
-		xhttp.onreadystatechange = function() {
-			if (this.readyState === 1) {
-				UiUtility.enableLoader();
-			}
+    var url = '/?type=1308171055&studyFinderAjaxRequest=1' + pluginUidArgument + languageArgument + paginationArgument;
 
-			if (this.readyState === 4 && this.status === 200) {
-				//FilterModule.setSelectedFilterToUrl();
-				// @todo Save selected filter to url
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState === 1) {
+        UiUtility.enableLoader();
+      }
 
-				var tempElement = document.createElement('div');
-				tempElement.innerHTML = xhttp.responseText;
+      if (this.readyState === 4 && this.status === 200) {
+        //FilterModule.setSelectedFilterToUrl();
+        // @todo Save selected filter to url
 
-				document.querySelector(FilterModule.identifiers.in2studyfinderContainer).parentNode.replaceChild(
-					tempElement.querySelector(FilterModule.identifiers.in2studyfinderContainer),
-					document.querySelector(FilterModule.identifiers.in2studyfinderContainer)
-				);
+        var tempElement = document.createElement('div');
+        tempElement.innerHTML = xhttp.responseText;
 
-				var Frontend = require("TYPO3/CMS/In2studyfinder/Frontend");
-				Frontend.initialize();
-				UiUtility.disableLoader();
-			}
-		};
+        document.querySelector(FilterModule.identifiers.in2studyfinderContainer).parentNode.replaceChild(
+          tempElement.querySelector(FilterModule.identifiers.in2studyfinderContainer),
+          document.querySelector(FilterModule.identifiers.in2studyfinderContainer)
+        );
 
-		xhttp.open('POST', url, true);
-		xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-		xhttp.send(UrlUtility.serialize(filterForm));
-	};
+        var Frontend = require("TYPO3/CMS/In2studyfinder/Frontend");
+        Frontend.initialize();
+        UiUtility.disableLoader();
+      }
+    };
 
-	/**
-	 * Save Selected Options to Url
-	 *
-	 * @todo
-	 */
-	FilterModule.setSelectedFilterToUrl = function(paginationPage) {
-		var selectionValues = {};
-		var selectionString = '';
-		var form = document.querySelector(FilterModule.identifiers.filterForm);
-		var newSelectedOptions = form.querySelectorAll(FilterModule.identifiers.filterCheckbox + ':checked');
+    xhttp.open('POST', url, true);
+    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhttp.send(UrlUtility.serialize(filterForm));
+  };
 
-		newSelectedOptions.forEach(function(checkbox) {
-			console.log(checkbox);
-		});
-		console.log(newSelectedOptions);
-		var selectedOptions = $('.js-in2studyfinder-filter').find('input.in2studyfinder-js-checkbox:checked');
-		$(selectedOptions).each(function() {
-			var filterGroupAbbreviation = $(this).closest('fieldset').data('filtergroup');
-			if (selectionValues[filterGroupAbbreviation] === undefined) {
-				selectionValues[filterGroupAbbreviation] = [];
-			}
-			selectionValues[filterGroupAbbreviation].push($(this).val());
-		});
+  /**
+   * Save Selected Options to Url
+   *
+   * @todo
+   */
+  FilterModule.setSelectedFilterToUrl = function(paginationPage) {
+    var selectionValues = {};
+    var selectionString = '';
+    var form = document.querySelector(FilterModule.identifiers.filterForm);
+    var newSelectedOptions = form.querySelectorAll(FilterModule.identifiers.filterCheckbox + ':checked');
 
-		$(selectionValues).each(function(key, values) {
-			$.each(values, function(filterKey, value) {
-				selectionString += filterKey + '--';
-				$.each(value, function(key, value) {
-					selectionString += value + '+';
-				});
-				selectionString = selectionString.replace(/\+$/, '');
-				selectionString += '__';
-			});
-			selectionString = selectionString.replace(/__$/, '');
-		});
+    newSelectedOptions.forEach(function(checkbox) {
+      console.log(checkbox);
+    });
+    console.log(newSelectedOptions);
+    var selectedOptions = $('.js-in2studyfinder-filter').find('input.in2studyfinder-js-checkbox:checked');
+    $(selectedOptions).each(function() {
+      var filterGroupAbbreviation = $(this).closest('fieldset').data('filtergroup');
+      if (selectionValues[filterGroupAbbreviation] === undefined) {
+        selectionValues[filterGroupAbbreviation] = [];
+      }
+      selectionValues[filterGroupAbbreviation].push($(this).val());
+    });
 
-		if (paginationPage) {
-			selectionString += 'page=' + paginationPage;
-		}
-		window.location = location.protocol + '//' + location.host + location.pathname + (location.search ? location.search : '') + '#' + selectionString;
-	};
+    $(selectionValues).each(function(key, values) {
+      $.each(values, function(filterKey, value) {
+        selectionString += filterKey + '--';
+        $.each(value, function(key, value) {
+          selectionString += value + '+';
+        });
+        selectionString = selectionString.replace(/\+$/, '');
+        selectionString += '__';
+      });
+      selectionString = selectionString.replace(/__$/, '');
+    });
 
-	/**
-	 * Load Selected Options from Url
-	 *
-	 * @todo
-	 */
-	FilterModule.getSelectedFilterFromUrl = function() {
-		var filterHash = window.location.hash.split('#');
+    if (paginationPage) {
+      selectionString += 'page=' + paginationPage;
+    }
+    window.location = location.protocol + '//' + location.host + location.pathname + (location.search ? location.search : '') + '#' + selectionString;
+  };
 
-		if (1 in filterHash) {
-			filterHash = filterHash[1];
-			var paginationPage;
-			if (filterHash.indexOf('page=') !== -1) {
-				paginationPage = filterHash.split('page=')[1];
-				filterHash = filterHash.split('page=')[0];
-			}
+  /**
+   * Load Selected Options from Url
+   *
+   * @todo
+   */
+  FilterModule.getSelectedFilterFromUrl = function() {
+    var filterHash = window.location.hash.split('#');
 
-			if (filterHash !== '') {
+    if (1 in filterHash) {
+      filterHash = filterHash[1];
+      var paginationPage;
+      if (filterHash.indexOf('page=') !== -1) {
+        paginationPage = filterHash.split('page=')[1];
+        filterHash = filterHash.split('page=')[0];
+      }
 
-				var filterParts = filterHash.split('__');
-				$(filterParts).each(function(key, values) {
-					var sectionSplit = '--';
-					var selections = values.split(sectionSplit);
-					var filterGroup = values.substr(0, values.indexOf(sectionSplit));
-					var selectedOptions = selections[1].split('+');
+      if (filterHash !== '') {
 
-					$(selectedOptions).each(function(key, value) {
-						$('#' + filterGroup + '_' + value).prop('checked', true);
-					});
-				});
-			}
+        var filterParts = filterHash.split('__');
+        $(filterParts).each(function(key, values) {
+          var sectionSplit = '--';
+          var selections = values.split(sectionSplit);
+          var filterGroup = values.substr(0, values.indexOf(sectionSplit));
+          var selectedOptions = selections[1].split('+');
 
-			return paginationPage;
-		}
-	};
+          $(selectedOptions).each(function(key, value) {
+            $('#' + filterGroup + '_' + value).prop('checked', true);
+          });
+        });
+      }
 
-	/**
-	 * initialize the eventListener for the filter sections.
-	 *
-	 *
-	 * WORKAROUND:
-	 * At this point we only refactor the javascript.
-	 * We do not add breaking changes at this point.
-	 *
-	 * We do this with an forEach because the parent container
-	 * has only an style class yet. Later an js class will be added
-	 * to the container.
-	 */
-	FilterModule.setFilterVisibilityEventListener = function() {
+      return paginationPage;
+    }
+  };
 
-		var filterButtons = document.querySelectorAll(FilterModule.identifiers.filterFieldset);
-		filterButtons.forEach(function(filterButton) {
-			filterButton.querySelector(FilterModule.identifiers.filterLegend).addEventListener('click', function() {
-				var filter = filterButton.querySelector(FilterModule.identifiers.filterContainer);
+  /**
+   * initialize the eventListener for the filter sections.
+   *
+   *
+   * WORKAROUND:
+   * At this point we only refactor the javascript.
+   * We do not add breaking changes at this point.
+   *
+   * We do this with an forEach because the parent container
+   * has only an style class yet. Later an js class will be added
+   * to the container.
+   */
+  FilterModule.setFilterVisibilityEventListener = function() {
 
-				UiUtility.toggleClassForElement(filter, FilterModule.identifiers.isHidden.substr(1));
-			});
-		});
-	};
+    var filterButtons = document.querySelectorAll(FilterModule.identifiers.filterFieldset);
+    filterButtons.forEach(function(filterButton) {
+      filterButton.querySelector(FilterModule.identifiers.filterLegend).addEventListener('click', function() {
+        var filter = filterButton.querySelector(FilterModule.identifiers.filterContainer);
 
-	/**
-	 * Toggles the filter fieldset visibility
-	 */
-	FilterModule.toggleFilterVisibility = function() {
+        UiUtility.toggleClassForElement(filter, FilterModule.identifiers.isHidden.substr(1));
+      });
+    });
+  };
 
-		// toggle fieldset Visibility
-		document.querySelectorAll(FilterModule.identifiers.filterFieldset).forEach(function(filterFieldset) {
-			UiUtility.toggleClassForElement(filterFieldset, FilterModule.identifiers.hideElement.substr(1));
-		});
+  /**
+   * Toggles the filter fieldset visibility
+   */
+  FilterModule.toggleFilterVisibility = function() {
 
-		// toggle button Visibility
-		var showFilterButton = document.querySelector(FilterModule.identifiers.showFilterButton);
-		var hideFilterButton = document.querySelector(FilterModule.identifiers.hideFilterButton);
-		UiUtility.toggleClassForElement(showFilterButton, FilterModule.identifiers.hideElement.substr(1));
-		UiUtility.toggleClassForElement(hideFilterButton, FilterModule.identifiers.hideElement.substr(1));
-	};
+    // toggle fieldset Visibility
+    document.querySelectorAll(FilterModule.identifiers.filterFieldset).forEach(function(filterFieldset) {
+      UiUtility.toggleClassForElement(filterFieldset, FilterModule.identifiers.hideElement.substr(1));
+    });
 
-	/**
-	 * removes checked value from the checkboxes where not needed
-	 */
-	FilterModule.prepareCheckboxes = function() {
-		document.querySelectorAll(FilterModule.identifiers.filterContainer).forEach(function(filterContainer) {
-			var filterStatus = FilterModule.isFilterSet(filterContainer);
+    // toggle button Visibility
+    var showFilterButton = document.querySelector(FilterModule.identifiers.showFilterButton);
+    var hideFilterButton = document.querySelector(FilterModule.identifiers.hideFilterButton);
+    UiUtility.toggleClassForElement(showFilterButton, FilterModule.identifiers.hideElement.substr(1));
+    UiUtility.toggleClassForElement(hideFilterButton, FilterModule.identifiers.hideElement.substr(1));
+  };
 
-			if (filterStatus) {
-				FilterModule.filter.push(filterContainer.parentNode.getAttribute('data-filtergroup'));
-				var showAllCheckbox = filterContainer.querySelector(FilterModule.identifiers.filterCheckboxAll);
-				showAllCheckbox.checked = false;
-				showAllCheckbox.disabled = false;
-			}
-		});
-	};
+  /**
+   * removes checked value from checkboxes where not needed
+   */
+  FilterModule.prepareCheckboxes = function() {
+    document.querySelectorAll(FilterModule.identifiers.filterContainer).forEach(function(filterContainer) {
+      var filterStatus = FilterModule.isFilterSet(filterContainer);
 
-	/**
-	 * checks if an given filter element is set
-	 *
-	 * @param filterContainer
-	 * @returns {boolean}
-	 */
-	FilterModule.isFilterSet = function(filterContainer) {
-		var status = false;
+      if (filterStatus) {
+        if (FilterModule.filter.indexOf(filterContainer.parentNode.getAttribute('data-filtergroup')) === -1) {
+          FilterModule.filter.push(filterContainer.parentNode.getAttribute('data-filtergroup'));
+        }
 
-		filterContainer.querySelectorAll(FilterModule.identifiers.filterCheckbox).forEach(function(checkbox) {
-			if (checkbox.checked) {
-				status = true;
-			}
-		});
+        var showAllCheckbox = filterContainer.querySelector(FilterModule.identifiers.filterCheckboxAll);
+        showAllCheckbox.checked = false;
+        showAllCheckbox.disabled = false;
+      }
+    });
+  };
 
-		return status;
-	};
+  /**
+   * checks if an given filter element is set
+   *
+   * @param filterContainer
+   * @returns {boolean}
+   */
+  FilterModule.isFilterSet = function(filterContainer) {
+    var status = false;
 
-	return FilterModule;
+    filterContainer.querySelectorAll(FilterModule.identifiers.filterCheckbox).forEach(function(checkbox) {
+      if (checkbox.checked) {
+        status = true;
+      }
+    });
+
+    return status;
+  };
+
+  return FilterModule;
 })
 ;
