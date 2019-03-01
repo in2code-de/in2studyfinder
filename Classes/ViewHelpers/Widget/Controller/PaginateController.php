@@ -1,4 +1,5 @@
 <?php
+
 namespace In2code\In2studyfinder\ViewHelpers\Widget\Controller;
 
 /*                                                                        *
@@ -21,6 +22,7 @@ namespace In2code\In2studyfinder\ViewHelpers\Widget\Controller;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController;
@@ -83,7 +85,16 @@ class PaginateController extends AbstractWidgetController
             $this->widgetConfiguration['configuration'],
             false
         );
-        $itemsPerPage = (int)$this->configuration['itemsPerPage'];
+
+        if ($this->request->hasArgument('itemsPerPage')) {
+            $itemsPerPage = (int)$this->request->getArgument('itemsPerPage');
+            $this->configuration['itemsPerPage'] = $itemsPerPage;
+        }
+
+        if (!isset($itemsPerPage) || $itemsPerPage === '' || $itemsPerPage === 0) {
+            $itemsPerPage = (int)$this->configuration['itemsPerPage'];
+        }
+        
         $this->numberOfPages = $itemsPerPage > 0 ? ceil(count($this->objects) / $itemsPerPage) : 0;
         $this->maximumNumberOfLinks = (int)$this->configuration['maximumNumberOfLinks'];
     }

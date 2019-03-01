@@ -22,6 +22,27 @@ $extKey = 'in2studyfinder';
 
 if (TYPO3_MODE === 'BE') {
 
+    /**
+     * Include Backend Module
+     */
+    if (TYPO3_MODE === 'BE' && \In2code\In2studyfinder\Utility\ConfigurationUtility::isBackendModuleEnabled()) {
+        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+            'In2code.in2studyfinder',
+            'web',
+            'm1',
+            '',
+            [
+                'Backend' => 'list, export'
+            ],
+            [
+                'access' => 'user,group',
+                'icon' => 'EXT:in2studyfinder/ext_icon.svg',
+                'labels' => 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:wizardItemTitle',
+                'navigationComponentId' => '',
+            ]
+        );
+    }
+
     if (\In2code\In2studyfinder\Utility\VersionUtility::isTypo3MajorVersionAbove(6)) {
 
         /**
@@ -50,6 +71,13 @@ if (TYPO3_MODE === 'BE') {
         $TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['In2code\In2studyfinder\Utility\Hook\WizIcon'] =
             \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extKey) . 'Classes/Utility/Hook/WizIcon.php';
     }
+
+    /**
+     * Register default export types
+     */
+    $GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportTypes']['CSV'] =
+        \In2code\In2studyfinder\Export\ExportTypes\CsvExport::class;
+
 }
 
 /**

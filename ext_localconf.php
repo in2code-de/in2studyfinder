@@ -7,8 +7,8 @@ if (!defined('TYPO3_MODE')) {
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     'In2code.in2studyfinder',
     'Pi1',
-    ['StudyCourse' => 'list, filter'],
-    ['StudyCourse' => 'list, filter']
+    ['StudyCourse' => 'list, filter, getCoursesJson'],
+    ['StudyCourse' => 'list, filter, getCoursesJson']
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(

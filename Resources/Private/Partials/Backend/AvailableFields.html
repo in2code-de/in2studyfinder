@@ -1,0 +1,82 @@
+{namespace in2studyfinder = In2code\In2studyfinder\ViewHelpers}
+
+<f:section name="main">
+    <f:for each="{properties}" as="property" key="propertyName">
+        <f:if condition="{in2studyfinder:isArray( variable: '{property}' )}">
+            <f:comment>
+                if the property is an array (an own domain object)
+            </f:comment>
+            <f:then>
+                <optgroup
+                        label="{f:render(section: 'renderLabel', arguments: '{propertyName:propertyName}')}"
+                        class="c-in2studyfinder-property-list-optgroup">
+                </optgroup>
+                <f:render section="subProperty"
+                          arguments="{properties:property, propertyNamePath:propertyName, margin: '30', parentPropertyLabel: '{f:render(section: \'renderLabel\', arguments: \'{propertyName:propertyName}\')}'}"/>
+            </f:then>
+            <f:else>
+                <option value="{propertyName}"
+                        class="c-in2studyfinder-property-list-item"
+                        data-in2studyfinder-property-selectable="true">
+                    <f:render section="renderLabel" arguments="{propertyName:propertyName}" />
+                </option>
+            </f:else>
+        </f:if>
+    </f:for>
+</f:section>
+
+<f:section name="subProperty">
+    <f:for each="{properties}" as="subProperty" key="subPropertyName">
+        <f:if condition="{in2studyfinder:isArray( variable: '{subProperty}' )}">
+            <f:then>
+                <optgroup
+                        label="{f:render(section: 'renderLabel', arguments: '{propertyName:subPropertyName}')}"
+                        class="c-in2studyfinder-property-list-optgroup"
+                        style="margin-left: {in2studyfinder:math.addition(value1:'{margin}', value2:'15')}px;">
+                </optgroup>
+                <f:render section="subProperty"
+                          arguments="{properties:subProperty, propertyNamePath:'{propertyNamePath}.{subPropertyName}', margin : '{in2studyfinder:math.addition(value1:\'{margin}\', value2:\'15\')}', parentPropertyLabel: '{f:render(section: \'renderLabel\', arguments: \'{propertyName:subPropertyName}\')}'}"/>
+            </f:then>
+            <f:else>
+                <option
+                        value="{propertyNamePath}.{subPropertyName}"
+                        class="c-in2studyfinder-property-list-item"
+                        data-in2studyfinder-property-selectable="true"
+                        data-in2studyfinder-parent-property-label="{parentPropertyLabel}"
+                        style="margin-left:calc(15px + {margin}px);">
+                    <f:render section="renderLabel" arguments="{propertyName:subPropertyName}" />
+                </option>
+            </f:else>
+        </f:if>
+    </f:for>
+</f:section>
+
+<f:section name="renderLabel">
+    <f:if condition="{f:translate(key: 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:{propertyName}', default: 'false')} != 'false'">
+        <f:then>
+            <f:comment>
+                if the language label exists in the in2studyfinder locallang_db.xlf
+            </f:comment>
+            <f:translate
+                    key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:{propertyName}">
+               {propertyName}
+            </f:translate>
+        </f:then>
+        <f:else>
+            <f:if condition="{f:translate(key: 'LLL:EXT:in2studyfinder_extend/Resources/Private/Language/locallang_db.xlf:{propertyName}', default: 'false')} != 'false'">
+                <f:then>
+                    <f:translate
+                            key="LLL:EXT:in2studyfinder_extend/Resources/Private/Language/locallang_db.xlf:{propertyName}">
+                        {propertyName}
+                    </f:translate>
+                </f:then>
+                <f:else>
+                    <f:comment>
+                        if no language label exist
+                    </f:comment>
+                    {propertyName}
+                </f:else>
+            </f:if>
+        </f:else>
+    </f:if>
+</f:section>

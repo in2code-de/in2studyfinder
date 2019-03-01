@@ -166,6 +166,38 @@
 				<source>is unset</source>
 				<target>ist nicht vorhanden</target>
 			</trans-unit>
+			<trans-unit id="messages.noCourses.title">
+				<source>no courses existing</source>
+				<target>keine Studiengänge vorhanden</target>
+			</trans-unit>
+			<trans-unit id="messages.noCourses.body">
+				<source>current are no courses available</source>
+				<target>aktuell keine Studiengänge vorhanden</target>
+			</trans-unit>
+			<trans-unit id="messages.noStoragePid.title">
+				<source>missing storage pid</source>
+				<target>StoragePid nicht gesetzt</target>
+			</trans-unit>
+			<trans-unit id="messages.noStoragePid.body">
+				<source>no storage pid for courses set</source>
+				<target>StoragePid ist nicht gesetzt</target>
+			</trans-unit>
+			<trans-unit id="messages.noSettingsPid.title">
+				<source>missing settings pid</source>
+				<target>SettingsPid nicht gesetzt</target>
+			</trans-unit>
+			<trans-unit id="messages.noSettingsPid.body">
+				<source>no settings pid set</source>
+				<target>SettingsPid ist nicht gesetzt</target>
+			</trans-unit>
+			<trans-unit id="messages.notAllRequiredFieldsSet.title">
+				<source>missing required field</source>
+				<target>Nicht alle nötigen Felder gefüllt</target>
+			</trans-unit>
+			<trans-unit id="messages.notAllRequiredFieldsSet.body">
+				<source>At least one course and one field must be selected for export!</source>
+				<target>Es muss jeweils mindestens ein Studiengang und ein Feld zum Export ausgewählt werden!</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

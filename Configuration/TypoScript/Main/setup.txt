@@ -72,6 +72,25 @@ plugin.tx_in2studyfinder {
 
 		backend {
 			pluginPreviewTemplate = {$plugin.tx_in2studyfinder.settings.backend.pluginPreviewTemplate}
+
+			export {
+				excludedPropertiesForExport {
+					0 = _localizedUid
+					1 = _languageUid
+					2 = _versionedUid
+					3 = globalDataPreset
+					4 = globalData
+					5 = contentElements
+					6 = pid
+					7 = uid
+					8 = deleted
+					9 = hidden
+					10 = sorting
+				}
+
+				includeDeleted = 0
+				includeHidden = 0
+			}
 		}
 
 	}
@@ -115,6 +134,40 @@ in2studyfinderFilterAjax {
 }
 
 ############################
+# WORKAROUND
+#
+# ajax request for the export
+#
+# @see BackendController->exportAction
+############################
+in2studyfinderGetCourseJson = PAGE
+in2studyfinderGetCourseJson {
+	typeNum = 2308171056
+	config {
+		additionalHeaders.10.header = Content-Type: application/json
+		no_cache = 1
+		disableAllHeaderCode = 1
+		disablePrefixComment = 1
+		xhtml_cleaning = 0
+		admPanel = 0
+		debug = 0
+	}
+
+	10 = USER
+	10 {
+		userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+		extensionName = In2studyfinder
+		pluginName = Pi1
+		vendorName = In2code
+		controller = StudyCourse
+		switchableControllerActions.StudyCourse.1 = getCoursesJson
+		features.requireCHashArgumentForActionArguments = 0
+	}
+}
+
+
+
+############################
 # JavaScript and CSS section
 ############################
 
@@ -131,15 +184,15 @@ page.includeCSS.in2studyfinderCss = {$plugin.tx_in2studyfinder.settings.css.in2s
 page {
 	includeJSFooter {
 		in2studyfinderSelect2 = {$plugin.tx_in2studyfinder.settings.javascript.in2studyfinderSelect2}
-		in2studyfinderJavaScriptBasic = EXT:in2studyfinder/Resources/Public/JavaScript/In2studyfinder.min.js
+		in2studyfinderJavaScriptBasic = EXT:in2studyfinder/Resources/Public/JavaScript/In2studyfinder.js
 
-		in2studyfinderJavaScriptModulesSelect = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/Select.min.js
-		in2studyfinderJavaScriptModulesFilterHandling = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/FilterHandling.min.js
-		in2studyfinderJavaScriptModulesUrlHandling = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/UrlHandling.min.js
-		in2studyfinderJavaScriptModulesUiBehaviour = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/UiBehaviour.min.js
-		in2studyfinderJavaScriptModulesPaginationHandling = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/PaginationHandling.min.js
+		in2studyfinderJavaScriptModulesSelect = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/Select.js
+		in2studyfinderJavaScriptModulesFilterHandling = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/FilterHandling.js
+		in2studyfinderJavaScriptModulesUrlHandling = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/UrlHandling.js
+		in2studyfinderJavaScriptModulesUiBehaviour = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/UiBehaviour.js
+		in2studyfinderJavaScriptModulesPaginationHandling = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/PaginationHandling.js
 
-		in2studyfinderJavaScriptSelect2Language = EXT:in2studyfinder/Resources/Public/JavaScript/i18n/de.min.js
+		in2studyfinderJavaScriptSelect2Language = EXT:in2studyfinder/Resources/Public/JavaScript/i18n/de.js
 	}
 }
 
@@ -151,7 +204,7 @@ page {
 ############################
 
 [globalVar = GP:L = 1]
-	page.includeJSFooter.in2studyfinderJavaScriptSelect2Language = EXT:in2studyfinder/Resources/Public/JavaScript/i18n/en.min.js
+	page.includeJSFooter.in2studyfinderJavaScriptSelect2Language = EXT:in2studyfinder/Resources/Public/JavaScript/i18n/en.js
 
 	in2studyfinderFilterAjax {
 		config {
