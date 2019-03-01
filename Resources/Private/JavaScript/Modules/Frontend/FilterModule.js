@@ -94,14 +94,19 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
    * reset all filter
    */
   FilterModule.resetAllFilter = function() {
-    var filterContainers = document.querySelectorAll(FilterModule.identifiers.filterContainer);
-    FilterModule.toggleFilterVisibility();
 
-    for (var i = 0; i < filterContainers.length; i++) {
-      FilterModule.resetFilter(filterContainers[i]);
+    if (FilterModule.filter.length === 0) {
+      FilterModule.toggleFilterVisibility();
+    } else {
+      var filterContainers = document.querySelectorAll(FilterModule.identifiers.filterContainer);
+      FilterModule.toggleFilterVisibility();
+
+      for (var i = 0; i < filterContainers.length; i++) {
+        FilterModule.resetFilter(filterContainers[i]);
+      }
+
+      FilterModule.updateFilter();
     }
-
-    FilterModule.updateFilter();
   };
 
   /**
