@@ -63,6 +63,9 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
     FilterModule.setFilterCheckboxEventListener();
   };
 
+  /**
+   * add checkbox event listener
+   */
   FilterModule.setFilterCheckboxEventListener = function() {
     document.querySelector('.c-in2studyfinder-filter__sections').addEventListener('click', function(evt) {
         var target = evt.target;
@@ -87,6 +90,9 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
     );
   };
 
+  /**
+   * reset all filter
+   */
   FilterModule.resetAllFilter = function() {
     var filterContainers = document.querySelectorAll(FilterModule.identifiers.filterContainer);
     FilterModule.toggleFilterVisibility();
@@ -98,6 +104,11 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
     FilterModule.updateFilter();
   };
 
+  /**
+   * resets an given filter
+   *
+   * @param filterContainer
+   */
   FilterModule.resetFilter = function(filterContainer) {
     var showAllCheckbox = filterContainer.querySelector(FilterModule.identifiers.filterCheckboxAll);
     var filterCheckboxes = filterContainer.querySelectorAll(FilterModule.identifiers.filterCheckbox);
@@ -115,6 +126,11 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
     }
   };
 
+  /**
+   * main function
+   *
+   * update the filtering
+   */
   FilterModule.updateFilter = function() {
     var in2studyfinderContainer = document.querySelector(FilterModule.identifiers.in2studyfinderContainer);
     var filterForm = document.querySelector(FilterModule.identifiers.filterForm);
