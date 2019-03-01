@@ -32,6 +32,9 @@ use In2code\In2studyfinder\Service\ExportService;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Log\LogLevel;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
@@ -70,6 +73,7 @@ class BackendController extends AbstractController
         }
 
         $studyCourses = $this->getStudyCoursesForExportList($recordLanguage);
+
         $possibleExportDataProvider = $this->getPossibleExportDataProvider();
         $propertyArray = [];
 
@@ -114,20 +118,13 @@ class BackendController extends AbstractController
             0 => 'default'
         ];
 
-        /*
-         * @todo: replace with an query Builder call instead of exec_SELECTgetRows if the TYPO3 6.2 support is dropped
-         *
-         *         $queryBuilder
-         *              ->select('*')
-         *              ->from('sys_language')
-         *              ->where($queryBuilder->expr()->eq('hidden', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)))
-         *              ->orderBy('sorting')
-         *              ->execute();
-         */
-
-        /** @var DatabaseConnection $databaseConnection */
-        $databaseConnection = $GLOBALS['TYPO3_DB'];
-        $languageRecords = $databaseConnection->exec_SELECTgetRows('*', 'sys_language', 'hidden = 0');
+        $queryBuilder = $this->objectManager->get(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
+        $languageRecords = $queryBuilder
+            ->select('*')
+            ->from('sys_language')
+            ->where($queryBuilder->expr()->eq('hidden', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)))
+            ->orderBy('sorting')
+            ->execute()->fetchAll();
 
         foreach ($languageRecords as $languageRecord) {
             $sysLanguages[(int)$languageRecord['uid']] =
@@ -146,33 +143,33 @@ class BackendController extends AbstractController
      */
     protected function getStudyCoursesForExportList($languageUid = 0)
     {
-        /**
-         * @todo: replace with an query Builder call instead of exec_SELECTgetRows if the TYPO3 6.2 support is dropped
-         */
-
+        $queryBuilder = $this->objectManager->get(ConnectionPool::class)->getQueryBuilderForTable(StudyCourse::TABLE);
         $includeDeleted = (int)$this->settings['backend']['export']['includeDeleted'];
         $includeHidden = (int)$this->settings['backend']['export']['includeHidden'];
         $storagePid = (int)$this->settings['storagePid'];
-        $where = 'sys_language_uid = ' . $languageUid . ' and pid = ' . $storagePid;
 
-        if (!$includeDeleted) {
-            $where .= ' and deleted = 0';
+        if ($includeDeleted) {
+            $queryBuilder->getRestrictions()->removeByType(DeletedRestriction::class);
         }
 
-        if (!$includeHidden) {
-            $where .= ' and hidden = 0';
+        if ($includeHidden) {
+            $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
         }
 
-        /** @var DatabaseConnection $databaseConnection */
-        $databaseConnection = $GLOBALS['TYPO3_DB'];
+        $records = $queryBuilder
+            ->select('uid', 'l10n_parent', 'title', 'hidden', 'deleted')
+            ->from(StudyCourse::TABLE)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'sys_language_uid',
+                    $queryBuilder->createNamedParameter($languageUid, \PDO::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($storagePid, \PDO::PARAM_INT))
+            )
+            ->orderBy('title')
+            ->execute()->fetchAll();
 
-        return $databaseConnection->exec_SELECTgetRows(
-            'uid, l10n_parent, title, hidden, deleted',
-            StudyCourse::TABLE,
-            $where,
-            '',
-            'title'
-        );
+        return $records;
     }
 
     /**
@@ -208,7 +205,7 @@ class BackendController extends AbstractController
      * @param array $selectedProperties
      * @param array $courseList
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
-     * @throws Exception
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      */
     public function exportAction($exporter, $recordLanguage, $selectedProperties, $courseList)
     {
