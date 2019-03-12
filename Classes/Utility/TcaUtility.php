@@ -29,6 +29,7 @@ class TcaUtility extends AbstractUtility
                     ['LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1],
                     ['LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0],
                 ],
+                'default' => 0
             ],
         ];
     }

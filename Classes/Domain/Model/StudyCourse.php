@@ -35,6 +35,8 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  */
 class StudyCourse extends AbstractEntity implements StudyCourseInterface
 {
+    const TABLE = 'tx_in2studyfinder_domain_model_studycourse';
+
     /**
      * title
      *
@@ -181,6 +183,16 @@ class StudyCourse extends AbstractEntity implements StudyCourseInterface
      * @var \In2code\In2studyfinder\Domain\Model\GlobalData
      */
     protected $globalDataPreset = null;
+
+    /**
+     * @var boolean
+     */
+    protected $hidden = false;
+
+    /**
+     * @var boolean
+     */
+    protected $deleted = false;
 
     /**
      * @param int $uid
@@ -775,6 +787,38 @@ class StudyCourse extends AbstractEntity implements StudyCourseInterface
     public function getTitleWithAcademicDegree()
     {
         return $this->getTitle() . ' - ' . $this->getAcademicDegree()->getDegree();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHidden()
+    {
+        return $this->hidden;
+    }
+
+    /**
+     * @param bool $hidden
+     */
+    public function setHidden($hidden)
+    {
+        $this->hidden = $hidden;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * @param bool $deleted
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
     }
 
     /**

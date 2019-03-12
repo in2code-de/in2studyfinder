@@ -50,7 +50,7 @@ sandra.pohl@in2code.de
 
 ## Requirements
 
-* TYPO3 6.2, 7.6 or newer
+* TYPO3 7.6 or newer
 * PHP 5.6 or newer
 
 
@@ -66,6 +66,11 @@ sandra.pohl@in2code.de
 
 | Version    | Date       | State      | Description                                                                  |
 | ---------- | ---------- | ---------- | ---------------------------------------------------------------------------- |
+| 5.0.0      | 2019-03-01 | FEATURE    | adds an backend module with course export. Last release for TYPO3 7.6 |
+| 4.0.2      | 2018-11-26 | BUGFIX     | fix 404 redirect on any course detail page. Last release for TYPO3 6.2 |
+| 4.0.1      | 2018-10-16 | TASK       | update npm modules and gulp to prevent JavaScript vulnerabilities of outdated node modules |
+| 4.0.0      | 2018-08-23 | [!!!]TASK  | use interfaces for the domain objects wherever possible |
+| 3.0.8      | 2018-06-06 | BUGFIX     | reduce the page type num to prevent exceeded integer number in 32 bit systems |
 | 3.0.7      | 2017-12-07 | BUGFIX     | fix filter behavior if a filter is disabled via typoscript and also set in the backend, add the typoscript option disabledInFrontend for filters |
 | 3.0.6      | 2017-11-27 | BUGFIX     | fix wrong ajax URL handling, fix duplicate cache entry if no contentElementStoragePid is set |
 | 3.0.5      | 2017-11-27 | BUGFIX     | fix wrong ajax URL if realUrl or a similar extension is used |

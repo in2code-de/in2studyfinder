@@ -43,7 +43,8 @@ class StudyCourseRepository extends AbstractRepository
 
     /**
      * @param $options
-     * @return QueryResultInterface
+     * @return array|QueryResultInterface
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      */
     public function findAllFilteredByOptions($options)
     {
@@ -101,6 +102,43 @@ class StudyCourseRepository extends AbstractRepository
 
         if (!empty($constraints)) {
             $query->matching($query->logicalAnd($constraints));
+        }
+
+        return $query->execute();
+    }
+
+    /**
+     * @param array $list
+     * @return array|QueryResultInterface
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     */
+    public function getCoursesWithUidIn($list)
+    {
+        $query = $this->createQuery();
+        $query->matching($query->in('uid', $list));
+
+        return $query->execute();
+    }
+
+    /**
+     * finds courses for the given parameters
+     *
+     * @param bool $includeDeleted
+     * @param bool $ignoreEnableFields
+     * @return array|QueryResultInterface
+     */
+    public function findAllForExport($includeDeleted = false, $ignoreEnableFields = false)
+    {
+        $query = $this->createQuery();
+
+        $query->getQuerySettings()->setRespectStoragePage(false);
+
+        if ($includeDeleted) {
+            $query->getQuerySettings()->setIncludeDeleted(true);
+        }
+
+        if ($ignoreEnableFields) {
+            $query->getQuerySettings()->setIgnoreEnableFields(true);
         }
 
         return $query->execute();

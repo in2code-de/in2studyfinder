@@ -69,16 +69,28 @@
 			<trans-unit id="academicDegree.degree">
 				<source>Degree</source>
 			</trans-unit>
+			<trans-unit id="degree">
+				<source>Degree</source>
+			</trans-unit>
 			<trans-unit id="typeOfStudy">
 				<source>Type Of Study</source>
 			</trans-unit>
 			<trans-unit id="typeOfStudy.type">
 				<source>Type</source>
 			</trans-unit>
+			<trans-unit id="type">
+				<source>Type</source>
+			</trans-unit>
 			<trans-unit id="courseLanguage.language">
 				<source>Language</source>
 			</trans-unit>
+			<trans-unit id="language">
+				<source>Language</source>
+			</trans-unit>
 			<trans-unit id="startOfStudy.startDate">
+				<source>Start Date</source>
+			</trans-unit>
+			<trans-unit id="startDate">
 				<source>Start Date</source>
 			</trans-unit>
 			<trans-unit id="keyData">
@@ -197,6 +209,72 @@
 			</trans-unit>
 			<trans-unit id="pluginInformation.extensionTitle">
 				<source>Studyfinder</source>
+			</trans-unit>
+			<trans-unit id="messages.noCourses.title">
+				<source>no courses existing</source>
+			</trans-unit>
+			<trans-unit id="messages.noCourses.body">
+				<source>current are no courses available</source>
+			</trans-unit>
+			<trans-unit id="messages.noStoragePid.title">
+				<source>missing storage pid</source>
+			</trans-unit>
+			<trans-unit id="messages.noStoragePid.body">
+				<source>no storage pid for courses set</source>
+			</trans-unit>
+			<trans-unit id="messages.noSettingsPid.title">
+				<source>missing settings pid</source>
+			</trans-unit>
+			<trans-unit id="messages.noSettingsPid.body">
+				<source>no settings pid set</source>
+			</trans-unit>
+			<trans-unit id="messages.notAllRequiredFieldsSet.title">
+				<source>missing required field</source>
+			</trans-unit>
+			<trans-unit id="messages.notAllRequiredFieldsSet.body">
+				<source>At least one course and one field must be selected for export!</source>
+			</trans-unit>
+			<trans-unit id="courseLanguages">
+				<source>Course Language</source>
+			</trans-unit>
+			<trans-unit id="startsOfStudy">
+				<source>Start Of Study</source>
+			</trans-unit>
+			<trans-unit id="typesOfStudy">
+				<source>Type Of Study</source>
+			</trans-unit>
+			<trans-unit id="metaPagetitle">
+				<source>Page Title Tag</source>
+			</trans-unit>
+			<trans-unit id="sysLanguageUid">
+				<source>sys Language uid</source>
+			</trans-unit>
+			<trans-unit id="selectLanguage">
+				<source>Select Language for exportet records</source>
+			</trans-unit>
+			<trans-unit id="exportAs">
+				<source>Export as</source>
+			</trans-unit>
+			<trans-unit id="selectCourses">
+				<source>Select Courses</source>
+			</trans-unit>
+			<trans-unit id="selected">
+				<source>Selected</source>
+			</trans-unit>
+			<trans-unit id="selectProperties">
+				<source>select fields for export</source>
+			</trans-unit>
+			<trans-unit id="itemsPerPage">
+				<source>Items per Page</source>
+			</trans-unit>
+			<trans-unit id="export">
+				<source>Export</source>
+			</trans-unit>
+			<trans-unit id="selectedItems">
+				<source>Selected Items</source>
+			</trans-unit>
+			<trans-unit id="availableItems">
+				<source>Available Items</source>
 			</trans-unit>
 		</body>
 	</file>
