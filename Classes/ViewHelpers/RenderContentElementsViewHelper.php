@@ -1,9 +1,10 @@
 <?php
 namespace In2code\In2studyfinder\ViewHelpers;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 class RenderContentElementsViewHelper extends AbstractViewHelper
 {
@@ -17,15 +18,23 @@ class RenderContentElementsViewHelper extends AbstractViewHelper
      */
     protected $cObj;
 
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+
+        $this->registerArgument('domainObject', 'mixed', '', true);
+        $this->registerArgument('mmTable', 'string', '', true);
+    }
+
     /**
      * Parse content elements from an mm Table
      *
-     * @param \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject $domainObject
-     * @param string $mmTable
      * @return array
      */
-    public function render($domainObject, $mmTable)
+    public function render()
     {
+        $domainObject = $this->arguments['domainObject'];
+        $mmTable = $this->arguments['mmTable'];
         $language = $GLOBALS['TSFE']->sys_language_uid;
 
         if ($language > 0) {
@@ -63,7 +72,7 @@ class RenderContentElementsViewHelper extends AbstractViewHelper
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
     {
         $this->configurationManager = $configurationManager;
-        $this->cObj = $this->configurationManager->getContentObjectRenderer();
+        $this->cObj = $this->configurationManager->getContentObject();
     }
 
     public function findTtContentUidsByMmTable($domainObjectUid, $table)
