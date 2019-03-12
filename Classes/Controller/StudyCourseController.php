@@ -183,7 +183,7 @@ class StudyCourseController extends AbstractController
          * assign the current content element record to the view
          */
         if (GeneralUtility::_GP('type') === null) {
-            $contentObj = $this->configurationManager->getContentObjectRenderer();
+            $contentObj = $this->configurationManager->getContentObject();
             $this->view->assign('data', $contentObj->data);
         }
 
