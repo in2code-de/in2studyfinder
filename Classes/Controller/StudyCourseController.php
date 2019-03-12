@@ -354,7 +354,7 @@ class StudyCourseController extends AbstractController
                             $repository->setDefaultQuerySettings($defaultQuerySettings);
 
                             $this->filters[$filterName]['repository'] = $repository;
-                            $this->filters[$filterName]['filterOptions'] = $repository->findAll();
+                            $this->filters[$filterName]['filterOptions'] = $repository->findAll()->toArray();
                         }
                         break;
                     case 'boolean':
