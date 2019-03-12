@@ -70,11 +70,11 @@ class RenderContentElementsViewHelper extends AbstractViewHelper
     {
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('tt_content');
+            ->getQueryBuilderForTable($table);
 
         $uidArray = $queryBuilder
             ->select('uid_foreign as uid')
-            ->from('tt_content')
+            ->from($table)
             ->where('uid_local=' . (int)$domainObjectUid)
             ->orderBy('sorting')
             ->addOrderBy('sorting_foreign');
