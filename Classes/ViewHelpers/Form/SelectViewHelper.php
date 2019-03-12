@@ -45,6 +45,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
         }
 
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        /** @var UriBuilder $uriBuilder */
         $uriBuilder = $objectManager->get(UriBuilder::class);
 
         foreach ($optionsArgument as $value) {
@@ -80,7 +81,10 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
 
                         $uri = $uriBuilder->reset()->setTargetPageUid($pageUid)->uriFor(
                             $action,
-                            ['studyCourse' => $value]
+                            ['studyCourse' => $value],
+                            'StudyCourse',
+                            'in2studyfinder',
+                            'Pi1'
                         );
 
                         $options[$optionsArrayKey]['additionalAttributes']['data-url'] = $uri;
