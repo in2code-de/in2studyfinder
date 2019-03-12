@@ -37,7 +37,6 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
         $options = [];
         $optionsArgument = $this->arguments['options'];
         $settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
-        $action = 'detail';
         $pageUid = $settings['flexform']['studyCourseDetailPage'];
 
         if ($this->hasArgument('detailPageUid')) {
@@ -80,11 +79,11 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
                             );
 
                         $uri = $uriBuilder->reset()->setTargetPageUid($pageUid)->uriFor(
-                            $action,
+                            'detail',
                             ['studyCourse' => $value],
                             'StudyCourse',
                             'in2studyfinder',
-                            'Pi1'
+                            'Pi2'
                         );
 
                         $options[$optionsArrayKey]['additionalAttributes']['data-url'] = $uri;
