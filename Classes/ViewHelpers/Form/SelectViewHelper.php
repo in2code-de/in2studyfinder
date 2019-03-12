@@ -5,6 +5,8 @@ namespace In2code\In2studyfinder\ViewHelpers\Form;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper
 {
@@ -41,7 +43,9 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
         if ($this->hasArgument('detailPageUid')) {
             $pageUid = $this->arguments['detailPageUid'];
         }
-        $uriBuilder = $this->controllerContext->getUriBuilder();
+
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $uriBuilder = $objectManager->get(UriBuilder::class);
 
         foreach ($optionsArgument as $value) {
             if ($this->hasArgument('additionalOptionAttributes')) {
