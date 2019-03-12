@@ -1,111 +1,126 @@
 define([], function() {
-	'use strict';
+  'use strict';
 
-	var UrlUtility = {};
+  var UrlUtility = {};
 
-	/**
-	 * initialized all functions
-	 *
-	 * @return {void}
-	 */
-	UrlUtility.removeParameterFromUrl = function(url, parameter) {
-		var urlParts = url.split('?');
-		if (urlParts.length >= 2) {
+  /**
+   * initialized all functions
+   *
+   * @return {void}
+   */
+  UrlUtility.removeParameterFromUrl = function(url, parameter) {
+    var urlParts = url.split('?');
+    if (urlParts.length >= 2) {
 
-			var prefix = encodeURIComponent(parameter) + '=';
-			var pars = urlParts[1].split(/[&;]/g);
+      var prefix = encodeURIComponent(parameter) + '=';
+      var pars = urlParts[1].split(/[&;]/g);
 
-			//reverse iteration as may be destructive
-			for (var i = pars.length; i-- > 0;) {
-				//idiom for string.startsWith
-				if (pars[i].lastIndexOf(prefix, 0) !== -1) {
-					pars.splice(i, 1);
-				}
-			}
+      //reverse iteration as may be destructive
+      for (var i = pars.length; i-- > 0;) {
+        //idiom for string.startsWith
+        if (pars[i].lastIndexOf(prefix, 0) !== -1) {
+          pars.splice(i, 1);
+        }
+      }
 
-			url = urlParts[0] + (pars.length > 0 ? '?' + pars.join('&') : "");
-			return url;
-		} else {
-			return url;
-		}
-	};
+      url = urlParts[0] + (pars.length > 0 ? '?' + pars.join('&') : "");
+      return url;
+    } else {
+      return url;
+    }
+  };
 
-	UrlUtility.getParameterFromUrl = function(url, parameter) {
+  UrlUtility.getParameterFromUrl = function(url, parameter) {
 
-		var parts = url.split('?'),
-			value = '';
+    var parts = url.split('?'),
+      value = '';
 
-		if (parts.length >= 2) {
+    if (parts.length >= 2) {
 
-			var queryString = parts[1];
-			queryString = '&' + queryString;
+      var queryString = parts[1];
+      queryString = '&' + queryString;
 
-			var prefix = encodeURIComponent(parameter) + '=';
-			var parameters = queryString.split(/[&;]/g);
-			for (var i = parameters.length; i-- > 0;) {
-				if (parameters[i].lastIndexOf(prefix, 0) !== -1) {
-					value = parameters[i].split('=')[1];
-					break;
-				}
-			}
-		}
+      var prefix = encodeURIComponent(parameter) + '=';
+      var parameters = queryString.split(/[&;]/g);
+      for (var i = parameters.length; i-- > 0;) {
+        if (parameters[i].lastIndexOf(prefix, 0) !== -1) {
+          value = parameters[i].split('=')[1];
+          break;
+        }
+      }
+    }
 
-		return value;
-	};
+    return value;
+  };
 
-	/**
-	 *
-	 * @param url
-	 * @param attribute
-	 * @param value
-	 * @returns {string|*}
-	 */
-	UrlUtility.addAttributeToUrl = function(url, attribute, value) {
+  UrlUtility.addHashToUrl = function(attribute, value) {
+    var hash = window.location.hash;
 
-		var divider = '?';
+    if (hash) {
+      var split = hash.split('=');
 
-		if (url.indexOf('?') !== -1) {
-			divider = '&';
-		}
+      console.log(split);
+    } else {
+      hash = attribute + '=' + value;
+    }
 
-		url += divider + attribute + '=' + value;
 
-		return url;
-	};
+    window.location.hash = hash;
+  };
 
-	/**
-	 * Serialize an given Form
-	 *
-	 * @param form
-	 * @returns {string}
-	 */
-	UrlUtility.serialize = function(form) {
-		var field, s = [];
-		if (typeof form === 'object' && form.nodeName === 'FORM') {
-			var len = form.elements.length;
-			for (var i = 0; i < len; i++) {
-				field = form.elements[i];
-				if (field.name &&
-					!field.disabled &&
-					field.type !== 'file' &&
-					field.type !== 'reset' &&
-					field.type !== 'submit' &&
-					field.type !== 'button'
-				) {
-					if (field.type === 'select-multiple') {
-						for (var j = form.elements[i].options.length - 1; j >= 0; j--) {
-							if (field.options[j].selected) {
-								s[s.length] = encodeURIComponent(field.name) + '=' + encodeURIComponent(field.options[j].value);
-							}
-						}
-					} else if ((field.type !== 'checkbox' && field.type !== 'radio') || field.checked) {
-						s[s.length] = encodeURIComponent(field.name) + '=' + encodeURIComponent(field.value);
-					}
-				}
-			}
-		}
-		return s.join('&').replace(/%20/g, '+');
-	};
+  /**
+   *
+   * @param url
+   * @param attribute
+   * @param value
+   * @returns {string|*}
+   */
+  UrlUtility.addAttributeToUrl = function(url, attribute, value) {
 
-	return UrlUtility;
+    var divider = '?';
+
+    if (url.indexOf('?') !== -1) {
+      divider = '&';
+    }
+
+    url += divider + attribute + '=' + value;
+
+    return url;
+  };
+
+  /**
+   * Serialize an given Form
+   *
+   * @param form
+   * @returns {string}
+   */
+  UrlUtility.serialize = function(form) {
+    var field, s = [];
+    if (typeof form === 'object' && form.nodeName === 'FORM') {
+      var len = form.elements.length;
+      for (var i = 0; i < len; i++) {
+        field = form.elements[i];
+        if (field.name &&
+          !field.disabled &&
+          field.type !== 'file' &&
+          field.type !== 'reset' &&
+          field.type !== 'submit' &&
+          field.type !== 'button'
+        ) {
+          if (field.type === 'select-multiple') {
+            for (var j = form.elements[i].options.length - 1; j >= 0; j--) {
+              if (field.options[j].selected) {
+                s[s.length] = encodeURIComponent(field.name) + '=' + encodeURIComponent(field.options[j].value);
+              }
+            }
+          } else if ((field.type !== 'checkbox' && field.type !== 'radio') || field.checked) {
+            s[s.length] = encodeURIComponent(field.name) + '=' + encodeURIComponent(field.value);
+          }
+        }
+      }
+    }
+    return s.join('&').replace(/%20/g, '+');
+  };
+
+  return UrlUtility;
 });

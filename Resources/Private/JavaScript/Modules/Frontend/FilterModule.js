@@ -168,7 +168,7 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
       }
 
       if (this.readyState === 4 && this.status === 200) {
-        //FilterModule.setSelectedFilterToUrl();
+        FilterModule.setSelectedFilterToUrl(paginationPage);
         // @todo Save selected filter to url
 
         var tempElement = document.createElement('div');
@@ -205,6 +205,8 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
       console.log(checkbox);
     });
     console.log(newSelectedOptions);
+
+
     var selectedOptions = $('.js-in2studyfinder-filter').find('input.in2studyfinder-js-checkbox:checked');
     $(selectedOptions).each(function() {
       var filterGroupAbbreviation = $(this).closest('fieldset').data('filtergroup');
