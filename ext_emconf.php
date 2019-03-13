@@ -11,10 +11,10 @@ $EM_CONF['in2studyfinder'] = array(
     'uploadfolder' => '0',
     'createDirs' => '',
     'clearCacheOnLoad' => 0,
-    'version' => '5.0.0',
+    'version' => '6.0.0',
     'constraints' => array(
         'depends' => array(
-            'typo3' => '7.6.0-8.7.99',
+            'typo3' => '8.7.0-9.5.99',
         ),
         'conflicts' => array(),
         'suggests' => array(),

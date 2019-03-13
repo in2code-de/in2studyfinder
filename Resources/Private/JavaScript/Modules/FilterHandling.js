@@ -29,8 +29,10 @@
 			var studyFinderForm = $('.js-in2studyfinder-filter');
 			var pluginContentElementUid = $('.in2studyfinder').data('plugin-uid');
 			var sysLanguageUid = $('.in2studyfinder').data('in2studyfinder-language');
+			var pid = $('.in2studyfinder').data('pid');
 			var contentElementUidQuery = '';
 			var sysLanguageUidQuery = '';
+			var url = '';
 			if (typeof pluginContentElementUid !== 'undefined') {
 				contentElementUidQuery = '&ce=' + pluginContentElementUid;
 			}
@@ -39,7 +41,12 @@
 				sysLanguageUidQuery = '&L=' + sysLanguageUid;
 			}
 
-			var url = '/?type=1308171055&studyFinderAjaxRequest=1' + contentElementUidQuery + sysLanguageUidQuery;
+			if (typeof pid !== 'undefined') {
+				url = '/index.php?id=' + pid + '&type=1308171055&studyFinderAjaxRequest=1' + contentElementUidQuery + sysLanguageUidQuery;
+			} else {
+				url = '/?type=1308171055&studyFinderAjaxRequest=1' + contentElementUidQuery + sysLanguageUidQuery;
+			}
+
 			if (paginationPage) {
 				url += '&tx_in2studyfinder_pi1%5B%40widget_0%5D%5BcurrentPage%5D=' + paginationPage;
 			}

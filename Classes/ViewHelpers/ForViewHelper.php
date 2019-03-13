@@ -1,4 +1,5 @@
 <?php
+
 namespace In2code\In2studyfinder\ViewHelpers;
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -8,13 +9,26 @@ class ForViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     /**
-     * @param array $for
-     * @param string $as
-     * @param string $letter
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('for', 'array', 'The array or \SplObjectStorage to iterated over', true);
+        $this->registerArgument('as', 'string', 'The name of the iteration variable', true);
+
+        $this->registerArgument('letter', 'string', '', false, 'letter');
+    }
+
+    /**
      * @return string
      */
-    public function render($for, $as, $letter = 'letter')
+    public function render()
     {
+        $for = $this->arguments['for'];
+        $as = $this->arguments['as'];
+        $letter = $this->arguments['letter'];
+
         if (is_array($for)) {
             $sortedStudyCourses = array();
             foreach ($for as $studyCourse) {

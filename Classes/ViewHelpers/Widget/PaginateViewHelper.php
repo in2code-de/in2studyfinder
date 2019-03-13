@@ -1,4 +1,5 @@
 <?php
+
 namespace In2code\In2studyfinder\ViewHelpers\Widget;
 
 /*                                                                        *
@@ -20,6 +21,8 @@ namespace In2code\In2studyfinder\ViewHelpers\Widget;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
+use In2code\In2studyfinder\ViewHelpers\Widget\Controller\PaginateController;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper;
@@ -37,9 +40,9 @@ use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper;
  * </code>
  *
  * <code title="full configuration">
- * <f:widget.paginate objects="{blogs}" as="paginatedBlogs" configuration="{itemsPerPage: 5, insertAbove: 1, insertBelow: 0, maximumNumberOfLinks: 10}">
- * use {paginatedBlogs} as you used {blogs} before, most certainly inside
- * a <f:for> loop.
+ * <f:widget.paginate objects="{blogs}" as="paginatedBlogs" configuration="{itemsPerPage: 5, insertAbove: 1,
+ * insertBelow: 0, maximumNumberOfLinks: 10}"> use {paginatedBlogs} as you used {blogs} before, most certainly inside a
+ * <f:for> loop.
  * </f:widget.paginate>
  * </code>
  *
@@ -57,34 +60,53 @@ use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper;
 class PaginateViewHelper extends AbstractWidgetViewHelper
 {
     /**
-     * @var Controller\PaginateController
+     * @var PaginateController
      */
     protected $controller;
 
     /**
-     * @param Controller\PaginateController $controller
+     * @param PaginateController $controller
      */
-    public function injectPaginateController(Controller\PaginateController $controller)
+    public function injectPaginateController(PaginateController $controller)
     {
         $this->controller = $controller;
     }
 
+
     /**
-     * @param QueryResultInterface|ObjectStorage|array $objects
-     * @param string $as
-     * @param array $configuration
+     * Initialize arguments.
+     *
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('objects', 'mixed', 'Object', true);
+        $this->registerArgument('as', 'string', 'as', true);
+        $this->registerArgument(
+            'configuration',
+            'array',
+            'configuration',
+            false,
+            ['itemsPerPage' => 10, 'insertAbove' => false, 'insertBelow' => true, 'maximumNumberOfLinks' => 99]
+        );
+    }
+
+    /**
      * @return string
      */
-    public function render(
-        $objects,
-        $as,
-        array $configuration = array(
-            'itemsPerPage' => 10,
-            'insertAbove' => false,
-            'insertBelow' => true,
-            'maximumNumberOfLinks' => 99,
-        )
-    ) {
+    public function render()
+    {
+        $objects = $this->arguments['objects'];
+
+        if (!($objects instanceof QueryResultInterface || $objects instanceof ObjectStorage || is_array($objects))) {
+            throw new \UnexpectedValueException(
+                'Supplied file object type ' . get_class(
+                    $objects
+                ) . ' must be QueryResultInterface or ObjectStorage or be an array.', 1454510731
+            );
+        }
+
         return $this->initiateSubRequest();
     }
 }

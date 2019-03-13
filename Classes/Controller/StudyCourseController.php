@@ -36,13 +36,10 @@ use In2code\In2studyfinder\Utility\VersionUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogLevel;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
@@ -50,7 +47,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Property\Exception;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use TYPO3\CMS\Extbase\Utility\ArrayUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -172,11 +168,9 @@ class StudyCourseController extends AbstractController
         }
 
         $searchOptions =
-            ArrayUtility::arrayMergeRecursiveOverrule(
+            array_replace_recursive(
                 $searchOptions,
-                $this->getSelectedFlexformOptions(),
-                false,
-                false
+                $this->getSelectedFlexformOptions()
             );
 
         $studyCourses = $this->processSearch($searchOptions);
@@ -356,7 +350,7 @@ class StudyCourseController extends AbstractController
                             $repository->setDefaultQuerySettings($defaultQuerySettings);
 
                             $this->filters[$filterName]['repository'] = $repository;
-                            $this->filters[$filterName]['filterOptions'] = $repository->findAll();
+                            $this->filters[$filterName]['filterOptions'] = $repository->findAll()->toArray();
                         }
                         break;
                     case 'boolean':
