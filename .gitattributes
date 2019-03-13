@@ -1,0 +1,9 @@
+/.gitattributes export-ignore
+/.gitignore export-ignore
+/Tests export-ignore
+
+/Resources/Private/JavaScript/
+/Resources/Private/Sass/
+/Resources/Private/gulpfile.js
+/Resources/Private/package.json
+/Resources/Private/package-lock.json
