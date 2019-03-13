@@ -24,6 +24,7 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
    * @return {void}
    */
   FilterModule.initialize = function() {
+
     FilterModule.setEventListener();
     FilterModule.prepareFilter();
   };
@@ -35,12 +36,12 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
     if (FilterModule.filter.length > 0) {
       FilterModule.toggleFilterVisibility();
 
-      FilterModule.filter.forEach(function(value) {
-        var filterFieldset = document.querySelector('[data-filtergroup="' + value + '"]');
+      for (var i = 0; i < FilterModule.filter.length; i++) {
+        var filterFieldset = document.querySelector('[data-filtergroup="' + FilterModule.filter[i] + '"]');
         var filter = filterFieldset.querySelector(FilterModule.identifiers.filterContainer);
 
         UiUtility.toggleClassForElement(filter, FilterModule.identifiers.isHidden.substr(1));
-      });
+      }
     }
   };
 
@@ -121,9 +122,9 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
     showAllCheckbox.checked = true;
     showAllCheckbox.disabled = true;
 
-    filterCheckboxes.forEach(function(checkbox) {
-      checkbox.checked = false;
-    });
+    for (var i = 0; i < filterCheckboxes.length; i++) {
+      filterCheckboxes[i].checked = false;
+    }
 
     var index = FilterModule.filter.indexOf(filterContainer.parentNode.getAttribute('data-filtergroup'));
     if (index !== -1) {
@@ -207,11 +208,10 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
     var form = document.querySelector(FilterModule.identifiers.filterForm);
     var newSelectedOptions = form.querySelectorAll(FilterModule.identifiers.filterCheckbox + ':checked');
 
-    newSelectedOptions.forEach(function(checkbox) {
-      console.log(checkbox);
-    });
+    for (var i = 0; i < newSelectedOptions.length; i++) {
+      console.log(newSelectedOptions[i]);
+    }
     console.log(newSelectedOptions);
-
 
     var selectedOptions = $('.js-in2studyfinder-filter').find('input.in2studyfinder-js-checkbox:checked');
     $(selectedOptions).each(function() {
@@ -290,13 +290,15 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
   FilterModule.setFilterVisibilityEventListener = function() {
 
     var filterButtons = document.querySelectorAll(FilterModule.identifiers.filterFieldset);
-    filterButtons.forEach(function(filterButton) {
-      filterButton.querySelector(FilterModule.identifiers.filterLegend).addEventListener('click', function() {
-        var filter = filterButton.querySelector(FilterModule.identifiers.filterContainer);
+
+    for (var i = 0; i < filterButtons.length; i++) {
+      filterButtons[i].querySelector(FilterModule.identifiers.filterLegend).addEventListener('click', function() {
+        var filter = filterButtons[i].querySelector(FilterModule.identifiers.filterContainer);
 
         UiUtility.toggleClassForElement(filter, FilterModule.identifiers.isHidden.substr(1));
       });
-    });
+
+    }
   };
 
   /**
@@ -305,9 +307,12 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
   FilterModule.toggleFilterVisibility = function() {
 
     // toggle fieldset Visibility
-    document.querySelectorAll(FilterModule.identifiers.filterFieldset).forEach(function(filterFieldset) {
-      UiUtility.toggleClassForElement(filterFieldset, FilterModule.identifiers.hideElement.substr(1));
-    });
+    var filterFieldSets = document.querySelectorAll(FilterModule.identifiers.filterFieldset);
+
+    for (var i = 0; i < filterFieldSets.length; i++) {
+      UiUtility.toggleClassForElement(filterFieldSets[i], FilterModule.identifiers.hideElement.substr(1));
+
+    }
 
     // toggle button Visibility
     var showFilterButton = document.querySelector(FilterModule.identifiers.showFilterButton);
@@ -320,19 +325,21 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
    * removes checked value from checkboxes where not needed
    */
   FilterModule.prepareCheckboxes = function() {
-    document.querySelectorAll(FilterModule.identifiers.filterContainer).forEach(function(filterContainer) {
-      var filterStatus = FilterModule.isFilterSet(filterContainer);
+    var filterContainer = document.querySelectorAll(FilterModule.identifiers.filterContainer);
+
+    for (var i = 0; i < filterContainer.length; i++) {
+      var filterStatus = FilterModule.isFilterSet(filterContainer[i]);
 
       if (filterStatus) {
-        if (FilterModule.filter.indexOf(filterContainer.parentNode.getAttribute('data-filtergroup')) === -1) {
-          FilterModule.filter.push(filterContainer.parentNode.getAttribute('data-filtergroup'));
+        if (FilterModule.filter.indexOf(filterContainer[i].parentNode.getAttribute('data-filtergroup')) === -1) {
+          FilterModule.filter.push(filterContainer[i].parentNode.getAttribute('data-filtergroup'));
         }
 
-        var showAllCheckbox = filterContainer.querySelector(FilterModule.identifiers.filterCheckboxAll);
+        var showAllCheckbox = filterContainer[i].querySelector(FilterModule.identifiers.filterCheckboxAll);
         showAllCheckbox.checked = false;
         showAllCheckbox.disabled = false;
       }
-    });
+    }
   };
 
   /**
@@ -344,15 +351,16 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
   FilterModule.isFilterSet = function(filterContainer) {
     var status = false;
 
-    filterContainer.querySelectorAll(FilterModule.identifiers.filterCheckbox).forEach(function(checkbox) {
-      if (checkbox.checked) {
+    var filterCheckboxes = filterContainer.querySelectorAll(FilterModule.identifiers.filterCheckbox);
+
+    for (var i = 0; i < filterCheckboxes.length; i++) {
+      if (filterCheckboxes[i].checked) {
         status = true;
       }
-    });
+    }
 
     return status;
   };
 
   return FilterModule;
-})
-;
+});
