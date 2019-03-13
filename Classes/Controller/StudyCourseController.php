@@ -2,6 +2,7 @@
 
 namespace In2code\In2studyfinder\Controller;
 
+use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Domain\Model\StudyCourseInterface;
 use In2code\In2studyfinder\Domain\Model\TtContent;
 use In2code\In2studyfinder\Utility\ConfigurationUtility;
@@ -23,7 +24,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Property\Exception;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use TYPO3\CMS\Extbase\Utility\ArrayUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -142,11 +142,9 @@ class StudyCourseController extends AbstractController
         }
 
         $searchOptions =
-            ArrayUtility::arrayMergeRecursiveOverrule(
+            array_replace_recursive(
                 $searchOptions,
-                $this->getSelectedFlexformOptions(),
-                false,
-                false
+                $this->getSelectedFlexformOptions()
             );
 
         $studyCourses = $this->processSearch($searchOptions);
@@ -325,7 +323,7 @@ class StudyCourseController extends AbstractController
                             $repository->setDefaultQuerySettings($defaultQuerySettings);
 
                             $this->filters[$filterName]['repository'] = $repository;
-                            $this->filters[$filterName]['filterOptions'] = $repository->findAll();
+                            $this->filters[$filterName]['filterOptions'] = $repository->findAll()->toArray();
                         }
                         break;
                     case 'boolean':

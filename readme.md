@@ -50,7 +50,7 @@ sandra.pohl@in2code.de
 
 ## Requirements
 
-* TYPO3 7.6 or newer
+* TYPO3 8.7 or newer
 * PHP 5.6 or newer
 
 
@@ -66,6 +66,7 @@ sandra.pohl@in2code.de
 
 | Version    | Date       | State      | Description                                                                  |
 | ---------- | ---------- | ---------- | ---------------------------------------------------------------------------- |
+| 6.0.0      | 2019-03-13 | [!!!]TASK  | add TYPO3 9.5 support |
 | 5.0.0      | 2019-03-01 | FEATURE    | adds an backend module with course export. Last release for TYPO3 7.6 |
 | 4.0.2      | 2018-11-26 | BUGFIX     | fix 404 redirect on any course detail page. Last release for TYPO3 6.2 |
 | 4.0.1      | 2018-10-16 | TASK       | update npm modules and gulp to prevent JavaScript vulnerabilities of outdated node modules |

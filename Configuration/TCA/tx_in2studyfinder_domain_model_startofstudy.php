@@ -2,9 +2,9 @@
 $ll = 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:';
 $table = \In2code\In2studyfinder\Domain\Model\StartOfStudy::TABLE;
 $icon =
-    TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath(
-        'in2studyfinder'
-    ) . 'Resources/Public/Icons/' . $table . '.png';
+    TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
+        'EXT:in2studyfinder/Resources/Public/Icons/' . $table . '.png'
+    );
 
 return [
     'ctrl' => [

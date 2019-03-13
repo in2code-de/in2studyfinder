@@ -140,12 +140,14 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
     var in2studyfinderContainer = document.querySelector(FilterModule.identifiers.in2studyfinderContainer);
     var filterForm = document.querySelector(FilterModule.identifiers.filterForm);
     var pluginUid = in2studyfinderContainer.getAttribute('data-plugin-uid');
+    var pid = in2studyfinderContainer.getAttribute('data-pid');
     var sysLanguageUid = in2studyfinderContainer.getAttribute('data-in2studyfinder-language');
     var paginationPage = 1;
 
     var pluginUidArgument = '';
     var languageArgument = '';
     var paginationArgument = '';
+    var url = '';
 
     if (typeof pluginUid !== 'undefined') {
       pluginUidArgument = '&ce=' + pluginUid;
@@ -159,7 +161,11 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
       paginationArgument = '&tx_in2studyfinder_pi1[@widget_0][currentPage]=' + paginationPage;
     }
 
-    var url = '/?type=1308171055&studyFinderAjaxRequest=1' + pluginUidArgument + languageArgument + paginationArgument;
+    if (typeof pid !== 'undefined') {
+      url = '/index.php?id=' + pid + '&type=1308171055&studyFinderAjaxRequest=1' + pluginUidArgument + languageArgument + paginationArgument;
+    } else {
+      url = '/?type=1308171055&studyFinderAjaxRequest=1' + pluginUidArgument + languageArgument + paginationArgument;
+    }
 
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {

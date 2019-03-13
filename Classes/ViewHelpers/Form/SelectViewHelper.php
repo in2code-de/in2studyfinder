@@ -4,6 +4,8 @@ namespace In2code\In2studyfinder\ViewHelpers\Form;
 
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper
 {
@@ -34,13 +36,15 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
         $options = [];
         $optionsArgument = $this->arguments['options'];
         $settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
-        $action = 'detail';
         $pageUid = $settings['flexform']['studyCourseDetailPage'];
 
         if ($this->hasArgument('detailPageUid')) {
             $pageUid = $this->arguments['detailPageUid'];
         }
-        $uriBuilder = $this->controllerContext->getUriBuilder();
+
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        /** @var UriBuilder $uriBuilder */
+        $uriBuilder = $objectManager->get(UriBuilder::class);
 
         foreach ($optionsArgument as $value) {
             if ($this->hasArgument('additionalOptionAttributes')) {
@@ -74,8 +78,11 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
                             );
 
                         $uri = $uriBuilder->reset()->setTargetPageUid($pageUid)->uriFor(
-                            $action,
-                            ['studyCourse' => $value]
+                            'detail',
+                            ['studyCourse' => $value],
+                            'StudyCourse',
+                            'in2studyfinder',
+                            'Pi2'
                         );
 
                         $options[$optionsArrayKey]['additionalAttributes']['data-url'] = $uri;
