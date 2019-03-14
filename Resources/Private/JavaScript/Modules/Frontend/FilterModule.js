@@ -24,7 +24,6 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
    * @return {void}
    */
   FilterModule.initialize = function() {
-
     FilterModule.setEventListener();
     FilterModule.prepareFilter();
   };
@@ -289,15 +288,15 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
    */
   FilterModule.setFilterVisibilityEventListener = function() {
 
-    var filterButtons = document.querySelectorAll(FilterModule.identifiers.filterFieldset);
+    var fieldsets = document.querySelectorAll(FilterModule.identifiers.filterFieldset);
 
-    for (var i = 0; i < filterButtons.length; i++) {
-      filterButtons[i].querySelector(FilterModule.identifiers.filterLegend).addEventListener('click', function() {
-        var filter = filterButtons[i].querySelector(FilterModule.identifiers.filterContainer);
+    for (var i = 0; i < fieldsets.length; i++) {
+      fieldsets[i].querySelector(FilterModule.identifiers.filterLegend).addEventListener('click', function() {
+        var targetFilter = this.parentNode;
+        var filter = targetFilter.querySelector(FilterModule.identifiers.filterContainer);
 
         UiUtility.toggleClassForElement(filter, FilterModule.identifiers.isHidden.substr(1));
       });
-
     }
   };
 
