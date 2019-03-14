@@ -161,7 +161,7 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
       paginationArgument = '&tx_in2studyfinder_pi1[@widget_0][currentPage]=' + paginationPage;
     }
 
-    if (typeof pid !== 'undefined') {
+    if (typeof pid !== 'undefined' && pid !== null) {
       url = '/index.php?id=' + pid + '&type=1308171055&studyFinderAjaxRequest=1' + pluginUidArgument + languageArgument + paginationArgument;
     } else {
       url = '/?type=1308171055&studyFinderAjaxRequest=1' + pluginUidArgument + languageArgument + paginationArgument;
