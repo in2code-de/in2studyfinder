@@ -72,6 +72,10 @@
 				<source>Start Of Study</source>
 				<target>Studienbeginn</target>
 			</trans-unit>
+			<trans-unit id="startOfStudy.dateFormat">
+				<source>m-d-Y</source>
+				<target>d.m.Y</target>
+			</trans-unit>
 			<trans-unit id="ttContent">
 				<source>Tt Content</source>
 			</trans-unit>
