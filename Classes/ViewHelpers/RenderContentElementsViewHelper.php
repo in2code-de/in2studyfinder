@@ -86,7 +86,8 @@ class RenderContentElementsViewHelper extends AbstractViewHelper
             ->from($table)
             ->where('uid_local=' . (int)$domainObjectUid)
             ->orderBy('sorting')
-            ->addOrderBy('sorting_foreign');
+            ->addOrderBy('sorting_foreign')
+            ->execute()->fetchAll();
 
         return $uidArray;
     }
