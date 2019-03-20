@@ -9,6 +9,11 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 class RenderContentElementsViewHelper extends AbstractViewHelper
 {
     /**
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * @var ConfigurationManagerInterface
      */
     protected $configurationManager;
