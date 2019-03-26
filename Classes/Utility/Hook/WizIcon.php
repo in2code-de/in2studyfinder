@@ -50,7 +50,7 @@ class WizIcon
     {
         $icon =
             GeneralUtility::getFileAbsFileName(
-                'EXT:in2studyfinder/ext_icon.png'
+                'EXT:in2studyfinder/Resources/Public/Icons/Extension.svg'
             );
 
         $wizardItems['plugins_tx_in2studyfinder_pi1'] = array(
