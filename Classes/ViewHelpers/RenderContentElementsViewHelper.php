@@ -11,6 +11,11 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 class RenderContentElementsViewHelper extends AbstractViewHelper
 {
     /**
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * @var ConfigurationManagerInterface
      */
     protected $configurationManager;
@@ -88,7 +93,8 @@ class RenderContentElementsViewHelper extends AbstractViewHelper
             ->from($table)
             ->where('uid_local=' . (int)$domainObjectUid)
             ->orderBy('sorting')
-            ->addOrderBy('sorting_foreign');
+            ->addOrderBy('sorting_foreign')
+            ->execute()->fetchAll();
 
         return $uidArray;
     }

@@ -45,8 +45,11 @@
 						</strong>
 						<ul class="in2studyfinder__list">
 							<f:for each="{studyCourse.startsOfStudy}" as="startOfStudy">
-								<li>{startOfStudy.title}<f:if condition="{startOfStudy.startDate}">:
-									<f:format.date date="{startOfStudy.startDate}" format="{f:cObject(typoscriptObjectPath:'lib.activeDateFormat')}"/></f:if>
+								<li>{startOfStudy.title}
+									<f:if condition="{startOfStudy.startDate}">:
+										<f:format.date date="{startOfStudy.startDate}"
+																	 format="{f:translate(key:'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:startOfStudy.dateFormat')}"/>
+									</f:if>
 								</li>
 							</f:for>
 						</ul>
@@ -57,7 +60,9 @@
 							</strong>
 
 							<p>
-								<f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">{studyCourse.tuitionFee}</f:format.currency>
+								<f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator=".">
+									{studyCourse.tuitionFee}
+								</f:format.currency>
 							</p>
 						</f:if>
 
@@ -99,7 +104,8 @@
 
 						<f:if condition="{studyCourse.standardPeriodOfStudy}">
 							<strong>
-								<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:standardPeriodOfStudy"/>
+								<f:translate
+									key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:standardPeriodOfStudy"/>
 							</strong>
 
 							<p>{studyCourse.standardPeriodOfStudy}</p>
@@ -110,14 +116,17 @@
 
 			<div class="in2studyfinder__content-box">
 				<div class="in2studyfinder__content-box-head">
-					<h3><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:moreAbout"/></h3>
+					<h3>
+						<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:moreAbout"/>
+					</h3>
 				</div>
 				<div class="in2studyfinder__content-box-content">
 					<f:format.html>{studyCourse.description}</f:format.html>
 				</div>
 			</div>
 
-			<f:render partial="StudyCourse/Detail/contentElements" arguments="{studyCourse: studyCourse, mmTable: 'tx_in2studyfinder_studycourse_ttcontent_mm'}"/>
+			<f:render partial="StudyCourse/Detail/contentElements"
+								arguments="{studyCourse: studyCourse, mmTable: 'tx_in2studyfinder_studycourse_ttcontent_mm'}"/>
 
 		</div>
 		<div class="in2studyfinder__column in2studyfinder__column--right">

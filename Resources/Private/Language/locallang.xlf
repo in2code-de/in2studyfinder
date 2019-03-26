@@ -57,6 +57,9 @@
 			<trans-unit id="startOfStudy">
 				<source>Start Of Study</source>
 			</trans-unit>
+			<trans-unit id="startOfStudy.dateFormat">
+				<source>m-d-Y</source>
+			</trans-unit>
 			<trans-unit id="ttContent">
 				<source>Tt Content</source>
 			</trans-unit>
