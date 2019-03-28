@@ -190,6 +190,13 @@ page {
 			value = requireJsBasePath = '/{path:EXT:in2studyfinder/Resources/Public/JavaScript/}'
 			stdWrap.insertData = 1
 		}
+
+		15 = TEXT
+		15 {
+			wrap = <script>|</script>
+			value = jqueryBasePath = '/typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery-3.2.1.min'
+		}
+
 		20 = TEXT
 		20 {
 			value = /typo3/sysext/core/Resources/Public/JavaScript/Contrib/require.js
@@ -197,6 +204,7 @@ page {
 			wrap = <script src="|"
 			noTrimWrap = | ||
 		}
+
 		30 = TEXT
 		30 {
 			value = /{path:EXT:in2studyfinder/Resources/Public/JavaScript/main.js}
@@ -207,6 +215,17 @@ page {
 	}
 }
 
+[compatVersion = 9.5.0]
+	page {
+		footerData.1497382690 {
+			15 = TEXT
+			15 {
+				wrap = <script>|</script>
+				value = jqueryBasePath = '/typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery'
+			}
+		}
+	}
+[end]
 
 ############################
 # Default language configuration 0=de / 1=en
