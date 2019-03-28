@@ -149,7 +149,7 @@ in2studyfinderFilterAjax {
 ############################
 in2studyfinderGetCourseJson = PAGE
 in2studyfinderGetCourseJson {
-	typeNum = 2308171056
+	typeNum = 1553807527
 	config {
 		additionalHeaders.10.header = Content-Type: application/json
 		no_cache = 1

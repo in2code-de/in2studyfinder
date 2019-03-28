@@ -250,7 +250,7 @@ class BackendController extends AbstractController
 
         if ($urlParts['scheme'] === 'https') {
             $result = file_get_contents(
-                $urlParts['scheme'] . '://' . $urlParts['host'] . '/?type=2308171056&L=' . $recordLanguage,
+                $urlParts['scheme'] . '://' . $urlParts['host'] . '/?type=1553807527&L=' . $recordLanguage,
                 false,
                 $context
             );
@@ -260,7 +260,7 @@ class BackendController extends AbstractController
         // if the scheme is http or the request returning an error with https
         if ($result === false || $urlParts['scheme'] === 'http') {
             $result = file_get_contents(
-                'http://' . $urlParts['host'] . '/?type=2308171056&L=' . $recordLanguage,
+                'http://' . $urlParts['host'] . '/?type=1553807527&L=' . $recordLanguage,
                 false,
                 $context
             );
