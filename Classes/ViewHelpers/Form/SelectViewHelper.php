@@ -53,9 +53,16 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
                     $optionsArrayKey = get_class($value) . ':' . $value->getUid();
                     $label = '';
 
+                    // typo3 9.5
                     if (array_key_exists($value->getUid(), $parentOptions)) {
                         $label = $parentOptions[$value->getUid()];
                     }
+
+                    // typo3 8.7
+                    if (array_key_exists($optionsArrayKey, $parentOptions)) {
+                        $label = $parentOptions[$optionsArrayKey];
+                    }
+
                     $options[$optionsArrayKey]['label'] = $label;
 
                     foreach ($this->arguments['additionalOptionAttributes'] as $attribute => $property) {
