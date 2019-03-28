@@ -11,7 +11,6 @@ This extension is the basic version, which can be extended by various fields, fu
 
 Require in2studyfinder via copmoser: `composer require in2code/in2studyfinder` or download a current version from [https://github.com/in2code-de/in2studyfinder](in2studyfinder on github) or install in2studyfinder from TER or in the Extension Manager.
 Include in2studyfinder's TypoScript Template "Basic Template" and "CSS Template" if you want to have a minimum of styles in the frontend (e.g. if you don't want to style it yourself).
-If your TYPO3 installation does not include jQuery in the Frontend yet, you have to set the constant `plugin.tx_in2studyfinder.settings.javascript.addJQueryFromGoogle = 1` to enable jQuery inclusion (required).
 Create a storage folder in your page tree where you will add your study courses and set all `settingsPids` and `storagePids` of in2studyfinder to the storage folder's UID.
 
 ### Target group
