@@ -1,4 +1,4 @@
-define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/Utility/UrlUtility', 'TYPO3/CMS/In2studyfinder/Utility/AjaxUtility'], function(UiUtility, UrlUtility, AjaxUtility) {
+define(['TYPO3/CMS/In2studyfinder/Utility/MiscUtility', 'TYPO3/CMS/In2studyfinder/Utility/ArrayUtility', 'TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/Utility/UrlUtility', 'TYPO3/CMS/In2studyfinder/Utility/AjaxUtility'], function(MiscUtility, ArrayUtility, UiUtility, UrlUtility, AjaxUtility) {
   'use strict';
 
   var FilterModule = {
@@ -28,8 +28,17 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
     FilterModule.prepareFilter();
   };
 
+  /**
+   *
+   */
   FilterModule.prepareFilter = function() {
     FilterModule.prepareCheckboxes();
+
+    // trigger filter update by hash arguments
+    var hashArguments = UrlUtility.getHashArgumentsFromUrl();
+    if (hashArguments.length > 0 && document.querySelector('[data-in2studyfinder-isAjax="1"]') === null) {
+      FilterModule.updateFilterByHashArguments(hashArguments);
+    }
 
     // open selected filter sections
     if (FilterModule.filter.length > 0) {
@@ -43,6 +52,62 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
       }
     }
   };
+
+  /**
+   * removes checked value from checkboxes where not needed
+   */
+  FilterModule.prepareCheckboxes = function() {
+    var filterContainer = document.querySelectorAll(FilterModule.identifiers.filterContainer);
+
+    for (var i = 0; i < filterContainer.length; i++) {
+      var filterStatus = FilterModule.isFilterSet(filterContainer[i]);
+
+      if (filterStatus) {
+        if (FilterModule.filter.indexOf(filterContainer[i].parentNode.getAttribute('data-filtergroup')) === -1) {
+          FilterModule.filter.push(filterContainer[i].parentNode.getAttribute('data-filtergroup'));
+        }
+
+        var showAllCheckbox = filterContainer[i].querySelector(FilterModule.identifiers.filterCheckboxAll);
+        showAllCheckbox.checked = false;
+        showAllCheckbox.disabled = false;
+      }
+    }
+  };
+
+  /**
+   *
+   * @param hashArguments
+   */
+  FilterModule.updateFilterByHashArguments = function(hashArguments) {
+    for (var i = 0; i < hashArguments.length; i++) {
+      var page = 1;
+      // if argument page is set
+      if (hashArguments[i].name === 'page') {
+        page = hashArguments[i].values[0];
+      } else {
+        if (document.querySelector('[data-filtergroup="' + hashArguments[i].name + '"]') !== null) {
+          // set the selected filters
+          var filterFieldset = document.querySelector('[data-filtergroup="' + hashArguments[i].name + '"]');
+          var checkboxes = filterFieldset.querySelectorAll('input[type=checkbox]');
+          var status = false;
+
+          for (var j = 0; j < checkboxes.length; j++) {
+            if (ArrayUtility.isInArray(checkboxes[j].value, hashArguments[i].values)) {
+              checkboxes[j].checked = true;
+              status = true;
+            }
+          }
+
+          if (status) {
+            filterFieldset.querySelector(FilterModule.identifiers.filterCheckboxAll).checked = false;
+          }
+        }
+      }
+    }
+
+    FilterModule.updateFilter(page);
+  };
+
 
   /**
    * sets event listeners
@@ -136,18 +201,17 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
    *
    * update the filtering
    */
-  FilterModule.updateFilter = function() {
+  FilterModule.updateFilter = function(paginationPage) {
     var in2studyfinderContainer = document.querySelector(FilterModule.identifiers.in2studyfinderContainer);
     var filterForm = document.querySelector(FilterModule.identifiers.filterForm);
     var pluginUid = in2studyfinderContainer.getAttribute('data-plugin-uid');
     var pid = in2studyfinderContainer.getAttribute('data-pid');
     var sysLanguageUid = in2studyfinderContainer.getAttribute('data-in2studyfinder-language');
-    var paginationPage = 1;
+    var pluginUidArgument = '', languageArgument = '', paginationArgument = '', url = '';
 
-    var pluginUidArgument = '';
-    var languageArgument = '';
-    var paginationArgument = '';
-    var url = '';
+    if (typeof paginationPage === 'undefined') {
+      paginationPage = 1;
+    }
 
     if (typeof pluginUid !== 'undefined') {
       pluginUidArgument = '&ce=' + pluginUid;
@@ -175,7 +239,6 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
 
       if (this.readyState === 4 && this.status === 200) {
         FilterModule.setSelectedFilterToUrl(paginationPage);
-        // @todo Save selected filter to url
 
         var tempElement = document.createElement('div');
         tempElement.innerHTML = xhttp.responseText;
@@ -198,80 +261,35 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
 
   /**
    * Save Selected Options to Url
-   *
-   * @todo
    */
   FilterModule.setSelectedFilterToUrl = function(paginationPage) {
-    var selectionValues = {};
     var selectionString = '';
     var form = document.querySelector(FilterModule.identifiers.filterForm);
-    var newSelectedOptions = form.querySelectorAll(FilterModule.identifiers.filterCheckbox + ':checked');
+    var fieldsetNodeList = form.querySelectorAll(FilterModule.identifiers.filterFieldset);
 
-    for (var i = 0; i < newSelectedOptions.length; i++) {
-      console.log(newSelectedOptions[i]);
-    }
-    console.log(newSelectedOptions);
+    for (var i = 0; i < fieldsetNodeList.length; i++) {
+      var selectedOptions = fieldsetNodeList[i].querySelectorAll(FilterModule.identifiers.filterCheckbox + ':checked');
 
-    var selectedOptions = $('.js-in2studyfinder-filter').find('input.in2studyfinder-js-checkbox:checked');
-    $(selectedOptions).each(function() {
-      var filterGroupAbbreviation = $(this).closest('fieldset').data('filtergroup');
-      if (selectionValues[filterGroupAbbreviation] === undefined) {
-        selectionValues[filterGroupAbbreviation] = [];
+      if (selectedOptions.length > 0) {
+        selectionString += fieldsetNodeList[i].getAttribute('data-filtergroup') + '=';
+
+        for (var j = 0; j < selectedOptions.length; j++) {
+          selectionString += selectedOptions[j].value + '+';
+        }
+
+        if (selectedOptions.length >= 1) {
+          selectionString = selectionString.substring(0, selectionString.length - 1);
+        }
+
+        selectionString += '&';
       }
-      selectionValues[filterGroupAbbreviation].push($(this).val());
-    });
-
-    $(selectionValues).each(function(key, values) {
-      $.each(values, function(filterKey, value) {
-        selectionString += filterKey + '--';
-        $.each(value, function(key, value) {
-          selectionString += value + '+';
-        });
-        selectionString = selectionString.replace(/\+$/, '');
-        selectionString += '__';
-      });
-      selectionString = selectionString.replace(/__$/, '');
-    });
+    }
 
     if (paginationPage) {
       selectionString += 'page=' + paginationPage;
     }
+
     window.location = location.protocol + '//' + location.host + location.pathname + (location.search ? location.search : '') + '#' + selectionString;
-  };
-
-  /**
-   * Load Selected Options from Url
-   *
-   * @todo
-   */
-  FilterModule.getSelectedFilterFromUrl = function() {
-    var filterHash = window.location.hash.split('#');
-
-    if (1 in filterHash) {
-      filterHash = filterHash[1];
-      var paginationPage;
-      if (filterHash.indexOf('page=') !== -1) {
-        paginationPage = filterHash.split('page=')[1];
-        filterHash = filterHash.split('page=')[0];
-      }
-
-      if (filterHash !== '') {
-
-        var filterParts = filterHash.split('__');
-        $(filterParts).each(function(key, values) {
-          var sectionSplit = '--';
-          var selections = values.split(sectionSplit);
-          var filterGroup = values.substr(0, values.indexOf(sectionSplit));
-          var selectedOptions = selections[1].split('+');
-
-          $(selectedOptions).each(function(key, value) {
-            $('#' + filterGroup + '_' + value).prop('checked', true);
-          });
-        });
-      }
-
-      return paginationPage;
-    }
   };
 
   /**
@@ -318,27 +336,6 @@ define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/
     var hideFilterButton = document.querySelector(FilterModule.identifiers.hideFilterButton);
     UiUtility.toggleClassForElement(showFilterButton, FilterModule.identifiers.hideElement.substr(1));
     UiUtility.toggleClassForElement(hideFilterButton, FilterModule.identifiers.hideElement.substr(1));
-  };
-
-  /**
-   * removes checked value from checkboxes where not needed
-   */
-  FilterModule.prepareCheckboxes = function() {
-    var filterContainer = document.querySelectorAll(FilterModule.identifiers.filterContainer);
-
-    for (var i = 0; i < filterContainer.length; i++) {
-      var filterStatus = FilterModule.isFilterSet(filterContainer[i]);
-
-      if (filterStatus) {
-        if (FilterModule.filter.indexOf(filterContainer[i].parentNode.getAttribute('data-filtergroup')) === -1) {
-          FilterModule.filter.push(filterContainer[i].parentNode.getAttribute('data-filtergroup'));
-        }
-
-        var showAllCheckbox = filterContainer[i].querySelector(FilterModule.identifiers.filterCheckboxAll);
-        showAllCheckbox.checked = false;
-        showAllCheckbox.disabled = false;
-      }
-    }
   };
 
   /**

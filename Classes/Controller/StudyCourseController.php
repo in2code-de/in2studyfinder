@@ -158,7 +158,8 @@ class StudyCourseController extends AbstractController
                 'studyCourses' => $studyCourses,
                 'currentTypo3MajorVersion' => VersionUtility::getCurrentTypo3MajorVersion(),
                 'settings' => $this->settings,
-                'data' => $this->pluginRecord
+                'data' => $this->pluginRecord,
+                'isAjaxRequest' => $this->isAjaxRequest()
             ]
         );
     }

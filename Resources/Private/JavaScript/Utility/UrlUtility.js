@@ -122,5 +122,31 @@ define([], function() {
     return s.join('&').replace(/%20/g, '+');
   };
 
+  /**
+   * @return array
+   */
+  UrlUtility.getHashArgumentsFromUrl = function() {
+    if (window.location.hash) {
+      var hash = window.location.hash.split('#')[1];
+      var argumentArray = hash.split(/[&;]/g);
+      var hashArguments = [];
+      for (var i = 0; i < argumentArray.length; i++) {
+
+        var singleArgument = argumentArray[i].split(/[=;]/g);
+        var values = singleArgument[1].split(/[+;]/g);
+
+        hashArguments[i] = {
+          name: singleArgument[0],
+          values: values
+        };
+      }
+
+      return hashArguments;
+    }
+
+    return [];
+
+  };
+
   return UrlUtility;
 });
