@@ -33,6 +33,8 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class CourseLanguage extends AbstractEntity implements CourseLanguageInterface
 {
+    const TABLE = 'tx_in2studyfinder_domain_model_courselanguage';
+
     /**
      * language
      *

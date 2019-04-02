@@ -22,6 +22,8 @@ class ForViewHelper extends AbstractViewHelper
 
     /**
      * @return string
+     *
+     * @SuppressWarnings(PHPMD.ShortVariable)
      */
     public function render()
     {
@@ -30,11 +32,11 @@ class ForViewHelper extends AbstractViewHelper
         $letter = $this->arguments['letter'];
 
         if (is_array($for)) {
-            $sortedStudyCourses = array();
+            $sortedStudyCourses = [];
             foreach ($for as $studyCourse) {
                 $sortedStudyCourses[substr(strtoupper($studyCourse->getTitle()), 0, 1)][] = $studyCourse;
             }
-            $results = array();
+            $results = [];
             foreach ($sortedStudyCourses as $capitalLetter => $course) {
                 $this->setVariable($letter, $capitalLetter);
                 $this->setVariable($as, $course);

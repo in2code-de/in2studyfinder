@@ -33,6 +33,8 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class TtContent extends AbstractEntity implements TtContentInterface
 {
+    const TABLE = 'tt_content';
+
     /**
      * @var string
      */

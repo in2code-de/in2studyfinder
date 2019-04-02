@@ -41,8 +41,8 @@ class StudyCourseControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     {
         $this->subject = $this->getMock(
             'In2code\\In2studyfinder\\Controller\\StudyCourseController',
-            array('redirect', 'forward', 'addFlashMessage'),
-            array(),
+            ['redirect', 'forward', 'addFlashMessage'],
+            [],
             '',
             false
         );
@@ -61,16 +61,16 @@ class StudyCourseControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
         $allStudyCourses = $this->getMock(
             'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage',
-            array(),
-            array(),
+            [],
+            [],
             '',
             false
         );
 
         $studyCourseRepository = $this->getMock(
             'In2code\\In2studyfinder\\Domain\\Repository\\StudyCourseRepository',
-            array('findAll'),
-            array(),
+            ['findAll'],
+            [],
             '',
             false
         );

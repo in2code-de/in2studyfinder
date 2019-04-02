@@ -33,6 +33,8 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class TypeOfStudy extends AbstractEntity implements TypeOfStudyInterface
 {
+    const TABLE = 'tx_in2studyfinder_domain_model_typeofstudy';
+
     /**
      * type
      *

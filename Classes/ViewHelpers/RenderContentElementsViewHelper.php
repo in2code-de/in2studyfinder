@@ -1,7 +1,9 @@
 <?php
+
 namespace In2code\In2studyfinder\ViewHelpers;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use In2code\In2studyfinder\Domain\Model\TtContent;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -60,7 +62,7 @@ class RenderContentElementsViewHelper extends AbstractViewHelper
         }
 
         $conf = [
-            'tables' => 'tt_content',
+            'tables' => TtContent::TABLE,
             'source' => $uidList,
             'dontCheckPid' => 1,
         ];

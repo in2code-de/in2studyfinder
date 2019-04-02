@@ -2,33 +2,9 @@
 
 namespace In2code\In2studyfinder\Controller;
 
-/***************************************************************
- *
- *  Copyright notice
- *
- *  (c) 2016 Sebastian Stein <sebastian.stein@in2code.de>, In2code GmbH
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
-
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Domain\Model\StudyCourseInterface;
+use In2code\In2studyfinder\Domain\Model\TtContent;
 use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use In2code\In2studyfinder\Utility\FrontendUtility;
@@ -36,6 +12,7 @@ use In2code\In2studyfinder\Utility\VersionUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -73,6 +50,11 @@ class StudyCourseController extends AbstractController
     protected $response = null;
 
     /**
+     * @var array
+     */
+    protected $pluginRecord;
+
+    /**
      * Use this instead of __construct, because extbase will inject dependencies *after* construnction of an object
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
@@ -85,6 +67,8 @@ class StudyCourseController extends AbstractController
             $this->cacheInstance =
                 GeneralUtility::makeInstance(CacheManager::class)->getCache('in2studyfinder');
         }
+
+        $this->setPluginRecord();
 
         if (ConfigurationUtility::isCachingEnabled()) {
             $cacheIdentifier = $this->getCacheIdentifierForStudyCourses($this->settings['filters']);
@@ -101,17 +85,6 @@ class StudyCourseController extends AbstractController
     }
 
     /**
-     * The list action is nothing else than the filter action but
-     * without any search options (or they are predefined in the FlexForm options)
-     *
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
-     */
-    public function listAction()
-    {
-        $this->forward('filter');
-    }
-
-    /**
      * Strip empty options from incoming (selected) filters
      *
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException
@@ -123,8 +96,7 @@ class StudyCourseController extends AbstractController
             $searchOptions = array_filter((array)$this->request->getArgument('searchOptions'));
             $this->request->setArgument('searchOptions', $searchOptions);
             if (ConfigurationUtility::isPersistentFilterEnabled()) {
-                $this
-                    ->getTypoScriptFrontendController()
+                FrontendUtility::getTyposcriptFrontendController()
                     ->fe_user
                     ->setAndSaveSessionData('tx_in2studycourse_filter', $searchOptions);
             }
@@ -133,18 +105,20 @@ class StudyCourseController extends AbstractController
         /*
          * add the flexform settings to the settings if the request is an ajax request
          */
-        if (GeneralUtility::_GP('type') === '1308171055' && GeneralUtility::_GP('ce')) {
-            $this->settings =
-                array_merge_recursive(
-                    $this->settings,
-                    ExtensionUtility::getFlexFormSettingsByUid(GeneralUtility::_GP('ce'))
+        if ($this->isAjaxRequest()) {
+            if (GeneralUtility::_GP('type') === '1308171055' && GeneralUtility::_GP('ce')) {
+                $this->settings =
+                    array_merge_recursive(
+                        $this->settings,
+                        ExtensionUtility::getFlexFormSettingsByUid(GeneralUtility::_GP('ce'))
+                    );
+            } else {
+                $this->logger->log(
+                    LogLevel::ERROR,
+                    'Incorrect parameters of the Ajax request. Flexform settings could not be set! Maybe the extension\'s layout has been overwritten?',
+                    []
                 );
-        } else {
-            $this->logger->log(
-                LogLevel::ERROR,
-                'Incorrect parameters of the Ajax request. Flexform settings could not be set! Maybe the extension\'s layout has been overwritten?',
-                []
-            );
+            }
         }
     }
 
@@ -158,10 +132,10 @@ class StudyCourseController extends AbstractController
             // No search options have been provided and no filter have been predefined in the Plugin's FlexForm
             // so we assume the user came back to the list page through another direct link.
             // Do not run this in the initializeFilterAction because it must also be applied for listAction.
-            $searchOptions = $this
-                ->getTypoScriptFrontendController()
-                ->fe_user
-                ->getSessionData('tx_in2studycourse_filter');
+            $searchOptions =
+                FrontendUtility::getTyposcriptFrontendController()
+                    ->fe_user
+                    ->getSessionData('tx_in2studycourse_filter');
             if (empty($searchOptions)) {
                 $searchOptions = [];
             }
@@ -175,14 +149,6 @@ class StudyCourseController extends AbstractController
 
         $studyCourses = $this->processSearch($searchOptions);
 
-        /*
-         * assign the current content element record to the view
-         */
-        if (GeneralUtility::_GP('type') === null) {
-            $contentObj = $this->configurationManager->getContentObject();
-            $this->view->assign('data', $contentObj->data);
-        }
-
         $this->view->assignMultiple(
             [
                 'searchedOptions' => $searchOptions,
@@ -191,7 +157,9 @@ class StudyCourseController extends AbstractController
                 'studyCourseCount' => count($studyCourses),
                 'studyCourses' => $studyCourses,
                 'currentTypo3MajorVersion' => VersionUtility::getCurrentTypo3MajorVersion(),
-                'settings' => $this->settings
+                'settings' => $this->settings,
+                'data' => $this->pluginRecord,
+                'isAjaxRequest' => $this->isAjaxRequest()
             ]
         );
     }
@@ -207,6 +175,7 @@ class StudyCourseController extends AbstractController
      */
     public function getCoursesJsonAction()
     {
+        $return = '';
 
         if ($this->request->hasArgument('courseList')) {
             $courses = $this->studyCourseRepository->getCoursesWithUidIn(
@@ -215,7 +184,11 @@ class StudyCourseController extends AbstractController
             $return = serialize($courses);
 
         } else {
-            $return = 'the Required Arguments "courseList" is not set';
+            $this->logger->log(
+                LogLevel::ERROR,
+                'the Requested Argument "courseList" is not set.',
+                [__METHOD__ . ' on Line ' . __LINE__]
+            );
         }
 
         return json_encode($return);
@@ -223,6 +196,7 @@ class StudyCourseController extends AbstractController
 
     /**
      * @param StudyCourse|null $studyCourse
+     *
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      */
@@ -281,7 +255,7 @@ class StudyCourseController extends AbstractController
         try {
             parent::processRequest($request, $response);
         } catch (Exception $exception) {
-            $this->getTypoScriptFrontendController()->pageNotFoundAndExit();
+            FrontendUtility::getTyposcriptFrontendController()->pageNotFoundAndExit();
         }
     }
 
@@ -445,7 +419,7 @@ class StudyCourseController extends AbstractController
             ->toArray();
 
         if (array_key_exists(0, $studyCourses)) {
-            usort($studyCourses, array($studyCourses[0], 'cmpObj'));
+            usort($studyCourses, [$studyCourses[0], 'cmpObj']);
         }
 
         return $studyCourses;
@@ -491,22 +465,13 @@ class StudyCourseController extends AbstractController
     }
 
     /**
-     * @return TypoScriptFrontendController
-     * @SuppressWarnings(PHPMD.Superglobals)
-     */
-    protected function getTypoScriptFrontendController()
-    {
-        return $GLOBALS['TSFE'];
-    }
-
-    /**
      * @param integer $contentElementUid
      * @return array
      */
     protected function getContentElementStoragePids($contentElementUid)
     {
         $storagePids = [];
-        $pluginRecord = BackendUtility::getRecord('tt_content', $contentElementUid, '*');
+        $pluginRecord = BackendUtility::getRecord(TtContent::TABLE, $contentElementUid, '*');
 
         if ($pluginRecord['pages'] !== '') {
             $storagePids = GeneralUtility::intExplode(',', $pluginRecord['pages']);
@@ -526,5 +491,43 @@ class StudyCourseController extends AbstractController
         }
 
         return $isAjaxRequest;
+    }
+
+    /**
+     *
+     */
+    protected function setPluginRecord()
+    {
+        $pluginRecord = [];
+
+        if (empty(GeneralUtility::_GP('type'))) {
+            $contentObj = $this->configurationManager->getContentObject();
+            $pluginRecord = $contentObj->data;
+        } else {
+            if (!empty(GeneralUtility::_GP('ce'))) {
+                $queryBuilder =
+                    $this->objectManager->get(ConnectionPool::class)->getQueryBuilderForTable(TtContent::TABLE);
+                $record = $queryBuilder
+                    ->select('*')
+                    ->from(TtContent::TABLE)
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            'uid',
+                            $queryBuilder->createNamedParameter((int)GeneralUtility::_GP('ce'), \PDO::PARAM_INT)
+                        )
+                    )
+                    ->execute()->fetch();
+
+                $pluginRecord = $record;
+            } else {
+                $this->logger->log(
+                    LogLevel::ERROR,
+                    'No url parameter ce is set. Please check the ajax request in your network analyse tool if an filter is set',
+                    []
+                );
+            }
+        }
+
+        $this->pluginRecord = $pluginRecord;
     }
 }

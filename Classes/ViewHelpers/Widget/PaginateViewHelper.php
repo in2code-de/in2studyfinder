@@ -72,7 +72,6 @@ class PaginateViewHelper extends AbstractWidgetViewHelper
         $this->controller = $controller;
     }
 
-
     /**
      * Initialize arguments.
      *

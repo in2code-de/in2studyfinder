@@ -1,0 +1,1 @@
+define([],function(){"use strict";var n={isInArray:function(n,r){return-1<r.indexOf(n)}};return n});

@@ -36,11 +36,12 @@ class AbstractRepository extends Repository
     /**
      * @param array $options
      * @return array
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      */
-    protected function optionsToConstraints($options = array())
+    protected function optionsToConstraints($options = [])
     {
         $query = $this->createQuery();
-        $constraints = array();
+        $constraints = [];
         foreach ($options as $name => $uidArray) {
             $constraints[] = $query->in($name . '.uid', $uidArray);
         }
