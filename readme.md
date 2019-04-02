@@ -66,6 +66,7 @@ sandra.pohl@in2code.de
 
 | Version    | Date       | State      | Description                                                                  |
 | ---------- | ---------- | ---------- | ---------------------------------------------------------------------------- |
+| 6.0.2      | 2019-04-02 | BUGFIX     | add missing query execution, fix html escape from content element renderer, move ext_icon into Public/Icons/ |
 | 6.0.1      | 2019-03-18 | BUGFIX     | fix possible detail view exception because the lib.activeDateFormat do not exist |
 | 6.0.0      | 2019-03-13 | [!!!]TASK  | add TYPO3 9.5 support |
 | 5.0.0      | 2019-03-01 | FEATURE    | adds an backend module with course export. Last release for TYPO3 7.6 |

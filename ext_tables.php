@@ -36,7 +36,7 @@ if (TYPO3_MODE === 'BE') {
             ],
             [
                 'access' => 'user,group',
-                'icon' => 'EXT:in2studyfinder/ext_icon.svg',
+                'icon' => 'EXT:in2studyfinder/Resources/Public/Icons/Extension.svg',
                 'labels' => 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:wizardItemTitle',
                 'navigationComponentId' => '',
             ]
@@ -54,7 +54,7 @@ if (TYPO3_MODE === 'BE') {
         $iconRegistry->registerIcon(
             'in2studyfinder-plugin-icon',
             \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-            ['source' => 'EXT:in2studyfinder/ext_icon.svg']
+            ['source' => 'EXT:in2studyfinder/Resources/Public/Icons/Extension.svg']
         );
 
         /**
