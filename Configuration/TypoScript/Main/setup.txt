@@ -184,42 +184,45 @@ page {
 	# requirejs
 	footerData.1497382690 = COA
 	footerData.1497382690 {
+
 		10 = TEXT
 		10 {
-			wrap = <script>|</script>
-			value = requireJsBasePath = '/{path:EXT:in2studyfinder/Resources/Public/JavaScript/}'
+			value = /typo3/sysext/core/Resources/Public/JavaScript/Contrib/require.js
 			stdWrap.insertData = 1
-		}
-
-		15 = TEXT
-		15 {
-			wrap = <script>|</script>
-			value = jqueryBasePath = '/typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery-3.2.1.min'
+			wrap = <script src="|"></script>
+			noTrimWrap = | ||
 		}
 
 		20 = TEXT
 		20 {
-			value = /typo3/sysext/core/Resources/Public/JavaScript/Contrib/require.js
-			stdWrap.insertData = 1
-			wrap = <script src="|"
-			noTrimWrap = | ||
+			value (
+			require(['/typo3conf/ext/in2studyfinder/Resources/Public/JavaScript/main.js']);
+			)
+			wrap = <script>|</script>
 		}
 
 		30 = TEXT
 		30 {
-			value = /{path:EXT:in2studyfinder/Resources/Public/JavaScript/main.js}
-			stdWrap.insertData = 1
-			wrap = data-main="|"></script>
-			noTrimWrap = | ||
+			wrap = <script>|</script>
+			value = jqueryBasePath = '/typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery-3.2.1.min'
+
 		}
+
 	}
 }
+
+[globalVar = LIT:1 > {$plugin.tx_in2studyfinder.settings.javascript.loadRequireJs}]
+	page {
+		footerData.1497382690.10 >
+	}
+[end]
+
 
 [compatVersion = 9.5.0]
 	page {
 		footerData.1497382690 {
-			15 = TEXT
-			15 {
+			30 = TEXT
+			30 {
 				wrap = <script>|</script>
 				value = jqueryBasePath = '/typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery'
 			}

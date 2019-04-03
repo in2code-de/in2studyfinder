@@ -1,5 +1,4 @@
 requirejs.config({
-  baseUrl: requireJsBasePath,
   paths: {
     'jquery': jqueryBasePath,
     'TYPO3/CMS/In2studyfinder': '/typo3conf/ext/in2studyfinder/Resources/Public/JavaScript'
