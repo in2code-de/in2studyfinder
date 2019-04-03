@@ -196,18 +196,13 @@ page {
 		20 = TEXT
 		20 {
 			value (
+			jquery = 'jquery-3.2.1'
 			require(['/typo3conf/ext/in2studyfinder/Resources/Public/JavaScript/main.js']);
 			)
 			wrap = <script>|</script>
 		}
 
 		30 = TEXT
-		30 {
-			wrap = <script>|</script>
-			value = jqueryBasePath = '/typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery-3.2.1.min'
-
-		}
-
 	}
 }
 
@@ -221,10 +216,12 @@ page {
 [compatVersion = 9.5.0]
 	page {
 		footerData.1497382690 {
-			30 = TEXT
-			30 {
-				wrap = <script>|</script>
-				value = jqueryBasePath = '/typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery'
+			20 = TEXT
+			20 {
+				value (
+				jquery = 'jquery'
+				require(['/typo3conf/ext/in2studyfinder/Resources/Public/JavaScript/main.js']);
+				)
 			}
 		}
 	}

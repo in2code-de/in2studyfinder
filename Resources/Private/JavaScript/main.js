@@ -1,6 +1,8 @@
 requirejs.config({
   paths: {
-    'jquery': jqueryBasePath,
+    'jquery': [
+      '/typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery/' + jquery + '.min'
+    ],
     'TYPO3/CMS/In2studyfinder': '/typo3conf/ext/in2studyfinder/Resources/Public/JavaScript'
   },
   'shim': {
