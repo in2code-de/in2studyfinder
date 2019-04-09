@@ -182,8 +182,8 @@ page.includeCSS.in2studyfinderCss = {$plugin.tx_in2studyfinder.settings.css.in2s
 # add In2studyfinder JavaScripts
 page {
 	# requirejs
-	footerData.1497382690 = COA
-	footerData.1497382690 {
+	footerData.1554801883 = COA
+	footerData.1554801883 {
 		20 = TEXT
 		20 {
 			value (
@@ -197,7 +197,7 @@ page {
 
 [globalVar = LIT:0 < {$plugin.tx_in2studyfinder.settings.javascript.loadRequireJs}]
 	page {
-		footerData.1497382690 {
+		footerData.1554801883 {
 			10 = TEXT
 			10 {
 				value = /typo3/sysext/core/Resources/Public/JavaScript/Contrib/require.js
@@ -212,7 +212,7 @@ page {
 
 [compatVersion = 9.5.0]
 	page {
-		footerData.1497382690 {
+		footerData.1554801883 {
 			20 = TEXT
 			20 {
 				value (
