@@ -78,13 +78,11 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
                                 $property
                             );
 
-                        $uri = $uriBuilder->reset()->setTargetPageUid($pageUid)->uriFor(
-                            'detail',
-                            ['studyCourse' => $value],
-                            'StudyCourse',
-                            'in2studyfinder',
-                            'Pi2'
-                        );
+                        $uri =
+                            $uriBuilder->reset()->setRequest($this->getRequest())->setTargetPageUid($pageUid)->uriFor(
+                                'detail',
+                                ['studyCourse' => $value]
+                            );
 
                         $options[$optionsArrayKey]['additionalAttributes']['data-url'] = $uri;
                     }
