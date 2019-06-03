@@ -28,6 +28,12 @@ class CsvExport extends AbstractExport implements ExportInterface
         $recordRows = [];
         foreach ($exportConfiguration->getRecordsToExport() as $row => $record) {
             foreach ($record as $propertyName => $property) {
+                $this->signalSlotDispatcher->dispatch(
+                    __CLASS__,
+                    'manipulatePropertyBeforeExport',
+                    ['property' => &$property]
+                );
+
                 $recordRows[$row] .= '"' . $property . '";';
             }
             $recordRows[$row] .= PHP_EOL;

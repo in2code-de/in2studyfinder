@@ -6,6 +6,7 @@ use In2code\In2studyfinder\Export\Configuration\ExportConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 class AbstractExport implements ExportInterface
@@ -25,9 +26,15 @@ class AbstractExport implements ExportInterface
      */
     protected $fileExtension = '';
 
+    /**
+     * @var Dispatcher
+     */
+    protected $signalSlotDispatcher;
+
     public function __construct()
     {
         $this->setObjectManager();
+        $this->signalSlotDispatcher = $this->objectManager->get(Dispatcher::class);
     }
 
     /**
@@ -54,8 +61,7 @@ class AbstractExport implements ExportInterface
         $layoutPath = 'EXT:in2studyfinder/Resources/Private/Layouts/',
         $templatePath = 'EXT:in2studyfinder/Resources/Private/Templates/',
         $partialPath = 'EXT:in2studyfinder/Resources/Private/Partials/'
-    )
-    {
+    ) {
         $standaloneView = $this->objectManager->get(StandaloneView::class);
 
         $standaloneView->setLayoutRootPaths(
