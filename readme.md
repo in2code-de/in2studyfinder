@@ -53,6 +53,9 @@ sandra.pohl@in2code.de
 * TYPO3 8.7 or newer
 * PHP 5.6 or newer
 
+## Signals
+
+manipulatePropertyBeforeExport: this signal allows to manipulate values before they are exported to the CSV
 
 ## FAQ
 
@@ -66,6 +69,7 @@ sandra.pohl@in2code.de
 
 | Version    | Date       | State      | Description                                                                  |
 | ---------- | ---------- | ---------- | ---------------------------------------------------------------------------- |
+| 6.1.0      | 2019-06-03 | FEATURE    | remove unnecessary url attributes of the quick select, add the "manipulatePropertyBeforeExport" signal |
 | 6.0.2      | 2019-04-02 | BUGFIX     | add missing query execution, fix html escape from content element renderer, move ext_icon into Public/Icons/ |
 | 6.0.1      | 2019-03-18 | BUGFIX     | fix possible detail view exception because the lib.activeDateFormat do not exist |
 | 6.0.0      | 2019-03-13 | [!!!]TASK  | add TYPO3 9.5 support |
