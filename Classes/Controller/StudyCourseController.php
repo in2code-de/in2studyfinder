@@ -5,6 +5,7 @@ namespace In2code\In2studyfinder\Controller;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Domain\Model\StudyCourseInterface;
 use In2code\In2studyfinder\Domain\Model\TtContent;
+use In2code\In2studyfinder\Domain\Repository\FacultyRepository;
 use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use In2code\In2studyfinder\Utility\FrontendUtility;
@@ -160,6 +161,21 @@ class StudyCourseController extends AbstractController
                 'settings' => $this->settings,
                 'data' => $this->pluginRecord,
                 'isAjaxRequest' => $this->isAjaxRequest()
+            ]
+        );
+    }
+
+    public function fastSearchAction()
+    {
+        $studyCourses = $this->studyCourseRepository->findAll();
+        $facultyRepository = $this->objectManager->get(FacultyRepository::class);
+
+        $this->view->assignMultiple(
+            [
+                'studyCourseCount' => count($studyCourses),
+                'facultyCount' => $facultyRepository->countAll(),
+                'studyCourses' => $studyCourses,
+                'settings' => $this->settings
             ]
         );
     }

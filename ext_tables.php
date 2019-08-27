@@ -16,6 +16,12 @@ $extKey = 'in2studyfinder';
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
     'In2code.' . $extKey,
+    'FastSearch',
+    'Studiengangsfinder Schnellsuche'
+);
+
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+    'In2code.' . $extKey,
     'Pi2',
     'Studiengangsfinder Detailansicht'
 );
@@ -76,7 +82,9 @@ $flexformConfiguration = [
     str_replace('_', '', $extKey) . '_pi1' =>
         'FILE:EXT:' . $extKey . '/Configuration/FlexForms/FlexformStudyfinderList.xml',
     str_replace('_', '', $extKey) . '_pi2' =>
-        'FILE:EXT:' . $extKey . '/Configuration/FlexForms/FlexformStudyfinderDetail.xml'
+        'FILE:EXT:' . $extKey . '/Configuration/FlexForms/FlexformStudyfinderDetail.xml',
+    str_replace('_', '', $extKey) . '_fastsearch' =>
+        'FILE:EXT:' . $extKey . '/Configuration/FlexForms/FlexformStudyfinderFastSearch.xml'
 ];
 
 foreach ($flexformConfiguration as $pluginSignature => $flexformPath) {

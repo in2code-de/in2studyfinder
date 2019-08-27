@@ -13,6 +13,14 @@ if (!defined('TYPO3_MODE')) {
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     'In2code.in2studyfinder',
+    'FastSearch',
+    ['StudyCourse' => 'fastSearch'],
+    ['StudyCourse' => 'fastSearch']
+);
+
+
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+    'In2code.in2studyfinder',
     'Pi2',
     ['StudyCourse' => 'detail'],
     []
