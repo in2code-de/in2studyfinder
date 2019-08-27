@@ -69,6 +69,7 @@ manipulatePropertyBeforeExport: this signal allows to manipulate values before t
 
 | Version    | Date       | State      | Description                                                                  |
 | ---------- | ---------- | ---------- | ---------------------------------------------------------------------------- |
+| 6.2.0      | 2019-08-27 | FEATURE    | add new view fast search which shows only in input (select) with the available courses |
 | 6.1.0      | 2019-06-03 | FEATURE    | remove unnecessary url attributes of the quick select, add the "manipulatePropertyBeforeExport" signal |
 | 6.0.2      | 2019-04-02 | BUGFIX     | add missing query execution, fix html escape from content element renderer, move ext_icon into Public/Icons/ |
 | 6.0.1      | 2019-03-18 | BUGFIX     | fix possible detail view exception because the lib.activeDateFormat do not exist |

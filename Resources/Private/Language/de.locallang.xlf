@@ -60,6 +60,10 @@
 				<source>Faculty</source>
 				<target>Fakultät</target>
 			</trans-unit>
+			<trans-unit id="faculties">
+				<source>Faculties</source>
+				<target>Fakultäten</target>
+			</trans-unit>
 			<trans-unit id="courseLanguage">
 				<source>Course Language</source>
 				<target>Unterrichtssprache</target>
