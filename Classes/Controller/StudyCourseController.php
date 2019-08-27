@@ -200,7 +200,11 @@ class StudyCourseController extends AbstractController
     public function fastSearchAction()
     {
         $studyCourses = $this->studyCourseRepository->findAll();
+
         $facultyRepository = $this->objectManager->get(FacultyRepository::class);
+        $defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
+        $defaultQuerySettings->setStoragePageIds([$this->settings['settingsPid']]);
+        $facultyRepository->setDefaultQuerySettings($defaultQuerySettings);
 
         $this->view->assignMultiple(
             [
