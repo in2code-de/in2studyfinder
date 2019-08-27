@@ -29,6 +29,7 @@ namespace In2code\In2studyfinder\Controller;
 
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Domain\Model\StudyCourseInterface;
+use In2code\In2studyfinder\Domain\Repository\FacultyRepository;
 use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use In2code\In2studyfinder\Utility\FrontendUtility;
@@ -196,14 +197,29 @@ class StudyCourseController extends AbstractController
         );
     }
 
+    public function fastSearchAction()
+    {
+        $studyCourses = $this->studyCourseRepository->findAll();
+        $facultyRepository = $this->objectManager->get(FacultyRepository::class);
+
+        $this->view->assignMultiple(
+            [
+                'studyCourseCount' => count($studyCourses),
+                'facultyCount' => $facultyRepository->countAll(),
+                'studyCourses' => $studyCourses,
+                'settings' => $this->settings
+            ]
+        );
+    }
+
     /**
      * WORKAROUND
-     *
-     * @see BackendController->listAction
      *
      * @return string
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     * @see BackendController->listAction
+     *
      */
     public function getCoursesJsonAction()
     {

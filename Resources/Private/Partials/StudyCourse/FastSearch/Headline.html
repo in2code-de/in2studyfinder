@@ -1,0 +1,22 @@
+<f:if condition="{studyCourseCount} > 1">
+	<f:then>
+		<f:variable name="studyCourseLabel"
+					value="{f:translate(key: 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:studycourses')}"/>
+	</f:then>
+	<f:else>
+		<f:variable name="studyCourseLabel"
+					value="{f:translate(key: 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:studycourse')}"/>
+	</f:else>
+</f:if>
+<f:if condition="{facultyCount} > 1">
+	<f:then>
+		<f:variable name="facultyLabel"
+					value="{f:translate(key: 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:faculties')}"/>
+	</f:then>
+	<f:else>
+		<f:variable name="facultyLabel"
+					value="{f:translate(key: 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:faculty')}"/>
+	</f:else>
+</f:if>
+
+<h3>{studyCourseCount} {studyCourseLabel} an {facultyCount} {facultyLabel}</h3>
