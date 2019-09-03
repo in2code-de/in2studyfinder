@@ -23,8 +23,10 @@ define(
      * @return {void}
      */
     PaginationModule.initialize = function() {
-      var paginationList = document.querySelector(PaginationModule.identifiers.paginationContainer);
-      paginationList.addEventListener('click', PaginationModule.callPagination);
+      if (document.querySelector(PaginationModule.identifiers.paginationContainer) !== null) {
+        var paginationList = document.querySelector(PaginationModule.identifiers.paginationContainer);
+        paginationList.addEventListener('click', PaginationModule.callPagination);
+      }
     };
 
     PaginationModule.callPagination = function(event) {
