@@ -69,6 +69,7 @@ manipulatePropertyBeforeExport: this signal allows to manipulate values before t
 
 | Version    | Date       | State      | Description                                                                  |
 | ---------- | ---------- | ---------- | ---------------------------------------------------------------------------- |
+| 6.2.2      | 2019-09-06 | TASK       | make content object data available in the fast search |
 | 6.2.1      | 2019-08-27 | BUGFIX     | set settings PID for FacultyRepository, fix typo |
 | 6.2.0      | 2019-08-27 | FEATURE    | add new view fast search which shows only an input (select) with the available courses |
 | 6.1.0      | 2019-06-03 | FEATURE    | remove unnecessary url attributes of the quick select, add the "manipulatePropertyBeforeExport" signal |
