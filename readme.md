@@ -3,15 +3,18 @@
 
 ## Introduction
 
-in2studyfinder is a generic TYPO3 extension, which makes it possible to add, maintain and
+in2studyfinder is a free and generic TYPO3 extension, which makes it possible to add, maintain and
 display courses of studies in a structured way with different filterable views.
-This extension is the basic version, which can be extended by various fields, functions and interfaces.
+This extension is the basic version, which can be extended by various fields, functions and interfaces and is already 
+widely used by different universities.
+
 
 ## Installation
 
 Require in2studyfinder via copmoser: `composer require in2code/in2studyfinder` or download a current version from [https://github.com/in2code-de/in2studyfinder](in2studyfinder on github) or install in2studyfinder from TER or in the Extension Manager.
 Include in2studyfinder's TypoScript Template "Basic Template" and "CSS Template" if you want to have a minimum of styles in the frontend (e.g. if you don't want to style it yourself).
 Create a storage folder in your page tree where you will add your study courses and set all `settingsPids` and `storagePids` of in2studyfinder to the storage folder's UID.
+
 
 ### Target group
 
@@ -20,11 +23,40 @@ TYPO3 Websites from
 * Colleges + Hochschulen
 * Universities + Universitäten
 
-### Links
 
-* Live examples: https://www.tum.de/studium/studienangebot/ and http://www.uni-ulm.de/studium/studieren-an-der-uni-ulm/studiengaenge/
+### Examples
+
+#### Screenshots
+
+Integration at the home page of TH OWL:
+
+![Example dashboard overview](Documentation/Images/screenshot_owl_start.png)
+
+Listview at TH OWL:
+
+![Example dashboard overview](Documentation/Images/screenshot_owl_list.png)
+
+Detailview at TH OWL:
+
+![Example dashboard overview](Documentation/Images/screenshot_owl_detail.png)
+
+Listview at TUM:
+
+![Example dashboard overview](Documentation/Images/screenshot_tum_list.png)
+
+Listview at Uni Ulm:
+
+![Example dashboard overview](Documentation/Images/screenshot_uniulm_list.png)
+
+
+#### Links
+
+* Live examples: 
+    * https://www.tum.de/studium/studienangebot/
+    * https://www.uni-ulm.de/studium/studieren-an-der-uni-ulm/studiengaenge/
+    * https://www.th-owl.de/studium/angebote/studiengaenge/
 * See full description (german only) under: https://www.in2code.de/produkte/studiengangsfinder/
-* Interest in an extension or interface connection: contact us <a href="mailto:sandra.pohl@in2code.de">sandra.pohl@in2code.de</a>
+* Interest in an extension or interface connection? Contact us: <a href="mailto:sandra.pohl@in2code.de">sandra.pohl@in2code.de</a>
 
 
 ## Individual modules and functions
@@ -38,23 +70,16 @@ https://www.in2code.de/produkte/studiengangsfinder/
 sandra.pohl@in2code.de
 
 
-## Screenshots
-
-<img src="https://box.everhelper.me/attachment/946138/a6805156-9507-4f6d-924c-1217f09d07c6/817759-hn4DsXYwkhTmIWBV/screen.png" width="500" />
-
-<img src="https://box.everhelper.me/attachment/946151/a6805156-9507-4f6d-924c-1217f09d07c6/817759-N6h67qc6NZDY4FVn/screen.png" width="500" />
-
-<img src="https://box.everhelper.me/attachment/946154/a6805156-9507-4f6d-924c-1217f09d07c6/817759-BCxwhsEX5ZWTDZX8/screen.png" width="500" />
-
-
 ## Requirements
 
 * TYPO3 8.7 or newer
 * PHP 5.6 or newer
 
+
 ## Signals
 
 manipulatePropertyBeforeExport: this signal allows to manipulate values before they are exported to the CSV
+
 
 ## FAQ
 
