@@ -183,7 +183,7 @@ class TcaUtility extends AbstractUtility
         $exclude = 1,
         $minItems = 0,
         $l10nMode = 'exclude',
-        $l10nDisplay = 'defaultAsReadonly'
+        $l10nDisplay = ''
     ) {
         return [
             'exclude' => $exclude,
