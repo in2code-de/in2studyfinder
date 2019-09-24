@@ -69,6 +69,7 @@ manipulatePropertyBeforeExport: this signal allows to manipulate values before t
 
 | Version    | Date       | State      | Description                                                                  |
 | ---------- | ---------- | ---------- | ---------------------------------------------------------------------------- |
+| 6.2.3      | 2019-09-24 | BUGFIX     | set no default l10n_display for single select TCA at the TcaUtility. This prevents save issues for required select fields on translated records at TYPO3 7 and 8 (https://forge.typo3.org/issues/77257, https://forge.typo3.org/issues/88452) |
 | 6.2.2      | 2019-09-06 | TASK       | make content object data available in the fast search |
 | 6.2.1      | 2019-08-27 | BUGFIX     | set settings PID for FacultyRepository, fix typo |
 | 6.2.0      | 2019-08-27 | FEATURE    | add new view fast search which shows only an input (select) with the available courses |
