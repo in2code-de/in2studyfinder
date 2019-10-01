@@ -24,8 +24,10 @@ define(['TYPO3/CMS/In2studyfinder/Utility/MiscUtility', 'TYPO3/CMS/In2studyfinde
    * @return {void}
    */
   FilterModule.initialize = function() {
-    FilterModule.setEventListener();
-    FilterModule.prepareFilter();
+    if (document.querySelector(FilterModule.identifiers.filterForm)) {
+      FilterModule.setEventListener();
+      FilterModule.prepareFilter();
+    }
   };
 
   /**
