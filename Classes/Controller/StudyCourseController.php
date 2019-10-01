@@ -165,19 +165,27 @@ class StudyCourseController extends AbstractController
         );
     }
 
+    /**
+     * fastSearchAction
+     */
     public function fastSearchAction()
     {
-        $studyCourses = $this->studyCourseRepository->findAll();
+        if (ConfigurationUtility::isCachingEnabled()) {
+            $cacheIdentifier = $this->getCacheIdentifierForStudyCourses([]);
+            $studyCourses = $this->cacheInstance->get($cacheIdentifier);
 
-        $facultyRepository = $this->objectManager->get(FacultyRepository::class);
-        $defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
-        $defaultQuerySettings->setStoragePageIds([$this->settings['settingsPid']]);
-        $facultyRepository->setDefaultQuerySettings($defaultQuerySettings);
+            if (!$studyCourses) {
+                $studyCourses = $this->studyCourseRepository->findAll();
+                $this->cacheInstance->set($cacheIdentifier, $studyCourses, ['in2studyfinder']);
+            }
+        } else {
+            $studyCourses = $this->studyCourseRepository->findAll();
+        }
 
         $this->view->assignMultiple(
             [
                 'studyCourseCount' => count($studyCourses),
-                'facultyCount' => $facultyRepository->countAll(),
+                'facultyCount' => $this->getFacultyCount(),
                 'studyCourses' => $studyCourses,
                 'data' => $this->configurationManager->getContentObject()->data,
                 'settings' => $this->settings
@@ -186,13 +194,51 @@ class StudyCourseController extends AbstractController
     }
 
     /**
+     * @return int
+     */
+    protected function getFacultyCount()
+    {
+        if (ConfigurationUtility::isCachingEnabled()) {
+            $cacheIdentifier = md5('facultyCount');
+            $facultyCount = $this->cacheInstance->get($cacheIdentifier);
+
+            if (!$facultyCount) {
+                $facultyCount = $this->countFaculties();
+
+                $this->cacheInstance->set($cacheIdentifier, $facultyCount, ['in2studyfinder']);
+            }
+        } else {
+            $facultyCount = $this->countFaculties();
+        }
+
+        if (!empty($facultyCount)) {
+            return $facultyCount;
+        }
+
+        return 0;
+    }
+
+    /**
+     * @return integer
+     */
+    private function countFaculties()
+    {
+        $facultyRepository = $this->objectManager->get(FacultyRepository::class);
+        $defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
+        $defaultQuerySettings->setStoragePageIds([$this->settings['settingsPid']]);
+        $facultyRepository->setDefaultQuerySettings($defaultQuerySettings);
+
+        return $facultyRepository->countAll();
+    }
+
+    /**
      * WORKAROUND
-     *
-     * @see BackendController->listAction
      *
      * @return string
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     * @see BackendController->listAction
+     *
      */
     public function getCoursesJsonAction()
     {
