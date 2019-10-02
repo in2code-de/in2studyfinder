@@ -167,20 +167,12 @@ class StudyCourseController extends AbstractController
 
     /**
      * fastSearchAction
+     *
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      */
     public function fastSearchAction()
     {
-        if (ConfigurationUtility::isCachingEnabled()) {
-            $cacheIdentifier = $this->getCacheIdentifierForStudyCourses([]);
-            $studyCourses = $this->cacheInstance->get($cacheIdentifier);
-
-            if (!$studyCourses) {
-                $studyCourses = $this->studyCourseRepository->findAll();
-                $this->cacheInstance->set($cacheIdentifier, $studyCourses, ['in2studyfinder']);
-            }
-        } else {
-            $studyCourses = $this->studyCourseRepository->findAll();
-        }
+        $studyCourses = $this->processSearch([]);
 
         $this->view->assignMultiple(
             [

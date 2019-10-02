@@ -15,7 +15,7 @@ if (!defined('TYPO3_MODE')) {
     'In2code.in2studyfinder',
     'FastSearch',
     ['StudyCourse' => 'fastSearch'],
-    ['StudyCourse' => 'fastSearch']
+    []
 );
 
 
