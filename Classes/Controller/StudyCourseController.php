@@ -197,24 +197,62 @@ class StudyCourseController extends AbstractController
         );
     }
 
+    /**
+     * fastSearchAction
+     *
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     */
     public function fastSearchAction()
     {
-        $studyCourses = $this->studyCourseRepository->findAll();
-
-        $facultyRepository = $this->objectManager->get(FacultyRepository::class);
-        $defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
-        $defaultQuerySettings->setStoragePageIds([$this->settings['settingsPid']]);
-        $facultyRepository->setDefaultQuerySettings($defaultQuerySettings);
+        $studyCourses = $this->processSearch([]);
 
         $this->view->assignMultiple(
             [
                 'studyCourseCount' => count($studyCourses),
-                'facultyCount' => $facultyRepository->countAll(),
+                'facultyCount' => $this->getFacultyCount(),
                 'studyCourses' => $studyCourses,
                 'data' => $this->configurationManager->getContentObject()->data,
                 'settings' => $this->settings
             ]
         );
+    }
+
+    /**
+     * @return int
+     */
+    protected function getFacultyCount()
+    {
+        if (ConfigurationUtility::isCachingEnabled()) {
+            $cacheIdentifier = md5('facultyCount');
+            $facultyCount = $this->cacheInstance->get($cacheIdentifier);
+
+            if (!$facultyCount) {
+                $facultyCount = $this->countFaculties();
+
+                $this->cacheInstance->set($cacheIdentifier, $facultyCount, ['in2studyfinder']);
+            }
+        } else {
+            $facultyCount = $this->countFaculties();
+        }
+
+        if (!empty($facultyCount)) {
+            return $facultyCount;
+        }
+
+        return 0;
+    }
+
+    /**
+     * @return integer
+     */
+    private function countFaculties()
+    {
+        $facultyRepository = $this->objectManager->get(FacultyRepository::class);
+        $defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
+        $defaultQuerySettings->setStoragePageIds([$this->settings['settingsPid']]);
+        $facultyRepository->setDefaultQuerySettings($defaultQuerySettings);
+
+        return $facultyRepository->countAll();
     }
 
     /**
