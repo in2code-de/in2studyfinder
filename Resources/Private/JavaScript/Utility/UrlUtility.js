@@ -1,4 +1,4 @@
-define([], function() {
+define(['TYPO3/CMS/In2studyfinder/Utility/ArrayUtility'], function(ArrayUtility) {
   'use strict';
 
   var UrlUtility = {};
@@ -53,19 +53,29 @@ define([], function() {
     return value;
   };
 
-  UrlUtility.addHashToUrl = function(attribute, value) {
-    var hash = window.location.hash;
-
-    if (hash) {
-      var split = hash.split('=');
-
-      console.log(split);
+  /**
+   *
+   * @param {string} attribute
+   * @param {array} values
+   */
+  UrlUtility.addOrUpdateHash = function(attribute, values) {
+    var hashArguments = UrlUtility.getHashArgumentsFromUrl();
+    if (hashArguments.length > 0) {
+      var key = ArrayUtility.containsObjectWithKey(hashArguments, 'name', attribute);
+      if (key >= 0) {
+        hashArguments[key]['values'] = values;
+      }
     } else {
-      hash = attribute + '=' + value;
+      hashArguments[0] = {name: attribute, values: values};
     }
 
+    var hash = '#';
+    // write hash
+    for (var i = 0; i <= hashArguments.length - 1; i++) {
+      hash += hashArguments[i].name + '=' + hashArguments[i].values.join();
+    }
 
-    window.location.hash = hash;
+     window.location.hash = hash;
   };
 
   /**
@@ -149,4 +159,5 @@ define([], function() {
   };
 
   return UrlUtility;
-});
+})
+;

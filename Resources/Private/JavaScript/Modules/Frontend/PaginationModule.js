@@ -2,9 +2,10 @@ define(
   [
     'TYPO3/CMS/In2studyfinder/Utility/UrlUtility',
     'TYPO3/CMS/In2studyfinder/Utility/AjaxUtility',
-    'TYPO3/CMS/In2studyfinder/Utility/UiUtility'
+    'TYPO3/CMS/In2studyfinder/Utility/UiUtility',
+    'TYPO3/CMS/In2studyfinder/Modules/Frontend/FilterModule',
   ],
-  function(UrlUtility, AjaxUtility, UiUtility) {
+  function(UrlUtility, AjaxUtility, UiUtility, FilterModule) {
     'use strict';
 
     var PaginationModule = {
@@ -31,46 +32,15 @@ define(
 
     PaginationModule.callPagination = function(event) {
       event.preventDefault();
+      var targetPage = 1;
       var url = event.target.href;
-
-      if (typeof url !== 'undefined') {
-        var targetPage = UrlUtility.getParameterFromUrl(url, 'tx_in2studyfinder_pi1[@widget_0][currentPage]');
-
-        if (typeof targetPage !== 'undefined' && targetPage !== '') {
-          AjaxUtility.ajaxCall(
-            url,
-            PaginationModule.onPaginationCallStart,
-            PaginationModule.onPaginationCallSuccess
-          );
-        }
+      if (UrlUtility.getParameterFromUrl(url, 'tx_in2studyfinder_pi1[@widget_0][currentPage]') !== '') {
+        targetPage = UrlUtility.getParameterFromUrl(url, 'tx_in2studyfinder_pi1[@widget_0][currentPage]');
       }
-    };
 
-    /**
-     * @return {void}
-     */
-    PaginationModule.onPaginationCallStart = function() {
-      UiUtility.enableLoader();
-    };
+      UrlUtility.addOrUpdateHash('page', [targetPage]);
 
-    /**
-     * @param xhttp
-     *
-     * @return {void}
-     */
-    PaginationModule.onPaginationCallSuccess = function(xhttp) {
-      var tempElement = document.createElement('div');
-      tempElement.innerHTML = xhttp.responseText;
-
-      document.querySelector(PaginationModule.identifiers.in2studyfinderContainer).parentNode.replaceChild(
-        tempElement.querySelector(PaginationModule.identifiers.in2studyfinderContainer),
-        document.querySelector(PaginationModule.identifiers.in2studyfinderContainer)
-      );
-
-      var Frontend = require("TYPO3/CMS/In2studyfinder/Frontend");
-      Frontend.initialize();
-
-      UiUtility.disableLoader();
+      FilterModule.updateFilter(targetPage);
     };
 
     return PaginationModule;
