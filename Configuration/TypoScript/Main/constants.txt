@@ -10,9 +10,9 @@ plugin.tx_in2studyfinder {
 
 	persistence {
 		# cat=plugin.tx_in2studyfinder//a; type=string; label=Default storage PID
-		storagePid =
+		storagePid = 0
 		# cat=plugin.tx_in2studyfinder//a; type=string; label=Recursion level of the storagePid
-		recursive =
+		recursive = 1
 
 	}
 

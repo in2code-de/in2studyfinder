@@ -14,6 +14,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\QueryGenerator;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -534,6 +535,22 @@ class StudyCourseController extends AbstractController
 
         if ($pluginRecord['pages'] !== '') {
             $storagePids = GeneralUtility::intExplode(',', $pluginRecord['pages']);
+
+            // add recursive pids if recursive is set in the plugin
+            if ($pluginRecord['recursive'] > 0) {
+                $queryGenerator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(QueryGenerator::class);
+                $recursiveStoragePids = '';
+                foreach ($storagePids as $storagePid) {
+                    $recursiveStoragePids .= $queryGenerator->getTreeList(
+                            $storagePid,
+                            $pluginRecord['recursive'],
+                            0,
+                            1
+                        ) . ',';
+                }
+
+                $storagePids = GeneralUtility::trimExplode(',', $recursiveStoragePids, 1);
+            }
         }
 
         return $storagePids;
