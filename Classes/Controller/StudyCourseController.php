@@ -318,9 +318,6 @@ class StudyCourseController extends AbstractController
         if (ConfigurationUtility::isCachingEnabled()) {
             $cacheIdentifier = $this->getCacheIdentifierForStudyCourses($mergedOptions);
 
-            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($mergedOptions, __CLASS__ . ' in der Zeile ' . __LINE__);
-            die();
-
             $studyCourses = $this->cacheInstance->get($cacheIdentifier);
 
             if (!$studyCourses) {
