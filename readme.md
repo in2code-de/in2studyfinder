@@ -69,6 +69,7 @@ manipulatePropertyBeforeExport: this signal allows to manipulate values before t
 
 | Version    | Date       | State      | Description                                                                  |
 | ---------- | ---------- | ---------- | ---------------------------------------------------------------------------- |
+| 6.2.6      | 2019-12-13 | BUGFIX     | remove debug from studycourse controller |
 | 6.2.5      | 2019-10-16 | BUGFIX     | correct wrong prioritization of selected filter restrictions |
 | 6.2.4      | 2019-10-04 | TASK       | use cache for fast search view to increase the performance |
 | 6.2.3      | 2019-09-24 | BUGFIX     | set no default l10n_display for single select TCA at the TcaUtility. This prevents save issues for required select fields on translated records at TYPO3 7 and 8 (https://forge.typo3.org/issues/77257, https://forge.typo3.org/issues/88452) |
