@@ -1,4 +1,4 @@
-define(['TYPO3/CMS/In2studyfinder/Modules/Backend/Export/SelectCourseModule', 'TYPO3/CMS/In2studyfinder/Modules/Backend/Export/SelectPropertiesModule'], function(SelectCoursesModule, SelectPropertiesModule) {
+define(['TYPO3/CMS/In2studyfinder/Modules/Backend/Export/SelectCoursesModule', 'TYPO3/CMS/In2studyfinder/Modules/Backend/Export/SelectPropertiesModule'], function(SelectCoursesModule, SelectPropertiesModule) {
 	'use strict';
 
 	var ExportModule = {
