@@ -2,7 +2,7 @@
 
 namespace In2code\In2studyfinder\ViewHelpers;
 
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 class ForViewHelper extends AbstractViewHelper
 {
