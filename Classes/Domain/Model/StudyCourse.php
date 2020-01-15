@@ -66,7 +66,6 @@ class StudyCourse extends AbstractEntity implements StudyCourseInterface
      * contentElements
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\TtContent>
-     * @cascade remove
      */
     protected $contentElements = null;
 
