@@ -195,7 +195,7 @@ page {
 	}
 }
 
-[globalVar = LIT:0 < {$plugin.tx_in2studyfinder.settings.javascript.loadRequireJs}]
+[{$plugin.tx_in2studyfinder.settings.javascript.loadRequireJs} == 1]
 	page {
 		footerData.1554801883 {
 			10 = TEXT
@@ -230,7 +230,7 @@ page {
 # different configurations have to be done either in the template extension or in2studyfinder_extend
 ############################
 
-[globalVar = GP:L = 1]
+[siteLanguage("locale") == "en_EN"]
 	page.includeJSFooter.in2studyfinderJavaScriptSelect2Language = EXT:in2studyfinder/Resources/Public/JavaScript/i18n/en.js
 
 	in2studyfinderFilterAjax {
