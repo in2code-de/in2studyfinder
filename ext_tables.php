@@ -4,13 +4,6 @@ if (!defined('TYPO3_MODE')) {
 }
 
 $extensionName = 'in2studyfinder';
-$controller = \In2code\In2studyfinder\Controller\BackendController::class;
-
-if (\In2code\In2studyfinder\Utility\VersionUtility::isTypo3MajorVersionBelow(10)) {
-    $extensionName = 'In2code.in2studyfinder';
-    $controller = 'Backend';
-}
-
 
 /**
  * Include Plugins
@@ -45,7 +38,7 @@ if (TYPO3_MODE === 'BE') {
             'm1',
             '',
             [
-                $controller => 'list, export'
+                \In2code\In2studyfinder\Controller\BackendController::class => 'list, export'
             ],
             [
                 'access' => 'user,group',
@@ -103,13 +96,13 @@ foreach ($flexformConfiguration as $pluginSignature => $flexformPath) {
 }
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
-    'in2studyfinder',
+    $extensionName,
     'Configuration/TypoScript/Main',
     'In2studyfinder Basic Template'
 );
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
-    'in2studyfinder',
+    $extensionName,
     'Configuration/TypoScript/Css',
     'In2studyfinder Demo CSS Template'
 );
@@ -138,7 +131,7 @@ foreach ($tables as $table) {
 
 if (\In2code\In2studyfinder\Utility\ConfigurationUtility::isCategorisationEnabled()) {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable(
-        'in2studyfinder',
+        $extensionName,
         \In2code\In2studyfinder\Domain\Model\StudyCourse::TABLE
     );
 }
