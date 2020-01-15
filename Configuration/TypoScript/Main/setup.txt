@@ -187,8 +187,8 @@ page {
 		20 = TEXT
 		20 {
 			value (
-			jquery = 'jquery-3.2.1'
-			require(['/typo3conf/ext/in2studyfinder/Resources/Public/JavaScript/main.js']);
+				jquery = 'jquery'
+				require(['/typo3conf/ext/in2studyfinder/Resources/Public/JavaScript/main.js']);
 			)
 			wrap = <script>|</script>
 		}
@@ -204,21 +204,6 @@ page {
 				stdWrap.insertData = 1
 				wrap = <script src="|"></script>
 				noTrimWrap = | ||
-			}
-		}
-	}
-[end]
-
-
-[compatVersion = 9.5.0]
-	page {
-		footerData.1554801883 {
-			20 = TEXT
-			20 {
-				value (
-				jquery = 'jquery'
-				require(['/typo3conf/ext/in2studyfinder/Resources/Public/JavaScript/main.js']);
-				)
 			}
 		}
 	}
