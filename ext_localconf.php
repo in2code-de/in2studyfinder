@@ -5,14 +5,14 @@ if (!defined('TYPO3_MODE')) {
 }
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'In2code.in2studyfinder',
+    'in2studyfinder',
     'Pi1',
     ['StudyCourse' => 'filter, getCoursesJson'],
     ['StudyCourse' => 'filter, getCoursesJson']
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'In2code.in2studyfinder',
+    'in2studyfinder',
     'FastSearch',
     ['StudyCourse' => 'fastSearch'],
     []
@@ -20,7 +20,7 @@ if (!defined('TYPO3_MODE')) {
 
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'In2code.in2studyfinder',
+    'in2studyfinder',
     'Pi2',
     ['StudyCourse' => 'detail'],
     []
