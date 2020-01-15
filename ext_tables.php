@@ -9,19 +9,19 @@ $extKey = 'in2studyfinder';
  * Include Plugins
  */
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'In2code.' . $extKey,
+    $extKey,
     'Pi1',
     'Studiengangsfinder Listenansicht'
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'In2code.' . $extKey,
+    $extKey,
     'FastSearch',
     'Studiengangsfinder Schnellsuche'
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'In2code.' . $extKey,
+    $extKey,
     'Pi2',
     'Studiengangsfinder Detailansicht'
 );
