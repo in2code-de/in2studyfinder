@@ -4,6 +4,7 @@ namespace In2code\In2studyfinder\Utility;
 
 use In2code\In2studyfinder\Domain\Model\TtContent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
@@ -47,7 +48,7 @@ class ExtensionUtility extends AbstractUtility
     {
         $record = BackendUtility::getRecord(TtContent::TABLE, $uid);
 
-        $flexFormService = FlexFormUtility::getFlexFormService();
+        $flexFormService = self::getObjectManager()->get(FlexFormService::class);
         $flexFormSettings = $flexFormService->convertFlexFormContentToArray($record['pi_flexform']);
 
         return $flexFormSettings['settings'];

@@ -4,7 +4,7 @@ namespace In2code\In2studyfinder\Hooks;
 
 use In2code\In2studyfinder\Utility\AbstractUtility;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
-use In2code\In2studyfinder\Utility\FlexFormUtility;
+use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface;
@@ -204,7 +204,7 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
         $this->settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
         $this->templatePathAndFile = $this->settings['backend']['pluginPreviewTemplate'];
 
-        $flexFormService = FlexFormUtility::getFlexFormService();
+        $flexFormService = ExtensionUtility::getObjectManager()->get(FlexFormService::class);
         $this->flexFormData = $flexFormService->convertFlexFormContentToArray($this->row['pi_flexform']);
     }
 
