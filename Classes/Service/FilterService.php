@@ -234,7 +234,6 @@ class FilterService extends AbstractService
             );
             unset($this->filter[$filterName]);
         }
-
     }
 
     /**
@@ -242,6 +241,15 @@ class FilterService extends AbstractService
      */
     protected function buildFilter()
     {
+        if (empty($this->settings['settingsPid'])) {
+            $this->logger->error(
+                'No plugin.tx_in2studyfinder.settings.settingsPid is set! This results in not appearing filter options in the frontend.',
+                [
+                    'additionalInfo' => ['class' => __CLASS__, 'method' => __METHOD__, 'line' => __LINE__]
+                ]
+            );
+        }
+
         foreach ((array)$this->getTypoScriptFilterConfiguration() as $filterName => $filterProperties) {
             if ($filterProperties['type'] && $filterProperties['propertyPath'] && $filterProperties['frontendLabel']) {
 
