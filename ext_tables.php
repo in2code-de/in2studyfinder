@@ -3,25 +3,23 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
-$extensionName = 'in2studyfinder';
-
 /**
  * Include Plugins
  */
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    $extensionName,
+    'In2studyfinder',
     'Pi1',
     'Studiengangsfinder Listenansicht'
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    $extensionName,
+    'In2studyfinder',
     'FastSearch',
     'Studiengangsfinder Schnellsuche'
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    $extensionName,
+    'In2studyfinder',
     'Pi2',
     'Studiengangsfinder Detailansicht'
 );
@@ -33,7 +31,7 @@ if (TYPO3_MODE === 'BE') {
      */
     if (TYPO3_MODE === 'BE' && \In2code\In2studyfinder\Utility\ConfigurationUtility::isBackendModuleEnabled()) {
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-            $extensionName,
+            'In2studyfinder',
             'web',
             'm1',
             '',
@@ -96,13 +94,13 @@ foreach ($flexformConfiguration as $pluginSignature => $flexformPath) {
 }
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
-    $extensionName,
+    'in2studyfinder',
     'Configuration/TypoScript/Main',
     'In2studyfinder Basic Template'
 );
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
-    $extensionName,
+    'in2studyfinder',
     'Configuration/TypoScript/Css',
     'In2studyfinder Demo CSS Template'
 );
@@ -131,7 +129,7 @@ foreach ($tables as $table) {
 
 if (\In2code\In2studyfinder\Utility\ConfigurationUtility::isCategorisationEnabled()) {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable(
-        $extensionName,
+        'in2studyfinder',
         \In2code\In2studyfinder\Domain\Model\StudyCourse::TABLE
     );
 }
