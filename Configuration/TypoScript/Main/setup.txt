@@ -208,21 +208,3 @@ page {
 		}
 	}
 [end]
-
-############################
-# Default language configuration 0=de / 1=en
-#
-# different configurations have to be done either in the template extension or in2studyfinder_extend
-############################
-
-[siteLanguage("locale") == "en_EN"]
-	page.includeJSFooter.in2studyfinderJavaScriptSelect2Language = EXT:in2studyfinder/Resources/Public/JavaScript/i18n/en.js
-
-	in2studyfinderFilterAjax {
-		config {
-			sys_language_uid = 1
-			sys_language_mode = strict
-			language = en
-		}
-	}
-[end]
