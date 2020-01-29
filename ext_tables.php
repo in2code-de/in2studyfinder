@@ -3,6 +3,15 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
+$controller = \In2code\In2studyfinder\Controller\BackendController::class;
+$extensionName = 'In2studyfinder';
+
+if (\In2code\In2studyfinder\Utility\VersionUtility::isTypo3MajorVersionBelow(10)) {
+    $controller = 'Backend';
+    $extensionName = 'In2code.in2studyfinder';
+}
+
+
 /**
  * Include Plugins
  */
@@ -31,12 +40,12 @@ if (TYPO3_MODE === 'BE') {
      */
     if (TYPO3_MODE === 'BE' && \In2code\In2studyfinder\Utility\ConfigurationUtility::isBackendModuleEnabled()) {
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-            'In2studyfinder',
+            $extensionName,
             'web',
             'm1',
             '',
             [
-                \In2code\In2studyfinder\Controller\BackendController::class => 'list, export'
+                $controller => 'list, export'
             ],
             [
                 'access' => 'user,group',
