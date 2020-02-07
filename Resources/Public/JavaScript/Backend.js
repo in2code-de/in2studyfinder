@@ -1,1 +1,0 @@
-define(["TYPO3/CMS/In2studyfinder/Modules/Backend/ExportModule"],function(e){"use strict";e.initialize()});

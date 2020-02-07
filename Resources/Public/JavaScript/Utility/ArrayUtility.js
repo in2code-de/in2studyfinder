@@ -1,1 +1,0 @@
-define([],function(){"use strict";var r={isInArray:function(r,n){return-1<n.indexOf(r)},containsObjectWithKey:function(r,n,t){if(Array.isArray(r))for(var e=0;e<=r.length-1;e++)if(r[e]instanceof Object&&r[e].hasOwnProperty(n)&&r[e][n]===t)return e;return-1}};return r});

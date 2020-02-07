@@ -2,18 +2,22 @@
   "name": "in2studyfinder",
   "version": "1.0.0",
   "description": "",
-  "main": "gulpfile.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
   },
   "author": "in2code.de",
   "license": "GPL2",
   "devDependencies": {
-    "gulp": "^4.0",
-    "gulp-plumber": "^1.2",
-    "gulp-rename": "^1.4",
-    "gulp-sass": "^4.0",
-    "gulp-uglify": "^3.0",
-    "del": "^3.0"
+    "@babel/core": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
+    "@babel/register": "^7.8.3",
+    "babel-loader": "^8.0.6",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.8.3"
   }
 }

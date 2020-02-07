@@ -1,8 +1,11 @@
-define(['TYPO3/CMS/In2studyfinder/Utility/MiscUtility', 'TYPO3/CMS/In2studyfinder/Utility/ArrayUtility', 'TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/Utility/UrlUtility', 'TYPO3/CMS/In2studyfinder/Utility/AjaxUtility'], function(MiscUtility, ArrayUtility, UiUtility, UrlUtility, AjaxUtility) {
-  'use strict';
+import {UrlUtility, UiUtility, ArrayUtility} from "../Utility";
 
-  var FilterModule = {
-    identifiers: {
+import {loader} from "../Components/Loader";
+import {frontend} from "../Frontend";
+
+class FilterModule {
+  constructor() {
+    this.identifiers = {
       in2studyfinderContainer: '.in2studyfinder',
       filterForm: '.js-in2studyfinder-filter',
       filterContainer: '.js-in2studyfinder-filter-options',
@@ -14,43 +17,44 @@ define(['TYPO3/CMS/In2studyfinder/Utility/MiscUtility', 'TYPO3/CMS/In2studyfinde
       hideFilterButton: '.js-in2studyfinder-filter-button-reset',
       hideElement: '.u-in2studyfinder-hide',
       isHidden: '.is-hidden'
-    },
-    filter: []
-  };
+    };
+
+    this.filter = [];
+  }
 
   /**
    * initialize function
    *
    * @return {void}
    */
-  FilterModule.initialize = function() {
-    if (document.querySelector(FilterModule.identifiers.filterForm)) {
-      FilterModule.setEventListener();
-      FilterModule.prepareFilter();
+  initialize() {
+    if (document.querySelector(this.identifiers.filterForm)) {
+      this.setEventListener();
+      this.prepareFilter();
     }
   };
 
   /**
    *
    */
-  FilterModule.prepareFilter = function() {
-    FilterModule.prepareCheckboxes();
+  prepareFilter() {
+    this.prepareCheckboxes();
 
     // trigger filter update by hash arguments
     var hashArguments = UrlUtility.getHashArgumentsFromUrl();
     if (hashArguments.length > 0 && document.querySelector('[data-in2studyfinder-isAjax="1"]') === null) {
-      FilterModule.updateFilterByHashArguments(hashArguments);
+      this.updateFilterByHashArguments(hashArguments);
     }
 
     // open selected filter sections
-    if (FilterModule.filter.length > 0) {
-      FilterModule.toggleFilterVisibility();
+    if (this.filter.length > 0) {
+      this.toggleFilterVisibility();
 
-      for (var i = 0; i < FilterModule.filter.length; i++) {
-        var filterFieldset = document.querySelector('[data-filtergroup="' + FilterModule.filter[i] + '"]');
-        var filter = filterFieldset.querySelector(FilterModule.identifiers.filterContainer);
+      for (var i = 0; i < this.filter.length; i++) {
+        var filterFieldset = document.querySelector('[data-filtergroup="' + this.filter[i] + '"]');
+        var filter = filterFieldset.querySelector(this.identifiers.filterContainer);
 
-        UiUtility.toggleClassForElement(filter, FilterModule.identifiers.isHidden.substr(1));
+        UiUtility.toggleClassForElement(filter, this.identifiers.isHidden.substr(1));
       }
     }
   };
@@ -58,18 +62,18 @@ define(['TYPO3/CMS/In2studyfinder/Utility/MiscUtility', 'TYPO3/CMS/In2studyfinde
   /**
    * removes checked value from checkboxes where not needed
    */
-  FilterModule.prepareCheckboxes = function() {
-    var filterContainer = document.querySelectorAll(FilterModule.identifiers.filterContainer);
+  prepareCheckboxes() {
+    var filterContainer = document.querySelectorAll(this.identifiers.filterContainer);
 
     for (var i = 0; i < filterContainer.length; i++) {
-      var filterStatus = FilterModule.isFilterSet(filterContainer[i]);
+      var filterStatus = this.isFilterSet(filterContainer[i]);
 
       if (filterStatus) {
-        if (FilterModule.filter.indexOf(filterContainer[i].parentNode.getAttribute('data-filtergroup')) === -1) {
-          FilterModule.filter.push(filterContainer[i].parentNode.getAttribute('data-filtergroup'));
+        if (this.filter.indexOf(filterContainer[i].parentNode.getAttribute('data-filtergroup')) === -1) {
+          this.filter.push(filterContainer[i].parentNode.getAttribute('data-filtergroup'));
         }
 
-        var showAllCheckbox = filterContainer[i].querySelector(FilterModule.identifiers.filterCheckboxAll);
+        var showAllCheckbox = filterContainer[i].querySelector(this.identifiers.filterCheckboxAll);
         showAllCheckbox.checked = false;
         showAllCheckbox.disabled = false;
       }
@@ -80,7 +84,7 @@ define(['TYPO3/CMS/In2studyfinder/Utility/MiscUtility', 'TYPO3/CMS/In2studyfinde
    *
    * @param hashArguments
    */
-  FilterModule.updateFilterByHashArguments = function(hashArguments) {
+  updateFilterByHashArguments(hashArguments) {
     for (var i = 0; i < hashArguments.length; i++) {
       var page = 1;
       // if argument page is set
@@ -101,57 +105,59 @@ define(['TYPO3/CMS/In2studyfinder/Utility/MiscUtility', 'TYPO3/CMS/In2studyfinde
           }
 
           if (status) {
-            filterFieldset.querySelector(FilterModule.identifiers.filterCheckboxAll).checked = false;
+            filterFieldset.querySelector(this.identifiers.filterCheckboxAll).checked = false;
           }
         }
       }
     }
 
-    FilterModule.updateFilter(page);
+    this.updateFilter(page);
   };
 
 
   /**
    * sets event listeners
    */
-  FilterModule.setEventListener = function() {
+  setEventListener() {
     // hide filter button
-    var hideFilter = document.querySelector(FilterModule.identifiers.hideFilterButton);
-    hideFilter.addEventListener('click', FilterModule.resetAllFilter);
+    var hideFilter = document.querySelector(this.identifiers.hideFilterButton);
+    hideFilter.addEventListener('click', this.resetAllFilter);
 
     // show filter button
-    var showFilter = document.querySelector(FilterModule.identifiers.showFilterButton);
-    showFilter.addEventListener('click', FilterModule.toggleFilterVisibility);
+    var showFilter = document.querySelector(this.identifiers.showFilterButton);
+    showFilter.addEventListener('click', this.toggleFilterVisibility);
 
     // toggle filter section visibility
-    FilterModule.setFilterVisibilityEventListener();
+    this.setFilterVisibilityEventListener();
 
     // set eventListener for filter checkboxes
-    FilterModule.setFilterCheckboxEventListener();
+    this.setFilterCheckboxEventListener();
   };
 
   /**
    * add checkbox event listener
    */
-  FilterModule.setFilterCheckboxEventListener = function() {
+  setFilterCheckboxEventListener() {
+    let filterModule = this;
+
     document.querySelector('.c-in2studyfinder-filter__sections').addEventListener('click', function(evt) {
         var target = evt.target;
 
         if (target.tagName === 'INPUT') {
           // if an show all checkbox is clicked
-          if (target.classList.contains(FilterModule.identifiers.filterCheckboxAll.substr(1))) {
+          if (target.classList.contains(filterModule.identifiers.filterCheckboxAll.substr(1))) {
             var filterContainer = target.parentNode;
-            FilterModule.resetFilter(filterContainer);
+            filterModule.resetFilter(filterContainer);
           }
 
           // if an specific filter checkbox is clicked
-          if (target.classList.contains(FilterModule.identifiers.filterCheckbox.substr(1))) {
-            var showAllCheckbox = target.parentNode.querySelector(FilterModule.identifiers.filterCheckboxAll);
+          if (target.classList.contains(filterModule.identifiers.filterCheckbox.substr(1))) {
+            var showAllCheckbox = target.parentNode.querySelector(filterModule.identifiers.filterCheckboxAll);
             showAllCheckbox.checked = false;
             showAllCheckbox.disabled = false;
           }
 
-          FilterModule.updateFilter();
+          filterModule.updateFilter();
         }
       }
     );
@@ -160,19 +166,18 @@ define(['TYPO3/CMS/In2studyfinder/Utility/MiscUtility', 'TYPO3/CMS/In2studyfinde
   /**
    * reset all filter
    */
-  FilterModule.resetAllFilter = function() {
-
-    if (FilterModule.filter.length === 0) {
-      FilterModule.toggleFilterVisibility();
+  resetAllFilter() {
+    if (filterModule.filter.length === 0) {
+      filterModule.toggleFilterVisibility();
     } else {
-      var filterContainers = document.querySelectorAll(FilterModule.identifiers.filterContainer);
-      FilterModule.toggleFilterVisibility();
+      var filterContainers = document.querySelectorAll(filterModule.identifiers.filterContainer);
+      filterModule.toggleFilterVisibility();
 
       for (var i = 0; i < filterContainers.length; i++) {
-        FilterModule.resetFilter(filterContainers[i]);
+        filterModule.resetFilter(filterContainers[i]);
       }
 
-      FilterModule.updateFilter();
+      filterModule.updateFilter();
     }
   };
 
@@ -181,9 +186,9 @@ define(['TYPO3/CMS/In2studyfinder/Utility/MiscUtility', 'TYPO3/CMS/In2studyfinde
    *
    * @param filterContainer
    */
-  FilterModule.resetFilter = function(filterContainer) {
-    var showAllCheckbox = filterContainer.querySelector(FilterModule.identifiers.filterCheckboxAll);
-    var filterCheckboxes = filterContainer.querySelectorAll(FilterModule.identifiers.filterCheckbox);
+  resetFilter(filterContainer) {
+    var showAllCheckbox = filterContainer.querySelector(this.identifiers.filterCheckboxAll);
+    var filterCheckboxes = filterContainer.querySelectorAll(this.identifiers.filterCheckbox);
 
     showAllCheckbox.checked = true;
     showAllCheckbox.disabled = true;
@@ -192,9 +197,9 @@ define(['TYPO3/CMS/In2studyfinder/Utility/MiscUtility', 'TYPO3/CMS/In2studyfinde
       filterCheckboxes[i].checked = false;
     }
 
-    var index = FilterModule.filter.indexOf(filterContainer.parentNode.getAttribute('data-filtergroup'));
+    var index = this.filter.indexOf(filterContainer.parentNode.getAttribute('data-filtergroup'));
     if (index !== -1) {
-      FilterModule.filter.splice(index, 1);
+      this.filter.splice(index, 1);
     }
   };
 
@@ -203,13 +208,15 @@ define(['TYPO3/CMS/In2studyfinder/Utility/MiscUtility', 'TYPO3/CMS/In2studyfinde
    *
    * update the filtering
    */
-  FilterModule.updateFilter = function(paginationPage) {
-    var in2studyfinderContainer = document.querySelector(FilterModule.identifiers.in2studyfinderContainer);
-    var filterForm = document.querySelector(FilterModule.identifiers.filterForm);
+  updateFilter(paginationPage) {
+    var in2studyfinderContainer = document.querySelector(this.identifiers.in2studyfinderContainer);
+    var filterForm = document.querySelector(this.identifiers.filterForm);
     var pluginUid = in2studyfinderContainer.getAttribute('data-plugin-uid');
     var pid = in2studyfinderContainer.getAttribute('data-pid');
     var sysLanguageUid = in2studyfinderContainer.getAttribute('data-in2studyfinder-language');
     var pluginUidArgument = '', languageArgument = '', paginationArgument = '', url = '';
+
+    console.log(sysLanguageUid);
 
     if (typeof paginationPage === 'undefined') {
       paginationPage = 1;
@@ -234,25 +241,26 @@ define(['TYPO3/CMS/In2studyfinder/Utility/MiscUtility', 'TYPO3/CMS/In2studyfinde
     }
 
     var xhttp = new XMLHttpRequest();
+    let filterModule = this;
+
     xhttp.onreadystatechange = function() {
       if (this.readyState === 1) {
-        UiUtility.enableLoader();
+        loader.enableLoader();
       }
 
       if (this.readyState === 4 && this.status === 200) {
-        FilterModule.setSelectedFilterToUrl(paginationPage);
+        filterModule.setSelectedFilterToUrl(paginationPage);
 
         var tempElement = document.createElement('div');
         tempElement.innerHTML = xhttp.responseText;
 
-        document.querySelector(FilterModule.identifiers.in2studyfinderContainer).parentNode.replaceChild(
-          tempElement.querySelector(FilterModule.identifiers.in2studyfinderContainer),
-          document.querySelector(FilterModule.identifiers.in2studyfinderContainer)
+        document.querySelector(filterModule.identifiers.in2studyfinderContainer).parentNode.replaceChild(
+          tempElement.querySelector(filterModule.identifiers.in2studyfinderContainer),
+          document.querySelector(filterModule.identifiers.in2studyfinderContainer)
         );
 
-        var Frontend = require("TYPO3/CMS/In2studyfinder/Frontend");
-        Frontend.initialize();
-        UiUtility.disableLoader();
+        frontend.initialize();
+        loader.disableLoader();
       }
     };
 
@@ -264,13 +272,13 @@ define(['TYPO3/CMS/In2studyfinder/Utility/MiscUtility', 'TYPO3/CMS/In2studyfinde
   /**
    * Save Selected Options to Url
    */
-  FilterModule.setSelectedFilterToUrl = function(paginationPage) {
+  setSelectedFilterToUrl(paginationPage) {
     var selectionString = '';
-    var form = document.querySelector(FilterModule.identifiers.filterForm);
-    var fieldsetNodeList = form.querySelectorAll(FilterModule.identifiers.filterFieldset);
+    var form = document.querySelector(this.identifiers.filterForm);
+    var fieldsetNodeList = form.querySelectorAll(this.identifiers.filterFieldset);
 
     for (var i = 0; i < fieldsetNodeList.length; i++) {
-      var selectedOptions = fieldsetNodeList[i].querySelectorAll(FilterModule.identifiers.filterCheckbox + ':checked');
+      var selectedOptions = fieldsetNodeList[i].querySelectorAll(this.identifiers.filterCheckbox + ':checked');
 
       if (selectedOptions.length > 0) {
         selectionString += fieldsetNodeList[i].getAttribute('data-filtergroup') + '=';
@@ -306,16 +314,16 @@ define(['TYPO3/CMS/In2studyfinder/Utility/MiscUtility', 'TYPO3/CMS/In2studyfinde
    * has only an style class yet. Later an js class will be added
    * to the container.
    */
-  FilterModule.setFilterVisibilityEventListener = function() {
+  setFilterVisibilityEventListener() {
 
-    var fieldsets = document.querySelectorAll(FilterModule.identifiers.filterFieldset);
+    var fieldsets = document.querySelectorAll(filterModule.identifiers.filterFieldset);
 
     for (var i = 0; i < fieldsets.length; i++) {
-      fieldsets[i].querySelector(FilterModule.identifiers.filterLegend).addEventListener('click', function() {
+      fieldsets[i].querySelector(filterModule.identifiers.filterLegend).addEventListener('click', function() {
         var targetFilter = this.parentNode;
-        var filter = targetFilter.querySelector(FilterModule.identifiers.filterContainer);
+        var filter = targetFilter.querySelector(filterModule.identifiers.filterContainer);
 
-        UiUtility.toggleClassForElement(filter, FilterModule.identifiers.isHidden.substr(1));
+        UiUtility.toggleClassForElement(filter, filterModule.identifiers.isHidden.substr(1));
       });
     }
   };
@@ -323,21 +331,20 @@ define(['TYPO3/CMS/In2studyfinder/Utility/MiscUtility', 'TYPO3/CMS/In2studyfinde
   /**
    * Toggles the filter fieldset visibility
    */
-  FilterModule.toggleFilterVisibility = function() {
-
+  toggleFilterVisibility() {
     // toggle fieldset Visibility
-    var filterFieldSets = document.querySelectorAll(FilterModule.identifiers.filterFieldset);
+    var filterFieldSets = document.querySelectorAll(filterModule.identifiers.filterFieldset);
 
     for (var i = 0; i < filterFieldSets.length; i++) {
-      UiUtility.toggleClassForElement(filterFieldSets[i], FilterModule.identifiers.hideElement.substr(1));
+      UiUtility.toggleClassForElement(filterFieldSets[i], filterModule.identifiers.hideElement.substr(1));
 
     }
 
     // toggle button Visibility
-    var showFilterButton = document.querySelector(FilterModule.identifiers.showFilterButton);
-    var hideFilterButton = document.querySelector(FilterModule.identifiers.hideFilterButton);
-    UiUtility.toggleClassForElement(showFilterButton, FilterModule.identifiers.hideElement.substr(1));
-    UiUtility.toggleClassForElement(hideFilterButton, FilterModule.identifiers.hideElement.substr(1));
+    var showFilterButton = document.querySelector(filterModule.identifiers.showFilterButton);
+    var hideFilterButton = document.querySelector(filterModule.identifiers.hideFilterButton);
+    UiUtility.toggleClassForElement(showFilterButton, filterModule.identifiers.hideElement.substr(1));
+    UiUtility.toggleClassForElement(hideFilterButton, filterModule.identifiers.hideElement.substr(1));
   };
 
   /**
@@ -346,10 +353,10 @@ define(['TYPO3/CMS/In2studyfinder/Utility/MiscUtility', 'TYPO3/CMS/In2studyfinde
    * @param filterContainer
    * @returns {boolean}
    */
-  FilterModule.isFilterSet = function(filterContainer) {
+  isFilterSet(filterContainer) {
     var status = false;
 
-    var filterCheckboxes = filterContainer.querySelectorAll(FilterModule.identifiers.filterCheckbox);
+    var filterCheckboxes = filterContainer.querySelectorAll(this.identifiers.filterCheckbox);
 
     for (var i = 0; i < filterCheckboxes.length; i++) {
       if (filterCheckboxes[i].checked) {
@@ -359,6 +366,6 @@ define(['TYPO3/CMS/In2studyfinder/Utility/MiscUtility', 'TYPO3/CMS/In2studyfinde
 
     return status;
   };
+}
 
-  return FilterModule;
-});
+export let filterModule = new FilterModule();

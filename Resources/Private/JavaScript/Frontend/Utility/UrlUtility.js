@@ -1,14 +1,12 @@
-define(['TYPO3/CMS/In2studyfinder/Utility/ArrayUtility'], function(ArrayUtility) {
-  'use strict';
+import {ArrayUtility} from "./ArrayUtility";
 
-  var UrlUtility = {};
-
+class UrlUtility {
   /**
    * initialized all functions
    *
    * @return {void}
    */
-  UrlUtility.removeParameterFromUrl = function(url, parameter) {
+  static removeParameterFromUrl(url, parameter) {
     var urlParts = url.split('?');
     if (urlParts.length >= 2) {
 
@@ -30,7 +28,7 @@ define(['TYPO3/CMS/In2studyfinder/Utility/ArrayUtility'], function(ArrayUtility)
     }
   };
 
-  UrlUtility.getParameterFromUrl = function(url, parameter) {
+  static getParameterFromUrl(url, parameter) {
 
     var parts = url.split('?'),
       value = '';
@@ -58,8 +56,8 @@ define(['TYPO3/CMS/In2studyfinder/Utility/ArrayUtility'], function(ArrayUtility)
    * @param {string} attribute
    * @param {array} values
    */
-  UrlUtility.addOrUpdateHash = function(attribute, values) {
-    var hashArguments = UrlUtility.getHashArgumentsFromUrl();
+  static addOrUpdateHash(attribute, values) {
+    var hashArguments = this.getHashArgumentsFromUrl();
     if (hashArguments.length > 0) {
       var key = ArrayUtility.containsObjectWithKey(hashArguments, 'name', attribute);
       if (key >= 0) {
@@ -75,7 +73,7 @@ define(['TYPO3/CMS/In2studyfinder/Utility/ArrayUtility'], function(ArrayUtility)
       hash += hashArguments[i].name + '=' + hashArguments[i].values.join();
     }
 
-     window.location.hash = hash;
+    window.location.hash = hash;
   };
 
   /**
@@ -85,7 +83,7 @@ define(['TYPO3/CMS/In2studyfinder/Utility/ArrayUtility'], function(ArrayUtility)
    * @param value
    * @returns {string|*}
    */
-  UrlUtility.addAttributeToUrl = function(url, attribute, value) {
+  static addAttributeToUrl(url, attribute, value) {
 
     var divider = '?';
 
@@ -104,7 +102,7 @@ define(['TYPO3/CMS/In2studyfinder/Utility/ArrayUtility'], function(ArrayUtility)
    * @param form
    * @returns {string}
    */
-  UrlUtility.serialize = function(form) {
+  static serialize(form) {
     var field, s = [];
     if (typeof form === 'object' && form.nodeName === 'FORM') {
       var len = form.elements.length;
@@ -135,7 +133,7 @@ define(['TYPO3/CMS/In2studyfinder/Utility/ArrayUtility'], function(ArrayUtility)
   /**
    * @return array
    */
-  UrlUtility.getHashArgumentsFromUrl = function() {
+  static getHashArgumentsFromUrl() {
     if (window.location.hash) {
       var hash = window.location.hash.split('#')[1];
       var argumentArray = hash.split(/[&;]/g);
@@ -157,7 +155,6 @@ define(['TYPO3/CMS/In2studyfinder/Utility/ArrayUtility'], function(ArrayUtility)
     return [];
 
   };
+}
 
-  return UrlUtility;
-})
-;
+export {UrlUtility}
