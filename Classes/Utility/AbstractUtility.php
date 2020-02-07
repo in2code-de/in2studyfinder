@@ -2,6 +2,8 @@
 
 namespace In2code\In2studyfinder\Utility;
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -32,5 +34,14 @@ class AbstractUtility
     public static function getExtensionConfiguration()
     {
         return $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['in2studyfinder'];
+    }
+
+    /**
+     * @param string $table
+     * @return QueryBuilder
+     */
+    protected static function getQueryBuilderForTable($table)
+    {
+        return GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
     }
 }
