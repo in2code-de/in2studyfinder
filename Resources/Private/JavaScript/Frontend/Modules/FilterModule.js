@@ -337,7 +337,6 @@ class FilterModule {
 
     for (var i = 0; i < filterFieldSets.length; i++) {
       UiUtility.toggleClassForElement(filterFieldSets[i], filterModule.identifiers.hideElement.substr(1));
-
     }
 
     // toggle button Visibility

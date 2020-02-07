@@ -4,12 +4,8 @@ declare(strict_types=1);
 namespace In2code\In2studyfinder\Service;
 
 use In2code\In2studyfinder\Domain\Model\StudyCourseInterface;
-use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use In2code\In2studyfinder\Utility\FrontendUtility;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
@@ -26,11 +22,6 @@ class FilterService extends AbstractService
     protected $settings = [];
 
     /**
-     * @var FrontendInterface
-     */
-    protected $cacheInstance = null;
-
-    /**
      * @var array
      */
     protected $filter = [];
@@ -43,20 +34,6 @@ class FilterService extends AbstractService
         parent::__construct();
 
         $this->settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
-
-        if (ConfigurationUtility::isCachingEnabled()) {
-            $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
-
-            try {
-                $this->cacheInstance = $cacheManager->getCache('in2studyfinder');
-            } catch (NoSuchCacheException $exception) {
-                $this->logger->error(
-                    'The Cache "in2studyfinder" does not exist.',
-                    ['additionalInfo' => ['class' => __CLASS__, 'method' => __METHOD__, 'line' => __LINE__]]
-                );
-            }
-        }
-
         $this->setFilter();
     }
 
@@ -110,18 +87,7 @@ class FilterService extends AbstractService
 
     public function setFilter()
     {
-        if (ConfigurationUtility::isCachingEnabled()) {
-            $cacheIdentifier = $this->getCacheIdentifier($this->getTypoScriptFilterConfiguration());
-
-            if ($this->cacheInstance->has($cacheIdentifier)) {
-                $this->filter = $this->cacheInstance->get($cacheIdentifier);
-            } else {
-                $this->buildFilter();
-                $this->cacheInstance->set($cacheIdentifier, $this->filter, ['in2studyfinder']);
-            }
-        } else {
-            $this->buildFilter();
-        }
+        $this->buildFilter();
     }
 
     /**
@@ -234,7 +200,6 @@ class FilterService extends AbstractService
             );
             unset($this->filter[$filterName]);
         }
-
     }
 
     /**
@@ -242,6 +207,15 @@ class FilterService extends AbstractService
      */
     protected function buildFilter()
     {
+        if (empty($this->settings['settingsPid'])) {
+            $this->logger->error(
+                'No plugin.tx_in2studyfinder.settings.settingsPid is set! This results in not appearing filter options in the frontend.',
+                [
+                    'additionalInfo' => ['class' => __CLASS__, 'method' => __METHOD__, 'line' => __LINE__]
+                ]
+            );
+        }
+
         foreach ((array)$this->getTypoScriptFilterConfiguration() as $filterName => $filterProperties) {
             if ($filterProperties['type'] && $filterProperties['propertyPath'] && $filterProperties['frontendLabel']) {
 
@@ -293,28 +267,5 @@ class FilterService extends AbstractService
         }
 
         return [];
-    }
-
-    /**
-     * @param array $identifierProperties
-     * @return string
-     */
-    protected function getCacheIdentifier(array $identifierProperties): string
-    {
-
-        if (empty($identifierProperties)) {
-            $this->logger->warning(
-                'Empty identifierProperties given. This can lead to overwritten and therefore useless caching.',
-                ['additionalInfo' => ['class' => __CLASS__, 'method' => __METHOD__, 'line' => __LINE__]]
-            );
-        }
-
-        return md5(
-            FrontendUtility::getCurrentPageIdentifier()
-            . '-'
-            . FrontendUtility::getCurrentSysLanguageUid()
-            . '-'
-            . json_encode($identifierProperties)
-        );
     }
 }
