@@ -366,6 +366,7 @@ class StudyCourseController extends AbstractController
                     'propertyPath' => $filterProperties['propertyPath'],
                     'frontendLabel' => $frontendLabel,
                     'disabledInFrontend' => $disabledInFrontend,
+                    'singleSelect' => $filterProperties['singleSelect']
                 ];
 
                 switch ($filterProperties['type']) {

@@ -9,6 +9,7 @@ define(['TYPO3/CMS/In2studyfinder/Utility/MiscUtility', 'TYPO3/CMS/In2studyfinde
       filterFieldset: '.js-in2studyfinder-filter-section',
       filterLegend: '.js-in2studyfinder-filter-legend',
       filterCheckbox: '.in2studyfinder-js-checkbox',
+      filterRadio: '.in2studyfinder-js-radio',
       filterCheckboxAll: '.in2studyfinder-js-checkbox-all',
       showFilterButton: '.js-in2studyfinder-filter-button-show',
       hideFilterButton: '.js-in2studyfinder-filter-button-reset',
@@ -145,7 +146,9 @@ define(['TYPO3/CMS/In2studyfinder/Utility/MiscUtility', 'TYPO3/CMS/In2studyfinde
           }
 
           // if an specific filter checkbox is clicked
-          if (target.classList.contains(FilterModule.identifiers.filterCheckbox.substr(1))) {
+          if (
+            target.classList.contains(FilterModule.identifiers.filterCheckbox.substr(1)) || target.classList.contains(FilterModule.identifiers.filterRadio.substr(1))
+          ) {
             var showAllCheckbox = target.parentNode.querySelector(FilterModule.identifiers.filterCheckboxAll);
             showAllCheckbox.checked = false;
             showAllCheckbox.disabled = false;
@@ -270,7 +273,8 @@ define(['TYPO3/CMS/In2studyfinder/Utility/MiscUtility', 'TYPO3/CMS/In2studyfinde
     var fieldsetNodeList = form.querySelectorAll(FilterModule.identifiers.filterFieldset);
 
     for (var i = 0; i < fieldsetNodeList.length; i++) {
-      var selectedOptions = fieldsetNodeList[i].querySelectorAll(FilterModule.identifiers.filterCheckbox + ':checked');
+      var selectedOptions = fieldsetNodeList[i].querySelectorAll(FilterModule.identifiers.filterCheckbox +
+        ':checked, ' + FilterModule.identifiers.filterRadio + ':checked');
 
       if (selectedOptions.length > 0) {
         selectionString += fieldsetNodeList[i].getAttribute('data-filtergroup') + '=';
@@ -349,7 +353,8 @@ define(['TYPO3/CMS/In2studyfinder/Utility/MiscUtility', 'TYPO3/CMS/In2studyfinde
   FilterModule.isFilterSet = function(filterContainer) {
     var status = false;
 
-    var filterCheckboxes = filterContainer.querySelectorAll(FilterModule.identifiers.filterCheckbox);
+    var filterCheckboxes = filterContainer.querySelectorAll(FilterModule.identifiers.filterCheckbox + ', ' +
+      FilterModule.identifiers.filterRadio);
 
     for (var i = 0; i < filterCheckboxes.length; i++) {
       if (filterCheckboxes[i].checked) {
