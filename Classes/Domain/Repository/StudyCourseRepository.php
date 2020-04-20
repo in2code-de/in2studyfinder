@@ -50,9 +50,6 @@ class StudyCourseRepository extends AbstractRepository
     {
         $query = $this->createQuery();
 
-        $query->getQuerySettings()->setLanguageOverlayMode(true);
-        $query->getQuerySettings()->setLanguageMode('strict');
-
         /**
          * set storage pids. $options['storagePids'] is filled
          * if the request is an ajax request
