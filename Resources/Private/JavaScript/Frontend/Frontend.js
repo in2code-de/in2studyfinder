@@ -1,6 +1,6 @@
 import {UiUtility} from './Utility';
 
-import {paginationModule, filterModule} from "./Modules";
+import {paginationModule, filterModule, selectModule} from "./Modules";
 
 class Frontend {
 
@@ -18,7 +18,7 @@ class Frontend {
       UiUtility.addClass(in2studyfinderContainer, 'js');
 
       filterModule.initialize();
-      // SelectModule.initialize();
+      selectModule.initialize();
 
       paginationModule.initialize();
     }

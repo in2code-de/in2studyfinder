@@ -1,27 +1,30 @@
-define(['TYPO3/CMS/In2studyfinder/Vendor/select2', 'jquery'], function(select2, $) {
-  'use strict';
+import $ from 'jquery';
+import 'select2';
 
-  var SelectModule = {
-    identifiers: {
+class SelectModule {
+  constructor() {
+    this.identifiers = {
       select: '.js-in2studyfinder-select2',
-      quickSearchForm: '.js-in2studyfinder-quick-search'
-    }
-  };
+        quickSearchForm: '.js-in2studyfinder-quick-search'
+    };
+  }
 
   /**
    * initialize function
    *
    * @return {void}
    */
-  SelectModule.initialize = function() {
+  initialize() {
+
     if (document.querySelector('.js-in2studyfinder-quick-search')) {
       var query = {};
+      let selectModule = this;
       this.updatePlaceholderLabel();
 
-      $(SelectModule.identifiers.select).select2({
+      $(this.identifiers.select).select2({
         matcher: function(params, data) {
           query = params;
-          return SelectModule.matcher(params, data);
+          return selectModule.matcher(params, data);
         },
         sorter: function(results) {
           var sorted = results.slice(0);
@@ -55,7 +58,7 @@ define(['TYPO3/CMS/In2studyfinder/Vendor/select2', 'jquery'], function(select2, 
    * @param data
    * @returns {*}
    */
-  SelectModule.matcher = function(params, data) {
+  matcher(params, data) {
     if ($.trim(params.term) === '') {
       return data;
     }
@@ -111,9 +114,9 @@ define(['TYPO3/CMS/In2studyfinder/Vendor/select2', 'jquery'], function(select2, 
   /**
    * Redirect to the selected Studycourse on Select
    */
-  SelectModule.redirectOnSelect = function() {
-    $(SelectModule.identifiers.select).on('select2:select', function() {
-      var obj = $(SelectModule.identifiers.select).select2('data');
+  redirectOnSelect() {
+    $(this.identifiers.select).on('select2:select', function() {
+      var obj = $(this.identifiers.select).select2('data');
       var url = obj[0].element.dataset.url;
 
       if (url.length) {
@@ -125,14 +128,14 @@ define(['TYPO3/CMS/In2studyfinder/Vendor/select2', 'jquery'], function(select2, 
   /**
    * Update Placeholder Label if Language is de
    */
-  SelectModule.updatePlaceholderLabel = function() {
+  updatePlaceholderLabel() {
     /** @todo better language handling for Placeholder */
     if ($('html').attr('lang') === 'de') {
-      $(SelectModule.identifiers.select).attr('data-placeholder', 'Studiengang wählen oder Suchbegriff eingeben');
+      $(this.identifiers.select).attr('data-placeholder', 'Studiengang wählen oder Suchbegriff eingeben');
     } else {
-      $(SelectModule.identifiers.select).attr('data-placeholder', 'Select degree program or enter keyword');
+      $(this.identifiers.select).attr('data-placeholder', 'Select degree program or enter keyword');
     }
   };
+}
 
-  return SelectModule;
-});
+export let selectModule = new SelectModule();
