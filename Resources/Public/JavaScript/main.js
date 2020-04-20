@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./JavaScript/Frontend/main.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -215,6 +215,53 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _Arr
 
 "use strict";
 eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _Frontend__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Frontend */ \"./JavaScript/Frontend/Frontend.js\");\n\n_Frontend__WEBPACK_IMPORTED_MODULE_0__[\"frontend\"].initialize();\n\n//# sourceURL=webpack:///./JavaScript/Frontend/main.js?");
+
+/***/ }),
+
+/***/ "./Sass/backend.scss":
+/*!***************************!*\
+  !*** ./Sass/backend.scss ***!
+  \***************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ __webpack_exports__[\"default\"] = (__webpack_require__.p + \"../Public/Css/backend.css\");\n\n//# sourceURL=webpack:///./Sass/backend.scss?");
+
+/***/ }),
+
+/***/ "./Sass/demo.scss":
+/*!************************!*\
+  !*** ./Sass/demo.scss ***!
+  \************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ __webpack_exports__[\"default\"] = (__webpack_require__.p + \"../Public/Css/demo.css\");\n\n//# sourceURL=webpack:///./Sass/demo.scss?");
+
+/***/ }),
+
+/***/ "./Sass/style.scss":
+/*!*************************!*\
+  !*** ./Sass/style.scss ***!
+  \*************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ __webpack_exports__[\"default\"] = (__webpack_require__.p + \"../Public/Css/style.css\");\n\n//# sourceURL=webpack:///./Sass/style.scss?");
+
+/***/ }),
+
+/***/ 0:
+/*!**************************************************************************************************!*\
+  !*** multi ./JavaScript/Frontend/main.js ./Sass/backend.scss ./Sass/demo.scss ./Sass/style.scss ***!
+  \**************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("__webpack_require__(/*! ./JavaScript/Frontend/main.js */\"./JavaScript/Frontend/main.js\");\n__webpack_require__(/*! ./Sass/backend.scss */\"./Sass/backend.scss\");\n__webpack_require__(/*! ./Sass/demo.scss */\"./Sass/demo.scss\");\nmodule.exports = __webpack_require__(/*! ./Sass/style.scss */\"./Sass/style.scss\");\n\n\n//# sourceURL=webpack:///multi_./JavaScript/Frontend/main.js_./Sass/backend.scss_./Sass/demo.scss_./Sass/style.scss?");
 
 /***/ })
 
