@@ -5,7 +5,7 @@ class SelectModule {
   constructor() {
     this.identifiers = {
       select: '.js-in2studyfinder-select2',
-        quickSearchForm: '.js-in2studyfinder-quick-search'
+      quickSearchForm: '.js-in2studyfinder-quick-search'
     };
   }
 
@@ -17,7 +17,7 @@ class SelectModule {
   initialize() {
 
     if (document.querySelector('.js-in2studyfinder-quick-search')) {
-      var query = {};
+      let query = {};
       let selectModule = this;
       this.updatePlaceholderLabel();
 
@@ -115,9 +115,10 @@ class SelectModule {
    * Redirect to the selected Studycourse on Select
    */
   redirectOnSelect() {
-    $(this.identifiers.select).on('select2:select', function() {
-      var obj = $(this.identifiers.select).select2('data');
-      var url = obj[0].element.dataset.url;
+    let $select2 = $(this.identifiers.select);
+
+    $select2.on('select2:select', function() {
+      let url = $select2.select2('data')[0].element.dataset.url;
 
       if (url.length) {
         window.location.href = url;
