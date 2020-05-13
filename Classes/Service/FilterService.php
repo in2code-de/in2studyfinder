@@ -221,7 +221,7 @@ class FilterService extends AbstractService
             $repository = $this->objectManager->get($fullQualifiedRepositoryClassName);
             $repository->setDefaultQuerySettings($defaultQuerySettings);
 
-            $this->filter[$filterName]['repository'] = $repository;
+            $this->filter[$filterName]['repository'] = $fullQualifiedRepositoryClassName;
             $this->filter[$filterName]['filterOptions'] = $repository->findAll()->toArray();
         } else {
             $this->logger->warning(
