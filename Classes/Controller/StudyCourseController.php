@@ -409,7 +409,7 @@ class StudyCourseController extends AbstractController
                             $repository = $this->objectManager->get($fullQualifiedRepositoryClassName);
                             $repository->setDefaultQuerySettings($defaultQuerySettings);
 
-                            $this->filters[$filterName]['repository'] = $repository;
+                            $this->filters[$filterName]['repository'] = $fullQualifiedRepositoryClassName;
                             $this->filters[$filterName]['filterOptions'] = $repository->findAll()->toArray();
                         }
                         break;
