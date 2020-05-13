@@ -4,8 +4,8 @@
   "description": "",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack"
+    "build:frontend": "webpack",
+    "build:backend": "./node_modules/gulp/bin/gulp.js build:backend"
   },
   "author": "in2code.de",
   "license": "GPL2",
@@ -18,7 +18,12 @@
     "node-sass": "^4.14.0",
     "sass-loader": "^8.0.2",
     "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10"
+    "webpack-cli": "^3.3.10",
+    "gulp": "^4.0",
+    "gulp-plumber": "^1.2",
+    "gulp-rename": "^1.4",
+    "gulp-uglify": "^3.0",
+    "del": "^3.0"
   },
   "dependencies": {
     "@babel/polyfill": "^7.8.3",

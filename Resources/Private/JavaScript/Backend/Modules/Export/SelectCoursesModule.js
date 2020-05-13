@@ -1,4 +1,4 @@
-define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/Utility/AjaxUtility', 'TYPO3/CMS/In2studyfinder/Utility/UrlUtility'], function(UiUtility, AjaxUtility, UrlUtility) {
+define(['TYPO3/CMS/In2studyfinder/Backend/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/Backend/Utility/AjaxUtility', 'TYPO3/CMS/In2studyfinder/Backend/Utility/UrlUtility'], function(UiUtility, AjaxUtility, UrlUtility) {
   'use strict';
 
   var SelectCoursesModule = {

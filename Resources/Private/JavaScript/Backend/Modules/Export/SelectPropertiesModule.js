@@ -1,4 +1,4 @@
-define(['TYPO3/CMS/In2studyfinder/Utility/UiUtility'], function(UiUtility) {
+define(['TYPO3/CMS/In2studyfinder/Backend/Utility/UiUtility'], function(UiUtility) {
   'use strict';
 
   var SelectPropertiesModule = {
