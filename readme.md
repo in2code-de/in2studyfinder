@@ -93,7 +93,8 @@ manipulatePropertyBeforeExport: this signal allows to manipulate values before t
 
 | Version    | Date       | State      | Description                                                                  |
 | ---------- | ---------- | ---------- | ---------------------------------------------------------------------------- |
-| 6.2.6      | 2020-01-14 | BUGFIX     | fix "Undeclared arguments.." at TYPO3 9.5.x in the studyfinder backend module |
+| 6.2.8      | 2020-05-13 | BUGFIX     | fix serialization exception by filter initialization for TYPO3 9.5.17 and above if the caching is enabled |
+| 6.2.7      | 2020-01-14 | BUGFIX     | fix "Undeclared arguments.." at TYPO3 9.5.x in the studyfinder backend module |
 | 6.2.6      | 2019-12-13 | BUGFIX     | remove debug from studycourse controller |
 | 6.2.5      | 2019-10-16 | BUGFIX     | correct wrong prioritization of selected filter restrictions |
 | 6.2.4      | 2019-10-04 | TASK       | use cache for fast search view to increase the performance |
