@@ -1,1 +1,0 @@
-define([],function(){"use strict";var n={getParentByClassName:function(n,t){for(;(n=n.parentElement)&&!n.classList.contains(t););return n}};return n});

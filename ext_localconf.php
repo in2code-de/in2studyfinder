@@ -4,25 +4,32 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
+$controller = \In2code\In2studyfinder\Controller\StudyCourseController::class;
+$extensionName = 'In2studyfinder';
+
+if (\In2code\In2studyfinder\Utility\VersionUtility::isTypo3MajorVersionBelow(10)) {
+    $controller = 'StudyCourse';
+    $extensionName = 'In2code.in2studyfinder';
+}
+
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'In2code.in2studyfinder',
+    $extensionName,
     'Pi1',
-    ['StudyCourse' => 'filter, getCoursesJson'],
-    ['StudyCourse' => 'filter, getCoursesJson']
+    [$controller => 'filter, getCoursesJson'],
+    [$controller => 'filter, getCoursesJson']
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'In2code.in2studyfinder',
+    $extensionName,
     'FastSearch',
-    ['StudyCourse' => 'fastSearch'],
+    [$controller => 'fastSearch'],
     []
 );
 
-
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'In2code.in2studyfinder',
+    $extensionName,
     'Pi2',
-    ['StudyCourse' => 'detail'],
+    [$controller => 'detail'],
     []
 );
 

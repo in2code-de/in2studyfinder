@@ -10,11 +10,11 @@ use In2code\In2studyfinder\Service\FilterService;
 use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use In2code\In2studyfinder\Utility\FrontendUtility;
+use In2code\In2studyfinder\Utility\RecordUtility;
 use In2code\In2studyfinder\Utility\VersionUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\QueryGenerator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
@@ -46,11 +46,6 @@ class StudyCourseController extends AbstractController
     protected $response = null;
 
     /**
-     * @var array
-     */
-    protected $pluginRecord;
-
-    /**
      * Use this instead of __construct, because extbase will inject dependencies *after* construnction of an object
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
@@ -63,8 +58,6 @@ class StudyCourseController extends AbstractController
             $this->cacheInstance =
                 GeneralUtility::makeInstance(CacheManager::class)->getCache('in2studyfinder');
         }
-
-        $this->setPluginRecord();
     }
 
     /**
@@ -140,7 +133,7 @@ class StudyCourseController extends AbstractController
                 'studyCourses' => $studyCourses,
                 'currentTypo3MajorVersion' => VersionUtility::getCurrentTypo3MajorVersion(),
                 'settings' => $this->settings,
-                'data' => $this->pluginRecord,
+                'data' => $this->getPluginRecord(),
                 'isAjaxRequest' => $this->isAjaxRequest()
             ]
         );
@@ -412,30 +405,23 @@ class StudyCourseController extends AbstractController
     }
 
     /**
-     *
+     * @return array
      */
-    protected function setPluginRecord()
+    protected function getPluginRecord()
     {
         $pluginRecord = [];
+        $type = GeneralUtility::_GP('type');
+        $language = FrontendUtility::getCurrentSysLanguageUid();
+        $pluginUid = (int)GeneralUtility::_GP('ce');
 
-        if (empty(GeneralUtility::_GP('type'))) {
+        $pluginRecords = RecordUtility::getRecordWithTranslations($pluginUid);
+
+        if (empty($type)) {
             $contentObj = $this->configurationManager->getContentObject();
             $pluginRecord = $contentObj->data;
         } else {
-            if (!empty(GeneralUtility::_GP('ce'))) {
-                $queryBuilder =
-                    $this->objectManager->get(ConnectionPool::class)->getQueryBuilderForTable(TtContent::TABLE);
-                $record = $queryBuilder
-                    ->select('*')
-                    ->from(TtContent::TABLE)
-                    ->where(
-                        $queryBuilder->expr()->eq(
-                            'uid',
-                            $queryBuilder->createNamedParameter((int)GeneralUtility::_GP('ce'), \PDO::PARAM_INT)
-                        )
-                    )->execute()->fetch();
-
-                $pluginRecord = $record;
+            if (array_key_exists($language, $pluginRecords)) {
+                $pluginRecord = $pluginRecords[$language];
             } else {
                 $this->logger->error(
                     'No url parameter ce is set. Please check the ajax request in your network analyse tool if an filter is set',
@@ -444,7 +430,7 @@ class StudyCourseController extends AbstractController
             }
         }
 
-        $this->pluginRecord = $pluginRecord;
+        return $pluginRecord;
     }
 
     /**

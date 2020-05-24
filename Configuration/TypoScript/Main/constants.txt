@@ -27,10 +27,7 @@ plugin.tx_in2studyfinder {
 		}
 
 		javascript {
-			# cat=plugin.tx_in2studyfinder//a; type=text; label= Select2 Source
-			in2studyfinderSelect2 = EXT:in2studyfinder/Resources/Public/JavaScript/select2.js
-
-			loadRequireJs = 1
+			main = EXT:in2studyfinder/Resources/Public/JavaScript/main.js
 		}
 
 		css {
