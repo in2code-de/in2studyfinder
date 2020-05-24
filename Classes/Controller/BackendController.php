@@ -4,6 +4,7 @@ namespace In2code\In2studyfinder\Controller;
 
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Service\ExportService;
+use In2code\In2studyfinder\Utility\VersionUtility;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -279,22 +280,29 @@ class BackendController extends AbstractController
         &$propertyArray,
         $objectProperties
     ) {
-
         foreach ($objectProperties as $propertyName => $propertyInformation) {
             if (!in_array($propertyName, $this->settings['backend']['export']['excludedPropertiesForExport'])) {
-                if ($propertyInformation['type'] === ObjectStorage::class) {
-                    if (class_exists($propertyInformation['elementType'])) {
+                if (VersionUtility::isTypo3MajorVersionBelow(10)) {
+                    $elementType = $propertyInformation['elementType'];
+                    $type = $propertyInformation['type'];
+                } else {
+                    $elementType = $propertyInformation->getElementType();
+                    $type = $propertyInformation->getType();
+                }
+
+                if ($type === ObjectStorage::class) {
+                    if (class_exists($elementType)) {
                         $this->getFullPropertyList(
                             $propertyArray[$propertyName],
-                            $this->reflectionService->getClassSchema($propertyInformation['elementType'])
+                            $this->reflectionService->getClassSchema($elementType)
                                 ->getProperties()
                         );
                     }
                 } else {
-                    if (class_exists($propertyInformation['type'])) {
+                    if (class_exists($type)) {
                         $this->getFullPropertyList(
                             $propertyArray[$propertyName],
-                            $this->reflectionService->getClassSchema($propertyInformation['type'])->getProperties()
+                            $this->reflectionService->getClassSchema($type)->getProperties()
                         );
                     } else {
                         $propertyArray[$propertyName] = $propertyName;
