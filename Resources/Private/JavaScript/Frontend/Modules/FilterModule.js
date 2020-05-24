@@ -216,8 +216,6 @@ class FilterModule {
     var sysLanguageUid = in2studyfinderContainer.getAttribute('data-in2studyfinder-language');
     var pluginUidArgument = '', languageArgument = '', paginationArgument = '', url = '';
 
-    console.log(sysLanguageUid);
-
     if (typeof paginationPage === 'undefined') {
       paginationPage = 1;
     }
