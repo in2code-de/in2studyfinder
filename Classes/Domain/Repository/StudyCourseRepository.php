@@ -140,4 +140,28 @@ class StudyCourseRepository extends AbstractRepository
 
         return $query->execute();
     }
+
+    /**
+     * @param array $uids
+     * @param int $sysLanguageUid
+     * @return array|QueryResultInterface
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     */
+    public function findByUidsAndLanguage(array $uids, int $sysLanguageUid)
+    {
+        $query = $this->createQuery();
+
+        if ($sysLanguageUid === 0) {
+            $constraints[] = $query->in('uid', $uids);
+        } else {
+            $query->getQuerySettings()->setRespectSysLanguage(false);
+
+            $constraints[] = $query->in('l10nParent', $uids);
+            $constraints[] = $query->equals('sysLanguageUid', $sysLanguageUid);
+        }
+
+        $query->matching($query->logicalAnd($constraints));
+
+        return $query->execute();
+    }
 }
