@@ -33,11 +33,11 @@ $tcaConfiguration = [
         'iconfile' => $icon,
     ],
     'interface' => [
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, standard_period_of_study, ects_credits, teaser, description, tuition_fee, university_place, content_elements, academic_degree, department, faculty, types_of_study, course_languages, admission_requirements, starts_of_study, meta_pagetitles, meta_keywordss, meta_description,different_preset,global_data_preset',
+        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, url_segment, standard_period_of_study, ects_credits, teaser, description, tuition_fee, university_place, content_elements, academic_degree, department, faculty, types_of_study, course_languages, admission_requirements, starts_of_study, meta_pagetitles, meta_keywordss, meta_description,different_preset,global_data_preset',
     ],
     'types' => [
         '0' => [
-            'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, --palette--;' . $ll . 'keyData;keyData,teaser;;;richtext:rte_transform[mode=ts_links], description;;;richtext:rte_transform[mode=ts_links], content_elements, --div--;' . $ll . 'metadata, --palette--;' . $ll . 'metadata;metadata, --div--;' . $ll . 'globalPreset, --palette--;' . $ll . 'globalPreset;globalPreset, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime,',
+            'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, url_segment, --palette--;' . $ll . 'keyData;keyData,teaser;;;richtext:rte_transform[mode=ts_links], description;;;richtext:rte_transform[mode=ts_links], content_elements, --div--;' . $ll . 'metadata, --palette--;' . $ll . 'metadata;metadata, --div--;' . $ll . 'globalPreset, --palette--;' . $ll . 'globalPreset;globalPreset, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime,',
         ],
     ],
     'palettes' => [
@@ -64,7 +64,7 @@ $tcaConfiguration = [
         'starttime' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForStartTime(),
         'endtime' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForEndTime(),
         'title' => [
-            'exclude' => 1,
+            'exclude' => true,
             'label' => $ll . 'title',
             'config' => [
                 'type' => 'input',
@@ -74,7 +74,7 @@ $tcaConfiguration = [
             ],
         ],
         'standard_period_of_study' => [
-            'exclude' => 1,
+            'exclude' => true,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => $ll . 'standardPeriodOfStudy',
@@ -85,7 +85,7 @@ $tcaConfiguration = [
             ],
         ],
         'ects_credits' => [
-            'exclude' => 1,
+            'exclude' => true,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => $ll . 'ectsCredits',
@@ -96,7 +96,7 @@ $tcaConfiguration = [
             ],
         ],
         'tuition_fee' => [
-            'exclude' => 1,
+            'exclude' => true,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => $ll . 'tuitionFee',
@@ -107,7 +107,7 @@ $tcaConfiguration = [
             ],
         ],
         'teaser' => [
-            'exclude' => 1,
+            'exclude' => true,
             'label' => $ll . 'teaser',
             'config' => [
                 'type' => 'text',
@@ -133,7 +133,7 @@ $tcaConfiguration = [
             ],
         ],
         'description' => [
-            'exclude' => 1,
+            'exclude' => true,
             'label' => $ll . 'description',
             'config' => [
                 'type' => 'text',
@@ -159,7 +159,7 @@ $tcaConfiguration = [
             ],
         ],
         'university_place' => [
-            'exclude' => 1,
+            'exclude' => true,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => $ll . 'universityPlace',
@@ -170,7 +170,7 @@ $tcaConfiguration = [
             ],
         ],
         'content_elements' => [
-            'exclude' => 1,
+            'exclude' => true,
             'label' => $ll . 'contentElements',
             'config' => [
                 'type' => 'group',
@@ -229,7 +229,7 @@ $tcaConfiguration = [
             1
         ),
         'meta_pagetitle' => [
-            'exclude' => 1,
+            'exclude' => true,
             'label' => $ll . 'metaPageTitle',
             'config' => [
                 'type' => 'input',
@@ -239,7 +239,7 @@ $tcaConfiguration = [
             ],
         ],
         'meta_keywords' => [
-            'exclude' => 1,
+            'exclude' => true,
             'l10n_mode' => 'mergeIfNotBlank',
             'label' => $ll . 'metaKeywords',
             'config' => [
@@ -250,7 +250,7 @@ $tcaConfiguration = [
             ],
         ],
         'meta_description' => [
-            'exclude' => 1,
+            'exclude' => true,
             'l10n_mode' => 'mergeIfNotBlank',
             'label' => $ll . 'metaDescription',
             'config' => [
@@ -261,13 +261,31 @@ $tcaConfiguration = [
                 'max' => 750,
             ],
         ],
+        'url_segment' => [
+            'label' => $ll . 'url_segment',
+            'exclude' => true,
+            'config' => [
+                'type' => 'slug',
+                'generatorOptions' => [
+                    'fields' => [['academic_degree','title']],
+                    'fieldSeparator' => '/',
+                    'prefixParentPageSlug' => false,
+                    'replacements' => [
+                        '/' => '',
+                    ],
+                ],
+                'fallbackCharacter' => '-',
+                'eval' => 'uniqueInSite',
+                'default' => ''
+            ]
+        ]
     ],
 ];
 
 if (In2code\In2studyfinder\Utility\ConfigurationUtility::isEnableGlobalData()) {
 
     $tcaConfiguration['columns']['different_preset'] = [
-        'exclude' => 1,
+        'exclude' => true,
         'label' => $ll . 'differentPreset',
         'config' => [
             'type' => 'check',
@@ -276,7 +294,7 @@ if (In2code\In2studyfinder\Utility\ConfigurationUtility::isEnableGlobalData()) {
     ];
 
     $tcaConfiguration['columns']['global_data_preset'] = [
-        'exclude' => 1,
+        'exclude' => true,
         'label' => $ll . 'globalDataPreset',
         'config' => [
             'type' => 'select',
