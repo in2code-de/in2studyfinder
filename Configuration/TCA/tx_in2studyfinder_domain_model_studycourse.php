@@ -267,12 +267,15 @@ $tcaConfiguration = [
             'config' => [
                 'type' => 'slug',
                 'generatorOptions' => [
-                    'fields' => [['academic_degree','title']],
+                    'fields' => ['title'],
                     'fieldSeparator' => '/',
                     'prefixParentPageSlug' => false,
                     'replacements' => [
                         '/' => '',
                     ],
+                    'postModifiers' => [
+                        \In2code\In2studyfinder\Slug\UrlSegmentPostModifier::class . '->extendWithGraduation'
+                    ]
                 ],
                 'fallbackCharacter' => '-',
                 'eval' => 'uniqueInSite',
