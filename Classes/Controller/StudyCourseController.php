@@ -198,35 +198,6 @@ class StudyCourseController extends AbstractController
     }
 
     /**
-     * WORKAROUND
-     *
-     * @return string
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
-     * @see BackendController->listAction
-     *
-     */
-    public function getCoursesJsonAction()
-    {
-        $return = '';
-
-        if ($this->request->hasArgument('courseList')) {
-            $courses = $this->studyCourseRepository->getCoursesWithUidIn(
-                (array)$this->request->getArgument('courseList')
-            )->toArray();
-            $return = serialize($courses);
-
-        } else {
-            $this->logger->error(
-                'the Requested Argument "courseList" is not set.',
-                ['additionalInfo' => ['class' => __CLASS__, 'method' => __METHOD__, 'line' => __LINE__]]
-            );
-        }
-
-        return json_encode($return);
-    }
-
-    /**
      * @param StudyCourse|null $studyCourse
      *
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException

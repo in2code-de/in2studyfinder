@@ -15,8 +15,8 @@ if (\In2code\In2studyfinder\Utility\VersionUtility::isTypo3MajorVersionBelow(10)
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     $extensionName,
     'Pi1',
-    [$controller => 'filter, getCoursesJson'],
-    [$controller => 'filter, getCoursesJson']
+    [$controller => 'filter'],
+    [$controller => 'filter']
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
