@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace In2code\In2studyfinder\Utility;
@@ -73,15 +74,17 @@ class RecordUtility extends AbstractUtility
      * @param string $where Additional WHERE clause, eg. " AND blablabla = 0
      * @param bool $respectEnableFields
      * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
+     * @param int $sysLanuageUid
      * @return array|null Returns the row if found, otherwise NULL
      */
     public static function getRecord(
-        $table,
-        $uid,
-        $fields = '*',
-        $where = '',
-        $respectEnableFields = true,
-        $useDeleteClause = true
+        string $table,
+        int $uid,
+        string $fields = '*',
+        string $where = '',
+        bool $respectEnableFields = true,
+        bool $useDeleteClause = true,
+        int $sysLanuageUid = 0
     ): ?array {
         if ((int)$uid) {
             $queryBuilder = self::getQueryBuilderForTable($table);
@@ -93,16 +96,26 @@ class RecordUtility extends AbstractUtility
 
             // should the delete clause be used
             if ($useDeleteClause) {
-                $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                /** @var DeletedRestriction $deletedRestriction */
+                $deletedRestriction = GeneralUtility::makeInstance(DeletedRestriction::class);
+                $queryBuilder->getRestrictions()->add($deletedRestriction);
             }
 
-            // set table and where clause
             $queryBuilder
                 ->select(...GeneralUtility::trimExplode(',', $fields, true))
-                ->from($table)
-                ->where(
-                    $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((int)$uid, \PDO::PARAM_INT))
+                ->from($table);
+
+            // set where clause
+            if ($sysLanuageUid > 0) {
+                $queryBuilder->where(
+                    $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid))
                 );
+            } else {
+                $queryBuilder->where(
+                    $queryBuilder->expr()->eq('l18n_parent', $queryBuilder->createNamedParameter($uid)),
+                    $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter($sysLanuageUid))
+                );
+            }
 
             // add custom where clause
             if ($where) {
