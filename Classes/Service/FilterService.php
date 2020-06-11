@@ -1,15 +1,16 @@
 <?php
+
 declare(strict_types=1);
 
 namespace In2code\In2studyfinder\Service;
 
+use In2code\In2studyfinder\Filter\FilterTypes\BooleanFilter;
+use In2code\In2studyfinder\Filter\FilterTypes\DomainObjectFilter;
+use In2code\In2studyfinder\Filter\FilterInterface;
 use In2code\In2studyfinder\Domain\Model\StudyCourseInterface;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
-use In2code\In2studyfinder\Utility\FrontendUtility;
-use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
-use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -169,37 +170,41 @@ class FilterService extends AbstractService
     }
 
     /**
-     * @param string $filterName
-     * @param array $filterConfiguration
+     * @param string $filterType
+     * @return bool
      */
-    protected function buildObjectFilter(string $filterName, array $filterConfiguration)
+    protected function isFilterTypeValid(string &$filterType): bool
     {
-        $fullQualifiedRepositoryClassName = ClassNamingUtility::translateModelNameToRepositoryName(
-            $filterConfiguration['objectModel']
-        );
-
-        if (class_exists($fullQualifiedRepositoryClassName)) {
-            $defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
-            $defaultQuerySettings->setStoragePageIds([$this->settings['settingsPid']]);
-            $defaultQuerySettings->setLanguageOverlayMode(true);
-            $defaultQuerySettings->setLanguageMode('strict');
-
-            $repository = $this->objectManager->get($fullQualifiedRepositoryClassName);
-            $repository->setDefaultQuerySettings($defaultQuerySettings);
-
-            $this->filter[$filterName]['repository'] = $fullQualifiedRepositoryClassName;
-            $this->filter[$filterName]['filterOptions'] = $repository->findAll()->toArray();
-        } else {
+        if ($filterType === 'object' || $filterType === 'boolean') {
             $this->logger->warning(
-                'The given repository class ("' . $fullQualifiedRepositoryClassName . '") for the filter: ' . $filterName . ' do not exist. This filter will be ignored!',
-                [
-                    'filterName' => $filterName,
-                    'filterConfiguration' => $filterConfiguration,
-                    'additionalInfo' => ['class' => __CLASS__, 'method' => __METHOD__, 'line' => __LINE__]
-                ]
+                'Deprecated filter type declaration. The filter type values "object" and "boolean" are ' .
+                'deprecated since in2studyfinder version 7.0 and will be removed in version 8.0. Please use ' .
+                'the filter class names instead e.g. ' .
+                '"\In2code\In2studyfinder\Domain\Model\Filter\DomainObjectFilter::class" or ' .
+                '"\In2code\In2studyfinder\Domain\Model\Filter\NotEmptyFilter::class'
             );
-            unset($this->filter[$filterName]);
+
+            switch ($filterType) {
+                case 'object':
+                    $filterType = DomainObjectFilter::class;
+                    break;
+                case 'boolean':
+                    $filterType = BooleanFilter::class;
+                    break;
+            }
         }
+
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($filterType, __CLASS__ . ' in der Zeile ' . __LINE__);
+
+        if (!class_exists($filterType)) {
+            $this->logger->error(
+                'Filter type class "' . $filterType . ' does not exist. This filter will be ignored!'
+            );
+
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -216,37 +221,38 @@ class FilterService extends AbstractService
             );
         }
 
-        foreach ((array)$this->getTypoScriptFilterConfiguration() as $filterName => $filterProperties) {
-            if ($filterProperties['type'] && $filterProperties['propertyPath'] && $filterProperties['frontendLabel']) {
+        foreach ((array)$this->getTypoScriptFilterConfiguration() as $filterName => $filterConfiguration) {
+            // create filter Object
+            // set filterName
+            // validate Filter Configuration
+            // set Filter by Configuration
 
-                $this->filter[$filterName] = [
-                    'type' => $filterProperties['type'],
-                    'propertyPath' => $filterProperties['propertyPath'],
-                    'frontendLabel' => $this->buildFrontendLabel($filterProperties),
-                    'disabledInFrontend' => $this->isFilterInFrontendVisible($filterProperties),
-                ];
+            $filterConfiguration['filterName'] = $filterName;
 
-                switch ($filterProperties['type']) {
-                    case 'object':
-                        $this->buildObjectFilter($filterName, $filterProperties);
-                        break;
-                    case 'boolean':
-                        $this->filter[$filterName]['filterOptions'] = [true, false];
-                        break;
-                    default:
-                        break;
+            if (array_key_exists('type', $filterConfiguration)) {
+                if ($this->isFilterTypeValid($filterConfiguration['type'])) {
+
+                    /** @var FilterInterface $filter */
+                    $filter = new $filterConfiguration['type'];
+
+                    $filterConfiguration['frontendLabel'] = $this->buildFrontendLabel($filterConfiguration);
+                    $filterConfiguration['disabledInFrontend'] = $this->isFilterInFrontendVisible($filterConfiguration);
+
+                    if ($filter->isFilterConfigurationValid($filterConfiguration, $filterName)) {
+                        $filter->setPropertiesByConfiguration($filterConfiguration);
+
+                        $filter->buildFilterOptions();
+
+                        $this->filter[$filterName] = $filter;
+                    }
                 }
             } else {
-                $this->logger->warning(
-                    'The given filter configuration for the filter: ' . $filterName . ' is not valid. This filter will be ignored!',
-                    [
-                        'filterName' => $filterName,
-                        'filterProperties' => $filterProperties,
-                        'additionalInfo' => ['class' => __CLASS__, 'method' => __METHOD__, 'line' => __LINE__]
-                    ]
-                );
+                // @todo log missing type in filter configuration
             }
         }
+
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->filter, __CLASS__ . ' in der Zeile ' . __LINE__);
+        die();
     }
 
     /**

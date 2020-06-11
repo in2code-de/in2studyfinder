@@ -124,6 +124,8 @@ class StudyCourseController extends AbstractController
 
         $studyCourses = $this->processSearch($searchOptions);
 
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($searchOptions, __CLASS__ . ' in der Zeile ' . __LINE__);
+
         $this->view->assignMultiple(
             [
                 'searchedOptions' => $searchOptions,
@@ -131,7 +133,6 @@ class StudyCourseController extends AbstractController
                 'availableFilterOptions' => $this->filterService->getAvailableFilterOptions($studyCourses),
                 'studyCourseCount' => count($studyCourses),
                 'studyCourses' => $studyCourses,
-                'currentTypo3MajorVersion' => VersionUtility::getCurrentTypo3MajorVersion(),
                 'settings' => $this->settings,
                 'data' => $this->getPluginRecord(),
                 'isAjaxRequest' => $this->isAjaxRequest()
@@ -251,6 +252,9 @@ class StudyCourseController extends AbstractController
     {
         $filter = $this->filterService->getFilter();
 
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($filter, __CLASS__ . ' in der Zeile ' . __LINE__);
+        die();
+        
         foreach ($searchOptions as $filterName => $searchedOptions) {
             $searchOptions[$filter[$filterName]['propertyPath']] = $searchedOptions;
             if ($filter[$filterName]['propertyPath'] !== $filterName) {
@@ -365,6 +369,8 @@ class StudyCourseController extends AbstractController
      */
     protected function getContentElementStoragePids($contentElementUid)
     {
+        //getPluginStoragePids(int $pluginUid)
+
         $storagePids = [];
         $pluginRecord = BackendUtility::getRecord(TtContent::TABLE, $contentElementUid, '*');
 
