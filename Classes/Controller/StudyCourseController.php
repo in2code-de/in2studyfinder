@@ -125,6 +125,7 @@ class StudyCourseController extends AbstractController
         $studyCourses = $this->processSearch($searchOptions);
 
         \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($searchOptions, __CLASS__ . ' in der Zeile ' . __LINE__);
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->filterService->getAvailableFilterOptions($studyCourses), __CLASS__ . ' in der Zeile ' . __LINE__);
 
         $this->view->assignMultiple(
             [
@@ -252,9 +253,6 @@ class StudyCourseController extends AbstractController
     {
         $filter = $this->filterService->getFilter();
 
-        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($filter, __CLASS__ . ' in der Zeile ' . __LINE__);
-        die();
-        
         foreach ($searchOptions as $filterName => $searchedOptions) {
             $searchOptions[$filter[$filterName]['propertyPath']] = $searchedOptions;
             if ($filter[$filterName]['propertyPath'] !== $filterName) {

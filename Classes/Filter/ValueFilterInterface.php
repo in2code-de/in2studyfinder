@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace In2code\In2studyfinder\Filter\FilterTypes;
+namespace In2code\In2studyfinder\Filter;
 
-interface ValueFilterInterface
+interface ValueFilterInterface extends FilterInterface
 {
     /**
      * @return array

@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace In2code\In2studyfinder\Filter\FilterTypes;
+namespace In2code\In2studyfinder\Filter;
 
-interface RangeFilterInterface
+use TYPO3\CMS\Core\Routing\Aspect\AspectTrait;
+
+interface RangeFilterInterface extends FilterInterface
 {
     public function setMin(int $min);
     public function setMax(int $max);

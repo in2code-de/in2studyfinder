@@ -194,8 +194,6 @@ class FilterService extends AbstractService
             }
         }
 
-        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($filterType, __CLASS__ . ' in der Zeile ' . __LINE__);
-
         if (!class_exists($filterType)) {
             $this->logger->error(
                 'Filter type class "' . $filterType . ' does not exist. This filter will be ignored!'
@@ -250,9 +248,6 @@ class FilterService extends AbstractService
                 // @todo log missing type in filter configuration
             }
         }
-
-        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->filter, __CLASS__ . ' in der Zeile ' . __LINE__);
-        die();
     }
 
     /**

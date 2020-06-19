@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace In2code\In2studyfinder\Filter\FilterTypes;
 
 use In2code\In2studyfinder\Filter\AbstractFilter;
+use In2code\In2studyfinder\Filter\ValueFilterInterface;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
