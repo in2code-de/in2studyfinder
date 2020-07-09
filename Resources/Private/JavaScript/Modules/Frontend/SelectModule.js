@@ -127,7 +127,8 @@ define(['TYPO3/CMS/In2studyfinder/Vendor/select2', 'jquery'], function(select2, 
    */
   SelectModule.updatePlaceholderLabel = function() {
     /** @todo better language handling for Placeholder */
-    if ($('html').attr('lang') === 'de') {
+    var lang = $('html').attr('lang');
+    if (lang === 'de' || lang === 'de-DE') {
       $(SelectModule.identifiers.select).attr('data-placeholder', 'Studiengang wählen oder Suchbegriff eingeben');
     } else {
       $(SelectModule.identifiers.select).attr('data-placeholder', 'Select degree program or enter keyword');
