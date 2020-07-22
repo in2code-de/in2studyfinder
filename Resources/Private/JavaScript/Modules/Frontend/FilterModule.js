@@ -91,7 +91,7 @@ define(['TYPO3/CMS/In2studyfinder/Utility/MiscUtility', 'TYPO3/CMS/In2studyfinde
         if (document.querySelector('[data-filtergroup="' + hashArguments[i].name + '"]') !== null) {
           // set the selected filters
           var filterFieldset = document.querySelector('[data-filtergroup="' + hashArguments[i].name + '"]');
-          var checkboxes = filterFieldset.querySelectorAll('input[type=checkbox]');
+          var checkboxes = filterFieldset.querySelectorAll('input[type=checkbox],input[type=radio]');
           var status = false;
 
           for (var j = 0; j < checkboxes.length; j++) {
