@@ -14,7 +14,7 @@ $EM_CONF['in2studyfinder'] = [
     'version' => '7.0.0-dev',
     'constraints' => [
         'depends' => [
-            'typo3' => '9.5.0-10.2.99',
+            'typo3' => '9.5.0-10.4.99',
         ],
         'conflicts' => [],
         'suggests' => [],
