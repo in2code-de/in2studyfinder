@@ -131,7 +131,8 @@ class SelectModule {
    */
   updatePlaceholderLabel() {
     /** @todo better language handling for Placeholder */
-    if ($('html').attr('lang') === 'de') {
+    var lang = $('html').attr('lang');
+    if (lang === 'de' || lang === 'de-DE') {
       $(this.identifiers.select).attr('data-placeholder', 'Studiengang wählen oder Suchbegriff eingeben');
     } else {
       $(this.identifiers.select).attr('data-placeholder', 'Select degree program or enter keyword');

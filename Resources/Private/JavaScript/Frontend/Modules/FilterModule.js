@@ -12,6 +12,7 @@ class FilterModule {
       filterFieldset: '.js-in2studyfinder-filter-section',
       filterLegend: '.js-in2studyfinder-filter-legend',
       filterCheckbox: '.in2studyfinder-js-checkbox',
+      filterRadio: '.in2studyfinder-js-radio',
       filterCheckboxAll: '.in2studyfinder-js-checkbox-all',
       showFilterButton: '.js-in2studyfinder-filter-button-show',
       hideFilterButton: '.js-in2studyfinder-filter-button-reset',
@@ -94,7 +95,7 @@ class FilterModule {
         if (document.querySelector('[data-filtergroup="' + hashArguments[i].name + '"]') !== null) {
           // set the selected filters
           var filterFieldset = document.querySelector('[data-filtergroup="' + hashArguments[i].name + '"]');
-          var checkboxes = filterFieldset.querySelectorAll('input[type=checkbox]');
+          var checkboxes = filterFieldset.querySelectorAll('input[type=checkbox],input[type=radio]');
           var status = false;
 
           for (var j = 0; j < checkboxes.length; j++) {
@@ -151,7 +152,7 @@ class FilterModule {
           }
 
           // if an specific filter checkbox is clicked
-          if (target.classList.contains(filterModule.identifiers.filterCheckbox.substr(1))) {
+          if (target.classList.contains(filterModule.identifiers.filterCheckbox.substr(1)) || target.classList.contains(filterModule.identifiers.filterRadio.substr(1))) {
             var showAllCheckbox = target.parentNode.querySelector(filterModule.identifiers.filterCheckboxAll);
             showAllCheckbox.checked = false;
             showAllCheckbox.disabled = false;
@@ -276,7 +277,7 @@ class FilterModule {
     var fieldsetNodeList = form.querySelectorAll(this.identifiers.filterFieldset);
 
     for (var i = 0; i < fieldsetNodeList.length; i++) {
-      var selectedOptions = fieldsetNodeList[i].querySelectorAll(this.identifiers.filterCheckbox + ':checked');
+      var selectedOptions = fieldsetNodeList[i].querySelectorAll(this.identifiers.filterCheckbox + ':checked, ' + this.identifiers.filterRadio + ':checked');
 
       if (selectedOptions.length > 0) {
         selectionString += fieldsetNodeList[i].getAttribute('data-filtergroup') + '=';
@@ -353,7 +354,7 @@ class FilterModule {
   isFilterSet(filterContainer) {
     var status = false;
 
-    var filterCheckboxes = filterContainer.querySelectorAll(this.identifiers.filterCheckbox);
+    var filterCheckboxes = filterContainer.querySelectorAll(this.identifiers.filterCheckbox + ', ' + this.identifiers.filterRadio);
 
     for (var i = 0; i < filterCheckboxes.length; i++) {
       if (filterCheckboxes[i].checked) {

@@ -4,7 +4,7 @@ namespace In2code\In2studyfinder\Controller;
 
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Service\ExportService;
-use TYPO3\CMS\Core\Exception;
+use In2code\In2studyfinder\Utility\VersionUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
@@ -178,6 +178,7 @@ class BackendController extends AbstractController
      * @param array $selectedProperties
      * @param array $courseList
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      */
     public function exportAction($exporter, $recordLanguage, $selectedProperties, $courseList)
     {
@@ -191,84 +192,12 @@ class BackendController extends AbstractController
             $this->forward('list');
         }
 
-        /**
-         * WORKAROUND
-         *
-         * see @getCoursesForExport
-         */
-        $courses = $this->getCoursesForExport($courseList, $recordLanguage);
+        $courses = $this->studyCourseRepository->findByUidsAndLanguage($courseList, (int)$recordLanguage);
 
-        $exportService = $this->objectManager->get(ExportService::class, $exporter, $selectedProperties, $courses);
+        $exportService =
+            $this->objectManager->get(ExportService::class, $exporter, $selectedProperties, $courses->toArray());
 
         $exportService->export();
-    }
-
-    /**
-     * WORKAROUND
-     *
-     * we make an frontend request because returns the attached records of the course always in the default language.
-     * This function will be removed if i found a other solution.
-     *
-     * @param array $courseList
-     * @param int $recordLanguage
-     *
-     * @return array
-     * @throws Exception
-     */
-    protected function getCoursesForExport(array $courseList, $recordLanguage)
-    {
-        $content['tx_in2studyfinder_pi1']['courseList'] = $courseList;
-
-        $opts = [
-            'http' => [
-                'method' => 'POST',
-                'header' => 'Content-Type: application/x-www-form-urlencoded',
-                'content' => http_build_query($content)
-            ],
-        ];
-
-        $context = stream_context_create($opts);
-
-        $result = $this->executeFrontendRequest($this->request->getBaseUri(), $recordLanguage, $context);
-
-        return unserialize(json_decode($result));
-    }
-
-    /**
-     * @param $url
-     * @param $recordLanguage
-     * @param $context
-     * @return bool|string
-     * @throws Exception
-     */
-    protected function executeFrontendRequest($url, $recordLanguage, $context)
-    {
-        $urlParts = parse_url($url);
-        $result = false;
-
-        if ($urlParts['scheme'] === 'https') {
-            $result = file_get_contents(
-                $urlParts['scheme'] . '://' . $urlParts['host'] . '/?type=1553807527&L=' . $recordLanguage,
-                false,
-                $context
-            );
-        }
-
-
-        // if the scheme is http or the request returning an error with https
-        if ($result === false || $urlParts['scheme'] === 'http') {
-            $result = file_get_contents(
-                'http://' . $urlParts['host'] . '/?type=1553807527&L=' . $recordLanguage,
-                false,
-                $context
-            );
-        }
-
-        if ($result === false) {
-            throw new Exception('Error at frontend request of selected programs', 1547629143);
-        }
-
-        return $result;
     }
 
     /**
@@ -279,22 +208,29 @@ class BackendController extends AbstractController
         &$propertyArray,
         $objectProperties
     ) {
-
         foreach ($objectProperties as $propertyName => $propertyInformation) {
             if (!in_array($propertyName, $this->settings['backend']['export']['excludedPropertiesForExport'])) {
-                if ($propertyInformation['type'] === ObjectStorage::class) {
-                    if (class_exists($propertyInformation['elementType'])) {
+                if (VersionUtility::isTypo3MajorVersionBelow(10)) {
+                    $elementType = $propertyInformation['elementType'];
+                    $type = $propertyInformation['type'];
+                } else {
+                    $elementType = $propertyInformation->getElementType();
+                    $type = $propertyInformation->getType();
+                }
+
+                if ($type === ObjectStorage::class) {
+                    if (class_exists($elementType)) {
                         $this->getFullPropertyList(
                             $propertyArray[$propertyName],
-                            $this->reflectionService->getClassSchema($propertyInformation['elementType'])
+                            $this->reflectionService->getClassSchema($elementType)
                                 ->getProperties()
                         );
                     }
                 } else {
-                    if (class_exists($propertyInformation['type'])) {
+                    if (class_exists($type)) {
                         $this->getFullPropertyList(
                             $propertyArray[$propertyName],
-                            $this->reflectionService->getClassSchema($propertyInformation['type'])->getProperties()
+                            $this->reflectionService->getClassSchema($type)->getProperties()
                         );
                     } else {
                         $propertyArray[$propertyName] = $propertyName;

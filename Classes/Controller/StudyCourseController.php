@@ -46,6 +46,13 @@ class StudyCourseController extends AbstractController
     protected $response = null;
 
     /**
+     * the current plugin record
+     *
+     * @var array
+     */
+    protected $data = [];
+
+    /**
      * Use this instead of __construct, because extbase will inject dependencies *after* construnction of an object
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
@@ -58,6 +65,11 @@ class StudyCourseController extends AbstractController
             $this->cacheInstance =
                 GeneralUtility::makeInstance(CacheManager::class)->getCache('in2studyfinder');
         }
+
+        /*
+         * Set $this->data (current plugin record
+         */
+        $this->data = $this->getPluginRecord();
     }
 
     /**
@@ -79,9 +91,9 @@ class StudyCourseController extends AbstractController
         }
 
         /*
-         * add the flexform settings to the settings if the request is an ajax request
+         * add the flexform settings to the settings if the request is an filtering ajax request
          */
-        if ($this->isAjaxRequest()) {
+        if ($this->isFilterRequest()) {
             if (GeneralUtility::_GP('type') === '1308171055' && GeneralUtility::_GP('ce')) {
                 $this->settings =
                     array_merge_recursive(
@@ -135,8 +147,8 @@ class StudyCourseController extends AbstractController
                 'studyCourseCount' => count($studyCourses),
                 'studyCourses' => $studyCourses,
                 'settings' => $this->settings,
-                'data' => $this->getPluginRecord(),
-                'isAjaxRequest' => $this->isAjaxRequest()
+                'data' => $this->data,
+                'isAjaxRequest' => $this->isFilterRequest()
             ]
         );
     }
@@ -155,7 +167,7 @@ class StudyCourseController extends AbstractController
                 'studyCourseCount' => count($studyCourses),
                 'facultyCount' => $this->getFacultyCount(),
                 'studyCourses' => $studyCourses,
-                'data' => $this->configurationManager->getContentObject()->data,
+                'data' => $this->data,
                 'settings' => $this->settings
             ]
         );
@@ -200,35 +212,6 @@ class StudyCourseController extends AbstractController
     }
 
     /**
-     * WORKAROUND
-     *
-     * @return string
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
-     * @see BackendController->listAction
-     *
-     */
-    public function getCoursesJsonAction()
-    {
-        $return = '';
-
-        if ($this->request->hasArgument('courseList')) {
-            $courses = $this->studyCourseRepository->getCoursesWithUidIn(
-                (array)$this->request->getArgument('courseList')
-            )->toArray();
-            $return = serialize($courses);
-
-        } else {
-            $this->logger->error(
-                'the Requested Argument "courseList" is not set.',
-                ['additionalInfo' => ['class' => __CLASS__, 'method' => __METHOD__, 'line' => __LINE__]]
-            );
-        }
-
-        return json_encode($return);
-    }
-
-    /**
      * @param StudyCourse|null $studyCourse
      *
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
@@ -260,7 +243,7 @@ class StudyCourseController extends AbstractController
             }
         }
 
-        if ($this->isAjaxRequest()) {
+        if ($this->isFilterRequest()) {
             $storagePids = $this->getContentElementStoragePids((int)GeneralUtility::_GET('ce'));
             if (!empty($storagePids)) {
                 $searchOptions['storagePids'] = $storagePids;
@@ -398,7 +381,7 @@ class StudyCourseController extends AbstractController
     /**
      * @return bool
      */
-    protected function isAjaxRequest()
+    protected function isFilterRequest()
     {
         $isAjaxRequest = false;
         if ((int)GeneralUtility::_GET('studyFinderAjaxRequest') === 1) {
@@ -410,31 +393,31 @@ class StudyCourseController extends AbstractController
 
     /**
      * @return array
+     * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
      */
-    protected function getPluginRecord()
+    protected function getPluginRecord(): array
     {
-        $pluginRecord = [];
-        $type = GeneralUtility::_GP('type');
-        $language = FrontendUtility::getCurrentSysLanguageUid();
-        $pluginUid = (int)GeneralUtility::_GP('ce');
-
-        $pluginRecords = RecordUtility::getRecordWithTranslations($pluginUid);
-
-        if (empty($type)) {
-            $contentObj = $this->configurationManager->getContentObject();
-            $pluginRecord = $contentObj->data;
+        if (!$this->isFilterRequest()) {
+            return $this->configurationManager->getContentObject()->data;
         } else {
-            if (array_key_exists($language, $pluginRecords)) {
-                $pluginRecord = $pluginRecords[$language];
+            $language = FrontendUtility::getCurrentSysLanguageUid();
+            $pluginUid = (int)GeneralUtility::_GP('ce');
+            $pluginRecord = RecordUtility::getRecord(TtContent::TABLE, $pluginUid, '*', '', true, true, $language);
+
+            if (!empty($pluginRecord)) {
+                return $pluginRecord;
             } else {
                 $this->logger->error(
-                    'No url parameter ce is set. Please check the ajax request in your network analyse tool if an filter is set',
-                    ['additionalInfo' => ['class' => __CLASS__, 'method' => __METHOD__, 'line' => __LINE__]]
+                    'No plugin record for the given constrains found.',
+                    [
+                        'constraints' => ['pluginUid' => $pluginUid, 'language' => $language],
+                        'additionalInfo' => ['class' => __CLASS__, 'method' => __METHOD__, 'line' => __LINE__]
+                    ]
                 );
             }
         }
 
-        return $pluginRecord;
+        return [];
     }
 
     /**

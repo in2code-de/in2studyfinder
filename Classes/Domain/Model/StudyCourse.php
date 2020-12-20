@@ -169,6 +169,29 @@ class StudyCourse extends AbstractEntity implements StudyCourseInterface
     protected $deleted = false;
 
     /**
+     * @var int
+     */
+    protected $l10nParent = 0;
+
+    /**
+     * @return int
+     */
+    public function getL10nParent(): int
+    {
+        return $this->l10nParent;
+    }
+
+    /**
+     * @param int $l10nParent
+     * @return StudyCourse
+     */
+    public function setL10nParent(int $l10nParent): StudyCourse
+    {
+        $this->l10nParent = $l10nParent;
+        return $this;
+    }
+
+    /**
      * @param int $uid
      */
     public function setUid($uid)

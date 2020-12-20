@@ -22,6 +22,7 @@ plugin.tx_in2studyfinder {
 		filters {
 			graduation {
 				type = object
+				singleSelect = 0
 				objectModel = In2code\In2studyfinder\Domain\Model\Graduation
 				propertyPath = academicDegree.graduation
 				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:graduation
@@ -29,6 +30,7 @@ plugin.tx_in2studyfinder {
 
 			typeOfStudy {
 				type = object
+				singleSelect = 0
 				objectModel = In2code\In2studyfinder\Domain\Model\TypeOfStudy
 				propertyPath = typesOfStudy
 				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:typeOfStudy
@@ -36,6 +38,7 @@ plugin.tx_in2studyfinder {
 
 			admissionRequirement {
 				type = object
+				singleSelect = 0
 				objectModel = In2code\In2studyfinder\Domain\Model\AdmissionRequirement
 				propertyPath = admissionRequirements
 				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:admissionRequirement
@@ -43,6 +46,7 @@ plugin.tx_in2studyfinder {
 
 			startOfStudy {
 				type = object
+				singleSelect = 0
 				objectModel = In2code\In2studyfinder\Domain\Model\StartOfStudy
 				propertyPath = startsOfStudy
 				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:startOfStudy
@@ -50,6 +54,7 @@ plugin.tx_in2studyfinder {
 
 			courseLanguage {
 				type = object
+				singleSelect = 1
 				objectModel = In2code\In2studyfinder\Domain\Model\CourseLanguage
 				propertyPath = courseLanguages
 				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:courseLanguage
@@ -57,6 +62,7 @@ plugin.tx_in2studyfinder {
 
 			faculty {
 				type = object
+				singleSelect = 0
 				objectModel = In2code\In2studyfinder\Domain\Model\Faculty
 				propertyPath = faculty
 				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:faculty
@@ -65,6 +71,8 @@ plugin.tx_in2studyfinder {
 			department {
 				type = In2code\In2studyfinder\Filter\FilterTypes\DomainObjectFilter
 				className = In2code\In2studyfinder\Domain\Model\Department
+				singleSelect = 0
+				objectModel = In2code\In2studyfinder\Domain\Model\Department
 				propertyPath = department
 				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:department
 #				disabledInFrontend = 1
@@ -140,39 +148,6 @@ in2studyfinderFilterAjax {
 		features.requireCHashArgumentForActionArguments = 0
 	}
 }
-
-############################
-# WORKAROUND
-#
-# ajax request for the export
-#
-# @see BackendController->exportAction
-############################
-in2studyfinderGetCourseJson = PAGE
-in2studyfinderGetCourseJson {
-	typeNum = 1553807527
-	config {
-		additionalHeaders.10.header = Content-Type: application/json
-		no_cache = 1
-		disableAllHeaderCode = 1
-		disablePrefixComment = 1
-		xhtml_cleaning = 0
-		admPanel = 0
-		debug = 0
-	}
-
-	10 = USER
-	10 {
-		userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
-		extensionName = In2studyfinder
-		pluginName = Pi1
-		vendorName = In2code
-		controller = StudyCourse
-		switchableControllerActions.StudyCourse.1 = getCoursesJson
-		features.requireCHashArgumentForActionArguments = 0
-	}
-}
-
 
 ############################
 # JavaScript and CSS section

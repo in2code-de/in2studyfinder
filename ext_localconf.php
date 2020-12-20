@@ -15,8 +15,8 @@ if (\In2code\In2studyfinder\Utility\VersionUtility::isTypo3MajorVersionBelow(10)
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     $extensionName,
     'Pi1',
-    [$controller => 'filter, getCoursesJson'],
-    [$controller => 'filter, getCoursesJson']
+    [$controller => 'filter'],
+    [$controller => 'filter']
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
@@ -32,6 +32,9 @@ if (\In2code\In2studyfinder\Utility\VersionUtility::isTypo3MajorVersionBelow(10)
     [$controller => 'detail'],
     []
 );
+
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['studyCourseSlug']
+    = \In2code\In2studyfinder\Updates\StudyCourseSlugUpdater::class;
 
 /*
 Adds the Language Files from in2studyfinder_extend
