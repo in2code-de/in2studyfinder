@@ -26,7 +26,6 @@ namespace In2code\In2studyfinder\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use In2code\In2studyfinder\Domain\Model\GlobalData;
 use In2code\In2studyfinder\Domain\Model\GlobalDataInterface;
 use In2code\In2studyfinder\Domain\Repository\GlobalDataRepository;
 
@@ -38,6 +37,7 @@ class GlobalDataUtility extends AbstractUtility
      */
     public static function existDefaultPreset($globalDataRepository)
     {
+        /** @var $globalDataRepository GlobalDataRepository */
         if ($globalDataRepository->countDefaultPreset() > 0) {
             $status = true;
         } else {
@@ -53,6 +53,8 @@ class GlobalDataUtility extends AbstractUtility
     /**
      * @param string $globalDataRepositoryClass
      * @return GlobalDataInterface|null
+     *
+     * @SuppressWarnings(PHPMD.LongVariable)
      */
     public static function getDefaultPreset($globalDataRepositoryClass = GlobalDataRepository::class)
     {
@@ -69,5 +71,3 @@ class GlobalDataUtility extends AbstractUtility
         return $defaultPreset;
     }
 }
-
-?>

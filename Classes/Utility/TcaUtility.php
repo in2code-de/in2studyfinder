@@ -1,4 +1,5 @@
 <?php
+
 namespace In2code\In2studyfinder\Utility;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -19,15 +20,15 @@ class TcaUtility extends AbstractUtility
     {
         return [
             'exclude' => 1,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.language',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'sys_language',
                 'foreign_table_where' => 'ORDER BY sys_language.title',
                 'items' => [
-                    ['LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1],
-                    ['LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0],
+                    ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1],
+                    ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0],
                 ],
                 'default' => 0
             ],
@@ -44,7 +45,7 @@ class TcaUtility extends AbstractUtility
         return [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
             'exclude' => 1,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -53,7 +54,7 @@ class TcaUtility extends AbstractUtility
                 ],
                 'foreign_table' => $table,
                 'foreign_table_where' => 'AND ' . $table . '.pid=###CURRENT_PID### AND ' . $table
-                                         . '.sys_language_uid IN (-1,0)',
+                    . '.sys_language_uid IN (-1,0)',
             ],
         ];
     }
@@ -76,7 +77,7 @@ class TcaUtility extends AbstractUtility
     public static function getFullTcaForT3verLabel()
     {
         return [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.versionLabel',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.versionLabel',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -92,7 +93,7 @@ class TcaUtility extends AbstractUtility
     {
         return [
             'exclude' => 1,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
             'config' => [
                 'type' => 'check',
             ],
@@ -107,7 +108,7 @@ class TcaUtility extends AbstractUtility
         return [
             'exclude' => 1,
             'l10n_mode' => 'mergeIfNotBlank',
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'config' => [
                 'type' => 'input',
                 'size' => 13,
@@ -129,7 +130,7 @@ class TcaUtility extends AbstractUtility
         return [
             'exclude' => 1,
             'l10n_mode' => 'mergeIfNotBlank',
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
             'config' => [
                 'type' => 'input',
                 'size' => 13,
@@ -220,27 +221,20 @@ class TcaUtility extends AbstractUtility
         $maxItems = 5,
         $l10nMode = 'exclude'
     ) {
-        /**
-         * Compatibility for Typo3 6.2 LTS
-         */
-        if (VersionUtility::isTypo3MajorVersionBelow(7)) {
-            return self::getFullTcaForSelectSideBySide($label, $table, $mmTable);
-        } else {
-            return [
-                'exclude' => $exclude,
-                'l10n_mode' => $l10nMode,
-                'label' => $label,
-                'config' => [
-                    'type' => 'select',
-                    'renderType' => 'selectCheckBox',
-                    'foreign_table' => $table,
-                    'MM' => $mmTable,
-                    'foreign_table_where' => 'AND ' . $table . '.sys_language_uid in (-1, 0)',
-                    'minitems' => $minItems,
-                    'maxitems' => $maxItems,
-                ],
-            ];
-        }
+        return [
+            'exclude' => $exclude,
+            'l10n_mode' => $l10nMode,
+            'label' => $label,
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectCheckBox',
+                'foreign_table' => $table,
+                'MM' => $mmTable,
+                'foreign_table_where' => 'AND ' . $table . '.sys_language_uid in (-1, 0)',
+                'minitems' => $minItems,
+                'maxitems' => $maxItems,
+            ],
+        ];
     }
 
     /**
@@ -263,47 +257,24 @@ class TcaUtility extends AbstractUtility
         $maxItems = 9999,
         $l10nMode = 'exclude'
     ) {
-        if (VersionUtility::isTypo3MajorVersionBelow(7)) {
-            return [
-                'exclude' => $exclude,
-                'l10n_mode' => $l10nMode,
-                'label' => $label,
-                'config' => [
-                    'type' => 'select',
-                    'foreign_table' => $table,
-                    'MM' => $mmTable,
-                    'foreign_table_where' => 'AND ' . $table . '.sys_language_uid in (-1, 0)',
-                    'size' => 5,
-                    'autoSizeMax' => 30,
-                    'minitems' => $minItems,
-                    'maxitems' => $maxItems,
-                    'multiple' => 0,
-                    'wizards' => [
-                        'edit' => self::getEditWizard(),
-                        'suggest' => self::getSuggestWizard(),
-                    ],
+        return [
+            'exclude' => $exclude,
+            'l10n_mode' => $l10nMode,
+            'label' => $label,
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
+                'foreign_table' => $table,
+                'MM' => $mmTable,
+                'foreign_table_where' => 'AND ' . $table . '.sys_language_uid in (-1, 0)',
+                'minitems' => $minItems,
+                'maxitems' => $maxItems,
+                'wizards' => [
+                    'edit' => self::getEditWizard(),
+                    'suggest' => self::getSuggestWizard(),
                 ],
-            ];
-        } else {
-            return [
-                'exclude' => $exclude,
-                'l10n_mode' => $l10nMode,
-                'label' => $label,
-                'config' => [
-                    'type' => 'select',
-                    'renderType' => 'selectMultipleSideBySide',
-                    'foreign_table' => $table,
-                    'MM' => $mmTable,
-                    'foreign_table_where' => 'AND ' . $table . '.sys_language_uid in (-1, 0)',
-                    'minitems' => $minItems,
-                    'maxitems' => $maxItems,
-                    'wizards' => [
-                        'edit' => self::getEditWizard(),
-                        'suggest' => self::getSuggestWizard(),
-                    ],
-                ],
-            ];
-        }
+            ],
+        ];
     }
 
     /**
@@ -331,6 +302,7 @@ class TcaUtility extends AbstractUtility
         $wizard = [
             'type' => 'script',
             'title' => 'LLL:EXT:cms/locallang_tca.xlf:sys_template.basedOn_add',
+            'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
             'params' => [
                 'table' => $table,
                 'pid' => $pid,
@@ -340,12 +312,6 @@ class TcaUtility extends AbstractUtility
                 'name' => 'wizard_add',
             ],
         ];
-
-        if (VersionUtility::isTypo3MajorVersionBelow(7)) {
-            $wizard['icon'] = 'add.gif';
-        } else {
-            $wizard['icon'] = 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif';
-        }
 
         return $wizard;
     }
@@ -361,17 +327,12 @@ class TcaUtility extends AbstractUtility
             'type' => 'popup',
             'title' => 'Edit',
             'popup_onlyOpenIfSelected' => 1,
+            'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
             'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
             'module' => [
                 'name' => 'wizard_edit',
-            ],
+            ]
         ];
-
-        if (VersionUtility::isTypo3MajorVersionBelow(7)) {
-            $wizard['icon'] = 'edit2.gif';
-        } else {
-            $wizard['icon'] = 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif';
-        }
 
         return $wizard;
     }
@@ -394,22 +355,16 @@ class TcaUtility extends AbstractUtility
             'type' => 'popup',
             'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_link_formlabel',
             'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
+            'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
+            'module' => [
+                'name' => 'wizard_link',
+            ],
             'params' => [
                 'blindLinkOptions' => $blindLinkOptions,
                 'allowedExtensions' => $allowedExtensions,
                 'blindLinkFields' => $blindLinkFields,
             ],
         ];
-
-        if (VersionUtility::isTypo3MajorVersionBelow(7)) {
-            $linkWizard['icon'] = 'link_popup.gif';
-            $linkWizard['script'] = 'browse_links.php?mode=wizard&act=url';
-        } else {
-            $linkWizard['icon'] = 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif';
-            $linkWizard['module'] = [
-                'name' => 'wizard_link',
-            ];
-        }
 
         return $linkWizard;
     }
@@ -452,7 +407,7 @@ class TcaUtility extends AbstractUtility
                 ],
             ];
 
-            ExtensionManagementUtility::addTCAcolumns($table, $extbaseType, 1);
+            ExtensionManagementUtility::addTCAcolumns($table, $extbaseType);
         }
 
         ExtensionManagementUtility::addToAllTCAtypes(

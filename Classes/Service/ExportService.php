@@ -7,6 +7,7 @@ use In2code\In2studyfinder\Export\ExportInterface;
 use In2code\In2studyfinder\Utility\FileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
+use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 class ExportService
@@ -38,13 +39,15 @@ class ExportService
 
     /**
      * @return void filename of the exported file
+     *
+     * @SuppressWarnings(PHPMD.LongVariable)
      */
     public function export()
     {
         $fullQualifiedFileName = $this->exportConfiguration->getExporter()->export($this->exportConfiguration);
         $filename = FileUtility::getFilenameFromFileWithPath($fullQualifiedFileName);
 
-        $headers = array(
+        $headers = [
             'Pragma' => 'public',
             'Expires' => 0,
             'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
@@ -53,7 +56,7 @@ class ExportService
             'Content-Type' => 'text/plain',
             'Content-Transfer-Encoding' => 'binary',
             'Content-Length' => filesize($fullQualifiedFileName)
-        );
+        ];
 
         foreach ($headers as $header => $data) {
             header($header . ': ' . $data);
@@ -112,6 +115,7 @@ class ExportService
                 $recordArray = $record->toArray();
                 $value = '';
                 foreach ($recordArray as $item) {
+                    /** @var $item DomainObjectInterface */
                     $value .= $item->_getProperty($propertyName) . ', ';
                 }
 
@@ -120,6 +124,7 @@ class ExportService
                 $record = $value;
             } else {
                 if ($record !== null) {
+                    /** @var $record DomainObjectInterface */
                     $record = $record->_getProperty($propertyName);
                 }
             }

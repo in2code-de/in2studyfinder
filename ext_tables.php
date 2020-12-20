@@ -3,25 +3,32 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
-$extKey = 'in2studyfinder';
+$controller = \In2code\In2studyfinder\Controller\BackendController::class;
+$extensionName = 'In2studyfinder';
+
+if (\In2code\In2studyfinder\Utility\VersionUtility::isTypo3MajorVersionBelow(10)) {
+    $controller = 'Backend';
+    $extensionName = 'In2code.in2studyfinder';
+}
+
 
 /**
  * Include Plugins
  */
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'In2code.' . $extKey,
+    'In2studyfinder',
     'Pi1',
     'Studiengangsfinder Listenansicht'
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'In2code.' . $extKey,
+    'In2studyfinder',
     'FastSearch',
     'Studiengangsfinder Schnellsuche'
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'In2code.' . $extKey,
+    'In2studyfinder',
     'Pi2',
     'Studiengangsfinder Detailansicht'
 );
@@ -33,12 +40,12 @@ if (TYPO3_MODE === 'BE') {
      */
     if (TYPO3_MODE === 'BE' && \In2code\In2studyfinder\Utility\ConfigurationUtility::isBackendModuleEnabled()) {
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-            'In2code.in2studyfinder',
+            $extensionName,
             'web',
             'm1',
             '',
             [
-                'Backend' => 'list, export'
+                $controller => 'list, export'
             ],
             [
                 'access' => 'user,group',
@@ -49,89 +56,74 @@ if (TYPO3_MODE === 'BE') {
         );
     }
 
-    if (\In2code\In2studyfinder\Utility\VersionUtility::isTypo3MajorVersionAbove(6)) {
+    /**
+     * Register Icons
+     */
+    $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        \TYPO3\CMS\Core\Imaging\IconRegistry::class
+    );
+    $iconRegistry->registerIcon(
+        'in2studyfinder-plugin-icon',
+        \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+        ['source' => 'EXT:in2studyfinder/Resources/Public/Icons/Extension.svg']
+    );
 
-        /**
-         * Register Icons
-         */
-        $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            \TYPO3\CMS\Core\Imaging\IconRegistry::class
-        );
-        $iconRegistry->registerIcon(
-            'in2studyfinder-plugin-icon',
-            \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-            ['source' => 'EXT:in2studyfinder/Resources/Public/Icons/Extension.svg']
-        );
-
-        /**
-         * Add to ContentElementWizard
-         */
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
-            '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:in2studyfinder/Configuration/TSConfig/ContentElementWizard.typoscript">'
-        );
-    } else {
-
-        /**
-         * Add to ContentElementWizard
-         */
-        $TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['In2code\In2studyfinder\Utility\Hook\WizIcon'] =
-            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extKey) . 'Classes/Utility/Hook/WizIcon.php';
-    }
+    /**
+     * Add to ContentElementWizard
+     */
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
+        '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:in2studyfinder/Configuration/TSConfig/ContentElementWizard.typoscript">'
+    );
 
     /**
      * Register default export types
      */
     $GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportTypes']['CSV'] =
         \In2code\In2studyfinder\Export\ExportTypes\CsvExport::class;
-
 }
 
 /**
  * Include Flexform
  */
-$pluginSignature = str_replace('_', '', $extKey) . '_pi1';
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
-    $pluginSignature,
-    'FILE:EXT:' . $extKey . '/Configuration/FlexForms/FlexformStudyfinderList.xml'
-);
+$flexformConfiguration = [
+    str_replace('_', '', 'in2studyfinder') . '_pi1' =>
+        'FILE:EXT:in2studyfinder' . '/Configuration/FlexForms/FlexformStudyfinderList.xml',
+    str_replace('_', '', 'in2studyfinder') . '_pi2' =>
+        'FILE:EXT:in2studyfinder' . '/Configuration/FlexForms/FlexformStudyfinderDetail.xml',
+    str_replace('_', '', 'in2studyfinder') . '_fastsearch' =>
+        'FILE:EXT:in2studyfinder/Configuration/FlexForms/FlexformStudyfinderFastSearch.xml'
+];
 
-$pluginSignature = str_replace('_', '', $extKey) . '_fastsearch';
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
-    $pluginSignature,
-    'FILE:EXT:' . $extKey . '/Configuration/FlexForms/FlexformStudyfinderFastSearch.xml'
-);
-
-$pluginSignature = str_replace('_', '', $extKey) . '_pi2';
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
-    $pluginSignature,
-    'FILE:EXT:' . $extKey . '/Configuration/FlexForms/FlexformStudyfinderDetail.xml'
-);
+foreach ($flexformConfiguration as $pluginSignature => $flexformPath) {
+    $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
+        $pluginSignature,
+        $flexformPath
+    );
+}
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
-    $extKey,
+    'in2studyfinder',
     'Configuration/TypoScript/Main',
     'In2studyfinder Basic Template'
 );
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
-    $extKey,
+    'in2studyfinder',
     'Configuration/TypoScript/Css',
     'In2studyfinder Demo CSS Template'
 );
 
 $tables = [
-    'tx_in2studyfinder_domain_model_studycourse',
-    'tx_in2studyfinder_domain_model_academicdegree',
-    'tx_in2studyfinder_domain_model_department',
-    'tx_in2studyfinder_domain_model_faculty',
-    'tx_in2studyfinder_domain_model_typeofstudy',
-    'tx_in2studyfinder_domain_model_courselanguage',
-    'tx_in2studyfinder_domain_model_admissionrequirement',
-    'tx_in2studyfinder_domain_model_startofstudy',
-    'tx_in2studyfinder_domain_model_graduation',
+    \In2code\In2studyfinder\Domain\Model\StudyCourse::TABLE,
+    \In2code\In2studyfinder\Domain\Model\AcademicDegree::TABLE,
+    \In2code\In2studyfinder\Domain\Model\Department::TABLE,
+    \In2code\In2studyfinder\Domain\Model\Faculty::TABLE,
+    \In2code\In2studyfinder\Domain\Model\TypeOfStudy::TABLE,
+    \In2code\In2studyfinder\Domain\Model\CourseLanguage::TABLE,
+    \In2code\In2studyfinder\Domain\Model\AdmissionRequirement::TABLE,
+    \In2code\In2studyfinder\Domain\Model\StartOfStudy::TABLE,
+    \In2code\In2studyfinder\Domain\Model\Graduation::TABLE,
 ];
 
 foreach ($tables as $table) {
@@ -146,7 +138,7 @@ foreach ($tables as $table) {
 
 if (\In2code\In2studyfinder\Utility\ConfigurationUtility::isCategorisationEnabled()) {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable(
-        $extKey,
-        'tx_in2studyfinder_domain_model_studycourse'
+        'in2studyfinder',
+        \In2code\In2studyfinder\Domain\Model\StudyCourse::TABLE
     );
 }

@@ -60,10 +60,10 @@ class GlobalDataRepository extends AbstractRepository
         $query->getQuerySettings()->setRespectStoragePage(false);
         $query->matching(
             $query->logicalAnd(
-                array(
+                [
                     $query->equals('default_preset', true),
                     $query->equals('deleted', 0),
-                )
+                ]
             )
         );
         return $query;

@@ -1,6 +1,8 @@
 <?php
 namespace In2code\In2studyfinder\Utility;
 
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -22,10 +24,12 @@ class FrontendUtility
      * Get current language uid
      *
      * @return int
+     * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
      */
     public static function getCurrentSysLanguageUid()
     {
-        return (int)self::getTyposcriptFrontendController()->sys_language_uid;
+        $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
+        return $languageAspect->getId();
     }
 
     /**

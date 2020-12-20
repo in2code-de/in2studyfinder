@@ -2,7 +2,6 @@
 
 namespace In2code\In2studyfinder\Domain\Model;
 
-
 /**
  * AdmissionRequirement
  */

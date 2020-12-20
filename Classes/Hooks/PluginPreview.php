@@ -2,38 +2,14 @@
 
 namespace In2code\In2studyfinder\Hooks;
 
-/***************************************************************
- *  Copyright notice
- *
- *  (c) 2017 Sebastian Stein <sebastian.stein@in2code.de>, in2code.de
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
-
 use In2code\In2studyfinder\Utility\AbstractUtility;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
+use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Service\FlexFormService;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -70,6 +46,7 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
      * @param string $itemContent Item content
      * @param array $row Record row of tt_content
      * @return void
+     * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      */
     public function preProcess(
         PageLayoutView &$parentObject,
@@ -106,6 +83,7 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
     /**
      * @param string @pluginName
      * @return string
+     * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      */
     protected function getPluginInformation($pluginName)
     {
@@ -181,6 +159,8 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
 
     /**
      * @return array
+     * @SuppressWarnings(PHPMD.LongVariable)
+     * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      */
     protected function getRecordStoragePages()
     {
@@ -223,7 +203,8 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
 
         $this->settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
         $this->templatePathAndFile = $this->settings['backend']['pluginPreviewTemplate'];
-        $flexFormService = AbstractUtility::getObjectManager()->get(FlexFormService::class);
+
+        $flexFormService = ExtensionUtility::getObjectManager()->get(FlexFormService::class);
         $this->flexFormData = $flexFormService->convertFlexFormContentToArray($this->row['pi_flexform']);
     }
 

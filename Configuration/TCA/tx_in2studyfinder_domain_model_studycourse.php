@@ -1,6 +1,6 @@
 <?php
 $ll = 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:';
-$table = 'tx_in2studyfinder_domain_model_studycourse';
+$table = \In2code\In2studyfinder\Domain\Model\StudyCourse::TABLE;
 $icon =
     TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
         'EXT:in2studyfinder/Resources/Public/Icons/' . $table . '.png'
@@ -33,11 +33,11 @@ $tcaConfiguration = [
         'iconfile' => $icon,
     ],
     'interface' => [
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, standard_period_of_study, ects_credits, teaser, description, tuition_fee, university_place, content_elements, academic_degree, department, faculty, types_of_study, course_languages, admission_requirements, starts_of_study, meta_pagetitles, meta_keywordss, meta_description,different_preset,global_data_preset',
+        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, url_segment, standard_period_of_study, ects_credits, teaser, description, tuition_fee, university_place, content_elements, academic_degree, department, faculty, types_of_study, course_languages, admission_requirements, starts_of_study, meta_pagetitles, meta_keywordss, meta_description,different_preset,global_data_preset',
     ],
     'types' => [
         '0' => [
-            'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, --palette--;' . $ll . 'keyData;keyData,teaser;;;richtext:rte_transform[mode=ts_links], description;;;richtext:rte_transform[mode=ts_links], content_elements, --div--;' . $ll . 'metadata, --palette--;' . $ll . 'metadata;metadata, --div--;' . $ll . 'globalPreset, --palette--;' . $ll . 'globalPreset;globalPreset, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime,',
+            'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, url_segment, --palette--;' . $ll . 'keyData;keyData,teaser;;;richtext:rte_transform[mode=ts_links], description;;;richtext:rte_transform[mode=ts_links], content_elements, --div--;' . $ll . 'metadata, --palette--;' . $ll . 'metadata;metadata, --div--;' . $ll . 'globalPreset, --palette--;' . $ll . 'globalPreset;globalPreset, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime,',
         ],
     ],
     'palettes' => [
@@ -64,7 +64,7 @@ $tcaConfiguration = [
         'starttime' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForStartTime(),
         'endtime' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForEndTime(),
         'title' => [
-            'exclude' => 1,
+            'exclude' => true,
             'label' => $ll . 'title',
             'config' => [
                 'type' => 'input',
@@ -74,7 +74,7 @@ $tcaConfiguration = [
             ],
         ],
         'standard_period_of_study' => [
-            'exclude' => 1,
+            'exclude' => true,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => $ll . 'standardPeriodOfStudy',
@@ -85,7 +85,7 @@ $tcaConfiguration = [
             ],
         ],
         'ects_credits' => [
-            'exclude' => 1,
+            'exclude' => true,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => $ll . 'ectsCredits',
@@ -96,7 +96,7 @@ $tcaConfiguration = [
             ],
         ],
         'tuition_fee' => [
-            'exclude' => 1,
+            'exclude' => true,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => $ll . 'tuitionFee',
@@ -107,7 +107,7 @@ $tcaConfiguration = [
             ],
         ],
         'teaser' => [
-            'exclude' => 1,
+            'exclude' => true,
             'label' => $ll . 'teaser',
             'config' => [
                 'type' => 'text',
@@ -133,7 +133,7 @@ $tcaConfiguration = [
             ],
         ],
         'description' => [
-            'exclude' => 1,
+            'exclude' => true,
             'label' => $ll . 'description',
             'config' => [
                 'type' => 'text',
@@ -159,7 +159,7 @@ $tcaConfiguration = [
             ],
         ],
         'university_place' => [
-            'exclude' => 1,
+            'exclude' => true,
             'l10n_mode' => 'exclude',
             'l10n_display' => 'defaultAsReadonly',
             'label' => $ll . 'universityPlace',
@@ -170,13 +170,13 @@ $tcaConfiguration = [
             ],
         ],
         'content_elements' => [
-            'exclude' => 1,
+            'exclude' => true,
             'label' => $ll . 'contentElements',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
-                'allowed' => 'tt_content',
-                'foreign_table' => 'tt_content',
+                'allowed' => \In2code\In2studyfinder\Domain\Model\TtContent::TABLE,
+                'foreign_table' => \In2code\In2studyfinder\Domain\Model\TtContent::TABLE,
                 'MM' => 'tx_in2studyfinder_studycourse_ttcontent_mm',
                 'maxitems' => 9999,
                 'size' => 10,
@@ -188,48 +188,48 @@ $tcaConfiguration = [
         ],
         'academic_degree' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForSingleSelect(
             $ll . 'academicDegree',
-            'tx_in2studyfinder_domain_model_academicdegree',
+            \In2code\In2studyfinder\Domain\Model\AcademicDegree::TABLE,
             1,
             1
         ),
         'department' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForSingleSelect(
             $ll . 'department',
-            'tx_in2studyfinder_domain_model_department'
+            \In2code\In2studyfinder\Domain\Model\Department::TABLE
         ),
         'faculty' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForSingleSelect(
             $ll . 'faculty',
-            'tx_in2studyfinder_domain_model_faculty'
+            \In2code\In2studyfinder\Domain\Model\Faculty::TABLE
         ),
         'types_of_study' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForSelectSideBySide(
             $ll . 'typeOfStudy',
-            'tx_in2studyfinder_domain_model_typeofstudy',
+            \In2code\In2studyfinder\Domain\Model\TypeOfStudy::TABLE,
             'tx_in2studyfinder_studycourse_typeofstudy_mm',
             1,
             1
         ),
         'course_languages' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForSelectSideBySide(
             $ll . 'courseLanguage',
-            'tx_in2studyfinder_domain_model_courselanguage',
+            \In2code\In2studyfinder\Domain\Model\CourseLanguage::TABLE,
             'tx_in2studyfinder_studycourse_courselanguage_mm',
             1,
             1
         ),
         'admission_requirements' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForSelectSideBySide(
             $ll . 'admissionRequirements',
-            'tx_in2studyfinder_domain_model_admissionrequirement',
+            \In2code\In2studyfinder\Domain\Model\AdmissionRequirement::TABLE,
             'tx_in2studyfinder_studycourse_admissionrequirement_mm',
             1,
             1
         ),
         'starts_of_study' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForSelectCheckBox(
             $ll . 'startOfStudy',
-            'tx_in2studyfinder_domain_model_startofstudy',
+            \In2code\In2studyfinder\Domain\Model\StartOfStudy::TABLE,
             'tx_in2studyfinder_studycourse_startofstudy_mm',
             1,
             1
         ),
         'meta_pagetitle' => [
-            'exclude' => 1,
+            'exclude' => true,
             'label' => $ll . 'metaPageTitle',
             'config' => [
                 'type' => 'input',
@@ -239,7 +239,7 @@ $tcaConfiguration = [
             ],
         ],
         'meta_keywords' => [
-            'exclude' => 1,
+            'exclude' => true,
             'l10n_mode' => 'mergeIfNotBlank',
             'label' => $ll . 'metaKeywords',
             'config' => [
@@ -250,7 +250,7 @@ $tcaConfiguration = [
             ],
         ],
         'meta_description' => [
-            'exclude' => 1,
+            'exclude' => true,
             'l10n_mode' => 'mergeIfNotBlank',
             'label' => $ll . 'metaDescription',
             'config' => [
@@ -261,13 +261,34 @@ $tcaConfiguration = [
                 'max' => 750,
             ],
         ],
+        'url_segment' => [
+            'label' => $ll . 'url_segment',
+            'exclude' => true,
+            'config' => [
+                'type' => 'slug',
+                'generatorOptions' => [
+                    'fields' => ['title'],
+                    'fieldSeparator' => '/',
+                    'prefixParentPageSlug' => false,
+                    'replacements' => [
+                        '/' => '',
+                    ],
+                    'postModifiers' => [
+                        \In2code\In2studyfinder\Slug\UrlSegmentPostModifier::class . '->extendWithGraduation'
+                    ]
+                ],
+                'fallbackCharacter' => '-',
+                'eval' => 'uniqueInSite',
+                'default' => ''
+            ]
+        ]
     ],
 ];
 
 if (In2code\In2studyfinder\Utility\ConfigurationUtility::isEnableGlobalData()) {
 
     $tcaConfiguration['columns']['different_preset'] = [
-        'exclude' => 1,
+        'exclude' => true,
         'label' => $ll . 'differentPreset',
         'config' => [
             'type' => 'check',
@@ -276,16 +297,16 @@ if (In2code\In2studyfinder\Utility\ConfigurationUtility::isEnableGlobalData()) {
     ];
 
     $tcaConfiguration['columns']['global_data_preset'] = [
-        'exclude' => 1,
+        'exclude' => true,
         'label' => $ll . 'globalDataPreset',
         'config' => [
             'type' => 'select',
             'renderType' => 'selectSingle',
-            'foreign_table' => 'tx_in2studyfinder_domain_model_globaldata',
+            'foreign_table' => \In2code\In2studyfinder\Domain\Model\GlobalData::TABLE,
             'foreign_table_where' => 'AND sys_language_uid in (-1, 0)',
             'items' => [
                 In2code\In2studyfinder\Utility\TcaUtility::getPleaseChooseOption(
-                    'tx_in2studyfinder_domain_model_globaldata'
+                    \In2code\In2studyfinder\Domain\Model\GlobalData::TABLE
                 )
             ],
             'minitems' => 1,

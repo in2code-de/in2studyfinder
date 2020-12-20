@@ -8,7 +8,6 @@ use In2code\In2studyfinder\Export\ExportInterface;
 use In2code\In2studyfinder\Utility\FileUtility;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 
 class CsvExport extends AbstractExport implements ExportInterface
 {

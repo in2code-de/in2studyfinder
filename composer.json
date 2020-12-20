@@ -1,25 +1,27 @@
 {
-  "name": "in2code/in2studyfinder",
-  "type": "typo3-cms-extension",
-  "description": "",
-  "keywords": [
-    "TYPO3",
-    "extension"
-  ],
-  "homepage": "https://www.in2code.de/produkte/studiengangsfinder/",
-  "authors": [
-    {
-      "name": "in2code GmbH",
-      "email": "service@in2code.de"
-    }
-  ],
-  "license": "GPL-2.0+",
-  "require": {
-    "typo3/cms-core": "^8.7 || ^9.5"
-  },
-  "autoload": {
-    "psr-4": {
-      "In2code\\In2studyfinder\\": "Classes"
-    }
-  }
+	"name": "in2code/in2studyfinder",
+	"type": "typo3-cms-extension",
+	"description": "",
+	"keywords": [
+		"TYPO3",
+		"extension"
+	],
+	"homepage": "https://www.in2code.de/produkte/studiengangsfinder/",
+	"authors": [
+		{
+			"name": "in2code GmbH",
+			"email": "service@in2code.de"
+		}
+	],
+	"license": "GPL-2.0+",
+	"require": {
+		"php": "^7.2",
+		"ext-json": "*",
+		"typo3/cms-core": "^9.5 || ^10.4"
+	},
+	"autoload": {
+		"psr-4": {
+			"In2code\\In2studyfinder\\": "Classes"
+		}
+	}
 }

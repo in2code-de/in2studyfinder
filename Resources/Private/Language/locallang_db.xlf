@@ -102,6 +102,9 @@
 			<trans-unit id="graduation">
 				<source>Graduations</source>
 			</trans-unit>
+			<trans-unit id="url_segment">
+				<source>Navigationpath</source>
+			</trans-unit>
 			<trans-unit id="graduation.title">
 				<source>Graduation</source>
 			</trans-unit>

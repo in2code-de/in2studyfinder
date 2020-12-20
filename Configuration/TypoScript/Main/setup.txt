@@ -26,48 +26,55 @@ plugin.tx_in2studyfinder {
 				propertyPath = academicDegree.graduation
 				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:graduation
 			}
+
 			typeOfStudy {
 				type = object
 				objectModel = In2code\In2studyfinder\Domain\Model\TypeOfStudy
 				propertyPath = typesOfStudy
 				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:typeOfStudy
 			}
+
 			admissionRequirement {
 				type = object
 				objectModel = In2code\In2studyfinder\Domain\Model\AdmissionRequirement
 				propertyPath = admissionRequirements
 				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:admissionRequirement
 			}
+
 			startOfStudy {
 				type = object
 				objectModel = In2code\In2studyfinder\Domain\Model\StartOfStudy
 				propertyPath = startsOfStudy
 				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:startOfStudy
 			}
+
 			courseLanguage {
 				type = object
 				objectModel = In2code\In2studyfinder\Domain\Model\CourseLanguage
 				propertyPath = courseLanguages
 				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:courseLanguage
 			}
+
 			faculty {
 				type = object
 				objectModel = In2code\In2studyfinder\Domain\Model\Faculty
 				propertyPath = faculty
 				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:faculty
 			}
+
 			department {
 				type = object
 				objectModel = In2code\In2studyfinder\Domain\Model\Department
 				propertyPath = department
 				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:department
-#				disabledInFrontend = 1
+				#                disabledInFrontend = 1
 			}
-#			credits {
-#				type = boolean
-#				propertyPath = ectsCredits
-#				frontendLabel = FrontendLabel
-#			}
+
+			#            credits {
+			#                type = boolean
+			#                propertyPath = ectsCredits
+			#                frontendLabel = FrontendLabel
+			#            }
 		}
 
 		backend {
@@ -121,7 +128,7 @@ in2studyfinderFilterAjax {
 		debug = 0
 	}
 
-	10  = USER_INT
+	10 = USER_INT
 	10 {
 		userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
 		extensionName = In2studyfinder
@@ -134,83 +141,9 @@ in2studyfinderFilterAjax {
 }
 
 ############################
-# WORKAROUND
-#
-# ajax request for the export
-#
-# @see BackendController->exportAction
-############################
-in2studyfinderGetCourseJson = PAGE
-in2studyfinderGetCourseJson {
-	typeNum = 2308171056
-	config {
-		additionalHeaders.10.header = Content-Type: application/json
-		no_cache = 1
-		disableAllHeaderCode = 1
-		disablePrefixComment = 1
-		xhtml_cleaning = 0
-		admPanel = 0
-		debug = 0
-	}
-
-	10 = USER
-	10 {
-		userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
-		extensionName = In2studyfinder
-		pluginName = Pi1
-		vendorName = In2code
-		controller = StudyCourse
-		switchableControllerActions.StudyCourse.1 = getCoursesJson
-		features.requireCHashArgumentForActionArguments = 0
-	}
-}
-
-
-
-############################
 # JavaScript and CSS section
 ############################
 
-# add jQuery if it was turned on in the constants
-
-[globalVar = LIT:0 < {$plugin.tx_in2studyfinder.settings.javascript.addJQueryFromGoogle}]
-	page.includeJSFooterlibs.in2studyfinderJQuery = {$plugin.tx_in2studyfinder.settings.javascript.in2studyfinderJQuery}
-	page.includeJSFooterlibs.in2studyfinderJQuery.external = 1
-[end]
-
 page.includeCSS.in2studyfinderCss = {$plugin.tx_in2studyfinder.settings.css.in2studyfinderCss}
 
-# add In2studyfinder JavaScripts
-page {
-	includeJSFooter {
-		in2studyfinderSelect2 = {$plugin.tx_in2studyfinder.settings.javascript.in2studyfinderSelect2}
-		in2studyfinderJavaScriptBasic = EXT:in2studyfinder/Resources/Public/JavaScript/In2studyfinder.js
-
-		in2studyfinderJavaScriptModulesSelect = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/Select.js
-		in2studyfinderJavaScriptModulesFilterHandling = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/FilterHandling.js
-		in2studyfinderJavaScriptModulesUrlHandling = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/UrlHandling.js
-		in2studyfinderJavaScriptModulesUiBehaviour = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/UiBehaviour.js
-		in2studyfinderJavaScriptModulesPaginationHandling = EXT:in2studyfinder/Resources/Public/JavaScript/Modules/PaginationHandling.js
-
-		in2studyfinderJavaScriptSelect2Language = EXT:in2studyfinder/Resources/Public/JavaScript/i18n/de.js
-	}
-}
-
-
-############################
-# Default language configuration 0=de / 1=en
-#
-# different configurations have to be done either in the template extension or in2studyfinder_extend
-############################
-
-[globalVar = GP:L = 1]
-	page.includeJSFooter.in2studyfinderJavaScriptSelect2Language = EXT:in2studyfinder/Resources/Public/JavaScript/i18n/en.js
-
-	in2studyfinderFilterAjax {
-		config {
-			sys_language_uid = 1
-			sys_language_mode = strict
-			language = en
-		}
-	}
-[end]
+page.includeJSFooter.in2studyfinder = {$plugin.tx_in2studyfinder.settings.javascript.main}

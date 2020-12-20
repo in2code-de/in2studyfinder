@@ -21,8 +21,8 @@ namespace In2code\In2studyfinder\ViewHelpers\Widget\Controller;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController;
@@ -35,14 +35,14 @@ class PaginateController extends AbstractWidgetController
     /**
      * @var array
      */
-    protected $configuration = array(
+    protected $configuration = [
         'itemsPerPage' => 10,
         'insertAbove' => false,
         'insertBelow' => true,
         'maximumNumberOfLinks' => 99,
         'addQueryStringMethod' => '',
         'section' => '',
-    );
+    ];
 
     /**
      * @var QueryResultInterface|ObjectStorage|array
@@ -76,6 +76,7 @@ class PaginateController extends AbstractWidgetController
 
     /**
      * @return void
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
     public function initializeAction()
     {
@@ -94,7 +95,7 @@ class PaginateController extends AbstractWidgetController
         if (!isset($itemsPerPage) || $itemsPerPage === '' || $itemsPerPage === 0) {
             $itemsPerPage = (int)$this->configuration['itemsPerPage'];
         }
-        
+
         $this->numberOfPages = $itemsPerPage > 0 ? ceil(count($this->objects) / $itemsPerPage) : 0;
         $this->maximumNumberOfLinks = (int)$this->configuration['maximumNumberOfLinks'];
     }
@@ -124,9 +125,9 @@ class PaginateController extends AbstractWidgetController
         }
         $this->view->assign(
             'contentArguments',
-            array(
+            [
                 $this->widgetConfiguration['as'] => $modifiedObjects,
-            )
+            ]
         );
         $this->view->assign('configuration', $this->configuration);
         $this->view->assign('pagination', $this->buildPagination());
@@ -166,11 +167,11 @@ class PaginateController extends AbstractWidgetController
     protected function buildPagination()
     {
         $this->calculateDisplayRange();
-        $pages = array();
+        $pages = [];
         for ($i = $this->displayRangeStart; $i <= $this->displayRangeEnd; $i++) {
-            $pages[] = array('number' => $i, 'isCurrent' => $i === $this->currentPage);
+            $pages[] = ['number' => $i, 'isCurrent' => $i === $this->currentPage];
         }
-        $pagination = array(
+        $pagination = [
             'pages' => $pages,
             'current' => $this->currentPage,
             'numberOfPages' => $this->numberOfPages,
@@ -178,7 +179,7 @@ class PaginateController extends AbstractWidgetController
             'displayRangeEnd' => $this->displayRangeEnd,
             'hasLessPages' => $this->displayRangeStart > 2,
             'hasMorePages' => $this->displayRangeEnd + 1 < $this->numberOfPages,
-        );
+        ];
         if ($this->currentPage < $this->numberOfPages) {
             $pagination['nextPage'] = $this->currentPage + 1;
         }
@@ -206,7 +207,7 @@ class PaginateController extends AbstractWidgetController
             $modifiedObjects = $query->execute();
             return $modifiedObjects;
         } elseif ($this->objects instanceof ObjectStorage) {
-            $modifiedObjects = array();
+            $modifiedObjects = [];
             $endOfRange = $offset + $itemsPerPage;
             for ($i = $offset; $i < $endOfRange; $i++) {
                 $modifiedObjects[] = $this->objects->toArray()[$i];
@@ -219,7 +220,8 @@ class PaginateController extends AbstractWidgetController
             throw new \InvalidArgumentException(
                 'The view helper "' . get_class($this)
                 . '" accepts as argument "QueryResultInterface", "\SplObjectStorage", "ObjectStorage" or an array. '
-                . 'given: ' . get_class($this->objects), 1385547291
+                . 'given: ' . get_class($this->objects),
+                1385547291
             );
         }
     }
