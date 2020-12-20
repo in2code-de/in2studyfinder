@@ -224,6 +224,7 @@ class FilterService extends AbstractService
                     'propertyPath' => $filterProperties['propertyPath'],
                     'frontendLabel' => $this->buildFrontendLabel($filterProperties),
                     'disabledInFrontend' => $this->isFilterInFrontendVisible($filterProperties),
+                    'singleSelect' => $filterProperties['singleSelect']
                 ];
 
                 switch ($filterProperties['type']) {

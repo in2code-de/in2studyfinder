@@ -54,7 +54,7 @@ plugin.tx_in2studyfinder {
 
 			courseLanguage {
 				type = object
-				singleSelect = 0
+				singleSelect = 1
 				objectModel = In2code\In2studyfinder\Domain\Model\CourseLanguage
 				propertyPath = courseLanguages
 				frontendLabel = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:courseLanguage
