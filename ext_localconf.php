@@ -4,27 +4,37 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
+$controller = \In2code\In2studyfinder\Controller\StudyCourseController::class;
+$extensionName = 'In2studyfinder';
+
+if (\In2code\In2studyfinder\Utility\VersionUtility::isTypo3MajorVersionBelow(10)) {
+    $controller = 'StudyCourse';
+    $extensionName = 'In2code.in2studyfinder';
+}
+
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'In2code.in2studyfinder',
+    $extensionName,
     'Pi1',
-    ['StudyCourse' => 'filter, getCoursesJson'],
-    ['StudyCourse' => 'filter, getCoursesJson']
+    [$controller => 'filter'],
+    [$controller => 'filter']
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'In2code.in2studyfinder',
+    $extensionName,
     'FastSearch',
-    ['StudyCourse' => 'fastSearch'],
+    [$controller => 'fastSearch'],
     []
 );
-
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'In2code.in2studyfinder',
+    $extensionName,
     'Pi2',
-    ['StudyCourse' => 'detail'],
+    [$controller => 'detail'],
     []
 );
+
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['studyCourseSlug']
+    = \In2code\In2studyfinder\Updates\StudyCourseSlugUpdater::class;
 
 /*
 Adds the Language Files from in2studyfinder_extend

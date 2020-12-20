@@ -131,6 +131,10 @@
 				<source>Graduations</source>
 				<target>Abschlussarten</target>
 			</trans-unit>
+			<trans-unit id="url_segment">
+				<source>Navigationpath</source>
+				<target>Navigationspfad</target>
+			</trans-unit>
 			<trans-unit id="graduation.title">
 				<source>Graduation</source>
 				<target>Abschlussart</target>

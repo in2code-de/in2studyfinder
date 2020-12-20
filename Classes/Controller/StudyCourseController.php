@@ -6,28 +6,22 @@ use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Domain\Model\StudyCourseInterface;
 use In2code\In2studyfinder\Domain\Model\TtContent;
 use In2code\In2studyfinder\Domain\Repository\FacultyRepository;
+use In2code\In2studyfinder\Service\FilterService;
 use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use In2code\In2studyfinder\Utility\FrontendUtility;
+use In2code\In2studyfinder\Utility\RecordUtility;
 use In2code\In2studyfinder\Utility\VersionUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\QueryGenerator;
-use TYPO3\CMS\Core\Log\LogLevel;
-use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
-use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Property\Exception;
-use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * StudyCourseController
@@ -37,9 +31,9 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 class StudyCourseController extends AbstractController
 {
     /**
-     * @var array
+     * @var FilterService
      */
-    protected $filters = [];
+    protected $filterService;
 
     /**
      * @var FrontendInterface
@@ -52,9 +46,11 @@ class StudyCourseController extends AbstractController
     protected $response = null;
 
     /**
+     * the current plugin record
+     *
      * @var array
      */
-    protected $pluginRecord;
+    protected $data = [];
 
     /**
      * Use this instead of __construct, because extbase will inject dependencies *after* construnction of an object
@@ -70,20 +66,10 @@ class StudyCourseController extends AbstractController
                 GeneralUtility::makeInstance(CacheManager::class)->getCache('in2studyfinder');
         }
 
-        $this->setPluginRecord();
-
-        if (ConfigurationUtility::isCachingEnabled()) {
-            $cacheIdentifier = $this->getCacheIdentifierForStudyCourses($this->settings['filters']);
-
-            if ($this->cacheInstance->has($cacheIdentifier)) {
-                $this->filters = $this->cacheInstance->get($cacheIdentifier);
-            } else {
-                $this->setFilters();
-                $this->cacheInstance->set($cacheIdentifier, $this->filters, ['in2studyfinder']);
-            }
-        } else {
-            $this->setFilters();
-        }
+        /*
+         * Set $this->data (current plugin record
+         */
+        $this->data = $this->getPluginRecord();
     }
 
     /**
@@ -105,9 +91,9 @@ class StudyCourseController extends AbstractController
         }
 
         /*
-         * add the flexform settings to the settings if the request is an ajax request
+         * add the flexform settings to the settings if the request is an filtering ajax request
          */
-        if ($this->isAjaxRequest()) {
+        if ($this->isFilterRequest()) {
             if (GeneralUtility::_GP('type') === '1308171055' && GeneralUtility::_GP('ce')) {
                 $this->settings =
                     array_merge_recursive(
@@ -115,10 +101,9 @@ class StudyCourseController extends AbstractController
                         ExtensionUtility::getFlexFormSettingsByUid(GeneralUtility::_GP('ce'))
                     );
             } else {
-                $this->logger->log(
-                    LogLevel::ERROR,
+                $this->logger->error(
                     'Incorrect parameters of the Ajax request. Flexform settings could not be set! Maybe the extension\'s layout has been overwritten?',
-                    []
+                    ['additionalInfo' => ['class' => __CLASS__, 'method' => __METHOD__, 'line' => __LINE__]]
                 );
             }
         }
@@ -144,9 +129,9 @@ class StudyCourseController extends AbstractController
         }
 
         $searchOptions =
-            array_replace_recursive(
-                $searchOptions,
-                $this->getSelectedFlexformOptions()
+            array_replace(
+                $this->filterService->getPluginFilterRestrictions(),
+                $searchOptions
             );
 
         $studyCourses = $this->processSearch($searchOptions);
@@ -154,14 +139,14 @@ class StudyCourseController extends AbstractController
         $this->view->assignMultiple(
             [
                 'searchedOptions' => $searchOptions,
-                'filters' => $this->getFrontendFilters(),
-                'availableFilterOptions' => $this->getAvailableFilterOptionsFromQueryResult($studyCourses),
+                'filters' => $this->filterService->getEnabledFrontendFilter(),
+                'availableFilterOptions' => $this->filterService->getAvailableFilterOptions($studyCourses),
                 'studyCourseCount' => count($studyCourses),
                 'studyCourses' => $studyCourses,
                 'currentTypo3MajorVersion' => VersionUtility::getCurrentTypo3MajorVersion(),
                 'settings' => $this->settings,
-                'data' => $this->pluginRecord,
-                'isAjaxRequest' => $this->isAjaxRequest()
+                'data' => $this->data,
+                'isAjaxRequest' => $this->isFilterRequest()
             ]
         );
     }
@@ -180,7 +165,7 @@ class StudyCourseController extends AbstractController
                 'studyCourseCount' => count($studyCourses),
                 'facultyCount' => $this->getFacultyCount(),
                 'studyCourses' => $studyCourses,
-                'data' => $this->configurationManager->getContentObject()->data,
+                'data' => $this->data,
                 'settings' => $this->settings
             ]
         );
@@ -225,36 +210,6 @@ class StudyCourseController extends AbstractController
     }
 
     /**
-     * WORKAROUND
-     *
-     * @return string
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
-     * @see BackendController->listAction
-     *
-     */
-    public function getCoursesJsonAction()
-    {
-        $return = '';
-
-        if ($this->request->hasArgument('courseList')) {
-            $courses = $this->studyCourseRepository->getCoursesWithUidIn(
-                (array)$this->request->getArgument('courseList')
-            )->toArray();
-            $return = serialize($courses);
-
-        } else {
-            $this->logger->log(
-                LogLevel::ERROR,
-                'the Requested Argument "courseList" is not set.',
-                [__METHOD__ . ' on Line ' . __LINE__]
-            );
-        }
-
-        return json_encode($return);
-    }
-
-    /**
      * @param StudyCourse|null $studyCourse
      *
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
@@ -277,29 +232,33 @@ class StudyCourseController extends AbstractController
      */
     protected function processSearch(array $searchOptions)
     {
-        $mergedOptions = [];
+        $filter = $this->filterService->getFilter();
 
         foreach ($searchOptions as $filterName => $searchedOptions) {
-            $mergedOptions[$this->filters[$filterName]['propertyPath']] = $searchedOptions;
+            $searchOptions[$filter[$filterName]['propertyPath']] = $searchedOptions;
+            if ($filter[$filterName]['propertyPath'] !== $filterName) {
+                unset($searchOptions[$filterName]);
+            }
         }
 
-        if ($this->isAjaxRequest()) {
+        if ($this->isFilterRequest()) {
             $storagePids = $this->getContentElementStoragePids((int)GeneralUtility::_GET('ce'));
             if (!empty($storagePids)) {
-                $mergedOptions['storagePids'] = $storagePids;
+                $searchOptions['storagePids'] = $storagePids;
             }
         }
 
         if (ConfigurationUtility::isCachingEnabled()) {
-            $cacheIdentifier = $this->getCacheIdentifierForStudyCourses($mergedOptions);
+            $cacheIdentifier = $this->getCacheIdentifierForStudyCourses($searchOptions);
+
             $studyCourses = $this->cacheInstance->get($cacheIdentifier);
 
             if (!$studyCourses) {
-                $studyCourses = $this->searchAndSortStudyCourses($mergedOptions);
+                $studyCourses = $this->searchAndSortStudyCourses($searchOptions);
                 $this->cacheInstance->set($cacheIdentifier, $studyCourses, ['in2studyfinder']);
             }
         } else {
-            $studyCourses = $this->searchAndSortStudyCourses($mergedOptions);
+            $studyCourses = $this->searchAndSortStudyCourses($searchOptions);
         }
 
         return $studyCourses;
@@ -316,91 +275,6 @@ class StudyCourseController extends AbstractController
             parent::processRequest($request, $response);
         } catch (Exception $exception) {
             FrontendUtility::getTyposcriptFrontendController()->pageNotFoundAndExit();
-        }
-    }
-
-    /**
-     * return the filters for the frontend
-     *
-     * @return array
-     */
-    protected function getFrontendFilters()
-    {
-        $filters = [];
-        $selectedFlexformOptions = $this->getSelectedFlexformOptions();
-
-        foreach ($this->filters as $filterName => $filter) {
-            // disable filters in the frontend if the same filter is set in the backend plugin
-            if (array_key_exists($filterName, $selectedFlexformOptions)
-                && $selectedFlexformOptions[$filterName] !== '') {
-                $filter['disabledInFrontend'] = 1;
-            }
-            if ($filter['disabledInFrontend'] === 0) {
-                $filters[$filterName] = $filter;
-            }
-        }
-
-        return $filters;
-    }
-
-    /**
-     * Applies all filters set in the Plugin's FlexForm configuration and puts the result in $this->filters
-     */
-    protected function setFilters()
-    {
-        foreach ((array)$this->settings['filters'] as $filterName => $filterProperties) {
-            if ($filterProperties['type'] && $filterProperties['propertyPath'] && $filterProperties['frontendLabel']) {
-                $frontendLabel = LocalizationUtility::translate($filterProperties['frontendLabel'], 'in2studyfinder');
-                if ($frontendLabel === null) {
-                    $frontendLabel = $filterProperties['frontendLabel'];
-                }
-
-                $disabledInFrontend = 0;
-
-                if ($filterProperties['disabledInFrontend'] === '1') {
-                    $disabledInFrontend = 1;
-                }
-
-                $this->filters[$filterName] = [
-                    'type' => $filterProperties['type'],
-                    'propertyPath' => $filterProperties['propertyPath'],
-                    'frontendLabel' => $frontendLabel,
-                    'disabledInFrontend' => $disabledInFrontend,
-                    'singleSelect' => $filterProperties['singleSelect']
-                ];
-
-                switch ($filterProperties['type']) {
-                    case 'object':
-                        $fullQualifiedRepositoryClassName = ClassNamingUtility::translateModelNameToRepositoryName(
-                            $filterProperties['objectModel']
-                        );
-
-                        if (class_exists($fullQualifiedRepositoryClassName)) {
-                            $defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
-                            $defaultQuerySettings->setStoragePageIds([$this->settings['settingsPid']]);
-                            $defaultQuerySettings->setLanguageOverlayMode(true);
-                            $defaultQuerySettings->setLanguageMode('strict');
-
-                            $repository = $this->objectManager->get($fullQualifiedRepositoryClassName);
-                            $repository->setDefaultQuerySettings($defaultQuerySettings);
-
-                            $this->filters[$filterName]['repository'] = $repository;
-                            $this->filters[$filterName]['filterOptions'] = $repository->findAll()->toArray();
-                        }
-                        break;
-                    case 'boolean':
-                        $this->filters[$filterName]['filterOptions'] = [true, false];
-                        break;
-                    default:
-                        break;
-                }
-            } else {
-                $this->logger->log(
-                    LogLevel::WARNING,
-                    'Not a valid Typoscript Filter configuration! Ignore Filter: ' . $filterName,
-                    [$filterName, $filterProperties]
-                );
-            }
         }
     }
 
@@ -424,24 +298,6 @@ class StudyCourseController extends AbstractController
             . '-'
             . $optionsIdentifier
         );
-    }
-
-    /**
-     * @return array
-     */
-    protected function getSelectedFlexformOptions()
-    {
-        $selectedOptions = [];
-
-        if (!empty($this->settings['flexform']['select'])) {
-            foreach ($this->settings['flexform']['select'] as $filterType => $uid) {
-                if ($uid !== '') {
-                    $selectedOptions[$filterType] = GeneralUtility::intExplode(',', $uid, true);
-                }
-            }
-        }
-
-        return $selectedOptions;
     }
 
     /**
@@ -487,45 +343,6 @@ class StudyCourseController extends AbstractController
     }
 
     /**
-     * @param array $studyCourses
-     * @return array
-     */
-    protected function getAvailableFilterOptionsFromQueryResult($studyCourses)
-    {
-        $availableOptions = [];
-
-        foreach ($this->filters as $filterName => $filter) {
-            /** @var $studyCourse StudyCourseInterface */
-            foreach ($studyCourses as $studyCourse) {
-                $property = ObjectAccess::getPropertyPath($studyCourse, $filter['propertyPath']);
-
-                switch ($filter['type']) {
-                    case 'object':
-                        if ($property instanceof ObjectStorage) {
-                            foreach ($property as $obj) {
-                                $availableOptions[$filterName][$obj->getUid()] = $obj->getUid();
-                            }
-                        } elseif ($property instanceof AbstractDomainObject) {
-                            $availableOptions[$filterName][$property->getUid()] = $property->getUid();
-                        }
-                        break;
-                    case 'boolean':
-                        if ($property !== '' && $property !== 0 && $property !== false) {
-                            $availableOptions[$filterName][0] = 'true';
-                        } else {
-                            $availableOptions[$filterName][1] = 'false';
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-
-        return $availableOptions;
-    }
-
-    /**
      * @param integer $contentElementUid
      * @return array
      */
@@ -560,7 +377,7 @@ class StudyCourseController extends AbstractController
     /**
      * @return bool
      */
-    protected function isAjaxRequest()
+    protected function isFilterRequest()
     {
         $isAjaxRequest = false;
         if ((int)GeneralUtility::_GET('studyFinderAjaxRequest') === 1) {
@@ -571,40 +388,39 @@ class StudyCourseController extends AbstractController
     }
 
     /**
-     *
+     * @return array
+     * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
      */
-    protected function setPluginRecord()
+    protected function getPluginRecord(): array
     {
-        $pluginRecord = [];
-
-        if (empty(GeneralUtility::_GP('type'))) {
-            $contentObj = $this->configurationManager->getContentObject();
-            $pluginRecord = $contentObj->data;
+        if (!$this->isFilterRequest()) {
+            return $this->configurationManager->getContentObject()->data;
         } else {
-            if (!empty(GeneralUtility::_GP('ce'))) {
-                $queryBuilder =
-                    $this->objectManager->get(ConnectionPool::class)->getQueryBuilderForTable(TtContent::TABLE);
-                $record = $queryBuilder
-                    ->select('*')
-                    ->from(TtContent::TABLE)
-                    ->where(
-                        $queryBuilder->expr()->eq(
-                            'uid',
-                            $queryBuilder->createNamedParameter((int)GeneralUtility::_GP('ce'), \PDO::PARAM_INT)
-                        )
-                    )
-                    ->execute()->fetch();
+            $language = FrontendUtility::getCurrentSysLanguageUid();
+            $pluginUid = (int)GeneralUtility::_GP('ce');
+            $pluginRecord = RecordUtility::getRecord(TtContent::TABLE, $pluginUid, '*', '', true, true, $language);
 
-                $pluginRecord = $record;
+            if (!empty($pluginRecord)) {
+                return $pluginRecord;
             } else {
-                $this->logger->log(
-                    LogLevel::ERROR,
-                    'No url parameter ce is set. Please check the ajax request in your network analyse tool if an filter is set',
-                    []
+                $this->logger->error(
+                    'No plugin record for the given constrains found.',
+                    [
+                        'constraints' => ['pluginUid' => $pluginUid, 'language' => $language],
+                        'additionalInfo' => ['class' => __CLASS__, 'method' => __METHOD__, 'line' => __LINE__]
+                    ]
                 );
             }
         }
 
-        $this->pluginRecord = $pluginRecord;
+        return [];
+    }
+
+    /**
+     * @param FilterService $filterService
+     */
+    public function injectFilterService(FilterService $filterService)
+    {
+        $this->filterService = $filterService;
     }
 }
