@@ -74,7 +74,7 @@ class RecordUtility extends AbstractUtility
      * @param string $where Additional WHERE clause, eg. " AND blablabla = 0
      * @param bool $respectEnableFields
      * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
-     * @param int $sysLanuageUid
+     * @param int $sysLanguageUid
      * @return array|null Returns the row if found, otherwise NULL
      */
     public static function getRecord(
@@ -84,7 +84,7 @@ class RecordUtility extends AbstractUtility
         string $where = '',
         bool $respectEnableFields = true,
         bool $useDeleteClause = true,
-        int $sysLanuageUid = 0
+        int $sysLanguageUid = 0
     ): ?array {
         if ((int)$uid) {
             $queryBuilder = self::getQueryBuilderForTable($table);
@@ -106,14 +106,14 @@ class RecordUtility extends AbstractUtility
                 ->from($table);
 
             // set where clause
-            if ($sysLanuageUid > 0) {
+            if ($sysLanguageUid === 0) {
                 $queryBuilder->where(
                     $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid))
                 );
             } else {
                 $queryBuilder->where(
                     $queryBuilder->expr()->eq('l18n_parent', $queryBuilder->createNamedParameter($uid)),
-                    $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter($sysLanuageUid))
+                    $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter($sysLanguageUid))
                 );
             }
 
