@@ -25,6 +25,12 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
             'string',
             'the uid of the of the detail page'
         );
+
+        $this->registerArgument(
+            'action',
+            'string',
+            'the target action of the select (fallback is detail)'
+        );
     }
 
     /**
@@ -38,6 +44,12 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
         $optionsArgument = $this->arguments['options'];
         $settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
         $pageUid = $settings['flexform']['studyCourseDetailPage'];
+
+        if ($this->hasArgument('action')) {
+            $action = $this->arguments['action'];
+        } else {
+            $action = 'detail';
+        }
 
         if ($this->hasArgument('detailPageUid')) {
             $pageUid = $this->arguments['detailPageUid'];
@@ -73,12 +85,18 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
                             );
 
                         $uri =
-                            $uriBuilder->reset()->setRequest($this->getRequest())->setTargetPageUid($pageUid)->uriFor(
-                                'detail',
-                                ['studyCourse' => $value]
-                            );
+                            $uriBuilder->reset()->setRequest($this->getRequest());
 
-                        $options[$optionsArrayKey]['additionalAttributes']['data-url'] = $uri;
+                        if (!empty($pageUid)) {
+                            $uri->setTargetPageUid($pageUid);
+                        }
+
+                        $uri->uriFor(
+                            $action,
+                            ['studyCourse' => $value]
+                        );
+
+                        $options[$optionsArrayKey]['additionalAttributes']['data-url'] = $uri->build();
                     }
                 }
             }
@@ -156,7 +174,6 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
      */
     protected function getAdditionalAttributesString($additionalAttributes)
     {
-
         $output = '';
 
         if (!empty($additionalAttributes)) {
