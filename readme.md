@@ -94,6 +94,7 @@ manipulatePropertyBeforeExport: this signal allows to manipulate values before t
 | Version    | Date       | State      | Description                                                                  |
 | ---------- | ---------- | ---------- | ---------------------------------------------------------------------------- |
 | 7.0.0      | 2020-12-20 | [!!!]FEATURE | add TYPO3 10.4 support, drop TYPO3 8 support, rewrite js to native js (jQuery is currently still needed because of select2) |
+| 6.2.10     | 2021-01-08 | BUGFIX     | remove the default value '*' for the tca link wizards because this disallowed all file extensions|
 | 6.2.9      | 2021-01-07 | BUGFIX     | allow the overwrite of the target action in the select view helper |
 | 6.2.8      | 2020-05-13 | BUGFIX     | fix serialization exception by filter initialization for TYPO3 9.5.17 and above if the caching is enabled |
 | 6.2.7      | 2020-01-14 | BUGFIX     | fix "Undeclared arguments.." at TYPO3 9.5.x in the studyfinder backend module |

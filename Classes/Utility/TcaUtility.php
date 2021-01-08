@@ -348,7 +348,7 @@ class TcaUtility extends AbstractUtility
      */
     public static function getLinkWizard(
         $blindLinkOptions = '',
-        $allowedExtensions = '*',
+        $allowedExtensions = '',
         $blindLinkFields = ''
     ) {
         $linkWizard = [
