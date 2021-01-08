@@ -73,7 +73,7 @@ sandra.pohl@in2code.de
 ## Requirements
 
 Version 6.x:
-  * TYPO3 8.7 or newer
+  * TYPO3 8.7 or 9.5
   * PHP 5.6 or newer
 
 Version 7.x or newer
