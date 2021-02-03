@@ -3,6 +3,16 @@
 	<file source-language="en" datatype="plaintext" original="messages" product-name="in2studyfinder">
 		<header/>
 		<body>
+			<trans-unit id="plugin.pi1">
+				<source>Studyfinder List view</source>
+			</trans-unit>
+			<trans-unit id="plugin.fastSearch">
+				<source>Studyfinder Fast search</source>
+			</trans-unit>
+			<trans-unit id="plugin.pi2">
+				<source>Studyfinder Detail view</source>
+			</trans-unit>
+
 			<trans-unit id="studycourse">
 				<source>Study Course</source>
 			</trans-unit>
