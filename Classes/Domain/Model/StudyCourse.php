@@ -783,7 +783,11 @@ class StudyCourse extends AbstractEntity implements StudyCourseInterface
 
     public function getTitleWithAcademicDegree()
     {
-        return $this->getTitle() . ' - ' . $this->getAcademicDegree()->getDegree();
+        if (!empty($this->getAcademicDegree()) && !empty($this->getAcademicDegree()->getDegree())) {
+            return $this->getTitle() . ' - ' . $this->getAcademicDegree()->getDegree();
+        }
+
+        return $this->getTitle();
     }
 
     /**
