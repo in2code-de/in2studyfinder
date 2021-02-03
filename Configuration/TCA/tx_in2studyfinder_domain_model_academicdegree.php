@@ -60,19 +60,21 @@ return [
             ],
         ],
         'graduation' => [
-            'exclude' => 1,
+            'exclude' => true,
             'label' => $ll . 'graduation.title',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'foreign_table' => \In2code\In2studyfinder\Domain\Model\Graduation::TABLE,
                 'items' => [
-                    In2code\In2studyfinder\Utility\TcaUtility::getPleaseChooseOption(
-                        \In2code\In2studyfinder\Domain\Model\Graduation::TABLE
-                    )
+                    [
+                        'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:tca.select.please_choose',
+                        0,
+                        'EXT:in2studyfinder/Resources/Public/Icons/' . \In2code\In2studyfinder\Domain\Model\Graduation::TABLE . '.png'
+                    ],
                 ],
+                'foreign_table' => \In2code\In2studyfinder\Domain\Model\Graduation::TABLE,
+                'default' => 0,
                 'minitems' => 1,
-                'maxitems' => 1,
             ],
         ],
     ],

@@ -139,7 +139,7 @@
 				<source>Graduation</source>
 				<target>Abschlussart</target>
 			</trans-unit>
-			<trans-unit id="tca.select.pleaseChoose">
+			<trans-unit id="tca.select.please_choose">
 				<source>Please choose ...</source>
 				<target>Bitte wählen ...</target>
 			</trans-unit>
