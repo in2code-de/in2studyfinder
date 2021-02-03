@@ -60,8 +60,8 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
 
         if ($this->isStudyfinderListType($listType)) {
             if (empty($this->settings)) {
-                $headerContent = $this->getNoTyposcriptTemplateWarning();
-                //$headerContent = '';
+                $drawItem = false;
+                $itemContent = $this->getNoTyposcriptTemplateWarning();
             } else {
                 switch ($listType) {
                     case 'in2studyfinder_pi1':
