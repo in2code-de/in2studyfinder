@@ -52,6 +52,7 @@ class TcaUtility extends AbstractUtility
                 'items' => [
                     ['', 0],
                 ],
+                'default' => 0,
                 'foreign_table' => $table,
                 'foreign_table_where' => 'AND ' . $table . '.pid=###CURRENT_PID### AND ' . $table
                     . '.sys_language_uid IN (-1,0)',
