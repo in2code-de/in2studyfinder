@@ -141,6 +141,7 @@ $tcaConfiguration = [
                 'cols' => 40,
                 'rows' => 15,
                 'eval' => 'trim',
+                'default' => '',
                 'wizards' => [
                     'RTE' => [
                         'icon' => 'wizard_rte2.gif',
@@ -274,6 +275,7 @@ $tcaConfiguration = [
                 'size' => 30,
                 'eval' => 'trim',
                 'max' => 100,
+                'default' => ''
             ],
         ],
         'meta_keywords' => [
@@ -285,6 +287,7 @@ $tcaConfiguration = [
                 'size' => 30,
                 'eval' => 'trim',
                 'max' => 255,
+                'default' => ''
             ],
         ],
         'meta_description' => [
@@ -297,6 +300,7 @@ $tcaConfiguration = [
                 'rows' => '15',
                 'eval' => 'trim',
                 'max' => 750,
+                'default' => ''
             ],
         ],
         'url_segment' => [
