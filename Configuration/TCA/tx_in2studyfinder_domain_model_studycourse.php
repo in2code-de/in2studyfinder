@@ -202,6 +202,7 @@ $tcaConfiguration = [
                     ],
                 ],
                 'foreign_table' => \In2code\In2studyfinder\Domain\Model\AcademicDegree::TABLE,
+                'foreign_table_where' => 'AND ' . \In2code\In2studyfinder\Domain\Model\AcademicDegree::TABLE . '.sys_language_uid in (-1, 0)',
                 'default' => 0,
             ]
         ],
@@ -219,6 +220,7 @@ $tcaConfiguration = [
                     ],
                 ],
                 'foreign_table' => \In2code\In2studyfinder\Domain\Model\Department::TABLE,
+                'foreign_table_where' => 'AND ' . \In2code\In2studyfinder\Domain\Model\Department::TABLE . '.sys_language_uid in (-1, 0)',
                 'default' => 0,
             ]
         ],
@@ -236,6 +238,7 @@ $tcaConfiguration = [
                     ],
                 ],
                 'foreign_table' => \In2code\In2studyfinder\Domain\Model\Faculty::TABLE,
+                'foreign_table_where' => 'AND ' . \In2code\In2studyfinder\Domain\Model\Faculty::TABLE . '.sys_language_uid in (-1, 0)',
                 'default' => 0,
             ],
         ],
@@ -344,7 +347,7 @@ if (In2code\In2studyfinder\Utility\ConfigurationUtility::isEnableGlobalData()) {
             'type' => 'select',
             'renderType' => 'selectSingle',
             'foreign_table' => \In2code\In2studyfinder\Domain\Model\GlobalData::TABLE,
-            'foreign_table_where' => 'AND sys_language_uid in (-1, 0)',
+            'foreign_table_where' => 'AND ' . \In2code\In2studyfinder\Domain\Model\GlobalData::TABLE . '.sys_language_uid in (-1, 0)',
             'items' => [
                 In2code\In2studyfinder\Utility\TcaUtility::getPleaseChooseOption(
                     \In2code\In2studyfinder\Domain\Model\GlobalData::TABLE
