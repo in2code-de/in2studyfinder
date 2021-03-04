@@ -73,6 +73,7 @@ return [
                     ],
                 ],
                 'foreign_table' => \In2code\In2studyfinder\Domain\Model\Graduation::TABLE,
+                'foreign_table_where' => 'AND ' . \In2code\In2studyfinder\Domain\Model\Graduation::TABLE . '.sys_language_uid in (-1, 0)',
                 'default' => 0,
                 'minitems' => 1,
             ],
