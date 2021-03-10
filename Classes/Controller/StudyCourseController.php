@@ -279,7 +279,9 @@ class StudyCourseController extends AbstractController
         // 3. set filter propertyPath as filter array key
         foreach ($searchOptions as $filterName => $filterValues) {
             $searchOptions[$filter[$filterName]['propertyPath']] = $filterValues;
-            unset($searchOptions[$filterName]);
+            if ($filter[$filterName]['propertyPath'] !== $filterName) {
+                unset($searchOptions[$filterName]);
+            }
         }
     }
 
