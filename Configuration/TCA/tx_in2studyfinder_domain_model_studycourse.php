@@ -33,9 +33,6 @@ $tcaConfiguration = [
         'searchFields' => 'title,standard_period_of_study,ects_credits,tuition_fee,teaser,description,university_place,content_elements,academic_degree,department,faculty,types_of_study,course_languages,admission_requirements,starts_of_study,',
         'iconfile' => $icon,
     ],
-    'interface' => [
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, url_segment, standard_period_of_study, ects_credits, teaser, description, tuition_fee, university_place, content_elements, academic_degree, department, faculty, types_of_study, course_languages, admission_requirements, starts_of_study, meta_pagetitles, meta_keywordss, meta_description,different_preset,global_data_preset',
-    ],
     'types' => [
         '0' => [
             'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, url_segment, --palette--;' . $ll . 'keyData;keyData,teaser;;;richtext:rte_transform[mode=ts_links], description;;;richtext:rte_transform[mode=ts_links], content_elements, --div--;' . $ll . 'metadata, --palette--;' . $ll . 'metadata;metadata, --div--;' . $ll . 'globalPreset, --palette--;' . $ll . 'globalPreset;globalPreset, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime,',
