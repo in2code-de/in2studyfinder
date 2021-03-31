@@ -44,7 +44,6 @@ class TcaUtility extends AbstractUtility
     {
         return [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
             'config' => [
                 'type' => 'select',
@@ -52,6 +51,7 @@ class TcaUtility extends AbstractUtility
                 'items' => [
                     ['', 0],
                 ],
+                'default' => 0,
                 'foreign_table' => $table,
                 'foreign_table_where' => 'AND ' . $table . '.pid=###CURRENT_PID### AND ' . $table
                     . '.sys_language_uid IN (-1,0)',
@@ -348,7 +348,7 @@ class TcaUtility extends AbstractUtility
      */
     public static function getLinkWizard(
         $blindLinkOptions = '',
-        $allowedExtensions = '*',
+        $allowedExtensions = '',
         $blindLinkFields = ''
     ) {
         $linkWizard = [

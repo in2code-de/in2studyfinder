@@ -3,6 +3,19 @@
 	<file source-language="en" datatype="plaintext" original="messages" product-name="in2studyfinder">
 		<header/>
 		<body>
+			<trans-unit id="plugin.pi1">
+				<source>Studyfinder List view</source>
+				<target>Studiengangsfinder Listenansicht</target>
+			</trans-unit>
+			<trans-unit id="plugin.fastSearch">
+				<source>Studyfinder Fast search</source>
+				<target>Studiengangsfinder Schnellsuche</target>
+			</trans-unit>
+			<trans-unit id="plugin.pi2">
+				<source>Studyfinder Detail view</source>
+				<target>Studiengangsfinder Detailansicht</target>
+			</trans-unit>
+
 			<trans-unit id="studycourse">
 				<source>Study Course</source>
 				<target>Studiengang</target>
@@ -139,7 +152,7 @@
 				<source>Graduation</source>
 				<target>Abschlussart</target>
 			</trans-unit>
-			<trans-unit id="tca.select.pleaseChoose">
+			<trans-unit id="tca.select.please_choose">
 				<source>Please choose ...</source>
 				<target>Bitte wählen ...</target>
 			</trans-unit>

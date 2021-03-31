@@ -29,9 +29,6 @@ return [
         'searchFields' => 'degree,',
         'iconfile' => $icon,
     ],
-    'interface' => [
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, degree, graduation',
-    ],
     'types' => [
         '0' => [
             'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, degree, graduation, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime',
@@ -60,19 +57,22 @@ return [
             ],
         ],
         'graduation' => [
-            'exclude' => 1,
+            'exclude' => true,
             'label' => $ll . 'graduation.title',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'foreign_table' => \In2code\In2studyfinder\Domain\Model\Graduation::TABLE,
                 'items' => [
-                    In2code\In2studyfinder\Utility\TcaUtility::getPleaseChooseOption(
-                        \In2code\In2studyfinder\Domain\Model\Graduation::TABLE
-                    )
+                    [
+                        'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:tca.select.please_choose',
+                        0,
+                        'EXT:in2studyfinder/Resources/Public/Icons/' . \In2code\In2studyfinder\Domain\Model\Graduation::TABLE . '.png'
+                    ],
                 ],
+                'foreign_table' => \In2code\In2studyfinder\Domain\Model\Graduation::TABLE,
+                'foreign_table_where' => 'AND ' . \In2code\In2studyfinder\Domain\Model\Graduation::TABLE . '.sys_language_uid in (-1, 0)',
+                'default' => 0,
                 'minitems' => 1,
-                'maxitems' => 1,
             ],
         ],
     ],

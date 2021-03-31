@@ -3,6 +3,7 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
+$ll = 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:';
 $controller = \In2code\In2studyfinder\Controller\BackendController::class;
 $extensionName = 'In2studyfinder';
 
@@ -18,19 +19,19 @@ if (\In2code\In2studyfinder\Utility\VersionUtility::isTypo3MajorVersionBelow(10)
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
     'In2studyfinder',
     'Pi1',
-    'Studiengangsfinder Listenansicht'
+    $ll . 'plugin.pi1'
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
     'In2studyfinder',
     'FastSearch',
-    'Studiengangsfinder Schnellsuche'
+    $ll . 'plugin.fastSearch'
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
     'In2studyfinder',
     'Pi2',
-    'Studiengangsfinder Detailansicht'
+    $ll . 'plugin.pi2'
 );
 
 if (TYPO3_MODE === 'BE') {

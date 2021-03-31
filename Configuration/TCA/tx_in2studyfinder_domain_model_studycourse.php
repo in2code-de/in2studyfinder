@@ -1,4 +1,5 @@
 <?php
+
 $ll = 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:';
 $table = \In2code\In2studyfinder\Domain\Model\StudyCourse::TABLE;
 $icon =
@@ -31,9 +32,6 @@ $tcaConfiguration = [
         ],
         'searchFields' => 'title,standard_period_of_study,ects_credits,tuition_fee,teaser,description,university_place,content_elements,academic_degree,department,faculty,types_of_study,course_languages,admission_requirements,starts_of_study,',
         'iconfile' => $icon,
-    ],
-    'interface' => [
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, url_segment, standard_period_of_study, ects_credits, teaser, description, tuition_fee, university_place, content_elements, academic_degree, department, faculty, types_of_study, course_languages, admission_requirements, starts_of_study, meta_pagetitles, meta_keywordss, meta_description,different_preset,global_data_preset',
     ],
     'types' => [
         '0' => [
@@ -140,6 +138,7 @@ $tcaConfiguration = [
                 'cols' => 40,
                 'rows' => 15,
                 'eval' => 'trim',
+                'default' => '',
                 'wizards' => [
                     'RTE' => [
                         'icon' => 'wizard_rte2.gif',
@@ -186,20 +185,60 @@ $tcaConfiguration = [
                 ],
             ],
         ],
-        'academic_degree' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForSingleSelect(
-            $ll . 'academicDegree',
-            \In2code\In2studyfinder\Domain\Model\AcademicDegree::TABLE,
-            1,
-            1
-        ),
-        'department' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForSingleSelect(
-            $ll . 'department',
-            \In2code\In2studyfinder\Domain\Model\Department::TABLE
-        ),
-        'faculty' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForSingleSelect(
-            $ll . 'faculty',
-            \In2code\In2studyfinder\Domain\Model\Faculty::TABLE
-        ),
+        'academic_degree' => [
+            'exclude' => true,
+            'label' => $ll . 'academicDegree',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    [
+                        'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:tca.select.please_choose',
+                        0,
+                        'EXT:in2studyfinder/Resources/Public/Icons/' . \In2code\In2studyfinder\Domain\Model\AcademicDegree::TABLE . '.png'
+                    ],
+                ],
+                'foreign_table' => \In2code\In2studyfinder\Domain\Model\AcademicDegree::TABLE,
+                'foreign_table_where' => 'AND ' . \In2code\In2studyfinder\Domain\Model\AcademicDegree::TABLE . '.sys_language_uid in (-1, 0)',
+                'default' => 0,
+            ]
+        ],
+        'department' => [
+            'exclude' => true,
+            'label' => $ll . 'department',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    [
+                        'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:tca.select.please_choose',
+                        0,
+                        'EXT:in2studyfinder/Resources/Public/Icons/' . \In2code\In2studyfinder\Domain\Model\Department::TABLE . '.png'
+                    ],
+                ],
+                'foreign_table' => \In2code\In2studyfinder\Domain\Model\Department::TABLE,
+                'foreign_table_where' => 'AND ' . \In2code\In2studyfinder\Domain\Model\Department::TABLE . '.sys_language_uid in (-1, 0)',
+                'default' => 0,
+            ]
+        ],
+        'faculty' => [
+            'exclude' => true,
+            'label' => $ll . 'faculty',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    [
+                        'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:tca.select.please_choose',
+                        0,
+                        'EXT:in2studyfinder/Resources/Public/Icons/' . \In2code\In2studyfinder\Domain\Model\Faculty::TABLE . '.png'
+                    ],
+                ],
+                'foreign_table' => \In2code\In2studyfinder\Domain\Model\Faculty::TABLE,
+                'foreign_table_where' => 'AND ' . \In2code\In2studyfinder\Domain\Model\Faculty::TABLE . '.sys_language_uid in (-1, 0)',
+                'default' => 0,
+            ],
+        ],
         'types_of_study' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForSelectSideBySide(
             $ll . 'typeOfStudy',
             \In2code\In2studyfinder\Domain\Model\TypeOfStudy::TABLE,
@@ -236,6 +275,7 @@ $tcaConfiguration = [
                 'size' => 30,
                 'eval' => 'trim',
                 'max' => 100,
+                'default' => ''
             ],
         ],
         'meta_keywords' => [
@@ -247,6 +287,7 @@ $tcaConfiguration = [
                 'size' => 30,
                 'eval' => 'trim',
                 'max' => 255,
+                'default' => ''
             ],
         ],
         'meta_description' => [
@@ -259,6 +300,7 @@ $tcaConfiguration = [
                 'rows' => '15',
                 'eval' => 'trim',
                 'max' => 750,
+                'default' => ''
             ],
         ],
         'url_segment' => [
@@ -286,7 +328,6 @@ $tcaConfiguration = [
 ];
 
 if (In2code\In2studyfinder\Utility\ConfigurationUtility::isEnableGlobalData()) {
-
     $tcaConfiguration['columns']['different_preset'] = [
         'exclude' => true,
         'label' => $ll . 'differentPreset',
@@ -303,7 +344,7 @@ if (In2code\In2studyfinder\Utility\ConfigurationUtility::isEnableGlobalData()) {
             'type' => 'select',
             'renderType' => 'selectSingle',
             'foreign_table' => \In2code\In2studyfinder\Domain\Model\GlobalData::TABLE,
-            'foreign_table_where' => 'AND sys_language_uid in (-1, 0)',
+            'foreign_table_where' => 'AND ' . \In2code\In2studyfinder\Domain\Model\GlobalData::TABLE . '.sys_language_uid in (-1, 0)',
             'items' => [
                 In2code\In2studyfinder\Utility\TcaUtility::getPleaseChooseOption(
                     \In2code\In2studyfinder\Domain\Model\GlobalData::TABLE

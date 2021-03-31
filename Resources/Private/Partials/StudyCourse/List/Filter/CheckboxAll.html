@@ -1,5 +1,22 @@
-<f:form.checkbox name="searchOptions[{filterTypeName}][]" id="{filterTypeName}_alle"
-                 class="in2studyfinder__checkbox in2studyfinder__checkbox--all in2studyfinder-js-checkbox-all" checked="checked" disabled="disabled" value="{filterOptionName}_alle"/>
-<label for="{filterTypeName}_alle" class="in2studyfinder__checkbox-label">
-	<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:all"/>
-</label>
+<f:if condition="{filterType.singleSelect} == 1">
+	<f:then>
+		<f:form.radio name="searchOptions[{filterTypeName}][]" id="{filterTypeName}_alle"
+									class="in2studyfinder__radio in2studyfinder__checkbox--all in2studyfinder-js-checkbox-all"
+									disabled="disabled" checked="checked" value="{filterOptionName}_alle"/>
+		<label for="{filterTypeName}_alle" class="in2studyfinder__radio-label">
+			<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:all"/>
+		</label>
+	</f:then>
+	<f:else>
+		<f:form.checkbox name="searchOptions[{filterTypeName}][]" id="{filterTypeName}_alle"
+										 class="in2studyfinder__checkbox in2studyfinder__checkbox--all in2studyfinder-js-checkbox-all"
+										 checked="checked" disabled="disabled" value="{filterOptionName}_alle"/>
+		<label for="{filterTypeName}_alle" class="in2studyfinder__checkbox-label">
+			<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:all"/>
+		</label>
+	</f:else>
+</f:if>
+
+
+
+

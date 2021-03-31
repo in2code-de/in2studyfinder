@@ -93,7 +93,7 @@
 			<trans-unit id="graduation.title">
 				<source>Graduation</source>
 			</trans-unit>
-			<trans-unit id="tca.select.pleaseChoose">
+			<trans-unit id="tca.select.please_choose">
 				<source>Please choose ...</source>
 			</trans-unit>
 			<trans-unit id="fastSelection">

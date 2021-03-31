@@ -232,14 +232,7 @@ class StudyCourseController extends AbstractController
      */
     protected function processSearch(array $searchOptions)
     {
-        $filter = $this->filterService->getFilter();
-
-        foreach ($searchOptions as $filterName => $searchedOptions) {
-            $searchOptions[$filter[$filterName]['propertyPath']] = $searchedOptions;
-            if ($filter[$filterName]['propertyPath'] !== $filterName) {
-                unset($searchOptions[$filterName]);
-            }
-        }
+        $this->prepareSearchedOptions($searchOptions);
 
         if ($this->isFilterRequest()) {
             $storagePids = $this->getContentElementStoragePids((int)GeneralUtility::_GET('ce'));
@@ -262,6 +255,34 @@ class StudyCourseController extends AbstractController
         }
 
         return $studyCourses;
+    }
+
+    /**
+     * removes not allowed keys empty values from searchOptions and updates the filter keys to the actual property path
+     *
+     * @param array $searchOptions
+     */
+    protected function prepareSearchedOptions(array &$searchOptions) {
+        $filter = $this->filterService->getFilter();
+
+        // 1. remove not allowed keys
+        foreach ($searchOptions as $filterName => $filterValues) {
+            if (!array_key_exists($filterName, $filter)) {
+                unset($searchOptions[$filterName]);
+            }
+        }
+
+        // 2. remove empty values
+        $searchOptions = array_map('array_filter', $searchOptions);
+        $searchOptions = array_filter($searchOptions);
+
+        // 3. set filter propertyPath as filter array key
+        foreach ($searchOptions as $filterName => $filterValues) {
+            $searchOptions[$filter[$filterName]['propertyPath']] = $filterValues;
+            if ($filter[$filterName]['propertyPath'] !== $filterName) {
+                unset($searchOptions[$filterName]);
+            }
+        }
     }
 
     /**
