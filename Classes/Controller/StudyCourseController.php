@@ -333,7 +333,7 @@ class StudyCourseController extends AbstractController
         } else if (!empty($studyCourse->getAcademicDegree())) {
             FrontendUtility::getTyposcriptFrontendController()->page['title'] =
                 $studyCourse->getTitle() . ' - ' . $studyCourse->getAcademicDegree()->getDegree();
-        }else {
+        } else {
             FrontendUtility::getTyposcriptFrontendController()->page['title'] = $studyCourse->getTitle();
         }
         if (!empty($studyCourse->getMetaDescription())) {
