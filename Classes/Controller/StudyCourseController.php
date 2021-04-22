@@ -330,9 +330,11 @@ class StudyCourseController extends AbstractController
     {
         if (!empty($studyCourse->getMetaPagetitle())) {
             FrontendUtility::getTyposcriptFrontendController()->page['title'] = $studyCourse->getMetaPagetitle();
-        } else {
+        } else if (!empty($studyCourse->getAcademicDegree())) {
             FrontendUtility::getTyposcriptFrontendController()->page['title'] =
                 $studyCourse->getTitle() . ' - ' . $studyCourse->getAcademicDegree()->getDegree();
+        }else {
+            FrontendUtility::getTyposcriptFrontendController()->page['title'] = $studyCourse->getTitle();
         }
         if (!empty($studyCourse->getMetaDescription())) {
             $metaDescription = '<meta name="description" content="' . $studyCourse->getMetaDescription() . '">';
