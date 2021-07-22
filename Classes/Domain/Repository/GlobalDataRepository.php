@@ -58,6 +58,7 @@ class GlobalDataRepository extends AbstractRepository
     {
         $query = $this->createQuery();
         $query->getQuerySettings()->setRespectStoragePage(false);
+        $query->getQuerySettings()->setRespectSysLanguage(false);
         $query->matching(
             $query->logicalAnd(
                 [
