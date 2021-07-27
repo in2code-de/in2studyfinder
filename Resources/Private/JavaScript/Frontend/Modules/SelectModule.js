@@ -4,8 +4,7 @@ import 'select2';
 class SelectModule {
   constructor() {
     this.identifiers = {
-      select: '.js-in2studyfinder-select2',
-      quickSearchForm: '.js-in2studyfinder-quick-search'
+      select: '.js-in2studyfinder-select2'
     };
   }
 
@@ -16,7 +15,7 @@ class SelectModule {
    */
   initialize() {
 
-    if (document.querySelector('.js-in2studyfinder-quick-search')) {
+    if (document.querySelector(this.identifiers.select)) {
       let query = {};
       let selectModule = this;
       this.updatePlaceholderLabel();
