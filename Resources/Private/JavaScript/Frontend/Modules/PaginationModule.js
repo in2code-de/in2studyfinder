@@ -1,4 +1,6 @@
 import {UrlUtility} from "../Utility/UrlUtility";
+import {filterModule} from "./FilterModule";
+
 
 class PaginationModule {
   constructor() {
@@ -31,9 +33,10 @@ class PaginationModule {
       targetPage = UrlUtility.getParameterFromUrl(url, 'tx_in2studyfinder_pi1[@widget_0][currentPage]');
     }
 
+
     UrlUtility.addOrUpdateHash('page', [targetPage]);
 
-    //FilterModule.updateFilter(targetPage);
+    filterModule.updateFilter(targetPage);
   };
 }
 
