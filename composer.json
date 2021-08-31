@@ -9,8 +9,15 @@
 	"homepage": "https://www.in2code.de/produkte/studiengangsfinder/",
 	"authors": [
 		{
-			"name": "in2code GmbH",
-			"email": "service@in2code.de"
+			"name": "Sandra Pohl",
+			"email": "sanrda.pohl@in2code.de",
+			"role": "Product owner",
+			"homepage": "https://www.in2code.de"
+		},
+		{
+			"name": "Sebastian Stein",
+			"role": "Technical owner",
+			"homepage": "https://www.in2code.de"
 		}
 	],
 	"license": "GPL-2.0+",
