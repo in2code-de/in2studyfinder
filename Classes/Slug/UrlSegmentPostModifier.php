@@ -117,7 +117,7 @@ class UrlSegmentPostModifier
             }
         } else {
             $data = GeneralUtility::_GP('data');
-            if (key($data) === StudyCourse::TABLE) {
+            if (is_array($data) && key($data) === StudyCourse::TABLE) {
                 return true;
             }
         }

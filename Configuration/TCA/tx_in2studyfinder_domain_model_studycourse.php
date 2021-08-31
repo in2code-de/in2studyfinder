@@ -35,7 +35,7 @@ $tcaConfiguration = [
     ],
     'types' => [
         '0' => [
-            'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, url_segment, --palette--;' . $ll . 'keyData;keyData,teaser;;;richtext:rte_transform[mode=ts_links], description;;;richtext:rte_transform[mode=ts_links], content_elements, --div--;' . $ll . 'metadata, --palette--;' . $ll . 'metadata;metadata, --div--;' . $ll . 'globalPreset, --palette--;' . $ll . 'globalPreset;globalPreset, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime,',
+            'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, url_segment, --palette--;' . $ll . 'keyData;keyData,teaser, description, content_elements, --div--;' . $ll . 'metadata, --palette--;' . $ll . 'metadata;metadata, --div--;' . $ll . 'globalPreset, --palette--;' . $ll . 'globalPreset;globalPreset, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime,',
         ],
     ],
     'palettes' => [
@@ -109,25 +109,10 @@ $tcaConfiguration = [
             'label' => $ll . 'teaser',
             'config' => [
                 'type' => 'text',
+                'enableRichtext' => 1,
                 'cols' => 40,
                 'rows' => 15,
                 'eval' => 'trim,required',
-                'wizards' => [
-                    'RTE' => [
-                        'icon' => 'wizard_rte2.gif',
-                        'notNewRecords' => 1,
-                        'RTEonly' => 1,
-                        'module' => [
-                            'name' => 'wizard_rich_text_editor',
-                            'urlParameters' => [
-                                'mode' => 'wizard',
-                                'act' => 'wizard_rte.php',
-                            ],
-                        ],
-                        'title' => 'LLL:EXT:cms/locallang_ttc.xlf:bodytext.W.RTE',
-                        'type' => 'script',
-                    ],
-                ],
             ],
         ],
         'description' => [
@@ -135,26 +120,11 @@ $tcaConfiguration = [
             'label' => $ll . 'description',
             'config' => [
                 'type' => 'text',
+                'enableRichtext' => 1,
                 'cols' => 40,
                 'rows' => 15,
                 'eval' => 'trim',
                 'default' => '',
-                'wizards' => [
-                    'RTE' => [
-                        'icon' => 'wizard_rte2.gif',
-                        'notNewRecords' => 1,
-                        'RTEonly' => 1,
-                        'module' => [
-                            'name' => 'wizard_rich_text_editor',
-                            'urlParameters' => [
-                                'mode' => 'wizard',
-                                'act' => 'wizard_rte.php',
-                            ],
-                        ],
-                        'title' => 'LLL:EXT:cms/locallang_ttc.xlf:bodytext.W.RTE',
-                        'type' => 'script',
-                    ],
-                ],
             ],
         ],
         'university_place' => [
