@@ -70,7 +70,11 @@ class UrlUtility {
     var hash = '#';
     // write hash
     for (var i = 0; i <= hashArguments.length - 1; i++) {
-      hash += hashArguments[i].name + '=' + hashArguments[i].values.join();
+      if (i === hashArguments.length - 1) {
+        hash += hashArguments[i].name + '=' + hashArguments[i].values.join();
+      } else {
+        hash += hashArguments[i].name + '=' + hashArguments[i].values.join() + '&';
+      }
     }
 
     window.location.hash = hash;
