@@ -1,7 +1,7 @@
 {
 	"name": "in2code/in2studyfinder",
 	"type": "typo3-cms-extension",
-	"description": "",
+	"description": "List of master's and bachelor's degree programs for colleges and universities",
 	"keywords": [
 		"TYPO3",
 		"extension"

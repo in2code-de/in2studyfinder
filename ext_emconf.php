@@ -2,7 +2,7 @@
 
 $EM_CONF['in2studyfinder'] = [
     'title' => 'in2studyfinder',
-    'description' => '',
+    'description' => 'List of master\'s and bachelor\'s degree programs for colleges and universities',
     'category' => 'plugin',
     'author' => 'Sebastian Stein',
     'author_email' => 'sebastian.stein@in2code.de',
