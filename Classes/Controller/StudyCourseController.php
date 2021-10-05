@@ -7,6 +7,7 @@ use In2code\In2studyfinder\Domain\Model\StudyCourseInterface;
 use In2code\In2studyfinder\Domain\Model\TtContent;
 use In2code\In2studyfinder\Domain\Repository\FacultyRepository;
 use In2code\In2studyfinder\Service\FilterService;
+use In2code\In2studyfinder\Utility\CacheUtility;
 use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use In2code\In2studyfinder\Utility\FrontendUtility;
@@ -219,6 +220,8 @@ class StudyCourseController extends AbstractController
     {
         if ($studyCourse) {
             $this->writePageMetadata($studyCourse);
+            CacheUtility::addCacheTags([$studyCourse]);
+
             $this->view->assign('studyCourse', $studyCourse);
         } else {
             $this->redirect('listAction', null, null, null, $this->settings['flexform']['studyCourseListPage']);
