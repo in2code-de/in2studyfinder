@@ -97,6 +97,7 @@ manipulatePropertyBeforeExport: this signal allows to manipulate values before t
 
 | Version    | Date       | State      | Description                                                                  |
 | ---------- | ---------- | ---------- | ---------------------------------------------------------------------------- |
+| 7.2.0      | 2021-10-05 | FEATURE    | if a course is edited the frontend cache of this record is cleared |
 | 7.1.1      | 2021-08-31 | BUGFIX     | various bugfixes |
 | 7.1.0      | 2020-03-31 | FEATURE    | add single select filters (radio buttons). various bugfixes |
 | 7.0.0      | 2020-12-20 | [!!!]FEATURE | add TYPO3 10.4 support, drop TYPO3 8 support, rewrite js to native js (jQuery is currently still needed because of select2) |
