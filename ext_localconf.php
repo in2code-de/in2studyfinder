@@ -36,6 +36,9 @@ if (\In2code\In2studyfinder\Utility\VersionUtility::isTypo3MajorVersionBelow(10)
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['studyCourseSlug']
     = \In2code\In2studyfinder\Updates\StudyCourseSlugUpdater::class;
 
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']['in2studyfinder_clearcache'] =
+    \In2code\In2studyfinder\Hooks\DataHandlerHook::class . '->clearCachePostProc';
+
 /*
 Adds the Language Files from in2studyfinder_extend
 */
