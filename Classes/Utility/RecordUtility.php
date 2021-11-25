@@ -12,7 +12,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class RecordUtility extends AbstractUtility
 {
     /**
-     * gets and tt_content record with all translations. The array key represents the sys_language_uid of the record.
+     * gets a tt_content record with all translations. The array key represents the sys_language_uid of the record.
      *
      * e.g.
      *
@@ -86,7 +86,7 @@ class RecordUtility extends AbstractUtility
         bool $useDeleteClause = true,
         int $sysLanguageUid = 0
     ): ?array {
-        if ((int)$uid) {
+        if ($uid > 0) {
             $queryBuilder = self::getQueryBuilderForTable($table);
 
             // do not use enabled fields here
