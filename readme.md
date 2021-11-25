@@ -110,6 +110,7 @@ npm install
 
 | Version    | Date       | State      | Description                                                                  |
 | ---------- | ---------- | ---------- | ---------------------------------------------------------------------------- |
+| 7.2.1      | 2021-11-25 | BUGFIX     | prevent wrong rendered language after multiple ajax filter requests in alternate languages |
 | 7.2.0      | 2021-10-05 | FEATURE    | if a course is edited the frontend cache of this record is cleared |
 | 7.1.1      | 2021-08-31 | BUGFIX     | various bugfixes |
 | 7.1.0      | 2020-03-31 | FEATURE    | add single select filters (radio buttons). various bugfixes |
