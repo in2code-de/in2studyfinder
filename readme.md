@@ -82,8 +82,21 @@ Version 7.x or newer
 
 ## Signals
 
-manipulatePropertyBeforeExport: this signal allows to manipulate values before they are exported to the CSV
+manipulatePropertyBeforeExport: this signal allows the manipulation of values before they are exported to the CSV
 
+## Build Css and JavaScript
+Requirements: node.js, npm, nvm
+
+```
+cd Resources/Private && nvm use
+npm install
+```
+
+### Backend
+```npm run build:backend```
+
+### Frontend
+```npm run build:frontend```
 
 ## FAQ
 
