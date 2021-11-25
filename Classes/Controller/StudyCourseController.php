@@ -17,6 +17,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\QueryGenerator;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
@@ -68,7 +69,7 @@ class StudyCourseController extends AbstractController
         }
 
         /*
-         * Set $this->data (current plugin record
+         * Set $this->data (current plugin record)
          */
         $this->data = $this->getPluginRecord();
     }
@@ -265,7 +266,8 @@ class StudyCourseController extends AbstractController
      *
      * @param array $searchOptions
      */
-    protected function prepareSearchedOptions(array &$searchOptions) {
+    protected function prepareSearchedOptions(array &$searchOptions)
+    {
         $filter = $this->filterService->getFilter();
 
         // 1. remove not allowed keys
@@ -419,23 +421,28 @@ class StudyCourseController extends AbstractController
     {
         if (!$this->isFilterRequest()) {
             return $this->configurationManager->getContentObject()->data;
-        } else {
-            $language = FrontendUtility::getCurrentSysLanguageUid();
-            $pluginUid = (int)GeneralUtility::_GP('ce');
-            $pluginRecord = RecordUtility::getRecord(TtContent::TABLE, $pluginUid, '*', '', true, true, $language);
-
-            if (!empty($pluginRecord)) {
-                return $pluginRecord;
-            } else {
-                $this->logger->error(
-                    'No plugin record for the given constrains found.',
-                    [
-                        'constraints' => ['pluginUid' => $pluginUid, 'language' => $language],
-                        'additionalInfo' => ['class' => __CLASS__, 'method' => __METHOD__, 'line' => __LINE__]
-                    ]
-                );
-            }
         }
+
+        $language = FrontendUtility::getCurrentSysLanguageUid();
+        $pluginUid = (int)GeneralUtility::_GP('ce');
+        $pluginRecord =
+            GeneralUtility::makeInstance(PageRepository::class)->getRecordOverlay(
+                TtContent::TABLE,
+                RecordUtility::getRecord(TtContent::TABLE, $pluginUid),
+                $language
+            );
+
+        if (!empty($pluginRecord)) {
+            return $pluginRecord;
+        }
+
+        $this->logger->error(
+            'No plugin record for the given constrains found.',
+            [
+                'constraints' => ['pluginUid' => $pluginUid, 'language' => $language],
+                'additionalInfo' => ['class' => __CLASS__, 'method' => __METHOD__, 'line' => __LINE__]
+            ]
+        );
 
         return [];
     }
