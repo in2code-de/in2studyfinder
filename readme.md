@@ -82,8 +82,21 @@ Version 7.x or newer
 
 ## Signals
 
-manipulatePropertyBeforeExport: this signal allows to manipulate values before they are exported to the CSV
+manipulatePropertyBeforeExport: this signal allows the manipulation of values before they are exported to the CSV
 
+## Build Css and JavaScript
+Requirements: node.js, npm, nvm
+
+```
+cd Resources/Private && nvm use
+npm install
+```
+
+### Backend
+```npm run build:backend```
+
+### Frontend
+```npm run build:frontend```
 
 ## FAQ
 
@@ -97,6 +110,7 @@ manipulatePropertyBeforeExport: this signal allows to manipulate values before t
 
 | Version    | Date       | State      | Description                                                                  |
 | ---------- | ---------- | ---------- | ---------------------------------------------------------------------------- |
+| 7.2.1      | 2021-11-25 | BUGFIX     | prevent wrong rendered language after multiple ajax filter requests in alternate languages |
 | 7.2.0      | 2021-10-05 | FEATURE    | if a course is edited the frontend cache of this record is cleared |
 | 7.1.1      | 2021-08-31 | BUGFIX     | various bugfixes |
 | 7.1.0      | 2020-03-31 | FEATURE    | add single select filters (radio buttons). various bugfixes |
