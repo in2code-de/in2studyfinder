@@ -2,19 +2,10 @@
 
 namespace In2code\In2studyfinder\Service;
 
-use TYPO3\CMS\Core\Log\Logger;
-use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
-class AbstractService
+class AbstractService implements LoggerAwareInterface
 {
-    /**
-     * @var Logger
-     */
-    protected $logger = null;
-
-    public function __construct()
-    {
-        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(static::class);
-    }
+    use LoggerAwareTrait;
 }

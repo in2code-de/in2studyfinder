@@ -4,8 +4,8 @@ namespace In2code\In2studyfinder\Controller;
 
 use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
-use TYPO3\CMS\Core\Log\Logger;
-use TYPO3\CMS\Core\Log\LogManager;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
@@ -14,22 +14,18 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
  *
  * @SuppressWarnings(PHPMD.LongVariable)
  */
-class AbstractController extends ActionController
+class AbstractController extends ActionController implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var StudyCourseRepository
      */
     protected $studyCourseRepository = null;
 
-    /**
-     * @var Logger
-     */
-    protected $logger = null;
-
     public function initializeAction()
     {
         $this->studyCourseRepository = $this->setStudyCourseRepository();
-        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(static::class);
     }
 
     /**
