@@ -19,11 +19,9 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\QueryGenerator;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
-use TYPO3\CMS\Extbase\Property\Exception;
 
 /**
  * StudyCourseController
@@ -287,20 +285,6 @@ class StudyCourseController extends AbstractController
             if ($filter[$filterName]['propertyPath'] !== $filterName) {
                 unset($searchOptions[$filterName]);
             }
-        }
-    }
-
-    /**
-     * @param RequestInterface $request
-     * @param ResponseInterface $response
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
-     */
-    public function processRequest(RequestInterface $request, ResponseInterface $response)
-    {
-        try {
-            parent::processRequest($request, $response);
-        } catch (Exception $exception) {
-            FrontendUtility::getTyposcriptFrontendController()->pageNotFoundAndExit();
         }
     }
 
