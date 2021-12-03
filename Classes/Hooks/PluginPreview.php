@@ -87,7 +87,7 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
      */
     protected function getPluginInformation($pluginName)
     {
-        $standaloneView = AbstractUtility::getObjectManager()->get(StandaloneView::class);
+        $standaloneView = GeneralUtility::makeInstance(StandaloneView::class);
         $standaloneView->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($this->templatePathAndFile));
 
         $standaloneView->assignMultiple(
@@ -204,7 +204,7 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
         $this->settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
         $this->templatePathAndFile = $this->settings['backend']['pluginPreviewTemplate'];
 
-        $flexFormService = ExtensionUtility::getObjectManager()->get(FlexFormService::class);
+        $flexFormService = GeneralUtility::makeInstance(FlexFormService::class);
         $this->flexFormData = $flexFormService->convertFlexFormContentToArray($this->row['pi_flexform']);
     }
 

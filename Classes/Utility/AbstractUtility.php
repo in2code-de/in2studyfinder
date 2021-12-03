@@ -6,24 +6,15 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 class AbstractUtility
 {
-    /**
-     * @return ObjectManager
-     */
-    public static function getObjectManager()
-    {
-        return GeneralUtility::makeInstance(ObjectManager::class);
-    }
-
     /**
      * @return ConfigurationManager
      */
     public static function getConfigurationManager()
     {
-        return self::getObjectManager()->get(ConfigurationManager::class);
+        return GeneralUtility::makeInstance(ConfigurationManager::class);
     }
 
     /**

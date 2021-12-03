@@ -202,8 +202,8 @@ class StudyCourseController extends AbstractController
      */
     private function countFaculties()
     {
-        $facultyRepository = $this->objectManager->get(FacultyRepository::class);
-        $defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
+        $facultyRepository = GeneralUtility::makeInstance(FacultyRepository::class);
+        $defaultQuerySettings = GeneralUtility::makeInstance(QuerySettingsInterface::class);
         $defaultQuerySettings->setStoragePageIds([$this->settings['settingsPid']]);
         $facultyRepository->setDefaultQuerySettings($defaultQuerySettings);
 

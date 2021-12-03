@@ -179,12 +179,12 @@ class FilterService extends AbstractService
         );
 
         if (class_exists($fullQualifiedRepositoryClassName)) {
-            $defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
+            $defaultQuerySettings = GeneralUtility::makeInstance(QuerySettingsInterface::class);
             $defaultQuerySettings->setStoragePageIds([$this->settings['settingsPid']]);
             $defaultQuerySettings->setLanguageOverlayMode(true);
             $defaultQuerySettings->setLanguageMode('strict');
 
-            $repository = $this->objectManager->get($fullQualifiedRepositoryClassName);
+            $repository = GeneralUtility::makeInstance($fullQualifiedRepositoryClassName);
             $repository->setDefaultQuerySettings($defaultQuerySettings);
 
             $this->filter[$filterName]['repository'] = $fullQualifiedRepositoryClassName;

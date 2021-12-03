@@ -9,6 +9,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -29,7 +30,8 @@ class BackendController extends AbstractController
     {
         parent::initializeAction();
 
-        $this->reflectionService = $this->objectManager->get(ReflectionService::class);
+        // @todo replace with static call of TYPO3\CMS\Extbase\Reflection\ReflectionService::getClassSchema()
+        $this->reflectionService = GeneralUtility::makeInstance(ReflectionService::class);
     }
 
     /**
@@ -91,7 +93,8 @@ class BackendController extends AbstractController
             0 => 'default'
         ];
 
-        $queryBuilder = $this->objectManager->get(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
+        // @todo replace with Database Utility
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
         $languageRecords = $queryBuilder
             ->select('*')
             ->from('sys_language')
@@ -116,7 +119,8 @@ class BackendController extends AbstractController
      */
     protected function getStudyCoursesForExportList($languageUid = 0)
     {
-        $queryBuilder = $this->objectManager->get(ConnectionPool::class)->getQueryBuilderForTable(StudyCourse::TABLE);
+        // @todo replace with Database Utility
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(StudyCourse::TABLE);
         $includeDeleted = (int)$this->settings['backend']['export']['includeDeleted'];
         $includeHidden = (int)$this->settings['backend']['export']['includeHidden'];
         $storagePid = (int)$this->settings['storagePid'];
@@ -195,7 +199,7 @@ class BackendController extends AbstractController
         $courses = $this->studyCourseRepository->findByUidsAndLanguage($courseList, (int)$recordLanguage);
 
         $exportService =
-            $this->objectManager->get(ExportService::class, $exporter, $selectedProperties, $courses->toArray());
+            GeneralUtility::makeInstance(ExportService::class, $exporter, $selectedProperties, $courses->toArray());
 
         $exportService->export();
     }

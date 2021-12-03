@@ -51,9 +51,9 @@ class AbstractController extends ActionController
 
         if (ExtensionUtility::isIn2studycoursesExtendLoaded()
             && class_exists($extendedRepositoryName)) {
-            return $this->objectManager->get($extendedRepositoryName);
-        } else {
-            return $this->objectManager->get(StudyCourseRepository::class);
+            return GeneralUtility::makeInstance($extendedRepositoryName);
         }
+
+        return GeneralUtility::makeInstance(StudyCourseRepository::class);
     }
 }
