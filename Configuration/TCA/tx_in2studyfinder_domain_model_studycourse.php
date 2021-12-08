@@ -112,6 +112,7 @@ $tcaConfiguration = [
                 'enableRichtext' => 1,
                 'cols' => 40,
                 'rows' => 15,
+                'softref' => 'typolink_tag,email[subst],url',
                 'eval' => 'trim,required',
             ],
         ],
@@ -124,6 +125,7 @@ $tcaConfiguration = [
                 'cols' => 40,
                 'rows' => 15,
                 'eval' => 'trim',
+                'softref' => 'typolink_tag,email[subst],url',
                 'default' => '',
             ],
         ],
@@ -303,6 +305,7 @@ if (In2code\In2studyfinder\Utility\ConfigurationUtility::isEnableGlobalData()) {
         'label' => $ll . 'differentPreset',
         'config' => [
             'type' => 'check',
+            'onChange' => 'reload',
             'default' => 0,
         ],
     ];
