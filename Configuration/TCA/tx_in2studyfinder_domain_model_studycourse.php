@@ -305,6 +305,7 @@ if (In2code\In2studyfinder\Utility\ConfigurationUtility::isEnableGlobalData()) {
         'label' => $ll . 'differentPreset',
         'config' => [
             'type' => 'check',
+            'onChange' => 'reload',
             'default' => 0,
         ],
     ];
