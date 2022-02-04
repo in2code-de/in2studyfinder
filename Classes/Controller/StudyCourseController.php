@@ -53,6 +53,14 @@ class StudyCourseController extends AbstractController
     protected $data = [];
 
     /**
+     * @param FilterService $filterService
+     */
+    public function __construct(FilterService $filterService)
+    {
+        $this->filterService = $filterService;
+    }
+
+    /**
      * Use this instead of __construct, because extbase will inject dependencies *after* construnction of an object
      *
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
@@ -429,13 +437,5 @@ class StudyCourseController extends AbstractController
         );
 
         return [];
-    }
-
-    /**
-     * @param FilterService $filterService
-     */
-    public function injectFilterService(FilterService $filterService)
-    {
-        $this->filterService = $filterService;
     }
 }

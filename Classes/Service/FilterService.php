@@ -5,10 +5,10 @@ namespace In2code\In2studyfinder\Service;
 
 use In2code\In2studyfinder\Domain\Model\StudyCourseInterface;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
-use In2code\In2studyfinder\Utility\FrontendUtility;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
@@ -31,6 +31,8 @@ class FilterService extends AbstractService
      */
     public function __construct()
     {
+        parent::__construct();
+
         $this->settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
         $this->setFilter();
     }
@@ -180,9 +182,12 @@ class FilterService extends AbstractService
             $defaultQuerySettings = GeneralUtility::makeInstance(QuerySettingsInterface::class);
             $defaultQuerySettings->setStoragePageIds([$this->settings['settingsPid']]);
             $defaultQuerySettings->setLanguageOverlayMode(true);
-            $defaultQuerySettings->setLanguageMode('strict');
 
-            $repository = GeneralUtility::makeInstance($fullQualifiedRepositoryClassName);
+            // In TYPO3 11 repositories still need the Object Manager for initialization
+            // this will change with TYPO3 12
+            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+            $repository = $objectManager->get($fullQualifiedRepositoryClassName);
+
             $repository->setDefaultQuerySettings($defaultQuerySettings);
 
             $this->filter[$filterName]['repository'] = $fullQualifiedRepositoryClassName;

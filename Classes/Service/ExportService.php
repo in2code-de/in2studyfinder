@@ -10,7 +10,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
-class ExportService
+class ExportService extends AbstractService
 {
     /**
      * @var ExportConfiguration
@@ -26,6 +26,8 @@ class ExportService
      */
     public function __construct($exporterType, array $selectedProperties, array $courses)
     {
+        parent::__construct();
+
         /** @var ExportInterface $exporter */
         $exporter = GeneralUtility::makeInstance($exporterType);
         $this->setExportConfiguration(GeneralUtility::makeInstance(ExportConfiguration::class));
