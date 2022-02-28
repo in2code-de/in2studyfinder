@@ -214,13 +214,8 @@ class BackendController extends AbstractController
     ) {
         foreach ($objectProperties as $propertyName => $propertyInformation) {
             if (!in_array($propertyName, $this->settings['backend']['export']['excludedPropertiesForExport'])) {
-                if (VersionUtility::isTypo3MajorVersionBelow(10)) {
-                    $elementType = $propertyInformation['elementType'];
-                    $type = $propertyInformation['type'];
-                } else {
-                    $elementType = $propertyInformation->getElementType();
-                    $type = $propertyInformation->getType();
-                }
+                $elementType = $propertyInformation->getElementType();
+                $type = $propertyInformation->getType();
 
                 if ($type === ObjectStorage::class) {
                     if (class_exists($elementType)) {
