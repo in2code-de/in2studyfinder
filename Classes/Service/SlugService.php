@@ -32,8 +32,6 @@ class SlugService extends AbstractService
      */
     public function __construct()
     {
-        parent::__construct();
-
         $this->fieldConfig = $GLOBALS['TCA'][StudyCourse::TABLE]['columns']['url_segment']['config'];
         $this->slugHelper =
             GeneralUtility::makeInstance(

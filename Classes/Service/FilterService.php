@@ -31,8 +31,6 @@ class FilterService extends AbstractService
      */
     public function __construct()
     {
-        parent::__construct();
-
         $this->settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
         $this->setFilter();
     }

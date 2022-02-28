@@ -26,8 +26,6 @@ class ExportService extends AbstractService
      */
     public function __construct($exporterType, array $selectedProperties, array $courses)
     {
-        parent::__construct();
-
         /** @var ExportInterface $exporter */
         $exporter = GeneralUtility::makeInstance($exporterType);
         $this->setExportConfiguration(GeneralUtility::makeInstance(ExportConfiguration::class));
