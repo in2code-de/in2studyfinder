@@ -23,7 +23,7 @@ plugin.tx_in2studyfinder {
 		settingsPid =
 
 		pagination {
-			itemsPerPage = 25
+			itemsPerPage = 10
 		}
 
 		javascript {

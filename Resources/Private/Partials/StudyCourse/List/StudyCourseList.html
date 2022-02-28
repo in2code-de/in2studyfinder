@@ -1,12 +1,9 @@
-{namespace in2studyfinder=In2code\In2studyfinder\ViewHelpers}
-
 <div class="in2studyfinder__results">
 <f:render partial="StudyCourse/List/ItemCount" arguments="{studyCourseCount : studyCourseCount}"/>
 
-<in2studyfinder:widget.paginate objects="{studyCourses}" as="studyCoursesForPage"
-								configuration="{itemsPerPage:'{settings.pagination.itemsPerPage}'}">
+<in2studyfinder:pagination.paginate objects="{studyCourses}" as="studyCoursesForPage" itemsPerPage="{settings.pagination.itemsPerPage}">
 	<ul class="in2studyfinder__results-list">
-		<in2studyfinder:for for="{studyCoursesForPage}" as="studyCoursesByLetter">
+		<in2studyfinder:for for="{studyCoursesForPage.paginator.paginatedItems}" as="studyCoursesByLetter">
 			<li>
 				<div class="in2studyfinder__letter">
 					<span>{letter}</span>
@@ -17,5 +14,9 @@
 			</f:for>
 		</in2studyfinder:for>
 	</ul>
-</in2studyfinder:widget.paginate>
+
+	<f:alias map="{pagination:studyCoursesForPage.pagination, paginator:studyCoursesForPage.paginator, name:studyCoursesForPage.name}">
+		<f:render partial="Pagination" arguments="{_all}" />
+	</f:alias>
+</in2studyfinder:pagination.paginate>
 </div>

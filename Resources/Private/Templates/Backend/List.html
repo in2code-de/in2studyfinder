@@ -1,8 +1,11 @@
 {namespace core = TYPO3\CMS\Core\ViewHelpers}
-{namespace in2studyfinder = In2code\In2studyfinder\ViewHelpers}
 {namespace beUser = TYPO3\CMS\Beuser\ViewHelpers}
 
 <f:layout name="Backend"/>
+
+<f:comment>
+	@todo refactoring for new pagination
+</f:comment>
 
 <f:section name="main">
 	<f:flashMessages/>
@@ -94,8 +97,7 @@
 					<th>Deleted</th>
 					</thead>
 					<tbody class="js-in2studyfinder-course-list">
-					<in2studyfinder:widget.paginate objects="{studyCourses}" as="paginatedCourses"
-													configuration="{itemsPerPage:itemsPerPage, insertAbove: 0, insertBelow: 1}">
+					<in2studyfinder:pagination.paginate objects="{studyCourses}" as="paginatedCourses" itemsPerPage="{itemsPerPage}">
 						<f:for each="{paginatedCourses}" as="studyCourse">
 							<tr data-in2studyfinder-course-uid="{studyCourse.uid}">
 								<td>
@@ -134,10 +136,14 @@
 								</f:comment>
 							</tr>
 						</f:for>
-					</in2studyfinder:widget.paginate>
+						<f:alias map="{pagination:paginatedCourses.pagination, paginator:paginatedCourses.paginator, name:paginatedCourses.name}">
+							<f:render partial="Pagination" arguments="{_all}" />
+						</f:alias>
+					</in2studyfinder:pagination.paginate>
 					</tbody>
 					<tfoot>
-					<td colspan="4" class="js-in2studyfinder-pagination"></td>
+					<td colspan="4" class="js-in2studyfinder-pagination">
+					</td>
 					<td>
 						<label for="itemsPerPage">
 							<f:translate

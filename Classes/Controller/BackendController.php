@@ -120,7 +120,8 @@ class BackendController extends AbstractController
     protected function getStudyCoursesForExportList($languageUid = 0)
     {
         // @todo replace with Database Utility
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(StudyCourse::TABLE);
+        $queryBuilder =
+            GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(StudyCourse::TABLE);
         $includeDeleted = (int)$this->settings['backend']['export']['includeDeleted'];
         $includeHidden = (int)$this->settings['backend']['export']['includeHidden'];
         $storagePid = (int)$this->settings['storagePid'];
@@ -170,7 +171,6 @@ class BackendController extends AbstractController
                     $possibleDataProvider[$providerName] = $providerClass;
                 }
             }
-
         }
 
         return $possibleDataProvider;

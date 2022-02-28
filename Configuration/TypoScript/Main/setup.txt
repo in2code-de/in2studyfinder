@@ -3,12 +3,6 @@ plugin.tx_in2studyfinder {
 		templateRootPaths.0 = {$plugin.tx_in2studyfinder.view.templateRootPath}
 		partialRootPaths.0 = {$plugin.tx_in2studyfinder.view.partialRootPath}
 		layoutRootPaths.0 = {$plugin.tx_in2studyfinder.view.layoutRootPath}
-
-		widget {
-			TYPO3\CMS\Fluid\ViewHelpers\Widget\PaginateViewHelper {
-				templateRootPath = EXT:in2studyfinder/Resources/Private/Templates/
-			}
-		}
 	}
 
 	settings {

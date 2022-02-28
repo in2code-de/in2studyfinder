@@ -230,7 +230,7 @@ class FilterModule {
     }
 
     if (typeof paginationPage !== 'undefined') {
-      paginationArgument = '&tx_in2studyfinder_pi1[@widget_0][currentPage]=' + paginationPage;
+      paginationArgument = '&tx_in2studyfinder_pi1[studyCoursesForPage][currentPage]=' + paginationPage;
     }
 
     if (typeof pid !== 'undefined' && pid !== null) {

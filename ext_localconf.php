@@ -34,6 +34,11 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['studyCourseS
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']['in2studyfinder_clearcache'] =
     \In2code\In2studyfinder\Hooks\DataHandlerHook::class . '->clearCachePostProc';
 
+/**
+ * Fluid Namespace
+ */
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['in2studyfinder'][] = 'In2code\In2studyfinder\ViewHelpers';
+
 /*
 Adds the Language Files from in2studyfinder_extend
 */

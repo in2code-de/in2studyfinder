@@ -29,8 +29,8 @@ class PaginationModule {
     event.preventDefault();
     var targetPage = 1;
     var url = event.target.href;
-    if (UrlUtility.getParameterFromUrl(url, 'tx_in2studyfinder_pi1[@widget_0][currentPage]') !== '') {
-      targetPage = UrlUtility.getParameterFromUrl(url, 'tx_in2studyfinder_pi1[@widget_0][currentPage]');
+    if (UrlUtility.getParameterFromUrl(url, 'tx_in2studyfinder_pi1[studyCoursesForPage][currentPage]') !== '') {
+      targetPage = UrlUtility.getParameterFromUrl(url, 'tx_in2studyfinder_pi1[studyCoursesForPage][currentPage]');
     }
 
 
