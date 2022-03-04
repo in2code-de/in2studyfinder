@@ -10,8 +10,8 @@ $extensionName = 'In2studyfinder';
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     $extensionName,
     'Pi1',
-    [$controller => 'filter'],
-    [$controller => 'filter']
+    [$controller => 'filter,ajaxFilter'],
+    [$controller => 'filter,ajaxFilter']
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(

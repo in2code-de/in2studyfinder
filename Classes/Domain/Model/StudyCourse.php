@@ -823,6 +823,22 @@ class StudyCourse extends AbstractEntity implements StudyCourseInterface
     }
 
     /**
+     * returns the page title for the <title>-Tag on detail pages
+     *
+     * @return string
+     */
+    public function getDetailPageTitle(): string
+    {
+        if (!empty($this->getMetaPagetitle())) {
+            $detailPageTitle = $this->getMetaPagetitle();
+        } else {
+            $detailPageTitle = $this->getTitleWithAcademicDegree();
+        }
+
+        return $detailPageTitle;
+    }
+
+    /**
      * compare function for sorting
      *
      * DE: ein Workaround für die Sortierung nach Titel. Da die Sortierung über das

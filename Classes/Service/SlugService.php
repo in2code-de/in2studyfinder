@@ -10,7 +10,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class SlugService extends AbstractService
+class SlugService
 {
     /**
      * @var QueryBuilder

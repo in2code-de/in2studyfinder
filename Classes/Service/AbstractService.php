@@ -8,7 +8,7 @@ class AbstractService
 {
     protected LoggerInterface $logger;
 
-    public function injectLogger(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
     }

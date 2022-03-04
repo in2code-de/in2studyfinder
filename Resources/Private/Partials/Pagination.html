@@ -9,27 +9,27 @@
 				</li>
 			</f:if>
 			<f:if condition="{pagination.hasLessPages}">
-				<li class="page-item">…</li>
+				<li class="page-item in2studyfinder__pagebrowser-page">…</li>
 			</f:if>
 			<f:for each="{pagination.allPageNumbers}" as="page">
 				<f:if condition="{page} == {paginator.currentPageNumber}">
 					<f:then>
-						<li class="page-item current active">
+						<li class="page-item in2studyfinder__pagebrowser-page current active">
 							<span class="page-link">{page}</span>
 						</li>
 					</f:then>
 					<f:else>
-						<li class="page-item">
+						<li class="page-item in2studyfinder__pagebrowser-page">
 							<a href="{in2studyfinder:pagination.uri(arguments:'{currentPage:page}',name:name)}" class="in2studyfinder__pagebrowser-page js-get-by-ajax page-link">{page}</a>
 						</li>
 					</f:else>
 				</f:if>
 			</f:for>
 			<f:if condition="{pagination.hasMorePages}">
-				<li class="page-item">…</li>
+				<li class="page-item in2studyfinder__pagebrowser-page">…</li>
 			</f:if>
 			<f:if condition="{pagination.nextPageNumber} && {pagination.nextPageNumber} <= {pagination.lastPageNumber}">
-				<li class="next">
+				<li class="page-item next in2studyfinder__pagebrowser-page">
 					<a href="{in2studyfinder:pagination.uri(arguments:'{currentPage:pagination.nextPageNumber}',name:name)}" title="next" class="in2studyfinder__pagebrowser-page js-get-by-ajax page-link">
 						&raquo;
 					</a>

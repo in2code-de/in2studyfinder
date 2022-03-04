@@ -1539,7 +1539,10 @@ fieldset {
 .in2studyfinder__pagebrowser {
   margin-top: 20px;
   margin-bottom: 20px;
-  text-align: center; }
+  text-align: center;
+  list-style: none; }
+  .in2studyfinder__pagebrowser li {
+    display: inline-block; }
   .in2studyfinder__pagebrowser a {
     color: currentColor;
     font-size: 18px;
@@ -1552,7 +1555,9 @@ fieldset {
   margin-right: 0; }
 
 .in2studyfinder__pagebrowser-page.current {
-  color: #4c0; }
+  color: #4c0;
+  font-size: 18px;
+  font-weight: bold; }
 
 .l-content {
   padding: 1rem; }

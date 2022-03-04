@@ -10,7 +10,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
-class ExportService extends AbstractService
+class ExportService
 {
     /**
      * @var ExportConfiguration
