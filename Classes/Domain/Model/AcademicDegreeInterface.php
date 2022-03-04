@@ -1,46 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\Domain\Model;
 
-/**
- * AcademicDegree
- */
 interface AcademicDegreeInterface
 {
-    /**
-     * Returns the degree
-     *
-     * @return string degree
-     */
-    public function getDegree();
+    public function getDegree(): string;
 
-    /**
-     * Sets the degree
-     *
-     * @param string $degree
-     * @return void
-     */
-    public function setDegree($degree);
+    public function setDegree(string $degree);
 
-    /**
-     * Returns the graduation
-     *
-     * @return Graduation $graduation
-     */
-    public function getGraduation();
+    public function getGraduation(): GraduationInterface;
 
-    /**
-     * Sets the graduation
-     *
-     * @param GraduationInterface $graduation
-     * @return void
-     */
     public function setGraduation(GraduationInterface $graduation);
 
-    /**
-     * Returns the option Field
-     *
-     * @return string title
-     */
-    public function getOptionField();
+    public function getOptionField(): string;
 }

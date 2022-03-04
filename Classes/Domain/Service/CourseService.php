@@ -7,36 +7,34 @@ namespace In2code\In2studyfinder\Domain\Service;
 use In2code\In2studyfinder\Domain\Model\StudyCourseInterface;
 use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 use In2code\In2studyfinder\PageTitle\CoursePageTitleProvider;
-use In2code\In2studyfinder\Service\FilterService;
 use In2code\In2studyfinder\Service\PluginService;
 use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\FrontendUtility;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+/**
+ * @SuppressWarnings(PHPMD.LongVariable)
+ */
 class CourseService extends AbstractService
 {
     protected array $settings = [];
-
-    protected FilterService $filterService;
 
     protected PluginService $pluginService;
 
     protected StudyCourseRepository $studyCourseRepository;
 
     public function __construct(
-        FilterService $filterService,
         StudyCourseRepository $studyCourseRepository,
         PluginService $pluginService
     ) {
         parent::__construct();
 
-        $this->filterService = $filterService;
         $this->studyCourseRepository = $studyCourseRepository;
         $this->pluginService = $pluginService;
     }
 
-    public function findBySearchOptions(array $searchOptions, array $pluginRecord)
+    public function findBySearchOptions(array $searchOptions, array $pluginRecord): array
     {
         $storagePids = $this->pluginService->getPluginStoragePids($pluginRecord);
 
@@ -44,7 +42,7 @@ class CourseService extends AbstractService
             $searchOptions['storagePids'] = $storagePids;
         }
 
-        if (ConfigurationUtility::isCachingEnabled()) {
+        if (!is_null($this->cacheInstance) && ConfigurationUtility::isCachingEnabled()) {
             $cacheIdentifier = $this->getCacheIdentifierForStudyCourses($searchOptions);
 
             $studyCourses = $this->cacheInstance->get($cacheIdentifier);
@@ -79,12 +77,7 @@ class CourseService extends AbstractService
         }
     }
 
-    /**
-     * @param array $searchOptions
-     * @return array
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
-     */
-    protected function searchAndSortStudyCourses(array $searchOptions)
+    protected function searchAndSortStudyCourses(array $searchOptions): array
     {
         $studyCourses = $this
             ->studyCourseRepository
@@ -98,11 +91,7 @@ class CourseService extends AbstractService
         return $studyCourses;
     }
 
-    /**
-     * @param array $options
-     * @return string
-     */
-    protected function getCacheIdentifierForStudyCourses($options)
+    protected function getCacheIdentifierForStudyCourses(array $options): string
     {
         // create cache Identifier
         if (empty($options)) {
@@ -119,6 +108,4 @@ class CourseService extends AbstractService
             . $optionsIdentifier
         );
     }
-
-
 }

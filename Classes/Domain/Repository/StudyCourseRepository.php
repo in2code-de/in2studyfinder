@@ -1,26 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\Domain\Repository;
 
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
-/**
- * The repository for StudyCourses
- */
 class StudyCourseRepository extends AbstractRepository
 {
     protected $defaultOrderings = [
         'title' => QueryInterface::ORDER_ASCENDING,
     ];
 
-    /**
-     * @param $options
-     * @return array|QueryResultInterface
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
-     */
-    public function findAllFilteredByOptions($options)
+    public function findAllFilteredByOptions($options): QueryResultInterface
     {
         $query = $this->createQuery();
 
@@ -72,14 +66,7 @@ class StudyCourseRepository extends AbstractRepository
         return $query->execute();
     }
 
-    /**
-     * finds courses for the given parameters
-     *
-     * @param bool $includeDeleted
-     * @param bool $ignoreEnableFields
-     * @return array|QueryResultInterface
-     */
-    public function findAllForExport($includeDeleted = false, $ignoreEnableFields = false)
+    public function findAllForExport(bool $includeDeleted = false, bool $ignoreEnableFields = false): QueryResultInterface
     {
         $query = $this->createQuery();
 
@@ -97,12 +84,9 @@ class StudyCourseRepository extends AbstractRepository
     }
 
     /**
-     * @param array $uids
-     * @param int $sysLanguageUid
-     * @return array|QueryResultInterface
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      */
-    public function findByUidsAndLanguage(array $uids, int $sysLanguageUid)
+    public function findByUidsAndLanguage(array $uids, int $sysLanguageUid): QueryResultInterface
     {
         $query = $this->createQuery();
 

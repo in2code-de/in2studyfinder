@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\ViewHelpers\Form;
 
 use In2code\In2studyfinder\Utility\ExtensionUtility;
@@ -9,7 +11,7 @@ use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
 class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper
 {
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
 
@@ -33,10 +35,9 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
     }
 
     /**
-     * @return array
      * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      */
-    protected function getOptions()
+    protected function getOptions(): array
     {
         $parentOptions = parent::getOptions();
         $options = [];
@@ -85,7 +86,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
                             $uriBuilder->reset()->setRequest($this->getRequest());
 
                         if (!empty($pageUid)) {
-                            $uri->setTargetPageUid($pageUid);
+                            $uri->setTargetPageUid((int)$pageUid);
                         }
 
                         $uri->uriFor(
@@ -102,13 +103,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
         return $options;
     }
 
-    /**
-     * Render the option tags.
-     *
-     * @param array $options the options for the form.
-     * @return string rendered tags.
-     */
-    protected function renderOptionTags($options)
+    protected function renderOptionTags($options): string
     {
         $output = '';
 

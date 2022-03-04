@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace In2code\In2studyfinder\ViewHelpers\Pagination;
 
@@ -16,20 +17,11 @@ use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
-/**
- * PaginateViewHelper
- */
 class PaginateViewHelper extends AbstractViewHelper
 {
-    /**
-     * @var bool
-     */
     protected $escapeOutput = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('objects', 'mixed', 'array or queryresult', true);
@@ -39,17 +31,13 @@ class PaginateViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string
      * @throws NotPaginatableException
      */
     public static function renderStatic(
         array $arguments,
         Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    ) {
+    ): string {
         if ($arguments['objects'] === null) {
             return $renderChildrenClosure();
         }
@@ -65,9 +53,6 @@ class PaginateViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param RenderingContextInterface $renderingContext
-     * @return PaginationInterface
      * @throws NotPaginatableException
      */
     protected static function getPagination(
@@ -79,9 +64,6 @@ class PaginateViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param RenderingContextInterface $renderingContext
-     * @return PaginatorInterface
      * @throws NotPaginatableException
      */
     protected static function getPaginator(
@@ -103,11 +85,6 @@ class PaginateViewHelper extends AbstractViewHelper
         );
     }
 
-    /**
-     * @param array $arguments
-     * @param RenderingContextInterface $renderingContext
-     * @return int
-     */
     protected static function getPageNumber(array $arguments, RenderingContextInterface $renderingContext): int
     {
         $extensionName = $renderingContext->getControllerContext()->getRequest()->getControllerExtensionName();
@@ -123,10 +100,6 @@ class PaginateViewHelper extends AbstractViewHelper
         return 1;
     }
 
-    /**
-     * @param array $arguments
-     * @return string
-     */
     protected static function getName(array $arguments): string
     {
         return $arguments['name'] ?: $arguments['as'];

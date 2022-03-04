@@ -10,10 +10,9 @@ use In2code\In2studyfinder\Domain\Service\FacilityService;
 use In2code\In2studyfinder\Service\FilterService;
 use In2code\In2studyfinder\Utility\CacheUtility;
 use In2code\In2studyfinder\Utility\ConfigurationUtility;
+use In2code\In2studyfinder\Utility\FlexFormUtility;
 use In2code\In2studyfinder\Utility\FrontendUtility;
 use In2code\In2studyfinder\Utility\RecordUtility;
-use TYPO3\CMS\Core\Service\FlexFormService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @SuppressWarnings(PHPMD.LongVariable)
@@ -82,11 +81,11 @@ class StudyCourseController extends AbstractController
                     (int)$pluginInformation['languageUid']
                 );
 
-            $flexFormService = GeneralUtility::makeInstance(FlexFormService::class);
-            $flexForm = $flexFormService->convertFlexFormContentToArray($currentPluginRecord['pi_flexform']);
-            if (array_key_exists('settings', $flexForm)) {
-                $this->settings = array_merge($this->settings, $flexForm['settings']);
-            }
+            $this->settings =
+                array_merge(
+                    $this->settings,
+                    FlexFormUtility::getFlexForm($currentPluginRecord['pi_flexform'], 'settings')
+                );
         } else {
             $currentPluginRecord = $this->configurationManager->getContentObject()->data;
         }

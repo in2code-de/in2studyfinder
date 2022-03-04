@@ -1,31 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\Domain\Model;
 
-/**
- * CourseLanguage
- */
 interface CourseLanguageInterface
 {
-    /**
-     * Returns the language
-     *
-     * @return string language
-     */
-    public function getLanguage();
+    public function getLanguage(): string;
 
-    /**
-     * Sets the language
-     *
-     * @param string $language
-     * @return void
-     */
-    public function setLanguage($language);
+    public function setLanguage(string $language);
 
-    /**
-     * Returns the option Field
-     *
-     * @return string title
-     */
-    public function getOptionField();
+    public function getOptionField(): string;
 }

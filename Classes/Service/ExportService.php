@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\Service;
 
 use In2code\In2studyfinder\Export\Configuration\ExportConfiguration;
@@ -12,19 +14,9 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 class ExportService
 {
-    /**
-     * @var ExportConfiguration
-     */
-    protected $exportConfiguration = null;
+    protected ?ExportConfiguration $exportConfiguration = null;
 
-    /**
-     * ExportService constructor.
-     *
-     * @param string $exporterType
-     * @param array $selectedProperties
-     * @param array $courses
-     */
-    public function __construct($exporterType, array $selectedProperties, array $courses)
+    public function __construct(string $exporterType, array $selectedProperties, array $courses)
     {
         /** @var ExportInterface $exporter */
         $exporter = GeneralUtility::makeInstance($exporterType);
@@ -38,11 +30,9 @@ class ExportService
     }
 
     /**
-     * @return void filename of the exported file
-     *
      * @SuppressWarnings(PHPMD.LongVariable)
      */
-    public function export()
+    public function export(): void
     {
         $fullQualifiedFileName = $this->exportConfiguration->getExporter()->export($this->exportConfiguration);
         $filename = FileUtility::getFilenameFromFileWithPath($fullQualifiedFileName);
@@ -66,11 +56,7 @@ class ExportService
         exit;
     }
 
-    /**
-     * @param array $courses
-     * @return array
-     */
-    public function prepareRecordsForExport($courses)
+    public function prepareRecordsForExport(array $courses): array
     {
         $processedRecords = [];
 
@@ -81,12 +67,7 @@ class ExportService
         return $processedRecords;
     }
 
-    /**
-     * @param AbstractDomainObject $record
-     *
-     * @return array
-     */
-    protected function getFieldsForExportFromRecord($record)
+    protected function getFieldsForExportFromRecord(AbstractDomainObject $record): array
     {
         $exportData = [];
 
@@ -101,14 +82,7 @@ class ExportService
         return $exportData;
     }
 
-    /**
-     * @todo refactor
-     *
-     * @param string $record
-     * @param array $propertyPath
-     * @return string
-     */
-    protected function getPropertyByPropertyPath($record, array $propertyPath)
+    protected function getPropertyByPropertyPath(AbstractDomainObject $record, array $propertyPath): string
     {
         foreach ($propertyPath as $propertyName) {
             if ($record instanceof ObjectStorage) {
@@ -133,22 +107,12 @@ class ExportService
         return $record;
     }
 
-    /**
-     * @param string $propertyPath
-     * @return array
-     */
-    protected function propertyPathToArray($propertyPath)
+    protected function propertyPathToArray(string $propertyPath): array
     {
         return GeneralUtility::trimExplode('.', $propertyPath, true);
     }
 
-    /**
-     * @param AbstractDomainObject|ObjectStorage $record
-     * @param string $property
-     * @return mixed
-     * @throws \Exception
-     */
-    protected function getRecordProperty($record, $property)
+    protected function getRecordProperty($record, string $property)
     {
         try {
             return $record->_getProperty($property);
@@ -157,34 +121,18 @@ class ExportService
         }
     }
 
-    /**
-     * @param string $property
-     * @return bool
-     */
-    protected function isPropertyPath(
-        $property
-    ) {
-        if (strpos($property, '.') !== false) {
-            return true;
-        }
-
-        return false;
+    protected function isPropertyPath(string $property): bool
+    {
+        return strpos($property, '.') !== false;
     }
 
-    /**
-     * @return ExportConfiguration
-     */
-    public function getExportConfiguration()
+    public function getExportConfiguration(): ExportConfiguration
     {
         return $this->exportConfiguration;
     }
 
-    /**
-     * @param ExportConfiguration $exportConfiguration
-     */
-    public function setExportConfiguration(
-        ExportConfiguration $exportConfiguration
-    ) {
+    public function setExportConfiguration(ExportConfiguration $exportConfiguration)
+    {
         $this->exportConfiguration = $exportConfiguration;
     }
 }

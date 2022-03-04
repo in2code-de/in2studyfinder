@@ -111,13 +111,7 @@ class FilterService extends AbstractService
         }
     }
 
-    /**
-     * returns the available filter options for an given array of courses
-     *
-     * @param array $studyCourses
-     * @return array
-     */
-    public function getAvailableFilterOptions($studyCourses): array
+    public function getAvailableFilterOptions(array $studyCourses): array
     {
         $availableOptions = [];
 
@@ -152,10 +146,6 @@ class FilterService extends AbstractService
         return $availableOptions;
     }
 
-    /**
-     * @param array $filterConfiguration
-     * @return string
-     */
     protected function buildFrontendLabel(array $filterConfiguration): string
     {
         $frontendLabel = LocalizationUtility::translate($filterConfiguration['frontendLabel'], 'in2studyfinder');
@@ -166,10 +156,6 @@ class FilterService extends AbstractService
         return $frontendLabel;
     }
 
-    /**
-     * @param array $filterConfiguration
-     * @return bool
-     */
     protected function isFilterInFrontendVisible(array $filterConfiguration): bool
     {
         $disabledInFrontend = false;
@@ -182,10 +168,9 @@ class FilterService extends AbstractService
     }
 
     /**
-     * @param string $filterName
-     * @param array $filterConfiguration
+     * @throws \TYPO3\CMS\Extbase\Object\Exception
      */
-    protected function buildObjectFilter(string $filterName, array $filterConfiguration)
+    protected function buildObjectFilter(string $filterName, array $filterConfiguration): void
     {
         $fullQualifiedRepositoryClassName = ClassNamingUtility::translateModelNameToRepositoryName(
             $filterConfiguration['objectModel']
@@ -218,10 +203,7 @@ class FilterService extends AbstractService
         }
     }
 
-    /**
-     * builds the actual filter array
-     */
-    protected function buildFilter()
+    protected function buildFilter(): void
     {
         if (empty($this->settings['settingsPid'])) {
             $this->logger->error(
@@ -265,9 +247,6 @@ class FilterService extends AbstractService
         }
     }
 
-    /**
-     * @return array
-     */
     protected function getTypoScriptFilterConfiguration(): array
     {
         if (is_array($this->settings['filters']) && !empty($this->settings['filters'])) {

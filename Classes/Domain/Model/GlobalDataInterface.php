@@ -1,34 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\Domain\Model;
 
-/**
- * StudyCourse
- */
 interface GlobalDataInterface
 {
-    /**
-     * Returns the title
-     *
-     * @return string $title
-     */
-    public function getTitle();
+    public function getTitle(): string;
 
-    /**
-     * Sets the title
-     *
-     * @param string $title
-     * @return void
-     */
-    public function setTitle($title);
+    public function setTitle(string $title);
 
-    /**
-     * @return boolean
-     */
-    public function isDefaultPreset();
+    public function isDefaultPreset(): bool;
 
-    /**
-     * @param boolean $defaultPreset
-     */
-    public function setDefaultPreset($defaultPreset);
+    public function setDefaultPreset(bool $defaultPreset);
 }

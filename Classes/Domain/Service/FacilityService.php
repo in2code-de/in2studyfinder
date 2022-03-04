@@ -22,7 +22,7 @@ class FacilityService extends AbstractService
 
     public function getFacultyCount(array $settings = []): int
     {
-        if (ConfigurationUtility::isCachingEnabled()) {
+        if (!is_null($this->cacheInstance) && ConfigurationUtility::isCachingEnabled()) {
             $cacheIdentifier = md5('facultyCount');
             $facultyCount = $this->cacheInstance->get($cacheIdentifier);
 

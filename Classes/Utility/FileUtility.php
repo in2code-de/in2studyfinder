@@ -1,23 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\Utility;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
-/**
- * Class FileUtility
- */
 class FileUtility extends AbstractUtility
 {
-
-    /**
-     * Get all Files from a folder
-     *
-     * @param string $path Relative Path
-     * @return array
-     */
-    public static function getFilesFromRelativePath($path)
+    public static function getFilesFromRelativePath(string $path): array
     {
         $array = [];
         $files = GeneralUtility::getFilesInDir(GeneralUtility::getFileAbsFileName($path));
@@ -31,35 +23,22 @@ class FileUtility extends AbstractUtility
      * Add a trailing slash to a string (e.g. path)
      *        folder1/folder2 => folder1/folder2/
      *        folder1/folder2/ => folder1/folder2/
-     *
-     * @param string $string
-     * @return string
      */
-    public static function addTrailingSlash($string)
+    public static function addTrailingSlash(string $string): string
     {
         return rtrim($string, '/') . '/';
     }
 
-    /**
-     * Get path from path and filename
-     *
-     * @param string $pathAndFilename
-     * @return string
-     */
-    public static function getPathFromPathAndFilename($pathAndFilename)
+    public static function getPathFromPathAndFilename(string $pathAndFilename): string
     {
         $pathInfo = pathinfo($pathAndFilename);
         return $pathInfo['dirname'];
     }
 
     /**
-     * Create folder
-     *
-     * @param $path
-     * @return void
      * @throws \Exception
      */
-    public static function createFolderIfNotExists($path)
+    public static function createFolderIfNotExists(string $path): void
     {
         if (!is_dir($path) && !GeneralUtility::mkdir($path)) {
             throw new \Exception('Folder ' . self::getRelativeFolder($path) . ' could not be create!');
@@ -69,24 +48,13 @@ class FileUtility extends AbstractUtility
     /**
      * returns the filename from a given path
      * e.g. typo3temp/tx_in2studyfinder/export.csv -> export.csv
-     *
-     * @param string $fileWithPath
-     *
-     * @return string
      */
-    public static function getFilenameFromFileWithPath($fileWithPath)
+    public static function getFilenameFromFileWithPath(string $fileWithPath): string
     {
         return basename($fileWithPath);
     }
 
-    /**
-     * Prepend content to the beginning of a file
-     *
-     * @param string $pathAndFile
-     * @param string $content
-     * @return void
-     */
-    public static function prependContentToFile($pathAndFile, $content)
+    public static function prependContentToFile(string $pathAndFile, string $content): void
     {
         $absolutePathAndFile = GeneralUtility::getFileAbsFileName($pathAndFile);
         $lines = [];
@@ -97,13 +65,7 @@ class FileUtility extends AbstractUtility
         GeneralUtility::writeFile($absolutePathAndFile, implode('', $lines));
     }
 
-    /**
-     * Get relative path from absolute path, but don't touch if it's already a relative path
-     *
-     * @param string $path
-     * @return string
-     */
-    public static function getRelativeFolder($path)
+    public static function getRelativeFolder(string $path): string
     {
         if (PathUtility::isAbsolutePath($path)) {
             $path = PathUtility::getRelativePathTo($path);

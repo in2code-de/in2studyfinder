@@ -28,8 +28,7 @@ class RecordUtility extends AbstractUtility
      *      ...
      * ]
      *
-     * @param int $uid
-     * @return array
+     * @throws \Doctrine\DBAL\DBALException
      */
     public static function getRecordWithTranslations(int $uid): array
     {
@@ -93,6 +92,7 @@ class RecordUtility extends AbstractUtility
      * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
      * @param int $sysLanguageUid
      * @return array|null Returns the row if found, otherwise NULL
+     * @throws \Doctrine\DBAL\DBALException
      */
     public static function getRecord(
         string $table,

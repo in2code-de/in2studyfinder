@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\Utility;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -9,29 +11,17 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 
 class AbstractUtility
 {
-    /**
-     * @return ConfigurationManager
-     */
-    public static function getConfigurationManager()
+    public static function getConfigurationManager(): ConfigurationManager
     {
         return GeneralUtility::makeInstance(ConfigurationManager::class);
     }
 
-    /**
-     * Get extension configuration from LocalConfiguration.php
-     *
-     * @return array
-     */
-    public static function getExtensionConfiguration()
+    public static function getExtensionConfiguration(): array
     {
         return $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['in2studyfinder'];
     }
 
-    /**
-     * @param string $table
-     * @return QueryBuilder
-     */
-    protected static function getQueryBuilderForTable($table)
+    protected static function getQueryBuilderForTable(string $table): QueryBuilder
     {
         return GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
     }

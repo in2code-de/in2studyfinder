@@ -1,22 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\Utility;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
-/**
- * Class TcaUtility
- *
- * @package In2code\In2studyfinderExtend\Utility
- */
 class TcaUtility extends AbstractUtility
 {
-    /**
-     * Gets full Tca Array for Sys Language Uid
-     *
-     * @return array
-     */
-    public static function getFullTcaForSysLanguageUid()
+    public static function getFullTcaForSysLanguageUid(): array
     {
         return [
             'exclude' => 1,
@@ -35,12 +27,7 @@ class TcaUtility extends AbstractUtility
         ];
     }
 
-    /**
-     * @param string $table
-     *
-     * @return array
-     */
-    public static function getFullTcaForL10nParent($table)
+    public static function getFullTcaForL10nParent(string $table): array
     {
         return [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
@@ -59,10 +46,7 @@ class TcaUtility extends AbstractUtility
         ];
     }
 
-    /**
-     * @return array
-     */
-    public static function getFullTcaForL10nDiffsource()
+    public static function getFullTcaForL10nDiffsource(): array
     {
         return [
             'config' => [
@@ -71,10 +55,7 @@ class TcaUtility extends AbstractUtility
         ];
     }
 
-    /**
-     * @return array
-     */
-    public static function getFullTcaForT3verLabel()
+    public static function getFullTcaForT3verLabel(): array
     {
         return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.versionLabel',
@@ -86,10 +67,7 @@ class TcaUtility extends AbstractUtility
         ];
     }
 
-    /**
-     * @return array
-     */
-    public static function getFullTcaForHidden()
+    public static function getFullTcaForHidden(): array
     {
         return [
             'exclude' => 1,
@@ -100,10 +78,7 @@ class TcaUtility extends AbstractUtility
         ];
     }
 
-    /**
-     * @return array
-     */
-    public static function getFullTcaForStartTime()
+    public static function getFullTcaForStartTime(): array
     {
         return [
             'exclude' => 1,
@@ -116,16 +91,13 @@ class TcaUtility extends AbstractUtility
                 'checkbox' => 0,
                 'default' => 0,
                 'range' => [
-                    'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y')),
+                    'lower' => strtotime('today midnight'),
                 ],
             ],
         ];
     }
 
-    /**
-     * @return array
-     */
-    public static function getFullTcaForEndTime()
+    public static function getFullTcaForEndTime(): array
     {
         return [
             'exclude' => 1,
@@ -138,18 +110,13 @@ class TcaUtility extends AbstractUtility
                 'checkbox' => 0,
                 'default' => 0,
                 'range' => [
-                    'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y')),
+                    'lower' => strtotime('today midnight'),
                 ],
             ],
         ];
     }
 
-    /**
-     * @param string $table
-     *
-     * @return array
-     */
-    public static function getPleaseChooseOption($table = '')
+    public static function getPleaseChooseOption(string $table = ''): array
     {
         $icon = '';
 
@@ -167,24 +134,14 @@ class TcaUtility extends AbstractUtility
         ];
     }
 
-    /**
-     * @param string $label
-     * @param string $table
-     * @param int $minItems
-     * @param int $exclude
-     * @param string $l10nMode
-     * @param string $l10nDisplay
-     *
-     * @return array
-     */
     public static function getFullTcaForSingleSelect(
-        $label,
-        $table,
-        $exclude = 1,
-        $minItems = 0,
-        $l10nMode = 'exclude',
-        $l10nDisplay = ''
-    ) {
+        string $label,
+        string $table,
+        int $exclude = 1,
+        int $minItems = 0,
+        string $l10nMode = 'exclude',
+        string $l10nDisplay = ''
+    ): array {
         return [
             'exclude' => $exclude,
             'l10n_mode' => $l10nMode,
@@ -201,26 +158,15 @@ class TcaUtility extends AbstractUtility
         ];
     }
 
-    /**
-     * @param $label
-     * @param $table
-     * @param $mmTable
-     * @param int $exclude
-     * @param int $minItems
-     * @param int $maxItems
-     * @param string $l10nMode
-     *
-     * @return array
-     */
     public static function getFullTcaForSelectCheckBox(
-        $label,
-        $table,
-        $mmTable,
-        $exclude = 1,
-        $minItems = 0,
-        $maxItems = 5,
-        $l10nMode = 'exclude'
-    ) {
+        string $label,
+        string $table,
+        string $mmTable,
+        int $exclude = 1,
+        int $minItems = 0,
+        int $maxItems = 5,
+        string $l10nMode = 'exclude'
+    ): array {
         return [
             'exclude' => $exclude,
             'l10n_mode' => $l10nMode,
@@ -237,25 +183,14 @@ class TcaUtility extends AbstractUtility
         ];
     }
 
-    /**
-     * @param $label
-     * @param $table
-     * @param $mmTable
-     * @param int $exclude
-     * @param int $minItems
-     * @param int $maxItems
-     * @param string $l10nMode
-     *
-     * @return array
-     */
     public static function getFullTcaForSelectSideBySide(
-        $label,
-        $table,
-        $mmTable,
-        $exclude = 1,
-        $minItems = 0,
-        $maxItems = 9999,
-        $l10nMode = 'exclude'
+        string $label,
+        string $table,
+        string $mmTable,
+        int $exclude = 1,
+        int $minItems = 0,
+        int $maxItems = 9999,
+        string $l10nMode = 'exclude'
     ) {
         return [
             'exclude' => $exclude,
@@ -277,27 +212,14 @@ class TcaUtility extends AbstractUtility
         ];
     }
 
-    /**
-     * returns the TCA for an suggest wizard
-     *
-     * @return array
-     */
-    public static function getSuggestWizard()
+    public static function getSuggestWizard(): array
     {
         return [
             'type' => 'suggest',
         ];
     }
 
-    /**
-     * returns the TCA for an add wizard
-     *
-     * @param string $table
-     * @param string $pid
-     *
-     * @return array
-     */
-    public static function getAddWizard($table, $pid = '###CURRENT_PID###')
+    public static function getAddWizard(string $table, string $pid = '###CURRENT_PID###'): array
     {
         $wizard = [
             'type' => 'script',
@@ -316,12 +238,7 @@ class TcaUtility extends AbstractUtility
         return $wizard;
     }
 
-    /**
-     * returns the TCA for an edit wizard
-     *
-     * @return array
-     */
-    public static function getEditWizard()
+    public static function getEditWizard(): array
     {
         $wizard = [
             'type' => 'popup',
@@ -337,20 +254,11 @@ class TcaUtility extends AbstractUtility
         return $wizard;
     }
 
-    /**
-     * returns the TCA for an link wizard
-     *
-     * @param string $blindLinkOptions
-     * @param string $allowedExtensions
-     * @param string $blindLinkFields
-     *
-     * @return array
-     */
     public static function getLinkWizard(
-        $blindLinkOptions = '',
-        $allowedExtensions = '',
-        $blindLinkFields = ''
-    ) {
+        string $blindLinkOptions = '',
+        string $allowedExtensions = '',
+        string $blindLinkFields = ''
+    ): array {
         $linkWizard = [
             'type' => 'popup',
             'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_link_formlabel',
@@ -369,20 +277,12 @@ class TcaUtility extends AbstractUtility
         return $linkWizard;
     }
 
-    /**
-     * @param string $table
-     * @param string $extbaseTypeValue
-     * @param string $insertAfter
-     * @param int $readOnly
-     *
-     * @return void
-     */
     public static function setExtbaseType(
-        $table,
-        $extbaseTypeValue,
-        $insertAfter = 'title',
-        $readOnly = 1
-    ) {
+        string $table,
+        string $extbaseTypeValue,
+        string $insertAfter = 'title',
+        int $readOnly = 1
+    ): void {
         if (!isset($GLOBALS['TCA'][$table]['ctrl']['type'])) {
             $GLOBALS['TCA'][$table]['ctrl']['type'] = 'tx_extbase_type';
             $extbaseType = [];
@@ -418,20 +318,12 @@ class TcaUtility extends AbstractUtility
         );
     }
 
-    /**
-     * @param $table
-     * @param $extbaseType
-     * @param $field
-     * @param $insertAfter
-     *
-     * @return void
-     */
     public static function addFieldToShowItem(
-        $table,
-        $extbaseType,
-        $field,
-        $insertAfter = 'last'
-    ) {
+        string $table,
+        string $extbaseType,
+        string $field,
+        string $insertAfter = 'last'
+    ): void {
         $newShowItem = $GLOBALS['TCA'][$table]['types']['0']['showitem'];
 
         $fieldArray = explode(',', $newShowItem);
@@ -442,7 +334,7 @@ class TcaUtility extends AbstractUtility
             $arrayKey = array_search($insertAfter, $fieldArray) + 1;
             array_splice($fieldArray, $arrayKey, 0, [$field]);
         } else {
-            array_push($fieldArray, $field);
+            $fieldArray[] = $field;
             $fieldArray = array_filter($fieldArray);
         }
 
@@ -450,13 +342,13 @@ class TcaUtility extends AbstractUtility
     }
 
     public static function addFieldsToPalette(
-        $table,
-        $palette,
-        $fields,
-        $insertAfter = 'last',
-        $addLineBreakBefore = false,
-        $addLineBreakAfter = false
-    ) {
+        string $table,
+        string $palette,
+        array $fields,
+        string $insertAfter = 'last',
+        bool $addLineBreakBefore = false,
+        bool $addLineBreakAfter = false
+    ): void {
         $newShowItem = $GLOBALS['TCA'][$table]['palettes'][$palette]['showitem'];
         $fieldArray = explode(',', $newShowItem);
         $i = 0;
@@ -485,7 +377,7 @@ class TcaUtility extends AbstractUtility
             array_splice($fieldArray, $arrayKey, 0, $insertFieldArray);
         } else {
             foreach ($insertFieldArray as $value) {
-                array_push($fieldArray, $value);
+                $fieldArray[] = $value;
             }
 
             $fieldArray = array_filter($fieldArray);
@@ -494,24 +386,13 @@ class TcaUtility extends AbstractUtility
         $GLOBALS['TCA'][$table]['palettes'][$palette]['showitem'] = implode(',', $fieldArray);
     }
 
-    /**
-     * Adds a new tab to the tca
-     *
-     * @param string $table
-     * @param string $localLangPath
-     * @param string $localLangId
-     * @param array $fields
-     * @param string $insertAfter
-     *
-     * @return void
-     */
     public static function addFieldsToNewDivForAllTCAtypes(
-        $table,
-        $localLangPath,
-        $localLangId,
-        $fields,
-        $insertAfter
-    ) {
+        string $table,
+        string $localLangPath,
+        string $localLangId,
+        array $fields,
+        string $insertAfter
+    ): void {
         $fieldString = implode(',', $fields);
 
         $tab = ', --div--;' . $localLangPath . ':' . $localLangId . ',' . $fieldString . ',';
@@ -520,44 +401,28 @@ class TcaUtility extends AbstractUtility
     }
 
     public static function removeFieldsFromTCApalette(
-        $table,
-        $palette,
-        $fields
-    ) {
+        string $table,
+        string $palette,
+        array $fields
+    ): void {
         self::removeFieldsFromTCA($table, 'palettes', $palette, $fields);
     }
 
-    /**
-     * @param string $table
-     * @param string $tcaType
-     * @param array $fields
-     *
-     * @return void
-     */
+
     public static function removeFieldsFromTCAtype(
-        $table,
-        $tcaType,
-        $fields
-    ) {
+        string $table,
+        string $tcaType,
+        array $fields
+    ): void {
         self::removeFieldsFromTCA($table, 'types', $tcaType, $fields);
     }
 
-    /**
-     * removes fields from the TCA
-     *
-     * @param string $table
-     * @param string $section 'types' or 'palettes'
-     * @param string $sectionName
-     * @param array $fields
-     *
-     * @return bool
-     */
     private static function removeFieldsFromTCA(
-        $table,
-        $section,
-        $sectionName,
-        $fields
-    ) {
+        string $table,
+        string $section,
+        string $sectionName,
+        array $fields
+    ): bool {
         $status = true;
 
         if ($section !== 'types' && $section !== 'palettes') {
@@ -581,10 +446,7 @@ class TcaUtility extends AbstractUtility
         return $status;
     }
 
-    /**
-     * @param string $value
-     */
-    private static function trimValue(&$value)
+    private static function trimValue(string &$value): void
     {
         $value = trim($value);
     }

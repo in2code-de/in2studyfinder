@@ -9,10 +9,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class PluginService extends AbstractService
 {
-    /**
-     * @param array $pluginUid
-     * @return array
-     */
     public function getPluginStoragePids(array $pluginRecord): array
     {
         $storagePids = [];
@@ -57,6 +53,4 @@ class PluginService extends AbstractService
 
         return $restrictions;
     }
-
-
 }

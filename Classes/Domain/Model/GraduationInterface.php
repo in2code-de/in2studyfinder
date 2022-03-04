@@ -1,31 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\Domain\Model;
 
-/**
- * CourseLanguage
- */
 interface GraduationInterface
 {
-    /**
-     * Returns the graduation
-     *
-     * @return string graduation
-     */
-    public function getTitle();
+    public function getTitle(): string;
 
-    /**
-     * Sets the language
-     *
-     * @param string $title
-     * @return void
-     */
-    public function setTitle($title);
+    public function setTitle(string $title);
 
-    /**
-     * Returns the option Field
-     *
-     * @return string title
-     */
-    public function getOptionField();
+    public function getOptionField(): string;
 }
