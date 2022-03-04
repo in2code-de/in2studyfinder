@@ -33,7 +33,10 @@ class FilterService extends AbstractService
 
         $this->settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
         $this->pluginService = $pluginService;
+    }
 
+    public function initialize(): void
+    {
         $this->disableFilterFrontendRenderingByPluginRestrictions();
         $this->buildFilter();
     }

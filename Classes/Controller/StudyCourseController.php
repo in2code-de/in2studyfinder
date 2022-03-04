@@ -44,6 +44,8 @@ class StudyCourseController extends AbstractController
      */
     public function initializeFilterAction(): void
     {
+        $this->filterService->initialize();
+
         if ($this->request->hasArgument('searchOptions')) {
             $searchOptions = array_filter((array)$this->request->getArgument('searchOptions'));
             $this->request->setArgument('searchOptions', $searchOptions);
