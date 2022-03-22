@@ -10,7 +10,7 @@ interface AcademicDegreeInterface
 
     public function setDegree(string $degree);
 
-    public function getGraduation(): GraduationInterface;
+    public function getGraduation(): ?GraduationInterface;
 
     public function setGraduation(GraduationInterface $graduation);
 

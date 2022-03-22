@@ -32,7 +32,7 @@ class AcademicDegree extends AbstractEntity implements AcademicDegreeInterface
         $this->degree = $degree;
     }
 
-    public function getGraduation(): GraduationInterface
+    public function getGraduation(): ?GraduationInterface
     {
         return $this->graduation;
     }
