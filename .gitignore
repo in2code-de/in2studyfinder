@@ -3,6 +3,7 @@ msi.iws
 .idea/
 nbproject/
 
+.build
 
 # OS spezielle Dateien
 .DS_Store
@@ -15,3 +16,13 @@ Thumbs.db
 
 # Node Modules
 node_modules
+
+composer.lock
+config/
+var/
+
+.ddev/**
+!.ddev/commands/host/initialize
+!.ddev/config.yaml
+!.ddev/docker-compose.typo3.yaml
+

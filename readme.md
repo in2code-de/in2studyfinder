@@ -88,7 +88,23 @@ Version 8.x or newer
 
 manipulatePropertyBeforeExport: this signal allows the manipulation of values before they are exported to the CSV
 
-## Build Css and JavaScript
+## Contribution
+
+Contributions are always welcome.
+
+In order to ease the contributions, we provide a ddev setup.
+
+1) install ddev
+2) fork and clone project
+3) `cd my/project`
+4) `ddev start`
+5) `ddev initialize`
+6) open https://studyfinder.ddev.site/typo3/
+7) use `admin` and `password` for backend login
+
+Happy coding
+
+### Build Css and JavaScript
 Requirements: node.js, npm, nvm
 
 ```
@@ -96,10 +112,10 @@ cd Resources/Private && nvm use
 npm install
 ```
 
-### Backend
+#### Backend
 ```npm run build:backend```
 
-### Frontend
+#### Frontend
 ```npm run build:frontend```
 
 ## FAQ
