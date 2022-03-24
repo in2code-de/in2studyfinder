@@ -3,7 +3,9 @@
 namespace In2code\In2studyfinder\Controller;
 
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
+use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 use In2code\In2studyfinder\Service\ExportService;
+use In2code\In2studyfinder\Utility\ExtensionUtility;
 use In2code\In2studyfinder\Utility\VersionUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -26,12 +28,18 @@ class BackendController extends AbstractController
      */
     protected $reflectionService;
 
+    /**
+     * @var StudyCourseRepository
+     */
+    protected $studyCourseRepository = null;
+
     public function initializeAction()
     {
         parent::initializeAction();
 
         // @todo replace with static call of TYPO3\CMS\Extbase\Reflection\ReflectionService::getClassSchema()
         $this->reflectionService = GeneralUtility::makeInstance(ReflectionService::class);
+        $this->studyCourseRepository = $this->setStudyCourseRepository();
     }
 
     /**
@@ -62,7 +70,7 @@ class BackendController extends AbstractController
             $this->getFullPropertyList(
                 $propertyArray,
                 $this->reflectionService->getClassSchema(
-                    $this->getStudyCourseRepository()->findOneByDeleted(0)
+                    $this->studyCourseRepository->findOneByDeleted(0)
                 )->getProperties()
             );
         }
@@ -237,6 +245,21 @@ class BackendController extends AbstractController
                 }
             }
         }
+    }
+
+    /**
+     * set the studyCourseRepository
+     */
+    protected function setStudyCourseRepository()
+    {
+        $extendedRepositoryName = 'In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository';
+
+        if (ExtensionUtility::isIn2studycoursesExtendLoaded()
+            && class_exists($extendedRepositoryName)) {
+            return GeneralUtility::makeInstance($extendedRepositoryName);
+        }
+
+        return GeneralUtility::makeInstance(StudyCourseRepository::class);
     }
 
     /**
