@@ -3,10 +3,6 @@
 
 <f:layout name="Backend"/>
 
-<f:comment>
-	@todo refactoring for new pagination
-</f:comment>
-
 <f:section name="main">
 	<f:flashMessages/>
 	<f:for each="{messages}" as="message">
@@ -98,7 +94,7 @@
 					</thead>
 					<tbody class="js-in2studyfinder-course-list">
 					<in2studyfinder:pagination.paginate objects="{studyCourses}" as="paginatedCourses" itemsPerPage="{itemsPerPage}">
-						<f:for each="{paginatedCourses}" as="studyCourse">
+						<f:for each="{paginatedCourses.paginator.paginatedItems}" as="studyCourse">
 							<tr data-in2studyfinder-course-uid="{studyCourse.uid}">
 								<td>
 									<f:form.checkbox name="courseList" value="{f:if(condition: '{studyCourse.l10n_parent} != 0', then: '{studyCourse.l10n_parent}', else: '{studyCourse.uid}')}" multiple="multiple"
