@@ -17,7 +17,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\QueryGenerator;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
@@ -425,8 +424,15 @@ class StudyCourseController extends AbstractController
 
         $language = FrontendUtility::getCurrentSysLanguageUid();
         $pluginUid = (int)GeneralUtility::_GP('ce');
+
+        // Use the right PageRepository based on TYPO3 Version
+        $pageRepositoryClass = 'TYPO3\CMS\Frontend\Page\PageRepository';
+        if (VersionUtility::getCurrentTypo3MajorVersion() > 9) {
+            $pageRepositoryClass = 'TYPO3\CMS\Core\Domain\Repository\PageRepository';
+        }
+
         $pluginRecord =
-            GeneralUtility::makeInstance(PageRepository::class)->getRecordOverlay(
+            GeneralUtility::makeInstance($pageRepositoryClass)->getRecordOverlay(
                 TtContent::TABLE,
                 RecordUtility::getRecord(TtContent::TABLE, $pluginUid),
                 $language
