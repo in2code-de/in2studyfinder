@@ -16,7 +16,7 @@
 		<f:for each="{filters}" as="filterType" key="filterTypeName">
 			<f:if condition="!{filterType.disabledInFrontend}">
 				<fieldset class="c-in2studyfinder-filter__section js-in2studyfinder-filter-section u-in2studyfinder-hide"
-									data-filtergroup="{filterTypeName}">
+									data-filtergroup="{filterTypeName}" tabindex="0">
 
 					<legend class="c-in2studyfinder-filter__legend js-in2studyfinder-filter-legend">
 						{filterType.frontendLabel}

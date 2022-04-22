@@ -120,6 +120,8 @@ class FilterModule {
    * sets event listeners
    */
   setEventListener() {
+    let filterModule = this;
+
     // hide filter button
     var hideFilter = document.querySelector(this.identifiers.hideFilterButton);
     hideFilter.addEventListener('click', this.resetAllFilter);
@@ -127,6 +129,16 @@ class FilterModule {
     // show filter button
     var showFilter = document.querySelector(this.identifiers.showFilterButton);
     showFilter.addEventListener('click', this.toggleFilterVisibility);
+
+    // enable tab navigation for filter
+    var fieldSets = document.querySelectorAll(this.identifiers.filterFieldset);
+    for (var i = 0; i < fieldSets.length; i++) {
+      fieldSets[i].addEventListener('keypress', function (event) {
+        if (event.which === 13) {
+          event.target.querySelector(filterModule.identifiers.filterLegend).click();
+        }
+      });
+    }
 
     // toggle filter section visibility
     this.setFilterVisibilityEventListener();
