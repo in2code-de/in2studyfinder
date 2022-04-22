@@ -65,7 +65,7 @@ class SelectModule {
     var original = data.text.toUpperCase();
     var term = params.term.toUpperCase();
     var element = data.element;
-    var keywords = $(element).attr('alt');
+    var keywords = $(element).attr('data-keywords');
     var status = false;
 
     if (keywords !== undefined && keywords !== '') {

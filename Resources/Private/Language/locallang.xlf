@@ -159,6 +159,9 @@
 			<trans-unit id="messages.notAllRequiredFieldsSet.body">
 				<source>At least one course and one field must be selected for export!</source>
 			</trans-unit>
+			<trans-unit id="pleaseSelectCourse">
+				<source>Select degree program or enter keyword</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
