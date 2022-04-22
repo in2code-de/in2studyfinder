@@ -6,6 +6,7 @@ use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Domain\Model\StudyCourseInterface;
 use In2code\In2studyfinder\Domain\Model\TtContent;
 use In2code\In2studyfinder\Domain\Repository\FacultyRepository;
+use In2code\In2studyfinder\PageTitle\CoursePageTitleProvider;
 use In2code\In2studyfinder\Service\FilterService;
 use In2code\In2studyfinder\Utility\CacheUtility;
 use In2code\In2studyfinder\Utility\ConfigurationUtility;
@@ -17,6 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\QueryGenerator;
+use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\ResponseInterface;
@@ -332,19 +334,20 @@ class StudyCourseController extends AbstractController
      */
     protected function writePageMetadata($studyCourse)
     {
-        if (!empty($studyCourse->getMetaPagetitle())) {
-            FrontendUtility::getTyposcriptFrontendController()->page['title'] = $studyCourse->getMetaPagetitle();
-        } else {
-            FrontendUtility::getTyposcriptFrontendController()->page['title'] =
-                $studyCourse->getTitle() . ' - ' . $studyCourse->getAcademicDegree()->getDegree();
-        }
+        GeneralUtility::makeInstance(CoursePageTitleProvider::class)->setTitle($studyCourse->getDetailPageTitle());
+        $metaTagManager = GeneralUtility::makeInstance(MetaTagManagerRegistry::class);
+
         if (!empty($studyCourse->getMetaDescription())) {
-            $metaDescription = '<meta name="description" content="' . $studyCourse->getMetaDescription() . '">';
-            $this->response->addAdditionalHeaderData($metaDescription);
+            $metaTagManager->getManagerForProperty('description')->addProperty(
+                'description',
+                $studyCourse->getMetaDescription()
+            );
         }
         if (!empty($studyCourse->getMetaKeywords())) {
-            $metaKeywords = '<meta name="keywords" content="' . $studyCourse->getMetaKeywords() . '">';
-            $this->response->addAdditionalHeaderData($metaKeywords);
+            $metaTagManager->getManagerForProperty('keywords')->addProperty(
+                'description',
+                $studyCourse->getMetaKeywords()
+            );
         }
     }
 

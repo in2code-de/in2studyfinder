@@ -1367,6 +1367,8 @@ fieldset {
   z-index: 3;
   width: 17px;
   height: 17px; }
+  .in2studyfinder__checkbox:focus + label {
+    outline: #000000 solid 1px; }
   .in2studyfinder__checkbox:checked + .in2studyfinder__checkbox-label:after {
     content: ''; }
   .in2studyfinder__checkbox:disabled + .in2studyfinder__checkbox-label {

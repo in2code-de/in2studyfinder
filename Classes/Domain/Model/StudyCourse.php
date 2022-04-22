@@ -790,6 +790,17 @@ class StudyCourse extends AbstractEntity implements StudyCourseInterface
         return $this->getTitle();
     }
 
+    public function getDetailPageTitle(): string
+    {
+        if (!empty($this->getMetaPagetitle())) {
+            $detailPageTitle = $this->getMetaPagetitle();
+        } else {
+            $detailPageTitle = $this->getTitleWithAcademicDegree();
+        }
+
+        return $detailPageTitle;
+    }
+
     /**
      * @return bool
      */
