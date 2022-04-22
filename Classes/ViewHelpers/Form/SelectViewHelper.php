@@ -115,22 +115,9 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
     {
         $output = '';
 
-        // prepended option
-        if ($this->hasArgument('prependOptionLabel')) {
-            $value = $this->hasArgument('prependOptionValue') ? $this->arguments['prependOptionValue'] : '';
-            $label = $this->arguments['prependOptionLabel'];
-
-            $additionalAttributes = [];
-            if (!empty($options[$value]['additionalAttributes'])) {
-                $additionalAttributes = $options[$value]['additionalAttributes'];
-            }
-
-            $output .= $this->renderOptionTag($value, $label, false, $additionalAttributes) . LF;
-        }
-
         // options from option attribute
         foreach ($options as $value => $attributes) {
-            if ('' === $value && '' === $attributes) {
+            if ('' === $value && empty($attributes)) {
                 continue;
             }
             $isSelected = $this->isSelected($value);
@@ -178,10 +165,10 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
 
         if (!empty($additionalAttributes)) {
             foreach ($additionalAttributes as $attribute => $value) {
-                $output .= htmlspecialchars($attribute) . '="' . htmlspecialchars($value) . '"';
+                $output .= ' ' . htmlspecialchars($attribute) . '="' . htmlspecialchars($value) . '"';
             }
         }
 
-        return $output;
+        return ltrim($output);
     }
 }
