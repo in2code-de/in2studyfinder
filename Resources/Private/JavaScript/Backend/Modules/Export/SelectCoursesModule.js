@@ -149,7 +149,7 @@ define(['TYPO3/CMS/In2studyfinder/Backend/Utility/UiUtility', 'TYPO3/CMS/In2stud
     if (typeof url !== 'undefined') {
       url = UrlUtility.addAttributeToUrl(
         url,
-        'tx_in2studyfinder_web_in2studyfinderm1[@widget_0][itemsPerPage]',
+        'tx_in2studyfinder_web_in2studyfinderm1[studyCoursesForPage][itemsPerPage]',
         itemsPerPage
       );
       SelectCoursesModule.paginationAjaxCall(url);

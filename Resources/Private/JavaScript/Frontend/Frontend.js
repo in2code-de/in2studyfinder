@@ -10,14 +10,17 @@ class Frontend {
     }
   }
 
-  initialize() {
+  /**
+   * @param {boolean} isInitialRequest
+   */
+  initialize(isInitialRequest = false) {
     let in2studyfinderContainer = document.querySelector(this.identifiers.in2studyfinderContainer);
     if (in2studyfinderContainer !== null) {
 
       UiUtility.removeClass(in2studyfinderContainer, 'no-js');
       UiUtility.addClass(in2studyfinderContainer, 'js');
 
-      filterModule.initialize();
+      filterModule.initialize(isInitialRequest);
       selectModule.initialize();
 
       paginationModule.initialize();

@@ -1,395 +1,123 @@
 <?php
 
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\Domain\Model;
 
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
- * StudyCourse
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
 interface StudyCourseInterface
 {
-    /**
-     * @param int $uid
-     */
-    public function setUid($uid);
+    public function setUid(int $uid);
 
-    /**
-     * Returns the title
-     *
-     * @return string $title
-     */
-    public function getTitle();
+    public function getTitle(): string;
 
-    /**
-     * Sets the title
-     *
-     * @param string $title
-     * @return void
-     */
-    public function setTitle($title);
+    public function setTitle(string $title);
 
-    /**
-     * Returns the title
-     *
-     * @return string $sysLanguageUid
-     */
-    public function getSysLanguageUid();
+    public function getSysLanguageUid(): int;
 
-    /**
-     * Sets the title
-     *
-     * @param string $sysLanguageUid
-     * @return void
-     */
-    public function setSysLanguageUid($sysLanguageUid);
+    public function setSysLanguageUid(int $sysLanguageUid);
 
-    /**
-     * Returns the standardPeriodOfStudy
-     *
-     * @return int $standardPeriodOfStudy
-     */
-    public function getStandardPeriodOfStudy();
+    public function getStandardPeriodOfStudy(): int;
 
-    /**
-     * Sets the standardPeriodOfStudy
-     *
-     * @param int $standardPeriodOfStudy
-     * @return void
-     */
-    public function setStandardPeriodOfStudy($standardPeriodOfStudy);
+    public function setStandardPeriodOfStudy(int $standardPeriodOfStudy);
 
-    /**
-     * Returns the ectsCredits
-     *
-     * @return int $ectsCredits
-     */
-    public function getEctsCredits();
+    public function getEctsCredits(): int;
 
-    /**
-     * Sets the ectsCredits
-     *
-     * @param int $ectsCredits
-     * @return void
-     */
-    public function setEctsCredits($ectsCredits);
+    public function setEctsCredits(int $ectsCredits);
 
-    /**
-     * Returns the tuitionFee
-     *
-     * @return float $tuitionFee
-     */
-    public function getTuitionFee();
+    public function getTuitionFee(): float;
 
-    /**
-     * Sets the tuitionFee
-     *
-     * @param float $tuitionFee
-     * @return void
-     */
-    public function setTuitionFee($tuitionFee);
+    public function setTuitionFee(float $tuitionFee);
 
-    /**
-     * Returns the teaser
-     *
-     * @return string $teaser
-     */
-    public function getTeaser();
+    public function getTeaser(): string;
 
-    /**
-     * Sets the teaser
-     *
-     * @param string $teaser
-     * @return void
-     */
-    public function setTeaser($teaser);
+    public function setTeaser(string $teaser);
 
-    /**
-     * Returns the description
-     *
-     * @return string $description
-     */
-    public function getDescription();
+    public function getDescription(): string;
 
-    /**
-     * Sets the description
-     *
-     * @param string $description
-     * @return void
-     */
-    public function setDescription($description);
+    public function setDescription(string $description);
 
-    /**
-     * Returns the universityPlace
-     *
-     * @return int $universityPlace
-     */
-    public function getUniversityPlace();
+    public function getUniversityPlace(): int;
 
-    /**
-     * Sets the universityPlace
-     *
-     * @param int $universityPlace
-     * @return void
-     */
-    public function setUniversityPlace($universityPlace);
+    public function setUniversityPlace(int $universityPlace);
 
-    /**
-     * Adds a ContentElement
-     *
-     * @param TtContentInterface $contentElement
-     * @return void
-     */
-    public function addContentElement($contentElement);
+    public function addContentElement(TtContentInterface $contentElement);
 
-    /**
-     * Removes a ContentElement
-     *
-     * @param TtContentInterface $contentElementToRemove The TtContent to be removed
-     * @return void
-     */
-    public function removeContentElement($contentElementToRemove);
+    public function removeContentElement(TtContentInterface $contentElementToRemove);
 
-    /**
-     * Returns the contentElements
-     *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\TtContent> contentElements
-     */
-    public function getContentElements();
+    public function getContentElements(): ObjectStorage;
 
-    /**
-     * Sets the contentElements
-     *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\TtContent> $contentElements
-     * @return void
-     */
     public function setContentElements(ObjectStorage $contentElements);
 
-    /**
-     * Returns the academicDegree
-     *
-     * @return AcademicDegreeInterface $academicDegree
-     */
-    public function getAcademicDegree();
+    public function getAcademicDegree(): ?AcademicDegreeInterface;
 
-    /**
-     * Sets the academicDegree
-     *
-     * @param \In2code\In2studyfinder\Domain\Model\AcademicDegreeInterface $academicDegree
-     * @return void
-     */
     public function setAcademicDegree(AcademicDegreeInterface $academicDegree);
 
-    /**
-     * Returns the department
-     *
-     * @return DepartmentInterface $department
-     */
-    public function getDepartment();
+    public function getDepartment(): ?DepartmentInterface;
 
-    /**
-     * Sets the department
-     *
-     * @param DepartmentInterface $department
-     * @return void
-     */
     public function setDepartment(DepartmentInterface $department);
 
-    /**
-     * Returns the faculty
-     *
-     * @return FacultyInterface $faculty
-     */
-    public function getFaculty();
+    public function getFaculty(): ?FacultyInterface;
 
-    /**
-     * Sets the faculty
-     *
-     * @param FacultyInterface $faculty
-     * @return void
-     */
     public function setFaculty(FacultyInterface $faculty);
 
-    /**
-     * Returns the typesOfStudy
-     *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\TypeOfStudy> $typesOfStudy
-     */
-    public function getTypesOfStudy();
+    public function getTypesOfStudy(): ObjectStorage;
 
-    /**
-     * Sets the typeOfStudy
-     *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\TypeOfStudy> $typeOfStudy
-     * @return void
-     */
     public function setTypesOfStudy(ObjectStorage $typesOfStudy);
 
-    /**
-     * Adds a type of study
-     *
-     * @param TypeOfStudyInterface $typeOfStudy
-     * @return void
-     */
-    public function addTypeOfStudy($typeOfStudy);
+    public function addTypeOfStudy(TypeOfStudyInterface $typeOfStudy);
 
-    /**
-     * Removes a type of study
-     *
-     * @param TypeOfStudyInterface $typeOfStudyToRemove The type of study to be removed
-     * @return void
-     */
-    public function removeTypeOfStudy($typeOfStudyToRemove);
+    public function removeTypeOfStudy(TypeOfStudyInterface $typeOfStudyToRemove);
 
-    /**
-     * Returns the courseLanguages
-     *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\CourseLanguage> $courseLanguages
-     */
-    public function getCourseLanguages();
+    public function getCourseLanguages(): ObjectStorage;
 
-    /**
-     * Sets the courseLanguages
-     *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\CourseLanguage> $courseLanguages
-     * @return void
-     */
     public function setCourseLanguages(ObjectStorage $courseLanguages);
 
-    /**
-     * Adds a CourseLanguage
-     *
-     * @param CourseLanguageInterface $courseLanguage
-     * @return void
-     */
-    public function addCourseLanguage($courseLanguage);
+    public function addCourseLanguage(CourseLanguageInterface $courseLanguage);
 
-    /**
-     * Removes a CourseLanguage
-     *
-     * @param CourseLanguageInterface $courseLanguageToRemove The Course Language to be
-     *     removed
-     * @return void
-     */
-    public function removeCourseLanguage($courseLanguageToRemove);
+    public function removeCourseLanguage(CourseLanguageInterface $courseLanguageToRemove);
 
-    /**
-     * Returns the admissionRequirements
-     *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\AdmissionRequirement> $admissionRequirements
-     */
-    public function getAdmissionRequirements();
+    public function getAdmissionRequirements(): ObjectStorage;
 
-    /**
-     * Sets the admissionRequirements
-     *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\AdmissionRequirement> $admissionRequirements
-     * @return void
-     */
     public function setAdmissionRequirements(ObjectStorage $admissionRequirements);
 
-    /**
-     * Adds a admissionRequirement
-     *
-     * @param AdmissionRequirementInterface $admissionRequirement
-     * @return void
-     */
-    public function addAdmissionRequirement($admissionRequirement);
+    public function addAdmissionRequirement(AdmissionRequirementInterface $admissionRequirement);
 
-    /**
-     * Removes a admissionRequirement
-     *
-     * @param AdmissionRequirementInterface $admissionRequirementToRemove The type of study
-     *     to be removed
-     * @return void
-     */
-    public function removeAdmissionRequirement($admissionRequirementToRemove);
+    public function removeAdmissionRequirement(AdmissionRequirementInterface $admissionRequirementToRemove);
 
-    /**
-     * Returns the startsOfStudy
-     *
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\StartOfStudy> $startsOfStudy
-     */
-    public function getStartsOfStudy();
+    public function getStartsOfStudy(): ObjectStorage;
 
-    /**
-     * Sets the startsOfStudy
-     *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\StartOfStudy> $startsOfStudy
-     * @return void
-     */
     public function setStartsOfStudy(ObjectStorage $startsOfStudy);
 
-    /**
-     * Adds a StartOfStudy
-     *
-     * @param StartOfStudyInterface $startOfStudy
-     * @return void
-     */
-    public function addStartOfStudy($startOfStudy);
+    public function addStartOfStudy(StartOfStudyInterface $startOfStudy);
 
-    /**
-     * Removes a startOfStudy
-     *
-     * @param StartOfStudyInterface $startOfStudyToRemove The start of study to be removed
-     * @return void
-     */
-    public function removeStartOfStudy($startOfStudyToRemove);
+    public function removeStartOfStudy(StartOfStudyInterface $startOfStudyToRemove);
 
-    /**
-     * @return string
-     */
-    public function getMetaPagetitle();
+    public function getMetaPagetitle(): string;
 
-    /**
-     * @param string $metaPagetitle
-     */
-    public function setMetaPagetitle($metaPagetitle);
+    public function setMetaPagetitle(string $metaPagetitle);
 
-    /**
-     * @return string
-     */
-    public function getMetaKeywords();
+    public function getMetaKeywords(): string;
 
-    /**
-     * @param string $metaKeywords
-     */
-    public function setMetaKeywords($metaKeywords);
+    public function setMetaKeywords(string $metaKeywords);
 
-    /**
-     * @return string
-     */
-    public function getMetaDescription();
+    public function getMetaDescription(): string;
 
-    /**
-     * @param string $metaDescription
-     */
-    public function setMetaDescription($metaDescription);
+    public function setMetaDescription(string $metaDescription);
 
-    /**
-     * @return GlobalDataInterface
-     */
-    public function getGlobalDataPreset();
+    public function getGlobalDataPreset(): ?GlobalDataInterface;
 
-    /**
-     * @param GlobalDataInterface $globalDataPreset
-     */
-    public function setGlobalDataPreset($globalDataPreset);
+    public function setGlobalDataPreset(GlobalDataInterface $globalDataPreset);
 
-    /**
-     * @return bool
-     */
-    public function isDifferentPreset();
+    public function isDifferentPreset(): bool;
 
-    /**
-     * @param bool $differentPreset
-     */
-    public function setDifferentPreset($differentPreset);
+    public function setDifferentPreset(bool $differentPreset);
 
-    /**
-     * @return GlobalDataInterface|null
-     */
     public function getGlobalData();
 
-    public function getTitleWithAcademicDegree();
+    public function getTitleWithAcademicDegree(): string;
 }

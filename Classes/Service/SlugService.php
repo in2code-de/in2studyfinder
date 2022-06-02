@@ -10,30 +10,19 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class SlugService extends AbstractService
+class SlugService
 {
-    /**
-     * @var QueryBuilder
-     */
-    protected $queryBuilder;
+    protected ?QueryBuilder $queryBuilder = null;
+
+    protected array $fieldConfig = [];
+
+    protected ?SlugHelper $slugHelper = null;
 
     /**
-     * @var array
-     */
-    protected $fieldConfig = [];
-
-    /**
-     * @var SlugHelper
-     */
-    protected $slugHelper;
-
-    /**
-     * SlugService constructor.
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
     public function __construct()
     {
-        parent::__construct();
-
         $this->fieldConfig = $GLOBALS['TCA'][StudyCourse::TABLE]['columns']['url_segment']['config'];
         $this->slugHelper =
             GeneralUtility::makeInstance(
@@ -49,7 +38,7 @@ class SlugService extends AbstractService
     }
 
     /**
-     * @return array
+     * @throws \Doctrine\DBAL\DBALException
      */
     public function performUpdates(): array
     {
@@ -88,7 +77,7 @@ class SlugService extends AbstractService
     }
 
     /**
-     * @return bool
+     * @throws \Doctrine\DBAL\DBALException
      */
     public function isSlugUpdateRequired(): bool
     {
@@ -100,17 +89,13 @@ class SlugService extends AbstractService
                 $this->queryBuilder->expr()->orX(
                     $this->queryBuilder->expr()->eq(
                         'url_segment',
-                        $this->queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
+                        $this->queryBuilder->createNamedParameter('')
                     ),
                     $this->queryBuilder->expr()->isNull('url_segment')
                 )
             )
             ->execute()->fetchColumn(0);
 
-        if ($count > 0) {
-            return true;
-        }
-
-        return false;
+        return $count > 0;
     }
 }

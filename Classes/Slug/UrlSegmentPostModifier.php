@@ -17,15 +17,9 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class UrlSegmentPostModifier
 {
-    /**
-     * @var array
-     */
-    protected $configuration = [];
+    protected array $configuration = [];
 
     /**
-     * @param array $configuration
-     * @param SlugHelper $slugHelper
-     * @return string
      * @noinspection PhpUnusedParameterInspection
      * @noinspection PhpUnused
      */
@@ -53,8 +47,7 @@ class UrlSegmentPostModifier
     }
 
     /**
-     * @param int $academicDegreeUid
-     * @return string
+     * @throws \Doctrine\DBAL\DBALException
      */
     protected function getGraduationTitle(int $academicDegreeUid = -1): string
     {
@@ -104,9 +97,6 @@ class UrlSegmentPostModifier
         return (string)$queryBuilder->execute()->fetchColumn();
     }
 
-    /**
-     * @return bool
-     */
     protected function isNewRecord(): bool
     {
         if ($this->isRecalculateSlug()) {
@@ -125,9 +115,6 @@ class UrlSegmentPostModifier
         return false;
     }
 
-    /**
-     * @return int
-     */
     protected function getStudyCourseRecordIdentifier(): int
     {
         if (!empty($this->configuration['record']['uid'])) {
@@ -140,15 +127,8 @@ class UrlSegmentPostModifier
         return $identifier;
     }
 
-    /**
-     * @return bool
-     */
     protected function isRecalculateSlug(): bool
     {
-        if (GeneralUtility::_GP('route') === '/ajax/record/slug/suggest') {
-            return true;
-        }
-
-        return false;
+        return GeneralUtility::_GP('route') === '/ajax/record/slug/suggest';
     }
 }

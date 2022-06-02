@@ -7,3 +7,6 @@
 /Resources/Private/gulpfile.js export-ignore
 /Resources/Private/package.json export-ignore
 /Resources/Private/package-lock.json export-ignore
+
+*.sql.gz filter=lfs diff=lfs merge=lfs -text
+*.tar.gz filter=lfs diff=lfs merge=lfs -text

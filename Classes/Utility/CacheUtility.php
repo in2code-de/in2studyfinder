@@ -12,9 +12,9 @@ class CacheUtility
      * Following cache tags will be added to tsfe:
      * "tx_in2studyfinder_uid_[course:uid]"
      *
-     * @param array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface $recods with course records
+     * @param array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
      */
-    public static function addCacheTags($recods)
+    public static function addCacheTags($recods): void
     {
         $cacheTags = [];
         foreach ($recods as $record) {

@@ -143,14 +143,15 @@ class UrlUtility {
       var argumentArray = hash.split(/[&;]/g);
       var hashArguments = [];
       for (var i = 0; i < argumentArray.length; i++) {
-
         var singleArgument = argumentArray[i].split(/[=;]/g);
-        var values = singleArgument[1].split(/[+;]/g);
 
-        hashArguments[i] = {
-          name: singleArgument[0],
-          values: values
-        };
+        if (singleArgument.length === 2) {
+          var values = singleArgument[1].split(/[+;]/g);
+          hashArguments[i] = {
+            name: singleArgument[0],
+            values: values
+          };
+        }
       }
 
       return hashArguments;

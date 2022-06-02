@@ -1211,7 +1211,6 @@ fieldset {
       height: 100%;
       overflow-x: hidden;
       overflow-y: scroll;
-      top: 0;
       position: fixed;
       transition: width .2s ease, height .2s ease; }
       .is-closed .c-in2studyfinder-filter {
@@ -1541,7 +1540,10 @@ fieldset {
 .in2studyfinder__pagebrowser {
   margin-top: 20px;
   margin-bottom: 20px;
-  text-align: center; }
+  text-align: center;
+  list-style: none; }
+  .in2studyfinder__pagebrowser li {
+    display: inline-block; }
   .in2studyfinder__pagebrowser a {
     color: currentColor;
     font-size: 18px;
@@ -1554,13 +1556,15 @@ fieldset {
   margin-right: 0; }
 
 .in2studyfinder__pagebrowser-page.current {
-  color: #4c0; }
+  color: #4c0;
+  font-size: 18px;
+  font-weight: bold; }
 
 .l-content {
   padding: 1rem; }
   @media all and (min-width: 768px) {
     .l-content {
-      padding: 1rem 1rem 1rem 19rem;
+      padding: 0 1rem 1rem 19rem;
       transition: padding .2s ease; }
       .is-closed .l-content {
         padding: 1rem 1rem 1rem 5rem; } }

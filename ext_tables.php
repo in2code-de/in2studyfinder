@@ -7,12 +7,6 @@ $ll = 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:';
 $controller = \In2code\In2studyfinder\Controller\BackendController::class;
 $extensionName = 'In2studyfinder';
 
-if (\In2code\In2studyfinder\Utility\VersionUtility::isTypo3MajorVersionBelow(10)) {
-    $controller = 'Backend';
-    $extensionName = 'In2code.in2studyfinder';
-}
-
-
 /**
  * Include Plugins
  */
