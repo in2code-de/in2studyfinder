@@ -1,78 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
-/**
- * StartOfStudy
- */
 class StartOfStudy extends AbstractEntity implements StartOfStudyInterface
 {
-    const TABLE = 'tx_in2studyfinder_domain_model_startofstudy';
+    public const TABLE = 'tx_in2studyfinder_domain_model_startofstudy';
 
-    /**
-     * title
-     *
-     * @var string
-     */
-    protected $title = '';
+    protected string $title = '';
 
-    /**
-     * startDate
-     *
-     * @var string
-     */
-    protected $startDate = '';
+    protected string $startDate = '';
 
-    /**
-     * Returns the title
-     *
-     * @return string $title
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * Sets the title
-     *
-     * @param string $title
-     * @return void
-     */
-    public function setTitle($title)
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * Returns the startDate
-     *
-     * @return string $startDate
-     */
-    public function getStartDate()
+    public function getStartDate(): string
     {
         return $this->startDate;
     }
 
-    /**
-     * Sets the startDate
-     *
-     * @param string $startDate
-     * @return void
-     */
-    public function setStartDate($startDate)
+    public function setStartDate(string $startDate): void
     {
         $this->startDate = $startDate;
     }
 
-    /**
-     * Returns the option Field
-     *
-     * @return string title
-     */
-    public function getOptionField()
+    public function getOptionField(): string
     {
         return $this->getTitle();
     }

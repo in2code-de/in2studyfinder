@@ -9,6 +9,11 @@
       bottom: 20px;
     };
     text-align: center;
+    list-style: none;
+
+    li {
+        display: inline-block;
+    }
 
     a {
       color: currentColor;
@@ -31,6 +36,10 @@
 
     &.current {
       color: $primaryColor;
+      font: {
+          size: 18px;
+          weight: bold;
+      };
     }
   }
 }

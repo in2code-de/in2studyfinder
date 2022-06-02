@@ -1,61 +1,35 @@
 <?php
 
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
-/**
- * StudyCourse
- */
 class GlobalData extends AbstractEntity implements GlobalDataInterface
 {
-    const TABLE = 'tx_in2studyfinder_domain_model_globaldata';
+    public const TABLE = 'tx_in2studyfinder_domain_model_globaldata';
 
-    /**
-     * title
-     *
-     * @var string
-     */
-    protected $title = '';
+    protected string $title = '';
 
-    /**
-     * @var bool
-     */
-    protected $defaultPreset = false;
+    protected bool $defaultPreset = false;
 
-    /**
-     * Returns the title
-     *
-     * @return string $title
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * Sets the title
-     *
-     * @param string $title
-     * @return void
-     */
-    public function setTitle($title)
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isDefaultPreset()
+    public function isDefaultPreset(): bool
     {
         return $this->defaultPreset;
     }
 
-    /**
-     * @param boolean $defaultPreset
-     */
-    public function setDefaultPreset($defaultPreset)
+    public function setDefaultPreset(bool $defaultPreset): void
     {
         $this->defaultPreset = $defaultPreset;
     }

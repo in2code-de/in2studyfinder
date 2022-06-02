@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\ViewHelpers;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -10,22 +12,13 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 class RenderContentElementsViewHelper extends AbstractViewHelper
 {
-    /**
-     * @var bool
-     */
     protected $escapeOutput = false;
 
-    /**
-     * @var ConfigurationManagerInterface
-     */
-    protected $configurationManager;
+    protected ?ConfigurationManagerInterface $configurationManager = null;
 
-    /**
-     * @var Object
-     */
-    protected $cObj;
+    protected object $cObj;
 
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
 
@@ -33,12 +26,7 @@ class RenderContentElementsViewHelper extends AbstractViewHelper
         $this->registerArgument('mmTable', 'string', '', true);
     }
 
-    /**
-     * Parse content elements from an mm Table
-     *
-     * @return array
-     */
-    public function render()
+    public function render(): string
     {
         $domainObject = $this->arguments['domainObject'];
         $mmTable = $this->arguments['mmTable'];
@@ -70,28 +58,21 @@ class RenderContentElementsViewHelper extends AbstractViewHelper
         return $this->cObj->cObjGetSingle('RECORDS', $conf);
     }
 
-    /**
-     * Injects the Configuration Manager
-     *
-     * @param ConfigurationManagerInterface $configurationManager
-     * @return void
-     */
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
         $this->cObj = $this->configurationManager->getContentObject();
     }
 
-    public function findTtContentUidsByMmTable($domainObjectUid, $table)
+    public function findTtContentUidsByMmTable(int $domainObjectUid, string $table)
     {
-
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($table);
 
         $uidArray = $queryBuilder
             ->select('uid_foreign as uid')
             ->from($table)
-            ->where('uid_local=' . (int)$domainObjectUid)
+            ->where('uid_local=' . $domainObjectUid)
             ->orderBy('sorting')
             ->addOrderBy('sorting_foreign')
             ->execute()->fetchAll();

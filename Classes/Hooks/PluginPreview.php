@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\Hooks;
 
 use In2code\In2studyfinder\Utility\AbstractUtility;
@@ -12,30 +14,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
-/**
- * Contains a preview rendering for the in2studyfinder plugins in the page module
- */
 class PluginPreview implements PageLayoutViewDrawItemHookInterface
 {
-    /**
-     * @var array
-     */
-    protected $row = [];
+    protected array $row = [];
 
-    /**
-     * @var array
-     */
-    protected $flexFormData;
+    protected array $flexFormData = [];
 
-    /**
-     * @var string
-     */
-    protected $templatePathAndFile = '';
+    protected string $templatePathAndFile = '';
 
-    /**
-     * @var array
-     */
-    protected $settings = [];
+    protected array $settings = [];
 
     /**
      * Preprocesses the preview rendering of a content element
@@ -81,13 +68,11 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
     }
 
     /**
-     * @param string @pluginName
-     * @return string
      * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      */
-    protected function getPluginInformation($pluginName)
+    protected function getPluginInformation(string $pluginName): string
     {
-        $standaloneView = AbstractUtility::getObjectManager()->get(StandaloneView::class);
+        $standaloneView = GeneralUtility::makeInstance(StandaloneView::class);
         $standaloneView->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($this->templatePathAndFile));
 
         $standaloneView->assignMultiple(
@@ -142,12 +127,7 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
         return $standaloneView->render();
     }
 
-    /**
-     * @param string $table
-     * @param array $recordUids
-     * @return array
-     */
-    protected function getTableRecords($table, $recordUids)
+    protected function getTableRecords(string $table, array $recordUids): array
     {
         $records = [];
         foreach ($recordUids as $recordUid) {
@@ -158,11 +138,10 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
     }
 
     /**
-     * @return array
      * @SuppressWarnings(PHPMD.LongVariable)
      * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      */
-    protected function getRecordStoragePages()
+    protected function getRecordStoragePages(): array
     {
         $recordStoragePages = [];
 
@@ -193,35 +172,23 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
         return $recordStoragePages;
     }
 
-    /**
-     * @param array $row
-     * @return void
-     */
-    protected function initialize(array $row)
+    protected function initialize(array $row): void
     {
         $this->row = $row;
 
         $this->settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
         $this->templatePathAndFile = $this->settings['backend']['pluginPreviewTemplate'];
 
-        $flexFormService = ExtensionUtility::getObjectManager()->get(FlexFormService::class);
+        $flexFormService = GeneralUtility::makeInstance(FlexFormService::class);
         $this->flexFormData = $flexFormService->convertFlexFormContentToArray($this->row['pi_flexform']);
     }
 
-    /**
-     * @param string $listType
-     *
-     * @return boolean
-     */
-    protected function isStudyfinderListType($listType)
+    protected function isStudyfinderListType(string $listType): bool
     {
         return $listType === 'in2studyfinder_pi1' || $listType === 'in2studyfinder_pi2';
     }
 
-    /**
-     * @return string
-     */
-    protected function getNoTyposcriptTemplateWarning()
+    protected function getNoTyposcriptTemplateWarning(): string
     {
         return '<div class="callout callout-danger">
 							<h4 class="alert-title">No Typoscript Template!</h4>

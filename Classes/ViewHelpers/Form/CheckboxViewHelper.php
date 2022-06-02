@@ -1,17 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\ViewHelpers\Form;
 
 class CheckboxViewHelper extends AbstractCheckboxViewHelper
 {
-    /**
-     * Renders the checkbox.
-     *
-     * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
-     * @return string
-     * @api
-     */
-    public function render()
+    public function render(): string
     {
         $checked = $this->arguments['checked'];
         $multiple = $this->arguments['multiple'];

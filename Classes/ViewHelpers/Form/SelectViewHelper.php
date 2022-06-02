@@ -1,16 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\ViewHelpers\Form;
 
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper
 {
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
 
@@ -34,10 +35,9 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
     }
 
     /**
-     * @return array
      * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      */
-    protected function getOptions()
+    protected function getOptions(): array
     {
         $parentOptions = parent::getOptions();
         $options = [];
@@ -55,9 +55,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
             $pageUid = $this->arguments['detailPageUid'];
         }
 
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        /** @var UriBuilder $uriBuilder */
-        $uriBuilder = $objectManager->get(UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         foreach ($optionsArgument as $value) {
             if ($this->hasArgument('additionalOptionAttributes')) {
@@ -65,12 +63,6 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
                     $optionsArrayKey = get_class($value) . ':' . $value->getUid();
                     $label = '';
 
-                    // typo3 9.5
-                    if (array_key_exists($value->getUid(), $parentOptions)) {
-                        $label = $parentOptions[$value->getUid()];
-                    }
-
-                    // typo3 8.7
                     if (array_key_exists($optionsArrayKey, $parentOptions)) {
                         $label = $parentOptions[$optionsArrayKey];
                     }
@@ -88,7 +80,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
                             $uriBuilder->reset()->setRequest($this->getRequest());
 
                         if (!empty($pageUid)) {
-                            $uri->setTargetPageUid($pageUid);
+                            $uri->setTargetPageUid((int)$pageUid);
                         }
 
                         $uri->uriFor(
@@ -105,13 +97,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
         return $options;
     }
 
-    /**
-     * Render the option tags.
-     *
-     * @param array $options the options for the form.
-     * @return string rendered tags.
-     */
-    protected function renderOptionTags($options)
+    protected function renderOptionTags($options): string
     {
         $output = '';
 

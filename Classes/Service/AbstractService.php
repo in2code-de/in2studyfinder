@@ -1,27 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\Service;
 
-use TYPO3\CMS\Core\Log\Logger;
-use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
+use Psr\Log\LoggerInterface;
 
 class AbstractService
 {
-    /**
-     * @var Logger
-     */
-    protected $logger = null;
+    protected LoggerInterface $logger;
 
-    /**
-     * @var ObjectManager
-     */
-    protected $objectManager = null;
-
-    public function __construct()
+    public function __construct(LoggerInterface $logger)
     {
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->logger = $this->objectManager->get(LogManager::class)->getLogger(static::class);
+        $this->logger = $logger;
     }
 }

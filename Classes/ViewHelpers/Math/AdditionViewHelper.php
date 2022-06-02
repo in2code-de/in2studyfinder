@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\ViewHelpers\Math;
 
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -7,7 +9,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 class AdditionViewHelper extends AbstractViewHelper
 {
 
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
 
@@ -15,14 +17,7 @@ class AdditionViewHelper extends AbstractViewHelper
         $this->registerArgument('value2', 'integer', '', true);
     }
 
-
-    /**
-     * @param integer $value1
-     * @param integer $value2
-     *
-     * @return int
-     */
-    public function render()
+    public function render(): int
     {
         return $this->arguments['value1'] + $this->arguments['value2'];
     }

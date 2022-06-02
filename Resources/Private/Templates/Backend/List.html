@@ -1,5 +1,4 @@
 {namespace core = TYPO3\CMS\Core\ViewHelpers}
-{namespace in2studyfinder = In2code\In2studyfinder\ViewHelpers}
 {namespace beUser = TYPO3\CMS\Beuser\ViewHelpers}
 
 <f:layout name="Backend"/>
@@ -12,6 +11,7 @@
 		</strong> {message}
 		</div>
 	</f:for>
+
 	<f:if condition="{studyCourses}">
 		<f:form action="export" controller="Backend">
 
@@ -94,9 +94,8 @@
 					<th>Deleted</th>
 					</thead>
 					<tbody class="js-in2studyfinder-course-list">
-					<in2studyfinder:widget.paginate objects="{studyCourses}" as="paginatedCourses"
-													configuration="{itemsPerPage:itemsPerPage, insertAbove: 0, insertBelow: 1}">
-						<f:for each="{paginatedCourses}" as="studyCourse">
+					<in2studyfinder:pagination.paginate objects="{studyCourses}" as="paginatedCourses" itemsPerPage="{itemsPerPage}">
+						<f:for each="{paginatedCourses.paginator.paginatedItems}" as="studyCourse">
 							<tr data-in2studyfinder-course-uid="{studyCourse.uid}">
 								<td>
 									<f:form.checkbox name="courseList" value="{f:if(condition: '{studyCourse.l10n_parent} != 0', then: '{studyCourse.l10n_parent}', else: '{studyCourse.uid}')}" multiple="multiple"
@@ -134,10 +133,14 @@
 								</f:comment>
 							</tr>
 						</f:for>
-					</in2studyfinder:widget.paginate>
+						<f:alias map="{pagination:paginatedCourses.pagination, paginator:paginatedCourses.paginator, name:paginatedCourses.name}">
+							<f:render partial="Pagination" arguments="{_all}" />
+						</f:alias>
+					</in2studyfinder:pagination.paginate>
 					</tbody>
 					<tfoot>
-					<td colspan="4" class="js-in2studyfinder-pagination"></td>
+					<td colspan="4" class="js-in2studyfinder-pagination">
+					</td>
 					<td>
 						<label for="itemsPerPage">
 							<f:translate
@@ -175,9 +178,9 @@
 
 				<fieldset class="form-section">
 					<div class="form-wizards-element">
-						<div class="form-multigroup-wrap">
+						<div class="form-multigroup-wrap t3js-formengine-field-group" data-selectgroup="true">
 							<div class="form-multigroup-item form-multigroup-element">
-								<label for="propertiesSelected">
+								<label>
 									<f:translate
 											key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:selectedItems"/>
 								</label>
@@ -187,13 +190,14 @@
 													   multiple="multiple"
 													   title="propertiesSelected"
 													   size="30"
-													   class="form-control tceforms-multiselect js-in2studyfinder-selected-properties-list">
+													   class="form-select form-control tceforms-multiselect js-in2studyfinder-selected-properties-list">
 											<optgroup
 													label="{f:translate( key: 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:studycourse')}"
 													style="font-weight: bold"></optgroup>
 										</f:form.select>
 									</div>
-									<div class="form-wizards-items-aside">
+
+									<div class="form-wizards-items-aside form-wizards-items-aside--move">
 										<div class="btn-group-vertical">
 											<a href="#" class="btn btn-default js-in2studyfinder-move-item-begin"
 											   title="Move selected items to top">
@@ -219,21 +223,26 @@
 									</div>
 								</div>
 							</div>
+
 							<div class="form-multigroup-item form-multigroup-element">
-								<label for="propertiesAvailable">
+								<label>
 									<f:translate
 											key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:availableItems"/>
 								</label>
-								<div class="form-wizards-element">
-									<select multiple="multiple" name="propertiesAvailable" title="propertiesAvailable"
-											class="form-control tceforms-multiselect js-in2studyfinder-property-list"
-											size="30">
-										<optgroup
-												label="{f:translate( key: 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:studycourse')}"
-												style="font-weight: bold"></optgroup>
-										<f:render partial="Backend/AvailableFields" section="main"
-												  arguments="{properties:availableFieldsForExport}"/>
-									</select>
+								<div class="form-wizards-wrap form-wizards-aside">
+									<div class="form-wizards-element">
+										<select data-role="selectlist"
+														class="form-select t3js-formengine-select-itemstoselect js-in2studyfinder-property-list"
+														multiple="multiple"
+														size="30"
+														name="propertiesAvailable" title="propertiesAvailable">
+											<optgroup
+													label="{f:translate( key: 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:studycourse')}"
+													style="font-weight: bold"></optgroup>
+											<f:render partial="Backend/AvailableFields" section="main"
+														arguments="{properties:availableFieldsForExport}"/>
+										</select>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -252,7 +261,7 @@
 							<div class="form-control-wrap">
 								<div class="form-wizards-wrap">
 									<div class="form-wizards-element">
-										<f:form.submit class="js-in2studyfinder-export-courses"
+										<f:form.submit class="js-in2studyfinder-export-courses btn btn-primary"
 													   value="{f:translate( key: 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:export')}"/>
 									</div>
 								</div>

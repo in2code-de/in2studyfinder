@@ -1,4 +1,4 @@
 import {frontend} from './Frontend';
 
 
-frontend.initialize();
+frontend.initialize(true);

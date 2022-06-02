@@ -1,95 +1,48 @@
 <?php
 
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
-/**
- * AcademicDegree
- */
 class AcademicDegree extends AbstractEntity implements AcademicDegreeInterface
 {
-    const TABLE = 'tx_in2studyfinder_domain_model_academicdegree';
+    public const TABLE = 'tx_in2studyfinder_domain_model_academicdegree';
+
+    protected string $degree = '';
 
     /**
-     * degree
-     *
-     * @var string
+     * @var \In2code\In2studyfinder\Domain\Model\Graduation|null
      */
-    protected $degree = '';
+    protected ?Graduation $graduation = null;
 
-    /**
-     * graduation
-     *
-     * @var \In2code\In2studyfinder\Domain\Model\Graduation
-     */
-    protected $graduation;
-
-    /**
-     * __construct
-     */
     public function __construct()
     {
-        //Do not remove the next line: It would break the functionality
-        $this->initStorageObjects();
+        //$this->graduation = new Graduation();
     }
 
-    /**
-     * @return void
-     */
-    protected function initStorageObjects()
-    {
-        $this->graduation = new Graduation();
-    }
-
-    /**
-     * Returns the degree
-     *
-     * @return string degree
-     */
-    public function getDegree()
+    public function getDegree(): string
     {
         return $this->degree;
     }
 
-    /**
-     * Sets the degree
-     *
-     * @param string $degree
-     * @return void
-     */
-    public function setDegree($degree)
+    public function setDegree(string $degree): void
     {
         $this->degree = $degree;
     }
 
-    /**
-     * Returns the graduation
-     *
-     * @return Graduation $graduation
-     */
-    public function getGraduation()
+    public function getGraduation(): ?GraduationInterface
     {
         return $this->graduation;
     }
 
-    /**
-     * Sets the graduation
-     *
-     * @param GraduationInterface $graduation
-     * @return void
-     */
-    public function setGraduation(GraduationInterface $graduation)
+    public function setGraduation(GraduationInterface $graduation): void
     {
         $this->graduation = $graduation;
     }
 
-    /**
-     * Returns the option Field
-     *
-     * @return string title
-     */
-    public function getOptionField()
+    public function getOptionField(): string
     {
         return $this->getDegree();
     }

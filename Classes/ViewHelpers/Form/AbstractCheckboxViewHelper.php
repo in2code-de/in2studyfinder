@@ -1,9 +1,12 @@
 <?php
+
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\ViewHelpers\Form;
 
 abstract class AbstractCheckboxViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\CheckboxViewHelper
 {
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument(
@@ -22,10 +25,7 @@ abstract class AbstractCheckboxViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\F
         );
     }
 
-    /**
-     *
-     */
-    protected function setDisabledIfNotAvailable()
+    protected function setDisabledIfNotAvailable(): void
     {
         list($propertyName, $objectId) = explode('_', $this->arguments['id']);
 
@@ -38,10 +38,7 @@ abstract class AbstractCheckboxViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\F
         }
     }
 
-    /**
-     *
-     */
-    protected function setSelectedIfPreviouslySelected()
+    protected function setSelectedIfPreviouslySelected(): void
     {
         list($propertyName, $objectId) = explode('_', $this->arguments['id']);
         if (isset($this->arguments['searchedOptions'][$propertyName])) {

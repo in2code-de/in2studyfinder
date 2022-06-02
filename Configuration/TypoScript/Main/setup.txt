@@ -1,14 +1,15 @@
+config.pageTitleProviders {
+	in2studyfinder {
+		provider = In2code\In2studyfinder\PageTitle\CoursePageTitleProvider
+		before = record
+	}
+}
+
 plugin.tx_in2studyfinder {
 	view {
 		templateRootPaths.0 = {$plugin.tx_in2studyfinder.view.templateRootPath}
 		partialRootPaths.0 = {$plugin.tx_in2studyfinder.view.partialRootPath}
 		layoutRootPaths.0 = {$plugin.tx_in2studyfinder.view.layoutRootPath}
-
-		widget {
-			TYPO3\CMS\Fluid\ViewHelpers\Widget\PaginateViewHelper {
-				templateRootPath = EXT:in2studyfinder/Resources/Private/Templates/
-			}
-		}
 	}
 
 	settings {
@@ -142,6 +143,9 @@ in2studyfinderFilterAjax {
 		pluginName = Pi1
 		vendorName = In2code
 		controller = StudyCourse
+		// the action is ignored at this point.
+		// It is possible to set an different action via an query argument
+		// see: https://forge.typo3.org/issues/88399#note-5
 		action = filter
 		features.requireCHashArgumentForActionArguments = 0
 	}

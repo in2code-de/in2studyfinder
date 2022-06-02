@@ -1,50 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
-/**
- * CourseLanguage
- */
 class CourseLanguage extends AbstractEntity implements CourseLanguageInterface
 {
-    const TABLE = 'tx_in2studyfinder_domain_model_courselanguage';
+    public const TABLE = 'tx_in2studyfinder_domain_model_courselanguage';
 
-    /**
-     * language
-     *
-     * @var string
-     */
-    protected $language = '';
+    protected string $language = '';
 
-    /**
-     * Returns the language
-     *
-     * @return string language
-     */
-    public function getLanguage()
+    public function getLanguage(): string
     {
         return $this->language;
     }
 
-    /**
-     * Sets the language
-     *
-     * @param string $language
-     * @return void
-     */
-    public function setLanguage($language)
+    public function setLanguage(string $language): void
     {
         $this->language = $language;
     }
 
-    /**
-     * Returns the option Field
-     *
-     * @return string title
-     */
-    public function getOptionField()
+    public function getOptionField(): string
     {
         return $this->getLanguage();
     }

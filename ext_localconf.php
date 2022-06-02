@@ -7,16 +7,11 @@ if (!defined('TYPO3_MODE')) {
 $controller = \In2code\In2studyfinder\Controller\StudyCourseController::class;
 $extensionName = 'In2studyfinder';
 
-if (\In2code\In2studyfinder\Utility\VersionUtility::isTypo3MajorVersionBelow(10)) {
-    $controller = 'StudyCourse';
-    $extensionName = 'In2code.in2studyfinder';
-}
-
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     $extensionName,
     'Pi1',
-    [$controller => 'filter'],
-    [$controller => 'filter']
+    [$controller => 'filter,ajaxFilter'],
+    [$controller => 'filter,ajaxFilter']
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
@@ -38,6 +33,11 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['studyCourseS
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']['in2studyfinder_clearcache'] =
     \In2code\In2studyfinder\Hooks\DataHandlerHook::class . '->clearCachePostProc';
+
+/**
+ * Fluid Namespace
+ */
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['in2studyfinder'][] = 'In2code\In2studyfinder\ViewHelpers';
 
 /*
 Adds the Language Files from in2studyfinder_extend

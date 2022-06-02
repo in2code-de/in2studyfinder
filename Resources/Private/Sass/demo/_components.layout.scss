@@ -2,7 +2,7 @@
   padding: $gap;
 
   @media all and (min-width: $tablet) {
-    padding: $gap $gap $gap ($gap+$side-nav);
+    padding: 0 $gap $gap ($gap+$side-nav);
     transition: padding .2s ease;
 
     .is-closed &{

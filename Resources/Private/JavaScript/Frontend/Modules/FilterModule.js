@@ -25,25 +25,25 @@ class FilterModule {
 
   /**
    * initialize function
-   *
+   * @param {boolean} isInitialRequest
    * @return {void}
    */
-  initialize() {
+  initialize(isInitialRequest ) {
     if (document.querySelector(this.identifiers.filterForm)) {
       this.setEventListener();
-      this.prepareFilter();
+      this.prepareFilter(isInitialRequest);
     }
   };
 
   /**
-   *
+   * @param {boolean} isInitialRequest
    */
-  prepareFilter() {
+  prepareFilter(isInitialRequest) {
     this.prepareCheckboxes();
 
     // trigger filter update by hash arguments
     var hashArguments = UrlUtility.getHashArgumentsFromUrl();
-    if (hashArguments.length > 0 && document.querySelector('[data-in2studyfinder-isAjax="1"]') === null) {
+    if (hashArguments.length > 0 && isInitialRequest) {
       this.updateFilterByHashArguments(hashArguments);
     }
 
@@ -222,34 +222,19 @@ class FilterModule {
    * update the filtering
    */
   updateFilter(paginationPage) {
-    var in2studyfinderContainer = document.querySelector(this.identifiers.in2studyfinderContainer);
     var filterForm = document.querySelector(this.identifiers.filterForm);
-    var pluginUid = in2studyfinderContainer.getAttribute('data-plugin-uid');
-    var pid = in2studyfinderContainer.getAttribute('data-pid');
-    var sysLanguageUid = in2studyfinderContainer.getAttribute('data-in2studyfinder-language');
-    var pluginUidArgument = '', languageArgument = '', paginationArgument = '', url = '';
+    var pid = filterForm.querySelector('input[name="tx_in2studyfinder_pi1[pluginInformation][pid]"]').value;
+    var paginationArgument = '', url = '';
 
     if (typeof paginationPage === 'undefined') {
       paginationPage = 1;
     }
 
-    if (typeof pluginUid !== 'undefined') {
-      pluginUidArgument = '&ce=' + pluginUid;
-    }
-
-    if (typeof sysLanguageUid !== 'undefined' && sysLanguageUid !== null) {
-      languageArgument = '&L=' + sysLanguageUid;
-    }
-
     if (typeof paginationPage !== 'undefined') {
-      paginationArgument = '&tx_in2studyfinder_pi1[@widget_0][currentPage]=' + paginationPage;
+      paginationArgument = '&tx_in2studyfinder_pi1[studyCoursesForPage][currentPage]=' + paginationPage;
     }
 
-    if (typeof pid !== 'undefined' && pid !== null) {
-      url = '/index.php?id=' + pid + '&type=1308171055&studyFinderAjaxRequest=1' + pluginUidArgument + languageArgument + paginationArgument;
-    } else {
-      url = '/?type=1308171055&studyFinderAjaxRequest=1' + pluginUidArgument + languageArgument + paginationArgument;
-    }
+    url = '/index.php?id=' + pid + '&type=1308171055' + paginationArgument;
 
     var xhttp = new XMLHttpRequest();
     let filterModule = this;

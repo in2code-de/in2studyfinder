@@ -1,14 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\Controller;
 
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
+use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 use In2code\In2studyfinder\Service\ExportService;
-use In2code\In2studyfinder\Utility\VersionUtility;
+use In2code\In2studyfinder\Utility\ExtensionUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -25,17 +29,23 @@ class BackendController extends AbstractController
      */
     protected $reflectionService;
 
+    /**
+     * @var StudyCourseRepository
+     */
+    protected $studyCourseRepository;
+
     public function initializeAction()
     {
         parent::initializeAction();
 
-        $this->reflectionService = $this->objectManager->get(ReflectionService::class);
+        $this->reflectionService = GeneralUtility::makeInstance(ReflectionService::class);
+        $this->studyCourseRepository = $this->setStudyCourseRepository();
     }
 
     /**
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
-    public function listAction()
+    public function listAction(): void
     {
         $this->validateSettings();
 
@@ -60,7 +70,7 @@ class BackendController extends AbstractController
             $this->getFullPropertyList(
                 $propertyArray,
                 $this->reflectionService->getClassSchema(
-                    $this->getStudyCourseRepository()->findOneByDeleted(0)
+                    $this->studyCourseRepository->findOneByDeleted(0)
                 )->getProperties()
             );
         }
@@ -82,16 +92,13 @@ class BackendController extends AbstractController
         );
     }
 
-    /**
-     * @return array
-     */
-    protected function getSysLanguages()
+    protected function getSysLanguages(): array
     {
         $sysLanguages = [
             0 => 'default'
         ];
 
-        $queryBuilder = $this->objectManager->get(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
         $languageRecords = $queryBuilder
             ->select('*')
             ->from('sys_language')
@@ -114,9 +121,10 @@ class BackendController extends AbstractController
      * @param int $languageUid
      * @return array|null
      */
-    protected function getStudyCoursesForExportList($languageUid = 0)
+    protected function getStudyCoursesForExportList(int $languageUid = 0)
     {
-        $queryBuilder = $this->objectManager->get(ConnectionPool::class)->getQueryBuilderForTable(StudyCourse::TABLE);
+        $queryBuilder =
+            GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(StudyCourse::TABLE);
         $includeDeleted = (int)$this->settings['backend']['export']['includeDeleted'];
         $includeHidden = (int)$this->settings['backend']['export']['includeHidden'];
         $storagePid = (int)$this->settings['storagePid'];
@@ -148,7 +156,7 @@ class BackendController extends AbstractController
     /**
      * @return array
      */
-    public function getPossibleExportDataProvider()
+    public function getPossibleExportDataProvider(): array
     {
         $possibleDataProvider = [];
 
@@ -166,7 +174,6 @@ class BackendController extends AbstractController
                     $possibleDataProvider[$providerName] = $providerClass;
                 }
             }
-
         }
 
         return $possibleDataProvider;
@@ -180,8 +187,12 @@ class BackendController extends AbstractController
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      */
-    public function exportAction($exporter, $recordLanguage, $selectedProperties, $courseList)
-    {
+    public function exportAction(
+        string $exporter,
+        int $recordLanguage,
+        array $selectedProperties,
+        array $courseList
+    ): void {
         if (empty($selectedProperties) || empty($courseList)) {
             $this->addFlashMessage(
                 LocalizationUtility::translate('messages.notAllRequiredFieldsSet.body', 'in2studyfinder'),
@@ -195,7 +206,7 @@ class BackendController extends AbstractController
         $courses = $this->studyCourseRepository->findByUidsAndLanguage($courseList, (int)$recordLanguage);
 
         $exportService =
-            $this->objectManager->get(ExportService::class, $exporter, $selectedProperties, $courses->toArray());
+            GeneralUtility::makeInstance(ExportService::class, $exporter, $selectedProperties, $courses->toArray());
 
         $exportService->export();
     }
@@ -207,16 +218,11 @@ class BackendController extends AbstractController
     protected function getFullPropertyList(
         &$propertyArray,
         $objectProperties
-    ) {
+    ): void {
         foreach ($objectProperties as $propertyName => $propertyInformation) {
             if (!in_array($propertyName, $this->settings['backend']['export']['excludedPropertiesForExport'])) {
-                if (VersionUtility::isTypo3MajorVersionBelow(10)) {
-                    $elementType = $propertyInformation['elementType'];
-                    $type = $propertyInformation['type'];
-                } else {
-                    $elementType = $propertyInformation->getElementType();
-                    $type = $propertyInformation->getType();
-                }
+                $elementType = $propertyInformation->getElementType();
+                $type = $propertyInformation->getType();
 
                 if ($type === ObjectStorage::class) {
                     if (class_exists($elementType)) {
@@ -241,9 +247,24 @@ class BackendController extends AbstractController
     }
 
     /**
+     * set the studyCourseRepository
+     */
+    protected function setStudyCourseRepository()
+    {
+        $extendedRepositoryName = 'In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository';
+
+        if (ExtensionUtility::isIn2studycoursesExtendLoaded()
+            && class_exists($extendedRepositoryName)) {
+            return GeneralUtility::makeInstance($extendedRepositoryName);
+        }
+
+        return GeneralUtility::makeInstance(StudyCourseRepository::class);
+    }
+
+    /**
      * @return void
      */
-    protected function validateSettings()
+    protected function validateSettings(): void
     {
         if (!isset($this->settings['storagePid']) || empty($this->settings['storagePid'])) {
             $this->addFlashMessage(

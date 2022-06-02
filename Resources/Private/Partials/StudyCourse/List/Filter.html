@@ -1,5 +1,6 @@
 <f:form action="filter"
-				class="c-in2studyfinder-filter u-in2studyfinder-hide-if-no-js js-in2studyfinder-filter">
+				class="c-in2studyfinder-filter u-in2studyfinder-hide-if-no-js js-in2studyfinder-filter"
+				name="in2studyfinder-filter">
 
 	<button type="button"
 					class="c-in2studyfinder-filter__button c-in2studyfinder-filter__button--show js-in2studyfinder-filter-button-show">
@@ -13,21 +14,31 @@
 
 	<div class="c-in2studyfinder-filter__sections">
 		<f:for each="{filters}" as="filterType" key="filterTypeName">
-			<fieldset class="c-in2studyfinder-filter__section js-in2studyfinder-filter-section u-in2studyfinder-hide"
-								data-filtergroup="{filterTypeName}" tabindex="0">
+			<f:if condition="!{filterType.disabledInFrontend}">
+				<fieldset class="c-in2studyfinder-filter__section js-in2studyfinder-filter-section u-in2studyfinder-hide"
+									data-filtergroup="{filterTypeName}" tabindex="0">
 
-				<legend class="c-in2studyfinder-filter__legend js-in2studyfinder-filter-legend">
-					{filterType.frontendLabel}
-				</legend>
+					<legend class="c-in2studyfinder-filter__legend js-in2studyfinder-filter-legend">
+						{filterType.frontendLabel}
+					</legend>
 
-				<div class="c-in2studyfinder-filter__options js-in2studyfinder-filter-options is-hidden">
-					<f:render partial="StudyCourse/List/Filter/CheckboxAll" arguments="{_all}"/>
+					<div class="c-in2studyfinder-filter__options js-in2studyfinder-filter-options is-hidden">
+						<f:render partial="StudyCourse/List/Filter/CheckboxAll" arguments="{_all}"/>
 
-					<f:for each="{filterType.filterOptions}" as="option">
-						<f:render partial="StudyCourse/List/FilterTypeSwitch/FilterTypeSwitch" arguments="{_all}"/>
-					</f:for>
-				</div>
-			</fieldset>
+						<f:for each="{filterType.filterOptions}" as="option">
+							<f:render partial="StudyCourse/List/FilterTypeSwitch/FilterTypeSwitch" arguments="{_all}"/>
+						</f:for>
+					</div>
+				</fieldset>
+			</f:if>
 		</f:for>
 	</div>
+
+	<f:comment>
+		Required for the ajax functionality!
+		DO NOT REMOVE!
+	</f:comment>
+	<f:form.hidden name="pluginInformation[pluginUid]" value="{data.uid}"/>
+	<f:form.hidden name="pluginInformation[pid]" value="{data.pid}"/>
+	<f:form.hidden name="pluginInformation[languageUid]" value="{data.sys_language_uid}"/>
 </f:form>

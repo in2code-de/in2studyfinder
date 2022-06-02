@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\ViewHelpers;
 
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -8,10 +10,7 @@ class ForViewHelper extends AbstractViewHelper
 {
     protected $escapeOutput = false;
 
-    /**
-     * @return void
-     */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('for', 'array', 'The array or \SplObjectStorage to iterated over', true);
@@ -21,11 +20,9 @@ class ForViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @return string
-     *
      * @SuppressWarnings(PHPMD.ShortVariable)
      */
-    public function render()
+    public function render(): string
     {
         $for = $this->arguments['for'];
         $as = $this->arguments['as'];
@@ -47,12 +44,7 @@ class ForViewHelper extends AbstractViewHelper
         return '';
     }
 
-    /**
-     * @param string $name
-     * @param mixed $value
-     * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception\InvalidVariableException
-     */
-    protected function setVariable($name, $value)
+    protected function setVariable(string $name, $value): void
     {
         if ($this->templateVariableContainer->exists($name)) {
             $this->templateVariableContainer->remove($name);

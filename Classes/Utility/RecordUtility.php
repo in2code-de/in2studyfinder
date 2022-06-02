@@ -7,6 +7,7 @@ namespace In2code\In2studyfinder\Utility;
 use In2code\In2studyfinder\Domain\Model\TtContent;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class RecordUtility extends AbstractUtility
@@ -27,8 +28,7 @@ class RecordUtility extends AbstractUtility
      *      ...
      * ]
      *
-     * @param int $uid
-     * @return array
+     * @throws \Doctrine\DBAL\DBALException
      */
     public static function getRecordWithTranslations(int $uid): array
     {
@@ -62,6 +62,22 @@ class RecordUtility extends AbstractUtility
         return $records;
     }
 
+    public static function getRecordWithLanguageOverlay(int $recordUid, int $languageUid = 0): array
+    {
+        $record =
+            GeneralUtility::makeInstance(PageRepository::class)->getRecordOverlay(
+                TtContent::TABLE,
+                self::getRecord(TtContent::TABLE, $recordUid),
+                $languageUid
+            );
+
+        if (!empty($record)) {
+            return $record;
+        }
+
+        return [];
+    }
+
     /**
      * Gets record with uid = $uid from $table
      * You can set $field to a list of fields (default is '*')
@@ -76,6 +92,7 @@ class RecordUtility extends AbstractUtility
      * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
      * @param int $sysLanguageUid
      * @return array|null Returns the row if found, otherwise NULL
+     * @throws \Doctrine\DBAL\DBALException
      */
     public static function getRecord(
         string $table,

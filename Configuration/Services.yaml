@@ -1,0 +1,9 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  In2code\In2studyfinder\:
+    resource: '../Classes/*'
+    exclude: '../Classes/Domain/Model/*'
