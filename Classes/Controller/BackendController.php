@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\Controller;
 
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 use In2code\In2studyfinder\Service\ExportService;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
-use In2code\In2studyfinder\Utility\VersionUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
@@ -31,13 +32,12 @@ class BackendController extends AbstractController
     /**
      * @var StudyCourseRepository
      */
-    protected $studyCourseRepository = null;
+    protected $studyCourseRepository;
 
     public function initializeAction()
     {
         parent::initializeAction();
 
-        // @todo replace with static call of TYPO3\CMS\Extbase\Reflection\ReflectionService::getClassSchema()
         $this->reflectionService = GeneralUtility::makeInstance(ReflectionService::class);
         $this->studyCourseRepository = $this->setStudyCourseRepository();
     }
@@ -45,7 +45,7 @@ class BackendController extends AbstractController
     /**
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
-    public function listAction()
+    public function listAction(): void
     {
         $this->validateSettings();
 
@@ -92,16 +92,12 @@ class BackendController extends AbstractController
         );
     }
 
-    /**
-     * @return array
-     */
-    protected function getSysLanguages()
+    protected function getSysLanguages(): array
     {
         $sysLanguages = [
             0 => 'default'
         ];
 
-        // @todo replace with Database Utility
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
         $languageRecords = $queryBuilder
             ->select('*')
@@ -125,9 +121,8 @@ class BackendController extends AbstractController
      * @param int $languageUid
      * @return array|null
      */
-    protected function getStudyCoursesForExportList($languageUid = 0)
+    protected function getStudyCoursesForExportList(int $languageUid = 0)
     {
-        // @todo replace with Database Utility
         $queryBuilder =
             GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(StudyCourse::TABLE);
         $includeDeleted = (int)$this->settings['backend']['export']['includeDeleted'];
@@ -161,7 +156,7 @@ class BackendController extends AbstractController
     /**
      * @return array
      */
-    public function getPossibleExportDataProvider()
+    public function getPossibleExportDataProvider(): array
     {
         $possibleDataProvider = [];
 
@@ -192,8 +187,12 @@ class BackendController extends AbstractController
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      */
-    public function exportAction($exporter, $recordLanguage, $selectedProperties, $courseList)
-    {
+    public function exportAction(
+        string $exporter,
+        int $recordLanguage,
+        array $selectedProperties,
+        array $courseList
+    ): void {
         if (empty($selectedProperties) || empty($courseList)) {
             $this->addFlashMessage(
                 LocalizationUtility::translate('messages.notAllRequiredFieldsSet.body', 'in2studyfinder'),
@@ -219,7 +218,7 @@ class BackendController extends AbstractController
     protected function getFullPropertyList(
         &$propertyArray,
         $objectProperties
-    ) {
+    ): void {
         foreach ($objectProperties as $propertyName => $propertyInformation) {
             if (!in_array($propertyName, $this->settings['backend']['export']['excludedPropertiesForExport'])) {
                 $elementType = $propertyInformation->getElementType();
@@ -265,7 +264,7 @@ class BackendController extends AbstractController
     /**
      * @return void
      */
-    protected function validateSettings()
+    protected function validateSettings(): void
     {
         if (!isset($this->settings['storagePid']) || empty($this->settings['storagePid'])) {
             $this->addFlashMessage(

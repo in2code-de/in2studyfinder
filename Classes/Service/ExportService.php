@@ -93,18 +93,19 @@ class ExportService
                     $value .= $item->_getProperty($propertyName) . ', ';
                 }
 
-                $value = trim($value, ', ');
+                return trim($value, ', ');
+            }
 
-                $record = $value;
-            } else {
-                if ($record !== null) {
-                    /** @var $record DomainObjectInterface */
-                    $record = $record->_getProperty($propertyName);
+            if ($record !== null) {
+                if ($record->_getProperty($propertyName) === null) {
+                    return '';
                 }
+                /** @var $record DomainObjectInterface */
+                $record = $record->_getProperty($propertyName);
             }
         }
 
-        return $record;
+        return '';
     }
 
     protected function propertyPathToArray(string $propertyPath): array

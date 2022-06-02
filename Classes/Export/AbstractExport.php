@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\Export;
 
 use In2code\In2studyfinder\Export\Configuration\ExportConfiguration;
@@ -9,20 +11,13 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 class AbstractExport implements ExportInterface
 {
-    /**
-     * @var string
-     */
-    protected $contentType = 'application/force-download';
 
-    /**
-     * @var string
-     */
-    protected $fileExtension = '';
+    protected string $fileExtension = '';
 
     /**
      * @var Dispatcher
      */
-    protected $signalSlotDispatcher;
+    protected Dispatcher $signalSlotDispatcher;
 
     public function __construct()
     {
@@ -30,26 +25,16 @@ class AbstractExport implements ExportInterface
         $this->signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
     }
 
-    /**
-     * @param ExportConfiguration $exportConfiguration
-     */
-    public function export(ExportConfiguration $exportConfiguration)
+    public function export(ExportConfiguration $exportConfiguration): string
     {
     }
 
-    /**
-     * @param $templateFilePath
-     * @param string $layoutPath
-     * @param string $templatePath
-     * @param string $partialPath
-     * @return StandaloneView
-     */
     protected function getStandaloneView(
-        $templateFilePath,
-        $layoutPath = 'EXT:in2studyfinder/Resources/Private/Layouts/',
-        $templatePath = 'EXT:in2studyfinder/Resources/Private/Templates/',
-        $partialPath = 'EXT:in2studyfinder/Resources/Private/Partials/'
-    ) {
+        string $templateFilePath,
+        string $layoutPath = 'EXT:in2studyfinder/Resources/Private/Layouts/',
+        string $templatePath = 'EXT:in2studyfinder/Resources/Private/Templates/',
+        string $partialPath = 'EXT:in2studyfinder/Resources/Private/Partials/'
+    ): StandaloneView {
         $standaloneView = GeneralUtility::makeInstance(StandaloneView::class);
 
         $standaloneView->setLayoutRootPaths(

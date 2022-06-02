@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\Export\ExportTypes;
 
 use In2code\In2studyfinder\Export\AbstractExport;
@@ -12,22 +14,20 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class CsvExport extends AbstractExport implements ExportInterface
 {
 
-    /**
-     * @var string
-     */
-    protected $fileName = 'export.csv';
+    protected string $fileName = 'export.csv';
 
     /**
      * @param ExportConfiguration $exportConfiguration
      * @return string
      * @throws Exception
-     * @throws \Exception
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
      */
-    public function export(ExportConfiguration $exportConfiguration)
+    public function export(ExportConfiguration $exportConfiguration): string
     {
         $recordRows = [];
         foreach ($exportConfiguration->getRecordsToExport() as $row => $record) {
-            foreach ($record as $propertyName => $property) {
+            foreach ($record as $property) {
                 $this->signalSlotDispatcher->dispatch(
                     __CLASS__,
                     'manipulatePropertyBeforeExport',
@@ -61,7 +61,7 @@ class CsvExport extends AbstractExport implements ExportInterface
      * @param array $variables
      * @return string
      */
-    protected function getExportFileContent(array $variables)
+    protected function getExportFileContent(array $variables): string
     {
         $standaloneView = $this->getStandaloneView('EXT:in2studyfinder/Resources/Private/Templates/Exporter/Csv.html');
 

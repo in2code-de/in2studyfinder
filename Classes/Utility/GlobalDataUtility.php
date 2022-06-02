@@ -16,9 +16,6 @@ class GlobalDataUtility extends AbstractUtility
         if ($globalDataRepository->countDefaultPreset() > 0) {
             $status = true;
         } else {
-            /**
-             * @todo Log No default_preset for tx_in2studyfinder_domain_model_globaldata defined!
-             */
             $status = false;
         }
 

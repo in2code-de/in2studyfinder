@@ -1,140 +1,76 @@
 <?php
 
+declare(strict_types=1);
+
 namespace In2code\In2studyfinder\Export\Configuration;
 
 use In2code\In2studyfinder\Export\ExportInterface;
 use TYPO3\CMS\Core\Core\Environment;
 
-/**
- * ExportConfiguration
- */
 class ExportConfiguration
 {
-    /**
-     * @var array
-     */
-    protected $propertiesToExport = [];
-
-    /**
-     * @var bool
-     */
-    protected $includeHidden = false;
-
-    /**
-     * @var bool
-     */
-    protected $includeDeleted = false;
-
-    /**
-     * @var string
-     */
-    protected $exportLocation = '';
-
-    /**
-     * @var ExportInterface
-     */
-    protected $exporter = null;
-
-    /**
-     * @var array
-     */
-    protected $recordsToExport = [];
+    protected array $propertiesToExport = [];
+    protected bool $includeHidden = false;
+    protected bool $includeDeleted = false;
+    protected string $exportLocation = '';
+    protected ExportInterface $exporter;
+    protected array $recordsToExport = [];
 
     public function __construct()
     {
         $this->exportLocation = Environment::getPublicPath() . '/' . 'typo3temp/tx_in2studyfinder/';
     }
 
-    /**
-     * @return array
-     */
-    public function getPropertiesToExport()
+    public function getPropertiesToExport(): array
     {
         return $this->propertiesToExport;
     }
 
-    /**
-     * @param array $propertiesToExport
-     *
-     * @return $this
-     */
-    public function setPropertiesToExport($propertiesToExport)
+    public function setPropertiesToExport(array $propertiesToExport): ExportConfiguration
     {
         $this->propertiesToExport = $propertiesToExport;
         return $this;
     }
 
-    /**
-     * @param ExportInterface $exporter
-     *
-     * @return $this
-     */
-    public function setExporter(ExportInterface $exporter)
+    public function setExporter(ExportInterface $exporter): ExportConfiguration
     {
         $this->exporter = $exporter;
         return $this;
     }
 
-    /**
-     * @return ExportInterface
-     */
-    public function getExporter()
+    public function getExporter(): ExportInterface
     {
         return $this->exporter;
     }
 
-    /**
-     * @param array $recordsToExport
-     *
-     * @return $this
-     */
-    public function setRecordsToExport(array $recordsToExport)
+    public function setRecordsToExport(array $recordsToExport): ExportConfiguration
     {
         $this->recordsToExport = $recordsToExport;
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getRecordsToExport()
+    public function getRecordsToExport(): array
     {
         return $this->recordsToExport;
     }
 
-    /**
-     * @return bool
-     */
-    public function isIncludeHidden()
+    public function isIncludeHidden(): bool
     {
         return $this->includeHidden;
     }
 
-    /**
-     * @param bool $includeHidden
-     *
-     * @return $this
-     */
-    public function setIncludeHidden($includeHidden)
+    public function setIncludeHidden(bool $includeHidden): ExportConfiguration
     {
         $this->includeHidden = $includeHidden;
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function isIncludeDeleted()
+    public function isIncludeDeleted(): bool
     {
         return $this->includeDeleted;
     }
 
-    /**
-     * @param bool $includeDeleted
-     *
-     * @return $this
-     */
-    public function setIncludeDeleted($includeDeleted)
+    public function setIncludeDeleted(bool $includeDeleted): ExportConfiguration
     {
         $this->includeDeleted = $includeDeleted;
         return $this;
@@ -143,17 +79,12 @@ class ExportConfiguration
     /**
      * @return string
      */
-    public function getExportLocation()
+    public function getExportLocation(): string
     {
         return $this->exportLocation;
     }
 
-    /**
-     * @param string $exportLocation
-     *
-     * @return $this
-     */
-    public function setExportLocation($exportLocation)
+    public function setExportLocation(string $exportLocation): ExportConfiguration
     {
         $this->exportLocation = $exportLocation;
         return $this;
