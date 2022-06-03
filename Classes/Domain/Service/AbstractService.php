@@ -16,7 +16,7 @@ class AbstractService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    protected ?FrontendInterface $cacheInstance;
+    protected ?FrontendInterface $cacheInstance = null;
 
     protected string $cacheIdentifier = 'in2studyfinder';
 

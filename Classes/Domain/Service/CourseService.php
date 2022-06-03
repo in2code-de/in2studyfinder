@@ -42,7 +42,7 @@ class CourseService extends AbstractService
             $searchOptions['storagePids'] = $storagePids;
         }
 
-        if (!is_null($this->cacheInstance) && ConfigurationUtility::isCachingEnabled()) {
+        if (ConfigurationUtility::isCachingEnabled() && !is_null($this->cacheInstance)) {
             $cacheIdentifier = $this->getCacheIdentifierForStudyCourses($searchOptions);
 
             $studyCourses = $this->cacheInstance->get($cacheIdentifier);
