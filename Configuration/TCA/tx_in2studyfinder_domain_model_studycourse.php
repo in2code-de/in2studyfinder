@@ -299,6 +299,19 @@ $tcaConfiguration = [
     ],
 ];
 
+if (\In2code\In2studyfinder\Utility\ConfigurationUtility::isCategorisationEnabled()) {
+    $tcaConfiguration['columns']['categories'] = [
+        'config' => [
+            'type' => 'category'
+        ]
+    ];
+
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+        $table,
+        'categories'
+    );
+}
+
 if (In2code\In2studyfinder\Utility\ConfigurationUtility::isEnableGlobalData()) {
     $tcaConfiguration['columns']['different_preset'] = [
         'exclude' => true,
