@@ -132,8 +132,14 @@ foreach ($tables as $table) {
 }
 
 if (\In2code\In2studyfinder\Utility\ConfigurationUtility::isCategorisationEnabled()) {
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable(
-        'in2studyfinder',
-        \In2code\In2studyfinder\Domain\Model\StudyCourse::TABLE
+    $GLOBALS['TCA'][\In2code\In2studyfinder\Domain\Model\StudyCourse::TABLE]['columns']['categories'] = [
+        'config' => [
+            'type' => 'category'
+        ]
+    ];
+
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+        \In2code\In2studyfinder\Domain\Model\StudyCourse::TABLE,
+        'categories'
     );
 }
