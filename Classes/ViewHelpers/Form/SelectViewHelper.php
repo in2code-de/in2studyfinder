@@ -8,6 +8,7 @@ use In2code\In2studyfinder\Utility\ExtensionUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper
 {
@@ -39,11 +40,15 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
      */
     protected function getOptions(): array
     {
-        $parentOptions = parent::getOptions();
-        $options = [];
+        $originalOptions = parent::getOptions();
+        $updatedOptions = [];
         $optionsArgument = $this->arguments['options'];
         $settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
         $pageUid = $settings['flexform']['studyCourseDetailPage'];
+
+        if ($optionsArgument instanceof QueryResultInterface) {
+            $optionsArgument = $optionsArgument->toArray();
+        }
 
         if ($this->hasArgument('action')) {
             $action = $this->arguments['action'];
@@ -60,17 +65,16 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
         foreach ($optionsArgument as $value) {
             if ($this->hasArgument('additionalOptionAttributes')) {
                 if ($value instanceof AbstractDomainObject) {
-                    $optionsArrayKey = get_class($value) . ':' . $value->getUid();
                     $label = '';
 
-                    if (array_key_exists($optionsArrayKey, $parentOptions)) {
-                        $label = $parentOptions[$optionsArrayKey];
+                    if (array_key_exists($value->getUid(), $originalOptions)) {
+                        $label = $originalOptions[$value->getUid()];
                     }
 
-                    $options[$optionsArrayKey]['label'] = $label;
+                    $updatedOptions[$value->getUid()]['label'] = $label;
 
                     foreach ($this->arguments['additionalOptionAttributes'] as $attribute => $property) {
-                        $options[$optionsArrayKey]['additionalAttributes'][$attribute] =
+                        $updatedOptions[$value->getUid()]['additionalAttributes'][$attribute] =
                             \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath(
                                 $value,
                                 $property
@@ -88,13 +92,13 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
                             ['studyCourse' => $value]
                         );
 
-                        $options[$optionsArrayKey]['additionalAttributes']['data-url'] = $uri->build();
+                        $updatedOptions[$value->getUid()]['additionalAttributes']['data-url'] = $uri->build();
                     }
                 }
             }
         }
 
-        return $options;
+        return $updatedOptions;
     }
 
     protected function renderOptionTags($options): string
@@ -113,7 +117,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
                 $additionalAttributes = $attributes['additionalAttributes'];
             }
 
-            $output .= $this->renderOptionTag($value, $attributes['label'], $isSelected, $additionalAttributes) . LF;
+            $output .= $this->renderOptionTag((string)$value, $attributes['label'], $isSelected, $additionalAttributes) . LF;
         }
 
         return $output;
