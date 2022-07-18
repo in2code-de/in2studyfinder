@@ -130,10 +130,3 @@ foreach ($tables as $table) {
         $table
     );
 }
-
-if (\In2code\In2studyfinder\Utility\ConfigurationUtility::isCategorisationEnabled()) {
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable(
-        'in2studyfinder',
-        \In2code\In2studyfinder\Domain\Model\StudyCourse::TABLE
-    );
-}

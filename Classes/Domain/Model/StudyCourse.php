@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace In2code\In2studyfinder\Domain\Model;
 
 use In2code\In2studyfinder\Utility\GlobalDataUtility;
+use TYPO3\CMS\Extbase\Domain\Model\Category;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
@@ -30,6 +31,11 @@ class StudyCourse extends AbstractEntity implements StudyCourseInterface
     protected bool $hidden = false;
     protected bool $deleted = false;
     protected int $l10nParent = 0;
+
+    /**
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\Category>|null
+     */
+    protected ?ObjectStorage $categories = null;
 
     /**
      * @var \In2code\In2studyfinder\Domain\Model\AcademicDegree|null
@@ -446,6 +452,32 @@ class StudyCourse extends AbstractEntity implements StudyCourseInterface
     public function setDeleted(bool $deleted): void
     {
         $this->deleted = $deleted;
+    }
+
+    /**
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\Category>|null
+     */
+    public function getCategories(): ?ObjectStorage
+    {
+        return $this->categories;
+    }
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\Category>
+     */
+    public function setCategories(ObjectStorage $categories): void
+    {
+        $this->categories = $categories;
+    }
+
+    public function addCategory(Category $category): void
+    {
+        $this->categories->attach($category);
+    }
+
+    public function removeCategory(Category $category): void
+    {
+        $this->categories->detach($category);
     }
 
     public function getDetailPageTitle(): string

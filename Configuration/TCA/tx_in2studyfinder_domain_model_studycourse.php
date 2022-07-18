@@ -299,6 +299,16 @@ $tcaConfiguration = [
     ],
 ];
 
+if (\In2code\In2studyfinder\Utility\ConfigurationUtility::isCategorisationEnabled()) {
+$tcaConfiguration['columns']['categories'] = [
+    'config' => [
+        'type' => 'category'
+    ]
+];
+
+$tcaConfiguration['types']['0']['showitem'] .= ',--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories, categories,';
+}
+
 if (In2code\In2studyfinder\Utility\ConfigurationUtility::isEnableGlobalData()) {
     $tcaConfiguration['columns']['different_preset'] = [
         'exclude' => true,

@@ -7,12 +7,14 @@ namespace In2code\In2studyfinder\Controller;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Domain\Service\CourseService;
 use In2code\In2studyfinder\Domain\Service\FacilityService;
+use In2code\In2studyfinder\Property\TypeConverter\StudyCourseConverter;
 use In2code\In2studyfinder\Service\FilterService;
 use In2code\In2studyfinder\Utility\CacheUtility;
 use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\FlexFormUtility;
 use In2code\In2studyfinder\Utility\FrontendUtility;
 use In2code\In2studyfinder\Utility\RecordUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @SuppressWarnings(PHPMD.LongVariable)
@@ -126,6 +128,25 @@ class StudyCourseController extends AbstractController
         );
     }
 
+    /**
+     * converts the default course to the extended course if overwritten
+     */
+    public function initializeDetailAction(): void
+    {
+        if (array_key_exists(StudyCourse::class, $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']) &&
+            !empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][StudyCourse::class]) &&
+            $this->request->hasArgument('studyCourse')
+        ) {
+            $this->arguments->getArgument('studyCourse')
+                ->getPropertyMappingConfiguration()
+                ->setTypeConverter(
+                    GeneralUtility::makeInstance(
+                        StudyCourseConverter::class,
+                        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][StudyCourse::class]['className']
+                    )
+                );
+        }
+    }
 
     /**
      * @param StudyCourse|null $studyCourse
