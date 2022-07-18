@@ -300,16 +300,13 @@ $tcaConfiguration = [
 ];
 
 if (\In2code\In2studyfinder\Utility\ConfigurationUtility::isCategorisationEnabled()) {
-    $tcaConfiguration['columns']['categories'] = [
-        'config' => [
-            'type' => 'category'
-        ]
-    ];
+$tcaConfiguration['columns']['categories'] = [
+    'config' => [
+        'type' => 'category'
+    ]
+];
 
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
-        $table,
-        'categories'
-    );
+$tcaConfiguration['types']['0']['showitem'] .= ',--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories, categories,';
 }
 
 if (In2code\In2studyfinder\Utility\ConfigurationUtility::isEnableGlobalData()) {
