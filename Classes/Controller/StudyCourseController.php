@@ -128,6 +128,9 @@ class StudyCourseController extends AbstractController
         );
     }
 
+    /**
+     * converts the default course to the extended course if overwritten
+     */
     public function initializeDetailAction(): void
     {
         if (array_key_exists(StudyCourse::class, $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']) &&
