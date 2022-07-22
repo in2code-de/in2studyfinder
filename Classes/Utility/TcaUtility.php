@@ -8,21 +8,19 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 class TcaUtility extends AbstractUtility
 {
+    /**
+     * @return array
+     * @deprecated will be removed in v9, define the sys_language_uid tca manually
+     */
     public static function getFullTcaForSysLanguageUid(): array
     {
+        trigger_deprecation('in2code/in2studyfinder', '8.0', 'Method "%s()" is deprecated and will be removed in Version 9.0.', __METHOD__);
+
         return [
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'foreign_table' => 'sys_language',
-                'foreign_table_where' => 'ORDER BY sys_language.title',
-                'items' => [
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1],
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0],
-                ],
-                'default' => 0
+                'type' => 'language',
             ],
         ];
     }
