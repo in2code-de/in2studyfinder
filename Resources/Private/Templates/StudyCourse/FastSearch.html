@@ -1,5 +1,5 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-	  xmlns:in2studyfinder="http://typo3.org/ns/In2code/In2studyfinder/ViewHelpers" data-namespace-typo3-fluid="true">
+			xmlns:in2studyfinder="http://typo3.org/ns/In2code/In2studyfinder/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <f:layout name="Default"/>
 
@@ -15,20 +15,21 @@
 						<f:render partial="StudyCourse/FastSearch/Headline" arguments="{_all}"/>
 
 						<f:form class=" u-in2studyfinder-hide-if-no-js"
-								action="detail"
-								pluginName="Pi2"
-								pageUid="{settings.flexform.studyCourseDetailPage}">
+										action="detail"
+										pluginName="Pi2"
+										pageUid="{settings.flexform.studyCourseDetailPage}">
 
 							<in2studyfinder:form.select property="uid"
-														name="studyCourse"
-														optionLabelField="titleWithAcademicDegree"
-														prependOptionLabel=""
-														options="{studyCourses}"
-														additionalOptionAttributes="{alt: 'metaKeywords'}"
-														class="c-in2studyfinder-quick-search__select js-in2studyfinder-select2"
-														tabindex="-1"
-														detailPageUid="{settings.flexform.studyCourseDetailPage}"
-														style="width: 100%"/>
+																					name="studyCourse"
+																					optionLabelField="titleWithAcademicDegree"
+																					prependOptionLabel=""
+																					optionValueField="uid"
+																					options="{studyCourses}"
+																					additionalOptionAttributes="{alt: 'metaKeywords'}"
+																					class="c-in2studyfinder-quick-search__select js-in2studyfinder-select2"
+																					tabindex="-1"
+																					detailPageUid="{settings.flexform.studyCourseDetailPage}"
+																					style="width: 100%"/>
 						</f:form>
 					</div>
 				</div>
