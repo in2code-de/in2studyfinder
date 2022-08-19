@@ -19,7 +19,7 @@ class FilterModule {
       hideElement: '.u-in2studyfinder-hide',
       isHidden: '.is-hidden'
     };
-
+    this.filterToggle = true;
     this.filter = [];
   }
 
@@ -30,6 +30,9 @@ class FilterModule {
    */
   initialize(isInitialRequest ) {
     if (document.querySelector(this.identifiers.filterForm)) {
+      if (document.querySelector(this.identifiers.filterForm).hasAttribute('data-disable-filter-toggle')) {
+        this.filterToggle = false;
+      }
       this.setEventListener();
       this.prepareFilter(isInitialRequest);
     }
@@ -48,7 +51,7 @@ class FilterModule {
     }
 
     // open selected filter sections
-    if (this.filter.length > 0) {
+    if (this.filter.length > 0 && this.filterToggle) {
       this.toggleFilterVisibility();
 
       for (var i = 0; i < this.filter.length; i++) {
