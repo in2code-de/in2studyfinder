@@ -119,6 +119,13 @@ plugin.tx_in2studyfinder {
 # Module configuration
 module.tx_in2studyfinder < plugin.tx_in2studyfinder
 
+# Rendering of content elements in detail view
+lib.tx_in2studyfinder.contentElementRendering = RECORDS
+lib.tx_in2studyfinder.contentElementRendering {
+	tables = tt_content
+	source.current = 1
+	dontCheckPid = 1
+}
 
 ############################
 # Page type for ajax request
