@@ -491,6 +491,16 @@ class StudyCourse extends AbstractEntity implements StudyCourseInterface
         return $detailPageTitle;
     }
 
+    public function getContentElementIdList(): string {
+        $idList = [];
+        if ($this->getContentElements() !== null) {
+            foreach ($this->getContentElements() as $contentElement) {
+                    $idList[] = $contentElement->getUid();
+            }
+        }
+        return implode(',', $idList);
+    }
+
     /**
      * compare function for sorting
      *

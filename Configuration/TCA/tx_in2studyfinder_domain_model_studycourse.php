@@ -156,6 +156,9 @@ $tcaConfiguration = [
                 'foreign_table' => \In2code\In2studyfinder\Domain\Model\TtContent::TABLE,
                 'MM' => 'tx_in2studyfinder_studycourse_ttcontent_mm',
                 'maxitems' => 9999,
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true,
+                ],
                 'size' => 10,
                 'wizards' => [
                     'edit' => In2code\In2studyfinder\Utility\TcaUtility::getEditWizard(),
