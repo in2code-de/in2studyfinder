@@ -19,8 +19,6 @@ use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
- * StudyCourseController
- *
  * @SuppressWarnings(PHPMD.LongVariable)
  */
 class BackendController extends AbstractController
@@ -35,12 +33,10 @@ class BackendController extends AbstractController
      */
     protected $studyCourseRepository;
 
-    public function initializeAction()
+    public function __construct(StudyCourseRepository $studyCourseRepository)
     {
-        parent::initializeAction();
-
+        $this->studyCourseRepository = $studyCourseRepository;
         $this->reflectionService = GeneralUtility::makeInstance(ReflectionService::class);
-        $this->studyCourseRepository = $this->setStudyCourseRepository();
     }
 
     /**
@@ -245,21 +241,6 @@ class BackendController extends AbstractController
         }
 
         return $propertyArray;
-    }
-
-    /**
-     * set the studyCourseRepository
-     */
-    protected function setStudyCourseRepository()
-    {
-        $extendedRepositoryName = 'In2code\\In2studyfinderExtend\\Domain\\Repository\\StudyCourseRepository';
-
-        if (ExtensionUtility::isIn2studycoursesExtendLoaded()
-            && class_exists($extendedRepositoryName)) {
-            return GeneralUtility::makeInstance($extendedRepositoryName);
-        }
-
-        return GeneralUtility::makeInstance(StudyCourseRepository::class);
     }
 
     /**
