@@ -14,6 +14,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema\Property;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -56,7 +57,6 @@ class BackendController extends AbstractController
         $studyCourses = $this->getStudyCoursesForExportList($recordLanguage);
 
         $possibleExportDataProvider = $this->getPossibleExportDataProvider();
-        $propertyArray = [];
 
         if ($studyCourses !== null && empty($studyCourses)) {
             $this->addFlashMessage(
@@ -65,8 +65,7 @@ class BackendController extends AbstractController
                 AbstractMessage::WARNING
             );
         } else {
-            $this->getFullPropertyList(
-                $propertyArray,
+            $propertyArray = $this->getFullPropertyList(
                 $this->reflectionService->getClassSchema(
                     $this->studyCourseRepository->findOneByDeleted(0)
                 )->getProperties()
@@ -202,38 +201,40 @@ class BackendController extends AbstractController
     }
 
     /**
-     * @param $propertyArray
-     * @param $objectProperties
+     * @param Property[] $objectProperties
      */
     protected function getFullPropertyList(
-        &$propertyArray,
-        $objectProperties
-    ): void {
-        foreach ($objectProperties as $propertyName => $propertyInformation) {
-            if (!in_array($propertyName, $this->settings['backend']['export']['excludedPropertiesForExport'])) {
-                $elementType = $propertyInformation->getElementType();
-                $type = $propertyInformation->getType();
+        array $objectProperties
+    ): array {
+        $propertyArray = [];
+
+        /** @var Property $property */
+        foreach ($objectProperties as $property) {
+            if (!in_array(
+                $property->getName(),
+                $this->settings['backend']['export']['excludedPropertiesForExport'],
+                true
+            )) {
+                $elementType = $property->getElementType();
+                $type = $property->getType();
 
                 if ($type === ObjectStorage::class) {
                     if (class_exists($elementType)) {
-                        $this->getFullPropertyList(
-                            $propertyArray[$propertyName],
-                            $this->reflectionService->getClassSchema($elementType)
-                                ->getProperties()
+                        $propertyArray[$property->getName()] = $this->getFullPropertyList(
+                            $this->reflectionService->getClassSchema($elementType)->getProperties()
                         );
                     }
+                } elseif (class_exists($type)) {
+                    $propertyArray[$property->getName()] = $this->getFullPropertyList(
+                        $this->reflectionService->getClassSchema($type)->getProperties()
+                    );
                 } else {
-                    if (class_exists($type)) {
-                        $this->getFullPropertyList(
-                            $propertyArray[$propertyName],
-                            $this->reflectionService->getClassSchema($type)->getProperties()
-                        );
-                    } else {
-                        $propertyArray[$propertyName] = $propertyName;
-                    }
+                    $propertyArray[$property->getName()] = $property->getName();
                 }
             }
         }
+
+        return $propertyArray;
     }
 
     /**
