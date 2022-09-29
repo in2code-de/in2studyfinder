@@ -122,7 +122,7 @@ class UrlSegmentPostModifier
         } elseif ((int)GeneralUtility::_GP('recordId') > 0) {
             $identifier = (int)GeneralUtility::_GP('recordId');
         } else {
-            throw new \LogicException('No record identifier given', 1585056768);
+            throw new \LogicException('No record identifier given', 1_585_056_768);
         }
         return $identifier;
     }

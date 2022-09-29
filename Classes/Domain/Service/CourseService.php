@@ -20,18 +20,11 @@ class CourseService extends AbstractService
 {
     protected array $settings = [];
 
-    protected PluginService $pluginService;
-
-    protected StudyCourseRepository $studyCourseRepository;
-
     public function __construct(
-        StudyCourseRepository $studyCourseRepository,
-        PluginService $pluginService
+        protected StudyCourseRepository $studyCourseRepository,
+        protected PluginService $pluginService
     ) {
         parent::__construct();
-
-        $this->studyCourseRepository = $studyCourseRepository;
-        $this->pluginService = $pluginService;
     }
 
     public function findBySearchOptions(array $searchOptions, array $pluginRecord): array
@@ -97,7 +90,7 @@ class CourseService extends AbstractService
         if (empty($options)) {
             $optionsIdentifier = 'allStudyCourses';
         } else {
-            $optionsIdentifier = json_encode($options);
+            $optionsIdentifier = json_encode($options, JSON_THROW_ON_ERROR);
         }
 
         return md5(

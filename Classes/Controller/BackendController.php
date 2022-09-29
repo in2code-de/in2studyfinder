@@ -36,8 +36,6 @@ class BackendController extends AbstractController
 
     public function initializeAction()
     {
-        parent::initializeAction();
-
         $this->reflectionService = GeneralUtility::makeInstance(ReflectionService::class);
         $this->studyCourseRepository = $this->setStudyCourseRepository();
     }
@@ -75,7 +73,7 @@ class BackendController extends AbstractController
             );
         }
 
-        $itemsPerPage = $this->settings['pagination']['itemsPerPage'];
+        $itemsPerPage = $this->settings['pagination']['itemsPerPage'] ?? 0;
 
         if ($this->request->hasArgument('itemsPerPage')) {
             $itemsPerPage = $this->request->getArgument('itemsPerPage');
@@ -118,16 +116,15 @@ class BackendController extends AbstractController
     }
 
     /**
-     * @param int $languageUid
      * @return array|null
      */
     protected function getStudyCoursesForExportList(int $languageUid = 0)
     {
         $queryBuilder =
             GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(StudyCourse::TABLE);
-        $includeDeleted = (int)$this->settings['backend']['export']['includeDeleted'];
-        $includeHidden = (int)$this->settings['backend']['export']['includeHidden'];
-        $storagePid = (int)$this->settings['storagePid'];
+        $includeDeleted = (int)($this->settings['backend']['export']['includeDeleted'] ?? 0);
+        $includeHidden = (int)($this->settings['backend']['export']['includeHidden'] ?? 0);
+        $storagePid = (int)($this->settings['storagePid'] ?? 0);
 
         if ($includeDeleted) {
             $queryBuilder->getRestrictions()->removeByType(DeletedRestriction::class);
@@ -153,9 +150,6 @@ class BackendController extends AbstractController
         return $records;
     }
 
-    /**
-     * @return array
-     */
     public function getPossibleExportDataProvider(): array
     {
         $possibleDataProvider = [];
@@ -180,10 +174,6 @@ class BackendController extends AbstractController
     }
 
     /**
-     * @param string $exporter
-     * @param integer $recordLanguage
-     * @param array $selectedProperties
-     * @param array $courseList
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      */
@@ -261,9 +251,6 @@ class BackendController extends AbstractController
         return GeneralUtility::makeInstance(StudyCourseRepository::class);
     }
 
-    /**
-     * @return void
-     */
     protected function validateSettings(): void
     {
         if (!isset($this->settings['storagePid']) || empty($this->settings['storagePid'])) {

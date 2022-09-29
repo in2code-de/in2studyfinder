@@ -22,17 +22,14 @@ class FilterService extends AbstractService
 
     protected array $filter = [];
 
-    protected PluginService $pluginService;
-
     /**
      * FilterService constructor.
      */
-    public function __construct(LoggerInterface $logger, PluginService $pluginService)
+    public function __construct(LoggerInterface $logger, protected PluginService $pluginService)
     {
         parent::__construct($logger);
 
         $this->settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
-        $this->pluginService = $pluginService;
     }
 
     public function initialize(): void
@@ -41,9 +38,6 @@ class FilterService extends AbstractService
         $this->buildFilter();
     }
 
-    /**
-     * @return array
-     */
     public function getFilter(): array
     {
         return $this->filter;
@@ -51,9 +45,6 @@ class FilterService extends AbstractService
 
     /**
      * removes not allowed keys empty values from searchOptions and updates the filter keys to the actual property path
-     *
-     * @param array $searchOptions
-     * @return array
      */
     public function prepareSearchOptions(array $searchOptions): array
     {
@@ -196,7 +187,7 @@ class FilterService extends AbstractService
                 [
                     'filterName' => $filterName,
                     'filterConfiguration' => $filterConfiguration,
-                    'additionalInfo' => ['class' => __CLASS__, 'method' => __METHOD__, 'line' => __LINE__]
+                    'additionalInfo' => ['class' => self::class, 'method' => __METHOD__, 'line' => __LINE__]
                 ]
             );
             unset($this->filter[$filterName]);
@@ -209,7 +200,7 @@ class FilterService extends AbstractService
             $this->logger->error(
                 'No plugin.tx_in2studyfinder.settings.settingsPid is set! This results in not appearing filter options in the frontend.',
                 [
-                    'additionalInfo' => ['class' => __CLASS__, 'method' => __METHOD__, 'line' => __LINE__]
+                    'additionalInfo' => ['class' => self::class, 'method' => __METHOD__, 'line' => __LINE__]
                 ]
             );
         }
@@ -240,7 +231,7 @@ class FilterService extends AbstractService
                     [
                         'filterName' => $filterName,
                         'filterProperties' => $filterProperties,
-                        'additionalInfo' => ['class' => __CLASS__, 'method' => __METHOD__, 'line' => __LINE__]
+                        'additionalInfo' => ['class' => self::class, 'method' => __METHOD__, 'line' => __LINE__]
                     ]
                 );
             }
@@ -257,7 +248,7 @@ class FilterService extends AbstractService
             'No typoscript filter configuration found!',
             [
                 'settings' => $this->settings,
-                'additionalInfo' => ['class' => __CLASS__, 'method' => __METHOD__, 'line' => __LINE__]
+                'additionalInfo' => ['class' => self::class, 'method' => __METHOD__, 'line' => __LINE__]
             ]
         );
 

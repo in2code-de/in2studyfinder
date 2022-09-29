@@ -10,7 +10,7 @@ class VersionUtility extends AbstractUtility
 {
     public static function getCurrentTypo3MajorVersion(): int
     {
-        $versionArray = VersionNumberUtility::convertVersionStringToArray(TYPO3_version);
+        $versionArray = VersionNumberUtility::convertVersionStringToArray(\TYPO3_VERSION);
 
         return $versionArray['version_main'];
     }

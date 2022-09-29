@@ -22,20 +22,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class StudyCourseController extends AbstractController
 {
 
-    protected FilterService $filterService;
-
-    protected CourseService $courseService;
-
-    protected FacilityService $facilityService;
-
-    public function __construct(
-        FilterService $filterService,
-        CourseService $courseService,
-        FacilityService $facilityService
-    ) {
-        $this->filterService = $filterService;
-        $this->courseService = $courseService;
-        $this->facilityService = $facilityService;
+    public function __construct(protected FilterService $filterService, protected CourseService $courseService, protected FacilityService $facilityService)
+    {
     }
 
     /**
@@ -69,9 +57,7 @@ class StudyCourseController extends AbstractController
     }
 
     /**
-     * @param array $searchOptions
      * @param array $pluginInformation contains additional plugin information from ajax / fetch requests
-     * @return void
      */
     public function filterAction(array $searchOptions = [], array $pluginInformation = []): void
     {

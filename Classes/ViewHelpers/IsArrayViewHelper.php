@@ -17,9 +17,6 @@ class IsArrayViewHelper extends AbstractViewHelper
         $this->registerArgument('variable', 'mixed', 'variable to check', true);
     }
 
-    /**
-     * @return boolean
-     */
     public function render(): bool
     {
         return is_array($this->arguments['variable']);

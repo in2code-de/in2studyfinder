@@ -117,14 +117,14 @@ class ExportService
     {
         try {
             return $record->_getProperty($property);
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
             throw new \Exception('Property Path could not resolved"');
         }
     }
 
     protected function isPropertyPath(string $property): bool
     {
-        return strpos($property, '.') !== false;
+        return str_contains($property, '.');
     }
 
     public function getExportConfiguration(): ExportConfiguration

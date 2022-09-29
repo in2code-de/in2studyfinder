@@ -27,7 +27,7 @@ abstract class AbstractCheckboxViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\F
 
     protected function setDisabledIfNotAvailable(): void
     {
-        list($propertyName, $objectId) = explode('_', $this->arguments['id']);
+        [$propertyName, $objectId] = explode('_', $this->arguments['id']);
 
         if (is_array($this->arguments['possibleFilters']) && !empty($this->arguments['possibleFilters'])) {
             if (!isset($this->arguments['possibleFilters'][$propertyName])
@@ -40,7 +40,7 @@ abstract class AbstractCheckboxViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\F
 
     protected function setSelectedIfPreviouslySelected(): void
     {
-        list($propertyName, $objectId) = explode('_', $this->arguments['id']);
+        [$propertyName, $objectId] = explode('_', $this->arguments['id']);
         if (isset($this->arguments['searchedOptions'][$propertyName])) {
             if (in_array($objectId, $this->arguments['searchedOptions'][$propertyName])) {
                 $this->tag->addAttribute('checked', true);

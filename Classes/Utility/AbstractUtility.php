@@ -18,7 +18,7 @@ class AbstractUtility
 
     public static function getExtensionConfiguration(): array
     {
-        return $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['in2studyfinder'];
+        return ($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['in2studyfinder'] ?? []);
     }
 
     protected static function getQueryBuilderForTable(string $table): QueryBuilder

@@ -45,7 +45,7 @@ class PluginService extends AbstractService
                     $this->logger->info(
                         'Remove the plugin filter restriction for filter: "' . $filterName .
                         '". Because the given restriction is not defined in the typoscript filter section.',
-                        ['additionalInfo' => ['class' => __CLASS__, 'method' => __METHOD__, 'line' => __LINE__]]
+                        ['additionalInfo' => ['class' => self::class, 'method' => __METHOD__, 'line' => __LINE__]]
                     );
                 }
             }

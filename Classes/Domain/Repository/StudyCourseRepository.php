@@ -88,6 +88,7 @@ class StudyCourseRepository extends AbstractRepository
      */
     public function findByUidsAndLanguage(array $uids, int $sysLanguageUid): QueryResultInterface
     {
+        $constraints = [];
         $query = $this->createQuery();
 
         if ($sysLanguageUid === 0) {
