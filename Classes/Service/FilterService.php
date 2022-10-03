@@ -149,13 +149,7 @@ class FilterService extends AbstractService
 
     protected function isFilterInFrontendVisible(array $filterConfiguration): bool
     {
-        $disabledInFrontend = false;
-
-        if ($filterConfiguration['disabledInFrontend'] === '1') {
-            $disabledInFrontend = true;
-        }
-
-        return $disabledInFrontend;
+        return (bool)($filterConfiguration['disabledInFrontend'] ?? false);
     }
 
     /**

@@ -394,7 +394,7 @@ class StudyCourse extends AbstractEntity implements StudyCourseInterface
         $this->metaDescription = $metaDescription;
     }
 
-    public function getGlobalDataPreset(): GlobalDataInterface
+    public function getGlobalDataPreset(): ?GlobalDataInterface
     {
         return $this->globalDataPreset;
     }
