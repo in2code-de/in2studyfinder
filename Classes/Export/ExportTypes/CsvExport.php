@@ -27,11 +27,11 @@ class CsvExport extends AbstractExport implements ExportInterface
     {
         $recordRows = [];
         foreach ($exportConfiguration->getRecordsToExport() as $row => $record) {
-            foreach ($record as $property) {
+            foreach (array_values($record) as $property) {
                 $this->signalSlotDispatcher->dispatch(
                     __CLASS__,
                     'manipulatePropertyBeforeExport',
-                    ['property' => &$property]
+                    [&$property]
                 );
 
                 $recordRows[$row] .= '"' . $property . '";';
