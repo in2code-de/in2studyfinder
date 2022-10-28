@@ -4,17 +4,12 @@ declare(strict_types=1);
 
 namespace In2code\In2studyfinder\Controller;
 
-use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
+use In2code\In2studyfinder\Domain\Service\CourseService;
 use In2code\In2studyfinder\Service\ExportService;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\CMS\Extbase\Reflection\ClassSchema\Property;
-use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -22,20 +17,17 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  */
 class BackendController extends AbstractController
 {
-    /**
-     * @var ReflectionService
-     */
-    protected $reflectionService;
+    protected CourseService $courseService;
 
     /**
      * @var StudyCourseRepository
      */
     protected $studyCourseRepository;
 
-    public function __construct(StudyCourseRepository $studyCourseRepository)
+    public function __construct(StudyCourseRepository $studyCourseRepository, CourseService $courseService)
     {
         $this->studyCourseRepository = $studyCourseRepository;
-        $this->reflectionService = GeneralUtility::makeInstance(ReflectionService::class);
+        $this->courseService = $courseService;
     }
 
     /**
@@ -46,30 +38,36 @@ class BackendController extends AbstractController
         $this->validateSettings();
 
         $recordLanguage = 0;
+        $propertyArray = [];
 
         if ($this->request->hasArgument('recordLanguage')) {
             $recordLanguage = (int)$this->request->getArgument('recordLanguage');
         }
 
-        $studyCourses = $this->getStudyCoursesForExportList($recordLanguage);
+        $studyCourses =
+            $this->studyCourseRepository->findAllForExport(
+                $recordLanguage,
+                (bool)($this->settings['backend']['export']['includeDeleted'] ?? false),
+                (bool)($this->settings['backend']['export']['includeHidden'] ?? false)
+            );
 
         $possibleExportDataProvider = $this->getPossibleExportDataProvider();
 
-        if ($studyCourses !== null && empty($studyCourses)) {
+        if (empty($studyCourses)) {
             $this->addFlashMessage(
                 LocalizationUtility::translate('messages.noCourses.body', 'in2studyfinder'),
                 LocalizationUtility::translate('messages.noCourses.title', 'in2studyfinder'),
                 AbstractMessage::WARNING
             );
         } else {
-            $propertyArray = $this->getFullPropertyList(
-                $this->reflectionService->getClassSchema(
-                    $this->studyCourseRepository->findOneByDeleted(0)
-                )->getProperties()
-            );
+            $propertyArray =
+                $this->courseService->getCourseProperties(
+                    $studyCourses[0],
+                    $this->settings['backend']['export']['excludedPropertiesForExport'] ?? []
+                );
         }
 
-        $itemsPerPage = $this->settings['pagination']['itemsPerPage'] ?? 0;
+        $itemsPerPage = $this->settings['pagination']['itemsPerPage'] ?? 10;
 
         if ($this->request->hasArgument('itemsPerPage')) {
             $itemsPerPage = $this->request->getArgument('itemsPerPage');
@@ -84,90 +82,6 @@ class BackendController extends AbstractController
                 'itemsPerPage' => $itemsPerPage
             ]
         );
-    }
-
-    protected function getSysLanguages(): array
-    {
-        $sysLanguages = [
-            0 => 'default'
-        ];
-
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
-        $languageRecords = $queryBuilder
-            ->select('*')
-            ->from('sys_language')
-            ->where($queryBuilder->expr()->eq('hidden', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)))
-            ->orderBy('sorting')
-            ->execute()->fetchAll();
-
-        foreach ($languageRecords as $languageRecord) {
-            $sysLanguages[(int)$languageRecord['uid']] =
-                LocalizationUtility::translate(
-                    'LLL:EXT:core/Resources/Private/Language/db.xlf:sys_language.language_isocode.' .
-                    $languageRecord['language_isocode']
-                );
-        }
-
-        return $sysLanguages;
-    }
-
-    /**
-     * @return array|null
-     */
-    protected function getStudyCoursesForExportList(int $languageUid = 0)
-    {
-        $queryBuilder =
-            GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(StudyCourse::TABLE);
-        $includeDeleted = (int)($this->settings['backend']['export']['includeDeleted'] ?? 0);
-        $includeHidden = (int)($this->settings['backend']['export']['includeHidden'] ?? 0);
-        $storagePid = (int)($this->settings['storagePid'] ?? 0);
-
-        if ($includeDeleted) {
-            $queryBuilder->getRestrictions()->removeByType(DeletedRestriction::class);
-        }
-
-        if ($includeHidden) {
-            $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
-        }
-
-        $records = $queryBuilder
-            ->select('uid', 'l10n_parent', 'title', 'hidden', 'deleted')
-            ->from(StudyCourse::TABLE)
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'sys_language_uid',
-                    $queryBuilder->createNamedParameter($languageUid, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($storagePid, \PDO::PARAM_INT))
-            )
-            ->orderBy('title')
-            ->execute()->fetchAll();
-
-        return $records;
-    }
-
-    public function getPossibleExportDataProvider(): array
-    {
-        $possibleDataProvider = [];
-
-        if (
-            isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportTypes'])
-            && is_array($GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportTypes'])
-        ) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportTypes'] as $providerName => $providerClass) {
-                if (!class_exists($providerClass)) {
-                    $this->addFlashMessage(
-                        'export provider class "' . $providerClass . '" was not found',
-                        'export provider class not found',
-                        AbstractMessage::ERROR
-                    );
-                } else {
-                    $possibleDataProvider[$providerName] = $providerClass;
-                }
-            }
-        }
-
-        return $possibleDataProvider;
     }
 
     /**
@@ -198,43 +112,53 @@ class BackendController extends AbstractController
         $exportService->export();
     }
 
-    /**
-     * @param Property[] $objectProperties
-     */
-    protected function getFullPropertyList(
-        array $objectProperties
-    ): array {
-        $propertyArray = [];
+    protected function getSysLanguages(): array
+    {
+        $sysLanguages = [
+            0 => 'default'
+        ];
 
-        /** @var Property $property */
-        foreach ($objectProperties as $property) {
-            if (
-                !in_array(
-                    $property->getName(),
-                    $this->settings['backend']['export']['excludedPropertiesForExport'],
-                    true
-                )
-            ) {
-                $elementType = $property->getElementType();
-                $type = $property->getType();
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
+        $languageRecords = $queryBuilder
+            ->select('*')
+            ->from('sys_language')
+            ->where($queryBuilder->expr()->eq('hidden', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)))
+            ->orderBy('sorting')
+            ->execute()->fetchAll();
 
-                if ($type === ObjectStorage::class) {
-                    if (class_exists($elementType)) {
-                        $propertyArray[$property->getName()] = $this->getFullPropertyList(
-                            $this->reflectionService->getClassSchema($elementType)->getProperties()
-                        );
-                    }
-                } elseif (class_exists($type)) {
-                    $propertyArray[$property->getName()] = $this->getFullPropertyList(
-                        $this->reflectionService->getClassSchema($type)->getProperties()
+        foreach ($languageRecords as $languageRecord) {
+            $sysLanguages[(int)$languageRecord['uid']] =
+                LocalizationUtility::translate(
+                    'LLL:EXT:core/Resources/Private/Language/db.xlf:sys_language.language_isocode.' .
+                    $languageRecord['language_isocode']
+                );
+        }
+
+        return $sysLanguages;
+    }
+
+    protected function getPossibleExportDataProvider(): array
+    {
+        $possibleDataProvider = [];
+
+        if (
+            isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportTypes'])
+            && is_array($GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportTypes'])
+        ) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportTypes'] as $providerName => $providerClass) {
+                if (!class_exists($providerClass)) {
+                    $this->addFlashMessage(
+                        'export provider class "' . $providerClass . '" was not found',
+                        'export provider class not found',
+                        AbstractMessage::ERROR
                     );
                 } else {
-                    $propertyArray[$property->getName()] = $property->getName();
+                    $possibleDataProvider[$providerName] = $providerClass;
                 }
             }
         }
 
-        return $propertyArray;
+        return $possibleDataProvider;
     }
 
     protected function validateSettings(): void

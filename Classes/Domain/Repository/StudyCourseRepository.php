@@ -66,11 +66,20 @@ class StudyCourseRepository extends AbstractRepository
         return $query->execute();
     }
 
-    public function findAllForExport(bool $includeDeleted = false, bool $ignoreEnableFields = false): QueryResultInterface
-    {
+    public function findAllForExport(
+        int $sysLanguageUid = 0,
+        bool $includeDeleted = false,
+        bool $ignoreEnableFields = false
+    ): array {
         $query = $this->createQuery();
+        $constraints = [];
 
         $query->getQuerySettings()->setRespectStoragePage(false);
+
+        if ($sysLanguageUid > 0) {
+            $query->getQuerySettings()->setRespectSysLanguage(false);
+            $constraints[] = $query->equals('sysLanguageUid', $sysLanguageUid);
+        }
 
         if ($includeDeleted) {
             $query->getQuerySettings()->setIncludeDeleted(true);
@@ -80,7 +89,11 @@ class StudyCourseRepository extends AbstractRepository
             $query->getQuerySettings()->setIgnoreEnableFields(true);
         }
 
-        return $query->execute();
+        if (!empty($constraints)) {
+            $query->matching($query->logicalAnd($constraints));
+        }
+
+        return $query->execute()->toArray();
     }
 
     /**
