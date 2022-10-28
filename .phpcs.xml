@@ -5,9 +5,12 @@
 >
   <description>Test Classes and Tests. Config optimized for local CLO and CI/CD.</description>
 
+  <rule ref="PHPCompatibility"/>
   <rule ref="PSR12"/>
 
   <file>Classes</file>
+
+  <config name="testVersion" value="7.4-"/>
 
   <arg name="extensions" value="php" />
   <arg name="basepath" value="."/>
