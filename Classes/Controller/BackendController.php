@@ -151,7 +151,8 @@ class BackendController extends AbstractController
     {
         $possibleDataProvider = [];
 
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportTypes'])
+        if (
+            isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportTypes'])
             && is_array($GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportTypes'])
         ) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportTypes'] as $providerName => $providerClass) {
@@ -208,11 +209,13 @@ class BackendController extends AbstractController
 
         /** @var Property $property */
         foreach ($objectProperties as $property) {
-            if (!in_array(
-                $property->getName(),
-                $this->settings['backend']['export']['excludedPropertiesForExport'],
-                true
-            )) {
+            if (
+                !in_array(
+                    $property->getName(),
+                    $this->settings['backend']['export']['excludedPropertiesForExport'],
+                    true
+                )
+            ) {
                 $elementType = $property->getElementType();
                 $type = $property->getType();
 

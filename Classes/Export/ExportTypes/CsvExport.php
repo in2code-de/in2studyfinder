@@ -13,7 +13,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class CsvExport extends AbstractExport implements ExportInterface
 {
-
     protected string $fileName = 'export.csv';
 
     /**
@@ -44,11 +43,13 @@ class CsvExport extends AbstractExport implements ExportInterface
             'records' => $recordRows
         ];
 
-        if (!GeneralUtility::writeFile(
-            $exportConfiguration->getExportLocation() . $this->fileName,
-            $this->getExportFileContent($fluidVariables),
-            true
-        )) {
+        if (
+            !GeneralUtility::writeFile(
+                $exportConfiguration->getExportLocation() . $this->fileName,
+                $this->getExportFileContent($fluidVariables),
+                true
+            )
+        ) {
             throw new Exception('Export file could not be created!');
         }
 

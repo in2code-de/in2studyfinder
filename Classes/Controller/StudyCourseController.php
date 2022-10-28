@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class StudyCourseController extends AbstractController
 {
-
     protected FilterService $filterService;
 
     protected CourseService $courseService;
@@ -131,7 +130,8 @@ class StudyCourseController extends AbstractController
      */
     public function initializeDetailAction(): void
     {
-        if (array_key_exists(StudyCourse::class, $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']) &&
+        if (
+            array_key_exists(StudyCourse::class, $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']) &&
             !empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][StudyCourse::class]) &&
             $this->request->hasArgument('studyCourse')
         ) {

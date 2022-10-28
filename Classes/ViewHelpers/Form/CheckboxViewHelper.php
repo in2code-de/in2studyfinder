@@ -35,7 +35,7 @@ class CheckboxViewHelper extends AbstractCheckboxViewHelper
         } elseif ($multiple === true) {
             $nameAttribute .= '[]';
         } elseif ($propertyValue !== null) {
-            $checked = (boolean)$propertyValue === (boolean)$valueAttribute;
+            $checked = (bool)$propertyValue === (bool)$valueAttribute;
         }
 
         $this->registerFieldNameForFormTokenGeneration($nameAttribute);
