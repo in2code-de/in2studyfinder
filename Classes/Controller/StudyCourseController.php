@@ -22,8 +22,20 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class StudyCourseController extends AbstractController
 {
 
-    public function __construct(protected FilterService $filterService, protected CourseService $courseService, protected FacilityService $facilityService)
-    {
+    protected FilterService $filterService;
+
+    protected CourseService $courseService;
+
+    protected FacilityService $facilityService;
+
+    public function __construct(
+        FilterService $filterService,
+        CourseService $courseService,
+        FacilityService $facilityService
+    ) {
+        $this->filterService = $filterService;
+        $this->courseService = $courseService;
+        $this->facilityService = $facilityService;
     }
 
     /**

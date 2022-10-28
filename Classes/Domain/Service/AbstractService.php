@@ -26,7 +26,7 @@ class AbstractService implements LoggerAwareInterface
             try {
                 $this->cacheInstance =
                     GeneralUtility::makeInstance(CacheManager::class)->getCache($this->cacheIdentifier);
-            } catch (NoSuchCacheException) {
+            } catch (NoSuchCacheException $exception) {
                 $this->logger->error('A cache with identifier "' . $this->cacheIdentifier . '" does not exist.');
             }
         }

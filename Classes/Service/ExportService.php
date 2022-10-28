@@ -117,7 +117,7 @@ class ExportService
     {
         try {
             return $record->_getProperty($property);
-        } catch (\Exception) {
+        } catch (\Exception $extension) {
             throw new \Exception('Property Path could not resolved"');
         }
     }

@@ -22,14 +22,17 @@ class FilterService extends AbstractService
 
     protected array $filter = [];
 
+    protected PluginService $pluginService;
+
     /**
      * FilterService constructor.
      */
-    public function __construct(LoggerInterface $logger, protected PluginService $pluginService)
+    public function __construct(LoggerInterface $logger, PluginService $pluginService)
     {
         parent::__construct($logger);
 
         $this->settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
+        $this->pluginService = $pluginService;
     }
 
     public function initialize(): void

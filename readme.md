@@ -80,9 +80,9 @@ Version 7.x
   * TYPO3 9.5 or 10.4
   * PHP 7.2
 
-Version 8.x or newer
-  * TYPO3 11.5 or newer
-  * PHP 7.4
+Version 8.x and above
+  * TYPO3 11.5 and above
+  * PHP 7.4 and above
 
 ## Signals
 

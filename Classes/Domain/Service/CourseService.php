@@ -20,13 +20,19 @@ class CourseService extends AbstractService
 {
     protected array $settings = [];
 
+    protected PluginService $pluginService;
+
+    protected StudyCourseRepository $studyCourseRepository;
+
     public function __construct(
-        protected StudyCourseRepository $studyCourseRepository,
-        protected PluginService $pluginService
+        StudyCourseRepository $studyCourseRepository,
+        PluginService $pluginService
     ) {
         parent::__construct();
-    }
 
+        $this->studyCourseRepository = $studyCourseRepository;
+        $this->pluginService = $pluginService;
+    }
     public function findBySearchOptions(array $searchOptions, array $pluginRecord): array
     {
         $storagePids = $this->pluginService->getPluginStoragePids($pluginRecord);

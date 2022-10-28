@@ -11,9 +11,13 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 
 class FacilityService extends AbstractService
 {
-    public function __construct(protected FacultyRepository $facultyRepository)
+    protected FacultyRepository $facultyRepository;
+
+    public function __construct(FacultyRepository $facultyRepository)
     {
         parent::__construct();
+
+        $this->facultyRepository = $facultyRepository;
     }
 
     public function getFacultyCount(array $settings = []): int
