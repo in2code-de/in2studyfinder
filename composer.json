@@ -79,7 +79,10 @@
 		],
 		"package-states": [
 			".build/bin/typo3cms install:fixfolderstructure"
-		]
+		],
+		"install-hooks": ["sh ./.github/hooks/setup.sh"],
+		"post-install-cmd": ["@install-hooks"],
+		"post-update-cmd": ["@install-hooks"]
 	},
 	"extra": {
 		"typo3/cms": {

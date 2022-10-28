@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# This is a git pre-commit hook that prevents a commit from being created if the code style isn't proper
+
+# first we get everything we need to check, which are the staged changes
+CHANGES=$(git diff --name-status --cached)
+
+# if the changelist contains .php files, run php-cs-fixer in the PHP container
+if echo "$CHANGES" | grep -q -E "^[AMCR].+(\.php)$"; then
+    echo "Running PHP QA checks..."
+    ddev exec -s web .build/bin/phpcs
+    ddev exec -s web .build/bin/phpmd Classes/ ansi .phpmd.xml
+
+    if [[ $? -ne 0 ]]; then
+        exit 1
+    fi
+fi
