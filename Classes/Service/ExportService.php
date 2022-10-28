@@ -124,7 +124,7 @@ class ExportService
 
     protected function isPropertyPath(string $property): bool
     {
-        return str_contains($property, '.');
+        return str_contains($property, '.'); // phpcs:ignore
     }
 
     public function getExportConfiguration(): ExportConfiguration
