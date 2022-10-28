@@ -118,6 +118,26 @@ npm install
 #### Frontend
 ```npm run build:frontend```
 
+### Testing (phpcs, phpmd)
+
+PHPCS:
+```
+ddev ssh
+./.build/bin/phpcs
+```
+
+PHPMD:
+```
+ddev ssh
+./.build/bin/phpmd Classes/ ansi .phpmd.xml
+```
+
+PHPCBF:
+```
+ddev ssh
+./.build/bin/phpcbf
+```
+
 ## FAQ
 
 * Q1: Can I use fe_users or tt_address for the persons?
