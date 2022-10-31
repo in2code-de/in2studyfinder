@@ -118,7 +118,15 @@ npm install
 #### Frontend
 ```npm run build:frontend```
 
-### Testing (phpcs, phpmd)
+### Code quality tools
+
+we use phpmd and phpcs for code quality checks.
+The quality checks will be executed automatic before a commit with a pre-commit hook.
+
+Some violations can be fixed automatic with the phpcs fixer (phpcbf).
+For automatic fixes execute `ddev ssh` and then `./.build/bin/phpcbf`
+
+#### Execute Tests manually:
 
 PHPCS:
 ```
