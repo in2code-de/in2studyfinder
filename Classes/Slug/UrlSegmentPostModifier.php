@@ -23,6 +23,7 @@ class UrlSegmentPostModifier
     /**
      * @noinspection PhpUnusedParameterInspection
      * @noinspection PhpUnused
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function extendWithGraduation(array $configuration, SlugHelper $slugHelper): string
     {

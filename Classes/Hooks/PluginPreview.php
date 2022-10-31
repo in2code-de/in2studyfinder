@@ -34,6 +34,8 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
      * @param array $row Record row of tt_content
      * @return void
      * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function preProcess(
         PageLayoutView &$parentObject,

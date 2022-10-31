@@ -27,7 +27,7 @@ class CacheUtility
             }
         }
         if (count($cacheTags) > 0) {
-            $GLOBALS['TSFE']->addCacheTags($cacheTags);
+            FrontendUtility::getTyposcriptFrontendController()->addCacheTags($cacheTags);
         }
     }
 }

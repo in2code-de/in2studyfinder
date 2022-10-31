@@ -128,6 +128,8 @@ class StudyCourseController extends AbstractController
 
     /**
      * converts the default course to the extended course if overwritten
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
     public function initializeDetailAction(): void
     {

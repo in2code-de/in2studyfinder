@@ -137,6 +137,9 @@ class BackendController extends AbstractController
         return $sysLanguages;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.Superglobals)
+     */
     protected function getPossibleExportDataProvider(): array
     {
         $possibleDataProvider = [];

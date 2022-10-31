@@ -36,7 +36,8 @@ class StudyCourseConverter extends PersistentObjectConverter
      * @return object|null the target type
      * @throws \InvalidArgumentException
      * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function convertFrom(
         $source,
