@@ -11,25 +11,21 @@
     * Allow variables as long as 25 chars
   </description>
 
-  <rule ref="rulesets/codesize.xml"/>
-  <rule ref="rulesets/controversial.xml">
-    <exclude name="Superglobals"/>
-  </rule>
-  <rule ref="rulesets/design.xml"/>
+  <rule ref="rulesets/codesize.xml" />
+  <rule ref="rulesets/controversial.xml" />
+  <rule ref="rulesets/design.xml" />
   <rule ref="rulesets/naming.xml">
-    <exclude name="LongVariable"/>
+    <exclude name="LongVariable" />
   </rule>
   <rule ref="rulesets/naming.xml/LongVariable">
     <properties>
-      <property name="maximum" value="26"/>
+      <property name="maximum" value="26" />
     </properties>
   </rule>
-  <rule ref="rulesets/unusedcode.xml">
-    <exclude name="UnusedFormalParameter"/>
-  </rule>
+  <rule ref="rulesets/unusedcode.xml" />
   <rule ref="rulesets/cleancode.xml">
+    <exclude name="StaticAccess" />
+    <exclude name="ElseExpression" />
     <exclude name="StaticAccess"/>
-    <exclude name="ElseExpression"/>
-    <exclude name="LongVariable"/>
   </rule>
 </ruleset>
