@@ -66,6 +66,9 @@ class StudyCourseRepository extends AbstractRepository
         return $query->execute();
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     */
     public function findAllForExport(
         int $sysLanguageUid = 0,
         bool $includeDeleted = false,

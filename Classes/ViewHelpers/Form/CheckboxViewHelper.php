@@ -6,6 +6,9 @@ namespace In2code\In2studyfinder\ViewHelpers\Form;
 
 class CheckboxViewHelper extends AbstractCheckboxViewHelper
 {
+    /**
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
     public function render(): string
     {
         $checked = $this->arguments['checked'];
@@ -29,7 +32,7 @@ class CheckboxViewHelper extends AbstractCheckboxViewHelper
         if (is_array($propertyValue)) {
             $propertyValue = array_map([$this, 'convertToPlainValue'], $propertyValue);
             if ($checked === null) {
-                $checked = in_array($valueAttribute, $propertyValue);
+                $checked = in_array($valueAttribute, $propertyValue, true);
             }
             $nameAttribute .= '[]';
         } elseif ($multiple === true) {

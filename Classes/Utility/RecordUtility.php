@@ -91,6 +91,8 @@ class RecordUtility extends AbstractUtility
      * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
      * @return array|null Returns the row if found, otherwise NULL
      * @throws \Doctrine\DBAL\DBALException
+     *
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      */
     public static function getRecord(
         string $table,

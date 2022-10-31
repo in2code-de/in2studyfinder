@@ -341,6 +341,9 @@ class TcaUtility extends AbstractUtility
         $GLOBALS['TCA'][$table]['types'][$extbaseType]['showitem'] = implode(',', $fieldArray);
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     */
     public static function addFieldsToPalette(
         string $table,
         string $palette,
@@ -351,7 +354,7 @@ class TcaUtility extends AbstractUtility
     ): void {
         $newShowItem = $GLOBALS['TCA'][$table]['palettes'][$palette]['showitem'];
         $fieldArray = explode(',', $newShowItem);
-        $i = 0;
+        $iterator = 0;
         $insertFieldArray = [];
 
         foreach ($fields as $field) {
@@ -365,15 +368,15 @@ class TcaUtility extends AbstractUtility
                 $afterLineBreak = ',--linebreak--';
             }
 
-            $insertFieldArray[$i] = $preLineBreak . $field . $afterLineBreak;
+            $insertFieldArray[$iterator] = $preLineBreak . $field . $afterLineBreak;
 
-            $i++;
+            $iterator++;
         }
 
         array_walk($fieldArray, [self::class, 'trimValue']);
 
-        if (in_array($insertAfter, $fieldArray)) {
-            $arrayKey = array_search($insertAfter, $fieldArray) + 1;
+        if (in_array($insertAfter, $fieldArray, true)) {
+            $arrayKey = array_search($insertAfter, $fieldArray, true) + 1;
             array_splice($fieldArray, $arrayKey, 0, $insertFieldArray);
         } else {
             foreach ($insertFieldArray as $value) {
@@ -422,7 +425,7 @@ class TcaUtility extends AbstractUtility
         string $section,
         string $sectionName,
         array $fields
-    ): bool {
+    ): void {
         $status = true;
 
         if ($section !== 'types' && $section !== 'palettes') {
@@ -442,10 +445,11 @@ class TcaUtility extends AbstractUtility
 
             $GLOBALS['TCA'][$table][$section][$sectionName]['showitem'] = implode(',', $showItemArray);
         }
-
-        return $status;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+     */
     private static function trimValue(string &$value): void
     {
         $value = trim($value);

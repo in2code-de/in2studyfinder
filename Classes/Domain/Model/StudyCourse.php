@@ -11,6 +11,10 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * @SuppressWarnings(PHPMD.LongVariable)
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ * @SuppressWarnings(PHPMD.ExcessivePublicCount)
+ * @SuppressWarnings(PHPMD.TooManyFields)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class StudyCourse extends AbstractEntity implements StudyCourseInterface
 {

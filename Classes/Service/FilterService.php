@@ -96,6 +96,9 @@ class FilterService extends AbstractService
         return [];
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     */
     public function disableFilterFrontendRenderingByPluginRestrictions(): void
     {
         foreach ($this->getPluginFilterRestrictions() as $filterName => $values) {
@@ -105,6 +108,9 @@ class FilterService extends AbstractService
         }
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
     public function getAvailableFilterOptions(array $studyCourses): array
     {
         $availableOptions = [];
@@ -160,11 +166,11 @@ class FilterService extends AbstractService
      */
     protected function buildObjectFilter(string $filterName, array $filterConfiguration): void
     {
-        $fullQualifiedRepositoryClassName = ClassNamingUtility::translateModelNameToRepositoryName(
+        $repositoryClassName = ClassNamingUtility::translateModelNameToRepositoryName(
             $filterConfiguration['objectModel']
         );
 
-        if (class_exists($fullQualifiedRepositoryClassName)) {
+        if (class_exists($repositoryClassName)) {
             $defaultQuerySettings = GeneralUtility::makeInstance(QuerySettingsInterface::class);
             $defaultQuerySettings->setStoragePageIds([$this->settings['settingsPid']]);
             $defaultQuerySettings->setLanguageOverlayMode(true);
@@ -172,15 +178,15 @@ class FilterService extends AbstractService
             // In TYPO3 11 repositories still need the Object Manager for initialization
             // this will change with TYPO3 12
             $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-            $repository = $objectManager->get($fullQualifiedRepositoryClassName);
+            $repository = $objectManager->get($repositoryClassName);
 
             $repository->setDefaultQuerySettings($defaultQuerySettings);
 
-            $this->filter[$filterName]['repository'] = $fullQualifiedRepositoryClassName;
+            $this->filter[$filterName]['repository'] = $repositoryClassName;
             $this->filter[$filterName]['filterOptions'] = $repository->findAll()->toArray();
         } else {
             $this->logger->warning(
-                'The given repository class ("' . $fullQualifiedRepositoryClassName . '") for the filter: ' . $filterName . ' do not exist. This filter will be ignored!',
+                'The given repository class ("' . $repositoryClassName . '") for the filter: ' . $filterName . ' do not exist. This filter will be ignored!',
                 [
                     'filterName' => $filterName,
                     'filterConfiguration' => $filterConfiguration,

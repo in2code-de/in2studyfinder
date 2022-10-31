@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace In2code\In2studyfinder\Utility;
 
+use RuntimeException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -41,7 +42,7 @@ class FileUtility extends AbstractUtility
     public static function createFolderIfNotExists(string $path): void
     {
         if (!is_dir($path) && !GeneralUtility::mkdir($path)) {
-            throw new \Exception('Folder ' . self::getRelativeFolder($path) . ' could not be create!');
+            throw new RuntimeException('Folder ' . self::getRelativeFolder($path) . ' could not be create!');
         }
     }
 

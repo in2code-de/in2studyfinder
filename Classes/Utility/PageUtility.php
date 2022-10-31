@@ -14,24 +14,26 @@ class PageUtility
     /**
      * @throws \Doctrine\DBAL\DBALException
      * @throws \Doctrine\DBAL\Driver\Exception
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    public static function getTreeList(int $id, int $depth, int $begin = 0, string $permClause = ''): string
+    public function getTreeList(int $uid, int $depth, int $begin = 0, string $permClause = ''): string
     {
-        if ($id < 0) {
-            $id = abs($id);
+        $theList = '';
+
+        if ($uid < 0) {
+            $uid = abs($uid);
         }
         if ($begin === 0) {
-            $theList = $id;
-        } else {
-            $theList = '';
+            $theList = $uid;
         }
-        if ($id && $depth > 0) {
+        if ($uid && $depth > 0) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $queryBuilder->select('uid')
                 ->from('pages')
                 ->where(
-                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($uid)),
                     $queryBuilder->expr()->eq('sys_language_uid', 0)
                 )
                 ->orderBy('uid');

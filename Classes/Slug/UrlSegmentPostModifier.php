@@ -7,6 +7,7 @@ namespace In2code\In2studyfinder\Slug;
 use In2code\In2studyfinder\Domain\Model\AcademicDegree;
 use In2code\In2studyfinder\Domain\Model\Graduation;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
+use LogicException;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -122,7 +123,7 @@ class UrlSegmentPostModifier
         } elseif ((int)GeneralUtility::_GP('recordId') > 0) {
             $identifier = (int)GeneralUtility::_GP('recordId');
         } else {
-            throw new \LogicException('No record identifier given', 1585056768);
+            throw new LogicException('No record identifier given', 1585056768);
         }
         return $identifier;
     }
