@@ -88,11 +88,11 @@ class RecordUtility extends AbstractUtility
      * @param int $uid UID of record
      * @param string $fields List of fields to select
      * @param string $where Additional WHERE clause, eg. " AND blablabla = 0
-     * @param bool $respectEnableFields
      * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
-     * @param int $sysLanguageUid
      * @return array|null Returns the row if found, otherwise NULL
      * @throws \Doctrine\DBAL\DBALException
+     *
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      */
     public static function getRecord(
         string $table,

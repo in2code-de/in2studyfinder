@@ -37,6 +37,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
 
     /**
      * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function getOptions(): array
     {

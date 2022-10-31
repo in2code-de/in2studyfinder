@@ -11,7 +11,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 class AbstractExport implements ExportInterface
 {
-
     protected string $fileExtension = '';
 
     /**

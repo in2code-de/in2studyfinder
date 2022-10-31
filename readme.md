@@ -80,9 +80,9 @@ Version 7.x
   * TYPO3 9.5 or 10.4
   * PHP 7.2
 
-Version 8.x or newer
-  * TYPO3 11.5 or newer
-  * PHP 7.4
+Version 8.x and above
+  * TYPO3 11.5 and above
+  * PHP 7.4 and above
 
 ## Signals
 
@@ -117,6 +117,34 @@ npm install
 
 #### Frontend
 ```npm run build:frontend```
+
+### Code quality tools
+
+we use phpmd and phpcs for code quality checks.
+The quality checks will be executed automatic before a commit with a pre-commit hook.
+
+Some violations can be fixed automatic with the phpcs fixer (phpcbf).
+For automatic fixes execute `ddev ssh` and then `./.build/bin/phpcbf`
+
+#### Execute Tests manually:
+
+PHPCS:
+```
+ddev ssh
+./.build/bin/phpcs
+```
+
+PHPMD:
+```
+ddev ssh
+./.build/bin/phpmd Classes/ ansi .phpmd.xml
+```
+
+PHPCBF:
+```
+ddev ssh
+./.build/bin/phpcbf
+```
 
 ## FAQ
 

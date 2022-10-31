@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace In2code\In2studyfinder\Domain\Service;
 
+use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Domain\Model\StudyCourseInterface;
 use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 use In2code\In2studyfinder\PageTitle\CoursePageTitleProvider;
@@ -12,6 +13,9 @@ use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\FrontendUtility;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema\Property;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
 /**
  * @SuppressWarnings(PHPMD.LongVariable)
@@ -24,6 +28,11 @@ class CourseService extends AbstractService
 
     protected StudyCourseRepository $studyCourseRepository;
 
+    /**
+     * @var ReflectionService
+     */
+    protected $reflectionService;
+
     public function __construct(
         StudyCourseRepository $studyCourseRepository,
         PluginService $pluginService
@@ -32,6 +41,7 @@ class CourseService extends AbstractService
 
         $this->studyCourseRepository = $studyCourseRepository;
         $this->pluginService = $pluginService;
+        $this->reflectionService = GeneralUtility::makeInstance(ReflectionService::class);
     }
 
     public function findBySearchOptions(array $searchOptions, array $pluginRecord): array
@@ -91,13 +101,62 @@ class CourseService extends AbstractService
         return $studyCourses;
     }
 
+    public function getCourseProperties(StudyCourse $course, array $excludedFields = []): array
+    {
+        return $this->getCoursePropertyList(
+            $this->reflectionService->getClassSchema($course)->getProperties(),
+            $excludedFields
+        );
+    }
+
+    /**
+     * @param Property[] $objectProperties
+     */
+    private function getCoursePropertyList(
+        array $objectProperties,
+        array $excludedFields
+    ): array {
+        $propertyArray = [];
+
+        foreach ($objectProperties as $property) {
+            if (
+                !in_array(
+                    $property->getName(),
+                    $excludedFields,
+                    true
+                )
+            ) {
+                $elementType = $property->getElementType();
+                $type = $property->getType();
+
+                if ($type === ObjectStorage::class) {
+                    if (class_exists($elementType)) {
+                        $propertyArray[$property->getName()] = $this->getCoursePropertyList(
+                            $this->reflectionService->getClassSchema($elementType)->getProperties(),
+                            $excludedFields
+                        );
+                    }
+                } elseif (class_exists($type)) {
+                    $propertyArray[$property->getName()] = $this->getCoursePropertyList(
+                        $this->reflectionService->getClassSchema($type)->getProperties(),
+                        $excludedFields
+                    );
+                } else {
+                    $propertyArray[$property->getName()] = $property->getName();
+                }
+            }
+        }
+
+        return $propertyArray;
+    }
+
     protected function getCacheIdentifierForStudyCourses(array $options): string
     {
         // create cache Identifier
         if (empty($options)) {
             $optionsIdentifier = 'allStudyCourses';
         } else {
-            $optionsIdentifier = json_encode($options);
+            $optionsIdentifier = json_encode($options, JSON_THROW_ON_ERROR);
         }
 
         return md5(

@@ -11,6 +11,10 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * @SuppressWarnings(PHPMD.LongVariable)
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ * @SuppressWarnings(PHPMD.ExcessivePublicCount)
+ * @SuppressWarnings(PHPMD.TooManyFields)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class StudyCourse extends AbstractEntity implements StudyCourseInterface
 {
@@ -394,7 +398,7 @@ class StudyCourse extends AbstractEntity implements StudyCourseInterface
         $this->metaDescription = $metaDescription;
     }
 
-    public function getGlobalDataPreset(): GlobalDataInterface
+    public function getGlobalDataPreset(): ?GlobalDataInterface
     {
         return $this->globalDataPreset;
     }
@@ -491,7 +495,8 @@ class StudyCourse extends AbstractEntity implements StudyCourseInterface
         return $detailPageTitle;
     }
 
-    public function getContentElementIdList(): string {
+    public function getContentElementIdList(): string
+    {
         $idList = [];
         if ($this->getContentElements() !== null) {
             foreach ($this->getContentElements() as $contentElement) {

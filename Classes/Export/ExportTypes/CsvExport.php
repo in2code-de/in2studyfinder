@@ -13,12 +13,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class CsvExport extends AbstractExport implements ExportInterface
 {
-
     protected string $fileName = 'export.csv';
 
     /**
-     * @param ExportConfiguration $exportConfiguration
-     * @return string
      * @throws Exception
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
@@ -29,7 +26,7 @@ class CsvExport extends AbstractExport implements ExportInterface
         foreach ($exportConfiguration->getRecordsToExport() as $row => $record) {
             foreach (array_values($record) as $property) {
                 $this->signalSlotDispatcher->dispatch(
-                    __CLASS__,
+                    self::class,
                     'manipulatePropertyBeforeExport',
                     [&$property]
                 );
@@ -46,21 +43,19 @@ class CsvExport extends AbstractExport implements ExportInterface
             'records' => $recordRows
         ];
 
-        if (!GeneralUtility::writeFile(
-            $exportConfiguration->getExportLocation() . $this->fileName,
-            $this->getExportFileContent($fluidVariables),
-            true
-        )) {
+        if (
+            !GeneralUtility::writeFile(
+                $exportConfiguration->getExportLocation() . $this->fileName,
+                $this->getExportFileContent($fluidVariables),
+                true
+            )
+        ) {
             throw new Exception('Export file could not be created!');
         }
 
         return $exportConfiguration->getExportLocation() . $this->fileName;
     }
 
-    /**
-     * @param array $variables
-     * @return string
-     */
     protected function getExportFileContent(array $variables): string
     {
         $standaloneView = $this->getStandaloneView('EXT:in2studyfinder/Resources/Private/Templates/Exporter/Csv.html');
