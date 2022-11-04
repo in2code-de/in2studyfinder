@@ -1,4 +1,4 @@
-import {ArrayUtility} from "./ArrayUtility";
+import {ArrayUtility} from "./arrayUtility";
 
 class UrlUtility {
   /**
@@ -7,14 +7,14 @@ class UrlUtility {
    * @return {void}
    */
   static removeParameterFromUrl(url, parameter) {
-    var urlParts = url.split('?');
+    let urlParts = url.split('?');
     if (urlParts.length >= 2) {
 
-      var prefix = encodeURIComponent(parameter) + '=';
-      var pars = urlParts[1].split(/[&;]/g);
+      let prefix = encodeURIComponent(parameter) + '=';
+      let pars = urlParts[1].split(/[&;]/g);
 
       //reverse iteration as may be destructive
-      for (var i = pars.length; i-- > 0;) {
+      for (let i = pars.length; i-- > 0;) {
         //idiom for string.startsWith
         if (pars[i].lastIndexOf(prefix, 0) !== -1) {
           pars.splice(i, 1);
@@ -30,17 +30,17 @@ class UrlUtility {
 
   static getParameterFromUrl(url, parameter) {
 
-    var parts = url.split('?'),
+    let parts = url.split('?'),
       value = '';
 
     if (parts.length >= 2) {
 
-      var queryString = parts[1];
+      let queryString = parts[1];
       queryString = '&' + queryString;
 
-      var prefix = encodeURIComponent(parameter) + '=';
-      var parameters = queryString.split(/[&;]/g);
-      for (var i = parameters.length; i-- > 0;) {
+      let prefix = encodeURIComponent(parameter) + '=';
+      let parameters = queryString.split(/[&;]/g);
+      for (let i = parameters.length; i-- > 0;) {
         if (parameters[i].lastIndexOf(prefix, 0) !== -1) {
           value = parameters[i].split('=')[1];
           break;
@@ -57,9 +57,9 @@ class UrlUtility {
    * @param {array} values
    */
   static addOrUpdateHash(attribute, values) {
-    var hashArguments = this.getHashArgumentsFromUrl();
+    let hashArguments = this.getHashArgumentsFromUrl();
     if (hashArguments.length > 0) {
-      var key = ArrayUtility.containsObjectWithKey(hashArguments, 'name', attribute);
+      let key = ArrayUtility.containsObjectWithKey(hashArguments, 'name', attribute);
       if (key >= 0) {
         hashArguments[key]['values'] = values;
       }
@@ -67,9 +67,9 @@ class UrlUtility {
       hashArguments[0] = {name: attribute, values: values};
     }
 
-    var hash = '#';
+    let hash = '#';
     // write hash
-    for (var i = 0; i <= hashArguments.length - 1; i++) {
+    for (let i = 0; i <= hashArguments.length - 1; i++) {
       if (i === hashArguments.length - 1) {
         hash += hashArguments[i].name + '=' + hashArguments[i].values.join();
       } else {
@@ -89,7 +89,7 @@ class UrlUtility {
    */
   static addAttributeToUrl(url, attribute, value) {
 
-    var divider = '?';
+    let divider = '?';
 
     if (url.indexOf('?') !== -1) {
       divider = '&';
@@ -101,16 +101,16 @@ class UrlUtility {
   };
 
   /**
-   * Serialize an given Form
+   * Serialize a given Form
    *
    * @param form
    * @returns {string}
    */
   static serialize(form) {
-    var field, s = [];
+    let field, s = [];
     if (typeof form === 'object' && form.nodeName === 'FORM') {
-      var len = form.elements.length;
-      for (var i = 0; i < len; i++) {
+      let len = form.elements.length;
+      for (let i = 0; i < len; i++) {
         field = form.elements[i];
         if (field.name &&
           !field.disabled &&
@@ -120,7 +120,7 @@ class UrlUtility {
           field.type !== 'button'
         ) {
           if (field.type === 'select-multiple') {
-            for (var j = form.elements[i].options.length - 1; j >= 0; j--) {
+            for (let j = form.elements[i].options.length - 1; j >= 0; j--) {
               if (field.options[j].selected) {
                 s[s.length] = encodeURIComponent(field.name) + '=' + encodeURIComponent(field.options[j].value);
               }
@@ -139,14 +139,14 @@ class UrlUtility {
    */
   static getHashArgumentsFromUrl() {
     if (window.location.hash) {
-      var hash = window.location.hash.split('#')[1];
-      var argumentArray = hash.split(/[&;]/g);
-      var hashArguments = [];
-      for (var i = 0; i < argumentArray.length; i++) {
-        var singleArgument = argumentArray[i].split(/[=;]/g);
+      let hash = window.location.hash.split('#')[1];
+      let argumentArray = hash.split(/[&;]/g);
+      let hashArguments = [];
+      for (let i = 0; i < argumentArray.length; i++) {
+        let singleArgument = argumentArray[i].split(/[=;]/g);
 
         if (singleArgument.length === 2) {
-          var values = singleArgument[1].split(/[+;]/g);
+          let values = singleArgument[1].split(/[+;]/g);
           hashArguments[i] = {
             name: singleArgument[0],
             values: values

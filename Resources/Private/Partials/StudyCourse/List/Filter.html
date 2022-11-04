@@ -12,7 +12,7 @@
 		<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:filter.reset"/>
 	</button>
 
-	<div class="c-in2studyfinder-filter__sections">
+	<div class="c-in2studyfinder-filter__sections js-in2studyfinder-filter-section-container">
 		<f:for each="{filters}" as="filterType" key="filterTypeName">
 			<f:if condition="!{filterType.disabledInFrontend}">
 				<fieldset class="c-in2studyfinder-filter__section js-in2studyfinder-filter-section u-in2studyfinder-hide"
@@ -22,7 +22,7 @@
 						{filterType.frontendLabel}
 					</legend>
 
-					<div class="c-in2studyfinder-filter__options js-in2studyfinder-filter-options is-hidden">
+					<div class="c-in2studyfinder-filter__options js-in2studyfinder-filter-options u-in2studyfinder-hide">
 						<f:render partial="StudyCourse/List/Filter/CheckboxAll" arguments="{_all}"/>
 
 						<f:for each="{filterType.filterOptions}" as="option">

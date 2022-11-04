@@ -118,6 +118,10 @@ npm install
 #### Frontend
 ```npm run build:frontend```
 
+### JavaScript hooks
+
+
+
 ### Code quality tools
 
 we use phpmd and phpcs for code quality checks.
@@ -145,6 +149,10 @@ PHPCBF:
 ddev ssh
 ./.build/bin/phpcbf
 ```
+
+### External used libraries
+
+    * https://tom-select.js.org/
 
 ## FAQ
 

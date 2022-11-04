@@ -14,7 +14,7 @@
 					<div class="row">
 						<f:render partial="StudyCourse/FastSearch/Headline" arguments="{_all}"/>
 
-						<f:form class=" u-in2studyfinder-hide-if-no-js"
+						<f:form class=" u-in2studyfinder-hide-if-no-js js-in2studyfinder-quick-search"
 										action="detail"
 										pluginName="Pi2"
 										pageUid="{settings.flexform.studyCourseDetailPage}">
@@ -26,7 +26,7 @@
 																					optionValueField="uid"
 																					options="{studyCourses}"
 																					additionalOptionAttributes="{alt: 'metaKeywords'}"
-																					class="c-in2studyfinder-quick-search__select js-in2studyfinder-select2"
+																					class="c-in2studyfinder-quick-search__select js-in2studyfinder-select"
 																					tabindex="0"
 																					detailPageUid="{settings.flexform.studyCourseDetailPage}"
 																					style="width: 100%"/>
