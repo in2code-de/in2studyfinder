@@ -1,6 +1,6 @@
 {namespace in2studyfinder=In2code\In2studyfinder\ViewHelpers}
 
-<f:form class="c-in2studyfinder-quick-search u-in2studyfinder-hide-if-no-js"
+<f:form class="c-in2studyfinder-quick-search u-in2studyfinder-hide-if-no-js js-in2studyfinder-quick-search"
 				action="detail"
 				pluginName="Pi2"
 				pageUid="{settings.flexform.studyCourseDetailPage}">
@@ -12,7 +12,7 @@
 															prependOptionLabel="{f:translate(key:'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:pleaseSelectCourse')}"
 															options="{studyCourses}"
 															additionalOptionAttributes="{data-keywords: 'metaKeywords'}"
-															class="c-in2studyfinder-quick-search__select js-in2studyfinder-select2"
+															class="c-in2studyfinder-quick-search__select js-in2studyfinder-select"
 															tabindex="0"
 															detailPageUid="{settings.flexform.studyCourseDetailPage}"
 															style="width: 100%"/>
