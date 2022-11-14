@@ -1,6 +1,5 @@
 # TYPO3 extension in2studyfinder
 
-
 ## Introduction
 
 in2studyfinder is a free and generic TYPO3 extension, which makes it possible to add, maintain and
@@ -8,13 +7,15 @@ display courses of studies in a structured way with different filterable views.
 This extension is the basic version, which can be extended by various fields, functions and interfaces and is already
 widely used by different universities.
 
-
 ## Installation
 
-Require in2studyfinder via copmoser: `composer require in2code/in2studyfinder` or download a current version from [https://github.com/in2code-de/in2studyfinder](in2studyfinder on github) or install in2studyfinder from TER or in the Extension Manager.
-Include in2studyfinder's TypoScript Template "Basic Template" and "CSS Template" if you want to have a minimum of styles in the frontend (e.g. if you don't want to style it yourself).
-Create a storage folder in your page tree where you will add your study courses and set all `settingsPids` and `storagePids` of in2studyfinder to the storage folder's UID.
-
+Require in2studyfinder via copmoser: `composer require in2code/in2studyfinder` or download a current version
+from [https://github.com/in2code-de/in2studyfinder](in2studyfinder on github) or install in2studyfinder from TER or in
+the Extension Manager.
+Include in2studyfinder's TypoScript Template "Basic Template" and "CSS Template" if you want to have a minimum of styles
+in the frontend (e.g. if you don't want to style it yourself).
+Create a storage folder in your page tree where you will add your study courses and set all `settingsPids`
+and `storagePids` of in2studyfinder to the storage folder's UID.
 
 ### Target group
 
@@ -22,7 +23,6 @@ TYPO3 Websites from
 
 * Colleges + Hochschulen
 * Universities + Universitäten
-
 
 ### Examples
 
@@ -48,7 +48,6 @@ Listview at Uni Ulm:
 
 ![Example dashboard overview](Documentation/Images/screenshot_uniulm_list.png)
 
-
 #### Links
 
 * Live examples:
@@ -56,8 +55,8 @@ Listview at Uni Ulm:
     * https://www.uni-ulm.de/studium/studieren-an-der-uni-ulm/studiengaenge/
     * https://www.th-owl.de/studium/angebote/studiengaenge/
 * See full description (german only) under: https://www.in2code.de/produkte/studiengangsfinder/
-* Interest in an extension or interface connection? Contact us: <a href="mailto:sandra.pohl@in2code.de">sandra.pohl@in2code.de</a>
-
+* Interest in an extension or interface connection? Contact us: <a href="mailto:sandra.pohl@in2code.de">
+  sandra.pohl@in2code.de</a>
 
 ## Individual modules and functions
 
@@ -69,20 +68,22 @@ https://www.in2code.de/produkte/studiengangsfinder/
 
 sandra.pohl@in2code.de
 
-
 ## Requirements
 
 Version 6.x:
-  * TYPO3 8.7 or 9.5
-  * PHP 5.6
+
+* TYPO3 8.7 or 9.5
+* PHP 5.6
 
 Version 7.x
-  * TYPO3 9.5 or 10.4
-  * PHP 7.2
+
+* TYPO3 9.5 or 10.4
+* PHP 7.2
 
 Version 8.x and above
-  * TYPO3 11.5 and above
-  * PHP 7.4 and above
+
+* TYPO3 11.5 and above
+* PHP 7.4 and above
 
 ## Signals
 
@@ -105,6 +106,7 @@ In order to ease the contributions, we provide a ddev setup.
 Happy coding
 
 ### Build Css and JavaScript
+
 Requirements: node.js, npm, nvm
 
 ```
@@ -113,14 +115,62 @@ npm install
 ```
 
 #### Backend
+
 ```npm run build:backend```
 
 #### Frontend
+
 ```npm run build:frontend```
 
-### JavaScript hooks
+### Javascript Events
 
+it is possible to execute your own javascript code on specific events.
 
+**Example:**
+
+```typo3_typoscript
+page.includeJSFooter.studyfinderExten = EXT:YOUREXTENSION/Resources/Public/JavaScript/extend.js
+```
+
+extend.js:
+```javascript
+if (window.in2studyfinder !== null) {
+    let in2studyfinder = window.in2studyfinder;
+    let instance = in2studyfinder.getInstance(0);
+
+    instance.pagination.afterLoad = function() {
+        console.log('after Load');
+    };
+}
+```
+
+#### API:
+
+**Studyfinder:**
+
+| function    | description                                                    |
+|-------------|----------------------------------------------------------------|
+| getInstance | returns the requested instance. Parameter instanceId (integer) |
+
+**Instance:**
+
+nothing yet.
+
+**Filter:**
+
+nothing yet.
+
+**Quicksearch:**
+
+nothing yet.
+
+**Pagination:**
+
+| event name | description                                         |
+|------------|-----------------------------------------------------|
+| afterClick | is executed after the click on a pagination link    |
+| afterLoad  | is executed after the pagination fetch was executed |
+| onUpdate   | is executed if the update function is executed      |
 
 ### Code quality tools
 
@@ -133,18 +183,21 @@ For automatic fixes execute `ddev ssh` and then `./.build/bin/phpcbf`
 #### Execute Tests manually:
 
 PHPCS:
+
 ```
 ddev ssh
 ./.build/bin/phpcs
 ```
 
 PHPMD:
+
 ```
 ddev ssh
 ./.build/bin/phpmd Classes/ ansi .phpmd.xml
 ```
 
 PHPCBF:
+
 ```
 ddev ssh
 ./.build/bin/phpcbf
@@ -160,7 +213,6 @@ ddev ssh
 * A1: Of course, you can map persons to any existing table via TypoScript
 * Q2: I need to import persons from an external service, but how?
 * A2: Please ask in2code for professional service or individual importers
-
 
 ## Changelog
 

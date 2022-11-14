@@ -99,8 +99,8 @@ class Filter {
       let filterStatus = this.isFilterSet(filterOptionContainer);
 
       if (filterStatus) {
-        if (this.filter.indexOf(filterOptionContainer.parentNode.getAttribute('data-filtergroup')) === -1) {
-          this.filter.push(filterOptionContainer.parentNode.getAttribute('data-filtergroup'));
+        if (this.filter.indexOf(filterOptionContainer.closest('[data-filtergroup]')) === -1) {
+          this.filter.push(filterOptionContainer.closest('[data-filtergroup]').getAttribute('data-filtergroup'));
         }
 
         let showAllCheckbox = filterOptionContainer.querySelector(this.identifier.filterShowAllCheckbox);
@@ -114,9 +114,8 @@ class Filter {
 
   call(paginationPage) {
     let pid = this.filterElement.querySelector('input[name="tx_in2studyfinder_pi1[pluginInformation][pid]"]').value;
-    let paginationArgument = '', url = '';
+    let paginationArgument = '';
     let instanceId = this.studyfinderElement.getAttribute('data-in2studyfinder-instance-id')
-    let xmlhttp = new XMLHttpRequest();
 
     if (typeof paginationPage === 'undefined') {
       paginationPage = 1;
@@ -126,33 +125,29 @@ class Filter {
       paginationArgument = '&tx_in2studyfinder_pi1[studyCoursesForPage][currentPage]=' + paginationPage;
     }
 
-    url = '/index.php?id=' + pid + '&type=1308171055' + paginationArgument;
+    fetch('/index.php?id=' + pid + '&type=1308171055' + paginationArgument, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: UrlUtility.serialize(this.filterElement)
+    }).then((response) => {
+      LoaderUtility.enableLoader();
+      return response.text();
+    }).then((html) => {
+      this.setSelectedFilterToUrl(paginationPage);
 
-    xmlhttp.onreadystatechange = () => {
+      let tempElement = document.createElement('div');
+      tempElement.innerHTML = html;
 
-      if (xmlhttp.readyState === 1) {
-        LoaderUtility.enableLoader();
-      }
+      this.studyfinderElement.replaceChild(
+        tempElement.querySelector(this.identifier.container).firstElementChild,
+        this.studyfinderElement.firstElementChild
+      );
 
-      if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-        this.setSelectedFilterToUrl(paginationPage);
-
-        let tempElement = document.createElement('div');
-        tempElement.innerHTML = xmlhttp.responseText;
-
-        this.studyfinderElement.replaceChild(
-          tempElement.querySelector(this.identifier.container).firstElementChild,
-          this.studyfinderElement.firstElementChild
-        );
-
-        LoaderUtility.disableLoader();
-        window.in2studyfinder.getInstance(instanceId).update(this.studyfinderElement);
-      }
-    }
-
-    xmlhttp.open('POST', url, true);
-    xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    xmlhttp.send(UrlUtility.serialize(this.filterElement));
+      LoaderUtility.disableLoader();
+      window.in2studyfinder.getInstance(instanceId).update(this.studyfinderElement);
+    });
   }
 
   setSelectedFilterToUrl(paginationPage) {
@@ -184,7 +179,7 @@ class Filter {
     }
 
     if (selectionString !== '') {
-      selectionString = '#' + selectionString ;
+      selectionString = '#' + selectionString;
     }
 
     window.location = location.protocol + '//' + location.host + location.pathname + (location.search ? location.search : '') + selectionString;
@@ -228,13 +223,13 @@ class Filter {
         if (target.tagName === 'INPUT') {
           // if a show all checkbox is clicked
           if (target.classList.contains(this.identifier.filterShowAllCheckbox.substring(1))) {
-            let filterContainer = target.parentNode;
+            let filterContainer = target.closest(this.identifier.filterOptionContainer);
             this.resetFilter(filterContainer);
           }
 
           // if a specific filter checkbox is clicked
           if (target.classList.contains(this.identifier.filterCheckbox.substring(1)) || target.classList.contains(this.identifier.filterRadio.substring(1))) {
-            let showAllCheckbox = target.parentNode.querySelector(this.identifier.filterShowAllCheckbox);
+            let showAllCheckbox = target.closest(this.identifier.filterOptionContainer).querySelector(this.identifier.filterShowAllCheckbox);
             showAllCheckbox.checked = false;
             showAllCheckbox.disabled = false;
           }

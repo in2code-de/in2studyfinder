@@ -24,11 +24,19 @@ class Pagination {
     this.studyfinderElement = studyfinderElement;
     this.paginationElement = studyfinderElement.querySelector(this.identifier.container);
 
-    this.init();
+    this.paginationElement.querySelectorAll(this.identifier.paginationLink).forEach(function(item) {
+      item.addEventListener('click', function(event) {
+        this.call(event);
+      }.bind(this));
+    }.bind(this));
+
+    this.onUpdate();
   }
 
   call(event) {
     event.preventDefault();
+
+    this.afterClick(event);
 
     let targetPage = 1;
     let url = event.target.href;
@@ -39,9 +47,20 @@ class Pagination {
     }
     UrlUtility.addOrUpdateHash('page', [targetPage]);
 
-    window.in2studyfinder.getInstance(instanceId).filter.call(targetPage);
+    let ajaxCall = new Promise((resolve) => {
+       window.in2studyfinder.getInstance(instanceId).filter.call(targetPage);
+       resolve('done');
+    });
+
+    ajaxCall.then((message) => {
+      this.afterLoad(event);
+    });
+
   };
 
+  onUpdate() {}
+  afterClick() {}
+  afterLoad() {}
 }
 
 export {Pagination}

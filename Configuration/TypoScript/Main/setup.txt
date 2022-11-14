@@ -165,4 +165,4 @@ in2studyfinderFilterAjax {
 
 page.includeCSS.in2studyfinderCss = {$plugin.tx_in2studyfinder.settings.css.in2studyfinderCss}
 
-page.includeJSFooter.in2studyfinder = {$plugin.tx_in2studyfinder.settings.javascript.main}
+page.includeJSFooterlibs.in2studyfinder = {$plugin.tx_in2studyfinder.settings.javascript.main}
