@@ -87,10 +87,14 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
 
         switch ($pluginName) {
             case 'Pi1':
-                $detailPageRecord = BackendUtility::getRecord(
-                    'pages',
-                    $this->flexFormData['settings']['flexform']['studyCourseDetailPage']
-                );
+                if (!empty($this->flexFormData['settings']['flexform']['studyCourseDetailPage'])) {
+                    $detailPageRecord = BackendUtility::getRecord(
+                        'pages',
+                        $this->flexFormData['settings']['flexform']['studyCourseDetailPage'] ?? []
+                    );
+
+                    $standaloneView->assign('detailPage', $detailPageRecord);
+                }
 
                 if (!empty($this->flexFormData['settings']['flexform']['select'])) {
                     foreach ($this->flexFormData['settings']['flexform']['select'] as $type => $data) {
@@ -106,23 +110,23 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
 
                 $standaloneView->assignMultiple(
                     [
-                        'detailPage' => $detailPageRecord,
                         'recordStoragePages' => $this->getRecordStoragePages(),
                     ]
                 );
                 break;
             case 'Pi2':
-                $listPageRecord = BackendUtility::getRecord(
-                    'pages',
-                    $this->flexFormData['settings']['flexform']['studyCourseListPage']
-                );
+                if (!empty($this->flexFormData['settings']['flexform']['studyCourseListPage'])) {
+                    $listPageRecord = BackendUtility::getRecord(
+                        'pages',
+                        $this->flexFormData['settings']['flexform']['studyCourseListPage']
+                    );
 
-                $standaloneView->assignMultiple(
-                    [
-                        'listPage' => $listPageRecord,
-                    ]
-                );
-
+                    $standaloneView->assignMultiple(
+                        [
+                            'listPage' => $listPageRecord,
+                        ]
+                    );
+                }
                 break;
         }
 
@@ -161,7 +165,8 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
                 ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT,
                 'in2studyfinder'
             );
-            $storagePid = $fullTypoScriptConfiguration['plugin.']['tx_in2studyfinder.']['settings.']['storagePid'];
+            $storagePid =
+                $fullTypoScriptConfiguration['plugin.']['tx_in2studyfinder.']['settings.']['storagePid'] ?? [];
 
             if ($storagePid !== '') {
                 $recordStoragePages[] = BackendUtility::getRecord(
