@@ -88,7 +88,7 @@ class FilterService extends AbstractService
     {
         if (array_key_exists('flexform', $this->settings)) {
             return $this->pluginService->preparePluginRestrictions(
-                $this->settings['flexform']['select'],
+                $this->settings['flexform']['select'] ?? [],
                 $this->getFilter()
             );
         }
