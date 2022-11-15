@@ -113,8 +113,9 @@ class StudyCourseController extends AbstractController
      */
     public function fastSearchAction(): void
     {
+        $currentPluginRecord = $this->configurationManager->getContentObject()->data;
         $studyCourses =
-            $this->courseService->findBySearchOptions([], $this->configurationManager->getContentObject()->data);
+            $this->courseService->findBySearchOptions([], $currentPluginRecord);
 
         $this->view->assignMultiple(
             [
@@ -122,7 +123,7 @@ class StudyCourseController extends AbstractController
                 'facultyCount' => $this->facilityService->getFacultyCount($this->settings),
                 'studyCourses' => $studyCourses,
                 'settings' => $this->settings,
-                'data' => $this->configurationManager->getContentObject()->data
+                'data' => $currentPluginRecord
             ]
         );
     }
