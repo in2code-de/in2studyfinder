@@ -121,7 +121,8 @@ class StudyCourseController extends AbstractController
                 'studyCourseCount' => count($studyCourses),
                 'facultyCount' => $this->facilityService->getFacultyCount($this->settings),
                 'studyCourses' => $studyCourses,
-                'settings' => $this->settings
+                'settings' => $this->settings,
+                'data' => $this->configurationManager->getContentObject()->data
             ]
         );
     }
