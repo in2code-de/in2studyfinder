@@ -140,10 +140,10 @@ class Filter {
       let tempElement = document.createElement('div');
       tempElement.innerHTML = html;
 
-      this.studyfinderElement.replaceChild(
-        tempElement.querySelector(this.identifier.container).firstElementChild,
-        this.studyfinderElement.firstElementChild
-      );
+      this.studyfinderElement.innerHTML = '';
+      for (const child of tempElement.querySelector(this.identifier.container).children) {
+        this.studyfinderElement.appendChild(child);
+      }
 
       LoaderUtility.disableLoader();
       window.in2studyfinder.getInstance(instanceId).update(this.studyfinderElement);
