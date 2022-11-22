@@ -125,6 +125,8 @@ class Filter {
       paginationArgument = '&tx_in2studyfinder_pi1[studyCoursesForPage][currentPage]=' + paginationPage;
     }
 
+    LoaderUtility.enableLoader();
+
     fetch('/index.php?id=' + pid + '&type=1308171055' + paginationArgument, {
       method: 'POST',
       headers: {
@@ -132,7 +134,6 @@ class Filter {
       },
       body: UrlUtility.serialize(this.filterElement)
     }).then((response) => {
-      LoaderUtility.enableLoader();
       return response.text();
     }).then((html) => {
       this.setSelectedFilterToUrl(paginationPage);
@@ -140,10 +141,7 @@ class Filter {
       let tempElement = document.createElement('div');
       tempElement.innerHTML = html;
 
-      this.studyfinderElement.innerHTML = '';
-      for (const child of tempElement.querySelector(this.identifier.container).children) {
-        this.studyfinderElement.appendChild(child);
-      }
+      this.studyfinderElement.innerHTML = tempElement.querySelector(this.identifier.container).innerHTML;
 
       LoaderUtility.disableLoader();
       window.in2studyfinder.getInstance(instanceId).update(this.studyfinderElement);
