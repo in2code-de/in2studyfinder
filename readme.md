@@ -129,7 +129,7 @@ it is possible to execute your own javascript code on specific events.
 **Example:**
 
 ```typo3_typoscript
-page.includeJSFooter.studyfinderExten = EXT:YOUREXTENSION/Resources/Public/JavaScript/extend.js
+page.includeJSFooter.studyfinderExtenal = EXT:YOUREXTENSION/Resources/Public/JavaScript/extend.js
 ```
 
 extend.js:
@@ -202,6 +202,10 @@ PHPCBF:
 ddev ssh
 ./.build/bin/phpcbf
 ```
+
+### Migration
+
+[Migrations from version 8 to 9](./Documentation/Migration/8to9.md)
 
 ### External used libraries
 
