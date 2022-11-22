@@ -76,9 +76,6 @@ class ExportConfiguration
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getExportLocation(): string
     {
         return $this->exportLocation;

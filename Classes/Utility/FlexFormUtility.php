@@ -9,7 +9,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class FlexFormUtility
 {
-
     public static function getFlexForm(string $flexFormString, string $key = ''): array
     {
         $flexFormService = GeneralUtility::makeInstance(FlexFormService::class);
@@ -21,5 +20,4 @@ class FlexFormUtility
 
         return $flexForm;
     }
-
 }

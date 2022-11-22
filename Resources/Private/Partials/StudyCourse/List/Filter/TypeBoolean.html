@@ -3,7 +3,7 @@
 <f:if condition="{option}">
 	<f:then>
 		<in2studyfinder:form.checkbox name="searchOptions[{filterTypeName}][]" id="{filterTypeName}_true"
-		                              class="in2studyfinder__checkbox in2studyfinder-js-checkbox" value="true"
+		                              class="in2studyfinder__checkbox js-in2studyfinder-checkbox" value="true"
 		                              searchedOptions="{searchedOptions}"
 		                              possibleFilters="{availableFilterOptions}"
 		/>
@@ -11,7 +11,7 @@
 	</f:then>
 	<f:else>
 		<in2studyfinder:form.checkbox name="searchOptions[{filterTypeName}][]" id="{filterTypeName}_false"
-		                              class="in2studyfinder__checkbox in2studyfinder-js-checkbox" value="false"
+		                              class="in2studyfinder__checkbox js-in2studyfinder-checkbox" value="false"
 		                              searchedOptions="{searchedOptions}"
 		                              possibleFilters="{availableFilterOptions}"
 		/>

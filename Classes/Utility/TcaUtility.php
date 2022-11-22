@@ -6,23 +6,24 @@ namespace In2code\In2studyfinder\Utility;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
+/**
+ * @SuppressWarnings(PHPMD.Superglobals)
+ */
 class TcaUtility extends AbstractUtility
 {
+    /**
+     * @return array
+     * @deprecated will be removed in v9, define the sys_language_uid tca manually
+     */
     public static function getFullTcaForSysLanguageUid(): array
     {
+        trigger_deprecation('in2code/in2studyfinder', '8.0', 'Method "%s()" is deprecated and will be removed in Version 9.0.', __METHOD__);
+
         return [
-            'exclude' => 1,
+            'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'foreign_table' => 'sys_language',
-                'foreign_table_where' => 'ORDER BY sys_language.title',
-                'items' => [
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1],
-                    ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0],
-                ],
-                'default' => 0
+                'type' => 'language',
             ],
         ];
     }
@@ -343,6 +344,9 @@ class TcaUtility extends AbstractUtility
         $GLOBALS['TCA'][$table]['types'][$extbaseType]['showitem'] = implode(',', $fieldArray);
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     */
     public static function addFieldsToPalette(
         string $table,
         string $palette,
@@ -353,7 +357,7 @@ class TcaUtility extends AbstractUtility
     ): void {
         $newShowItem = $GLOBALS['TCA'][$table]['palettes'][$palette]['showitem'];
         $fieldArray = explode(',', $newShowItem);
-        $i = 0;
+        $iterator = 0;
         $insertFieldArray = [];
 
         foreach ($fields as $field) {
@@ -367,15 +371,15 @@ class TcaUtility extends AbstractUtility
                 $afterLineBreak = ',--linebreak--';
             }
 
-            $insertFieldArray[$i] = $preLineBreak . $field . $afterLineBreak;
+            $insertFieldArray[$iterator] = $preLineBreak . $field . $afterLineBreak;
 
-            $i++;
+            $iterator++;
         }
 
         array_walk($fieldArray, [self::class, 'trimValue']);
 
-        if (in_array($insertAfter, $fieldArray)) {
-            $arrayKey = array_search($insertAfter, $fieldArray) + 1;
+        if (in_array($insertAfter, $fieldArray, true)) {
+            $arrayKey = array_search($insertAfter, $fieldArray, true) + 1;
             array_splice($fieldArray, $arrayKey, 0, $insertFieldArray);
         } else {
             foreach ($insertFieldArray as $value) {
@@ -424,7 +428,7 @@ class TcaUtility extends AbstractUtility
         string $section,
         string $sectionName,
         array $fields
-    ): bool {
+    ): void {
         $status = true;
 
         if ($section !== 'types' && $section !== 'palettes') {
@@ -444,10 +448,11 @@ class TcaUtility extends AbstractUtility
 
             $GLOBALS['TCA'][$table][$section][$sectionName]['showitem'] = implode(',', $showItemArray);
         }
-
-        return $status;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+     */
     private static function trimValue(string &$value): void
     {
         $value = trim($value);

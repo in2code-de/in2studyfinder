@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace In2code\In2studyfinder\Service;
 
+use Exception;
 use In2code\In2studyfinder\Export\Configuration\ExportConfiguration;
 use In2code\In2studyfinder\Export\ExportInterface;
 use In2code\In2studyfinder\Utility\FileUtility;
+use RuntimeException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
@@ -31,6 +33,8 @@ class ExportService
 
     /**
      * @SuppressWarnings(PHPMD.LongVariable)
+     * @SuppressWarnings(PHPMD.ExitExpression)
+     * @SuppressWarnings(PHPMD.ErrorControlOperator)
      */
     public function export(): void
     {
@@ -117,14 +121,14 @@ class ExportService
     {
         try {
             return $record->_getProperty($property);
-        } catch (\Exception $exception) {
-            throw new \Exception('Property Path could not resolved"');
+        } catch (Exception $extension) {
+            throw new RuntimeException('Property Path could not resolved"');
         }
     }
 
     protected function isPropertyPath(string $property): bool
     {
-        return strpos($property, '.') !== false;
+        return str_contains($property, '.'); // phpcs:ignore
     }
 
     public function getExportConfiguration(): ExportConfiguration
@@ -132,7 +136,7 @@ class ExportService
         return $this->exportConfiguration;
     }
 
-    public function setExportConfiguration(ExportConfiguration $exportConfiguration)
+    public function setExportConfiguration(ExportConfiguration $exportConfiguration): void
     {
         $this->exportConfiguration = $exportConfiguration;
     }

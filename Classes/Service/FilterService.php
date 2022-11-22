@@ -41,9 +41,6 @@ class FilterService extends AbstractService
         $this->buildFilter();
     }
 
-    /**
-     * @return array
-     */
     public function getFilter(): array
     {
         return $this->filter;
@@ -51,9 +48,6 @@ class FilterService extends AbstractService
 
     /**
      * removes not allowed keys empty values from searchOptions and updates the filter keys to the actual property path
-     *
-     * @param array $searchOptions
-     * @return array
      */
     public function prepareSearchOptions(array $searchOptions): array
     {
@@ -94,7 +88,7 @@ class FilterService extends AbstractService
     {
         if (array_key_exists('flexform', $this->settings)) {
             return $this->pluginService->preparePluginRestrictions(
-                $this->settings['flexform']['select'],
+                $this->settings['flexform']['select'] ?? [],
                 $this->getFilter()
             );
         }
@@ -102,6 +96,9 @@ class FilterService extends AbstractService
         return [];
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     */
     public function disableFilterFrontendRenderingByPluginRestrictions(): void
     {
         foreach ($this->getPluginFilterRestrictions() as $filterName => $values) {
@@ -111,6 +108,9 @@ class FilterService extends AbstractService
         }
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
     public function getAvailableFilterOptions(array $studyCourses): array
     {
         $availableOptions = [];
@@ -158,13 +158,7 @@ class FilterService extends AbstractService
 
     protected function isFilterInFrontendVisible(array $filterConfiguration): bool
     {
-        $disabledInFrontend = false;
-
-        if ($filterConfiguration['disabledInFrontend'] === '1') {
-            $disabledInFrontend = true;
-        }
-
-        return $disabledInFrontend;
+        return (bool)($filterConfiguration['disabledInFrontend'] ?? false);
     }
 
     /**
@@ -172,11 +166,11 @@ class FilterService extends AbstractService
      */
     protected function buildObjectFilter(string $filterName, array $filterConfiguration): void
     {
-        $fullQualifiedRepositoryClassName = ClassNamingUtility::translateModelNameToRepositoryName(
+        $repositoryClassName = ClassNamingUtility::translateModelNameToRepositoryName(
             $filterConfiguration['objectModel']
         );
 
-        if (class_exists($fullQualifiedRepositoryClassName)) {
+        if (class_exists($repositoryClassName)) {
             $defaultQuerySettings = GeneralUtility::makeInstance(QuerySettingsInterface::class);
             $defaultQuerySettings->setStoragePageIds([$this->settings['settingsPid']]);
             $defaultQuerySettings->setLanguageOverlayMode(true);
@@ -184,19 +178,19 @@ class FilterService extends AbstractService
             // In TYPO3 11 repositories still need the Object Manager for initialization
             // this will change with TYPO3 12
             $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-            $repository = $objectManager->get($fullQualifiedRepositoryClassName);
+            $repository = $objectManager->get($repositoryClassName);
 
             $repository->setDefaultQuerySettings($defaultQuerySettings);
 
-            $this->filter[$filterName]['repository'] = $fullQualifiedRepositoryClassName;
+            $this->filter[$filterName]['repository'] = $repositoryClassName;
             $this->filter[$filterName]['filterOptions'] = $repository->findAll()->toArray();
         } else {
             $this->logger->warning(
-                'The given repository class ("' . $fullQualifiedRepositoryClassName . '") for the filter: ' . $filterName . ' do not exist. This filter will be ignored!',
+                'The given repository class ("' . $repositoryClassName . '") for the filter: ' . $filterName . ' do not exist. This filter will be ignored!',
                 [
                     'filterName' => $filterName,
                     'filterConfiguration' => $filterConfiguration,
-                    'additionalInfo' => ['class' => __CLASS__, 'method' => __METHOD__, 'line' => __LINE__]
+                    'additionalInfo' => ['class' => self::class, 'method' => __METHOD__, 'line' => __LINE__]
                 ]
             );
             unset($this->filter[$filterName]);
@@ -209,7 +203,7 @@ class FilterService extends AbstractService
             $this->logger->error(
                 'No plugin.tx_in2studyfinder.settings.settingsPid is set! This results in not appearing filter options in the frontend.',
                 [
-                    'additionalInfo' => ['class' => __CLASS__, 'method' => __METHOD__, 'line' => __LINE__]
+                    'additionalInfo' => ['class' => self::class, 'method' => __METHOD__, 'line' => __LINE__]
                 ]
             );
         }
@@ -240,7 +234,7 @@ class FilterService extends AbstractService
                     [
                         'filterName' => $filterName,
                         'filterProperties' => $filterProperties,
-                        'additionalInfo' => ['class' => __CLASS__, 'method' => __METHOD__, 'line' => __LINE__]
+                        'additionalInfo' => ['class' => self::class, 'method' => __METHOD__, 'line' => __LINE__]
                     ]
                 );
             }
@@ -257,7 +251,7 @@ class FilterService extends AbstractService
             'No typoscript filter configuration found!',
             [
                 'settings' => $this->settings,
-                'additionalInfo' => ['class' => __CLASS__, 'method' => __METHOD__, 'line' => __LINE__]
+                'additionalInfo' => ['class' => self::class, 'method' => __METHOD__, 'line' => __LINE__]
             ]
         );
 

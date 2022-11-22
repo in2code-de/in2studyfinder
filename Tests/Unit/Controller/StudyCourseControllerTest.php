@@ -40,7 +40,7 @@ class StudyCourseControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function setUp()
     {
         $this->subject = $this->getMock(
-            'In2code\\In2studyfinder\\Controller\\StudyCourseController',
+            \In2code\In2studyfinder\Controller\StudyCourseController::class,
             ['redirect', 'forward', 'addFlashMessage'],
             [],
             '',
@@ -68,7 +68,7 @@ class StudyCourseControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         );
 
         $studyCourseRepository = $this->getMock(
-            'In2code\\In2studyfinder\\Domain\\Repository\\StudyCourseRepository',
+            \In2code\In2studyfinder\Domain\Repository\StudyCourseRepository::class,
             ['findAll'],
             [],
             '',

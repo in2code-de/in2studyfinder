@@ -34,6 +34,8 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
      * @param array $row Record row of tt_content
      * @return void
      * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function preProcess(
         PageLayoutView &$parentObject,
@@ -85,10 +87,14 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
 
         switch ($pluginName) {
             case 'Pi1':
-                $detailPageRecord = BackendUtility::getRecord(
-                    'pages',
-                    $this->flexFormData['settings']['flexform']['studyCourseDetailPage']
-                );
+                if (!empty($this->flexFormData['settings']['flexform']['studyCourseDetailPage'])) {
+                    $detailPageRecord = BackendUtility::getRecord(
+                        'pages',
+                        $this->flexFormData['settings']['flexform']['studyCourseDetailPage'] ?? []
+                    );
+
+                    $standaloneView->assign('detailPage', $detailPageRecord);
+                }
 
                 if (!empty($this->flexFormData['settings']['flexform']['select'])) {
                     foreach ($this->flexFormData['settings']['flexform']['select'] as $type => $data) {
@@ -104,23 +110,23 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
 
                 $standaloneView->assignMultiple(
                     [
-                        'detailPage' => $detailPageRecord,
                         'recordStoragePages' => $this->getRecordStoragePages(),
                     ]
                 );
                 break;
             case 'Pi2':
-                $listPageRecord = BackendUtility::getRecord(
-                    'pages',
-                    $this->flexFormData['settings']['flexform']['studyCourseListPage']
-                );
+                if (!empty($this->flexFormData['settings']['flexform']['studyCourseListPage'])) {
+                    $listPageRecord = BackendUtility::getRecord(
+                        'pages',
+                        $this->flexFormData['settings']['flexform']['studyCourseListPage']
+                    );
 
-                $standaloneView->assignMultiple(
-                    [
-                        'listPage' => $listPageRecord,
-                    ]
-                );
-
+                    $standaloneView->assignMultiple(
+                        [
+                            'listPage' => $listPageRecord,
+                        ]
+                    );
+                }
                 break;
         }
 
@@ -159,7 +165,8 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
                 ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT,
                 'in2studyfinder'
             );
-            $storagePid = $fullTypoScriptConfiguration['plugin.']['tx_in2studyfinder.']['settings.']['storagePid'];
+            $storagePid =
+                $fullTypoScriptConfiguration['plugin.']['tx_in2studyfinder.']['settings.']['storagePid'] ?? [];
 
             if ($storagePid !== '') {
                 $recordStoragePages[] = BackendUtility::getRecord(
@@ -177,7 +184,7 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
         $this->row = $row;
 
         $this->settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
-        $this->templatePathAndFile = $this->settings['backend']['pluginPreviewTemplate'];
+        $this->templatePathAndFile = $this->settings['backend']['pluginPreviewTemplate'] ?? [];
 
         $flexFormService = GeneralUtility::makeInstance(FlexFormService::class);
         $this->flexFormData = $flexFormService->convertFlexFormContentToArray($this->row['pi_flexform']);

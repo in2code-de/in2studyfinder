@@ -13,11 +13,11 @@ class PluginService extends AbstractService
     {
         $storagePids = [];
 
-        if ($pluginRecord['pages'] !== '') {
+        if (array_key_exists('pages', $pluginRecord) && $pluginRecord['pages'] !== '') {
             $storagePids = GeneralUtility::intExplode(',', $pluginRecord['pages']);
 
             // add recursive pids if recursive is set in the plugin
-            if ($pluginRecord['recursive'] > 0) {
+            if (array_key_exists('recursive', $pluginRecord) && $pluginRecord['recursive'] > 0) {
                 $recursiveStoragePids = '';
                 foreach ($storagePids as $storagePid) {
                     $recursiveStoragePids .=
@@ -45,7 +45,7 @@ class PluginService extends AbstractService
                     $this->logger->info(
                         'Remove the plugin filter restriction for filter: "' . $filterName .
                         '". Because the given restriction is not defined in the typoscript filter section.',
-                        ['additionalInfo' => ['class' => __CLASS__, 'method' => __METHOD__, 'line' => __LINE__]]
+                        ['additionalInfo' => ['class' => self::class, 'method' => __METHOD__, 'line' => __LINE__]]
                     );
                 }
             }

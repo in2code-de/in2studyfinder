@@ -18,10 +18,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @SuppressWarnings(PHPMD.LongVariable)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class StudyCourseController extends AbstractController
 {
-
     protected FilterService $filterService;
 
     protected CourseService $courseService;
@@ -69,9 +69,7 @@ class StudyCourseController extends AbstractController
     }
 
     /**
-     * @param array $searchOptions
      * @param array $pluginInformation contains additional plugin information from ajax / fetch requests
-     * @return void
      */
     public function filterAction(array $searchOptions = [], array $pluginInformation = []): void
     {
@@ -115,25 +113,30 @@ class StudyCourseController extends AbstractController
      */
     public function fastSearchAction(): void
     {
+        $currentPluginRecord = $this->configurationManager->getContentObject()->data;
         $studyCourses =
-            $this->courseService->findBySearchOptions([], $this->configurationManager->getContentObject()->data);
+            $this->courseService->findBySearchOptions([], $currentPluginRecord);
 
         $this->view->assignMultiple(
             [
                 'studyCourseCount' => count($studyCourses),
                 'facultyCount' => $this->facilityService->getFacultyCount($this->settings),
                 'studyCourses' => $studyCourses,
-                'settings' => $this->settings
+                'settings' => $this->settings,
+                'data' => $currentPluginRecord
             ]
         );
     }
 
     /**
      * converts the default course to the extended course if overwritten
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
     public function initializeDetailAction(): void
     {
-        if (array_key_exists(StudyCourse::class, $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']) &&
+        if (
+            array_key_exists(StudyCourse::class, $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']) &&
             !empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][StudyCourse::class]) &&
             $this->request->hasArgument('studyCourse')
         ) {

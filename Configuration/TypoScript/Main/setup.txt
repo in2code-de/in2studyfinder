@@ -101,6 +101,7 @@ plugin.tx_in2studyfinder {
 					8 = deleted
 					9 = hidden
 					10 = sorting
+					11 = parent
 				}
 
 				includeDeleted = 0
@@ -119,6 +120,13 @@ plugin.tx_in2studyfinder {
 # Module configuration
 module.tx_in2studyfinder < plugin.tx_in2studyfinder
 
+# Rendering of content elements in detail view
+lib.tx_in2studyfinder.contentElementRendering = RECORDS
+lib.tx_in2studyfinder.contentElementRendering {
+	tables = tt_content
+	source.current = 1
+	dontCheckPid = 1
+}
 
 ############################
 # Page type for ajax request
@@ -157,4 +165,4 @@ in2studyfinderFilterAjax {
 
 page.includeCSS.in2studyfinderCss = {$plugin.tx_in2studyfinder.settings.css.in2studyfinderCss}
 
-page.includeJSFooter.in2studyfinder = {$plugin.tx_in2studyfinder.settings.javascript.main}
+page.includeJSFooterlibs.in2studyfinder = {$plugin.tx_in2studyfinder.settings.javascript.main}
