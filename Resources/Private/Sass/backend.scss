@@ -16,44 +16,36 @@
  * https://meiert.com/en/blog/on-declaration-sorting/ to find out why).
  */
 
-
 /*------------------------------------*\
   #SETTINGS
 \*------------------------------------*/
 
-@import
-  'settings.colors',
-  'settings.size',
-  'settings.paths';
-
+@import 'settings.colors',
+'settings.size',
+'settings.paths';
 
 /*------------------------------------*\
   #TOOLS
 \*------------------------------------*/
 
-@import
-  'tools.mixins';
-
+@import 'tools.mixins';
 
 /*------------------------------------*\
   #RULES
 \*------------------------------------*/
 
-@import
-  'utilities.visibility';
+@import 'utilities.visibility';
 
-@import
-  'components.loader';
+@import 'components.loader';
 
 /*------------------------------------*\
   #COMPONENTS
 \*------------------------------------*/
 
-@import
-'utilities.visibility';
+@import 'utilities.visibility';
 
-@import
-'components.loader';
+@import 'components.loader';
 
-@import
-'components.property-list';
+@import 'components.property-list';
+
+@import 'backend.pagination';

@@ -187,3 +187,11 @@
   font-weight: bold;
   margin-top: 0;
   margin-left: 30px; }
+
+.in2studyfinder__pagebrowser {
+  list-style: none;
+  display: inline-block; }
+  .in2studyfinder__pagebrowser li {
+    display: inline; }
+    .in2studyfinder__pagebrowser li .current {
+      color: #4c0; }

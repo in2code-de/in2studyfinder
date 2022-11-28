@@ -31,14 +31,10 @@ return [
     ],
     'types' => [
         '0' => [
-            'showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, language, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime',
+            'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, language, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime',
         ],
     ],
-    'palettes' => [
-        '1' => ['showitem' => ''],
-    ],
     'columns' => [
-
         'sys_language_uid' => [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
@@ -53,7 +49,7 @@ return [
         'starttime' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForStartTime(),
         'endtime' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForEndTime(),
         'language' => [
-            'exclude' => 1,
+            'exclude' => true,
             'label' => $ll . 'courseLanguage.language',
             'config' => [
                 'type' => 'input',

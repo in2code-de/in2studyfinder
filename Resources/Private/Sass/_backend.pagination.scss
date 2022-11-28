@@ -1,0 +1,12 @@
+.in2studyfinder__pagebrowser {
+    list-style: none;
+    display: inline-block;
+
+    li {
+        display: inline;
+
+        .current {
+            color: #4c0;
+        }
+    }
+}
