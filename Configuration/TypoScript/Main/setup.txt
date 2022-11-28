@@ -138,7 +138,6 @@ in2studyfinderFilterAjax {
 		additionalHeaders = Content-type:application/html
 		disableAllHeaderCode = 1
 		disablePrefixComment = 1
-		xhtml_cleaning = 0
 		admPanel = 0
 		debug = 0
 	}
