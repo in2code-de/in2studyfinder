@@ -136,7 +136,6 @@ in2studyfinderFilterAjax {
 	typeNum = 1308171055
 	config {
 		additionalHeaders = Content-type:application/html
-		no_cache = 1
 		disableAllHeaderCode = 1
 		disablePrefixComment = 1
 		xhtml_cleaning = 0
