@@ -68,14 +68,9 @@ return [
             'label' => $ll . 'startOfStudy.startDate',
             'config' => [
                 'type' => 'input',
-                'size' => 13,
-                'max' => 20,
-                'eval' => 'date',
-                'checkbox' => 0,
+                'renderType' => 'inputDateTime',
                 'default' => 0,
-                'range' => [
-                    'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y')),
-                ],
+                'eval' => 'date,int',
             ],
         ],
     ],
