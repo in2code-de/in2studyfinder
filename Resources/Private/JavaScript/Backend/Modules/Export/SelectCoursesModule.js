@@ -34,9 +34,11 @@ define(['TYPO3/CMS/In2studyfinder/Backend/Utility/UiUtility', 'TYPO3/CMS/In2stud
     var selectAllCheckbox = document.querySelector(SelectCoursesModule.identifiers.checkAllCheckbox);
     selectAllCheckbox.addEventListener('click', SelectCoursesModule.toggleAllCoursesSelect);
 
-    // event listener for pagination
-    var paginationList = document.querySelector(SelectCoursesModule.identifiers.paginationContainer);
-    paginationList.addEventListener('click', SelectCoursesModule.callPagination);
+    if (document.querySelector(SelectCoursesModule.identifiers.paginationContainer) !== null) {
+      // event listener for pagination
+      var paginationList = document.querySelector(SelectCoursesModule.identifiers.paginationContainer);
+      paginationList.addEventListener('click', SelectCoursesModule.callPagination);
+    }
 
     // event listener for update the items per page
     var itemsPerPageSelect = document.querySelector(SelectCoursesModule.identifiers.itemsPerPageSelect);
@@ -260,7 +262,9 @@ define(['TYPO3/CMS/In2studyfinder/Backend/Utility/UiUtility', 'TYPO3/CMS/In2stud
    */
   SelectCoursesModule.preparePagination = function() {
     var pagination = document.querySelector(SelectCoursesModule.identifiers.paginationContainer);
-    document.querySelector('.js-in2studyfinder-pagination').appendChild(pagination);
+    if (pagination !== null) {
+      document.querySelector('.js-in2studyfinder-pagination').appendChild(pagination);
+    }
   };
 
   /**
