@@ -73,21 +73,3 @@ foreach ($flexformConfiguration as $pluginSignature => $flexformPath) {
         $flexformPath
     );
 }
-
-$tables = [
-    \In2code\In2studyfinder\Domain\Model\StudyCourse::TABLE,
-    \In2code\In2studyfinder\Domain\Model\AcademicDegree::TABLE,
-    \In2code\In2studyfinder\Domain\Model\Department::TABLE,
-    \In2code\In2studyfinder\Domain\Model\Faculty::TABLE,
-    \In2code\In2studyfinder\Domain\Model\TypeOfStudy::TABLE,
-    \In2code\In2studyfinder\Domain\Model\CourseLanguage::TABLE,
-    \In2code\In2studyfinder\Domain\Model\AdmissionRequirement::TABLE,
-    \In2code\In2studyfinder\Domain\Model\StartOfStudy::TABLE,
-    \In2code\In2studyfinder\Domain\Model\Graduation::TABLE,
-];
-
-foreach ($tables as $table) {
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages(
-        $table
-    );
-}

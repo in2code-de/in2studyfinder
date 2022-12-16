@@ -212,6 +212,7 @@ ddev ssh
 ### Migration
 
 [Migrations from version 8 to 9](./Documentation/Migration/8to9.md)
+[Migrations from version 9 to 10](./Documentation/Migration/9to10.md)
 
 ### External used libraries
 
