@@ -108,7 +108,7 @@ class StudyCourseController extends AbstractController
             ]
         );
 
-        $this->htmlResponse();
+        return $this->htmlResponse();
     }
 
     /**
