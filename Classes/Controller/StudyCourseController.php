@@ -14,6 +14,7 @@ use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\FlexFormUtility;
 use In2code\In2studyfinder\Utility\FrontendUtility;
 use In2code\In2studyfinder\Utility\RecordUtility;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -71,7 +72,7 @@ class StudyCourseController extends AbstractController
     /**
      * @param array $pluginInformation contains additional plugin information from ajax / fetch requests
      */
-    public function filterAction(array $searchOptions = [], array $pluginInformation = []): void
+    public function filterAction(array $searchOptions = [], array $pluginInformation = []): ResponseInterface
     {
         if (!empty($pluginInformation)) {
             // if the current call is an ajax / fetch request
@@ -106,12 +107,14 @@ class StudyCourseController extends AbstractController
                 'data' => $currentPluginRecord
             ]
         );
+
+        $this->htmlResponse();
     }
 
     /**
      * fastSearchAction
      */
-    public function fastSearchAction(): void
+    public function fastSearchAction(): ResponseInterface
     {
         $currentPluginRecord = $this->configurationManager->getContentObject()->data;
         $studyCourses =
@@ -126,6 +129,8 @@ class StudyCourseController extends AbstractController
                 'data' => $currentPluginRecord
             ]
         );
+
+        return $this->htmlResponse();
     }
 
     /**
@@ -156,7 +161,7 @@ class StudyCourseController extends AbstractController
      *
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      */
-    public function detailAction(StudyCourse $studyCourse = null): void
+    public function detailAction(StudyCourse $studyCourse = null): ResponseInterface
     {
         if ($studyCourse) {
             $this->courseService->setPageTitleAndMetadata($studyCourse);
@@ -166,5 +171,7 @@ class StudyCourseController extends AbstractController
         } else {
             $this->redirect('filterAction', null, null, null, $this->settings['flexform']['studyCourseListPage']);
         }
+
+        return $this->htmlResponse();
     }
 }

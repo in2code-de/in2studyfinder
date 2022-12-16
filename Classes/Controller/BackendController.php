@@ -7,6 +7,7 @@ namespace In2code\In2studyfinder\Controller;
 use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 use In2code\In2studyfinder\Domain\Service\CourseService;
 use In2code\In2studyfinder\Service\ExportService;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -33,7 +34,7 @@ class BackendController extends AbstractController
     /**
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
-    public function listAction(): void
+    public function listAction(): ResponseInterface
     {
         $this->validateSettings();
 
@@ -82,6 +83,8 @@ class BackendController extends AbstractController
                 'itemsPerPage' => $itemsPerPage
             ]
         );
+
+        return $this->htmlResponse();
     }
 
     /**
