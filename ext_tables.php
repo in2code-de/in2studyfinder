@@ -1,33 +1,6 @@
 <?php
 
-if (!defined('TYPO3')) {
-    die('Access denied.');
-}
-
-$ll = 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:';
-$controller = \In2code\In2studyfinder\Controller\BackendController::class;
-$extensionName = 'In2studyfinder';
-
-/**
- * Include Plugins
- */
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'In2studyfinder',
-    'Pi1',
-    $ll . 'plugin.pi1'
-);
-
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'In2studyfinder',
-    'FastSearch',
-    $ll . 'plugin.fastSearch'
-);
-
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'In2studyfinder',
-    'Pi2',
-    $ll . 'plugin.pi2'
-);
+defined('TYPO3') or die();
 
 /**
  * Register Icons
@@ -53,23 +26,3 @@ $iconRegistry->registerIcon(
  */
 $GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportTypes']['CSV'] =
     \In2code\In2studyfinder\Export\ExportTypes\CsvExport::class;
-
-/**
- * Include Flexform
- */
-$flexformConfiguration = [
-    str_replace('_', '', 'in2studyfinder') . '_pi1' =>
-        'FILE:EXT:in2studyfinder' . '/Configuration/FlexForms/FlexformStudyfinderList.xml',
-    str_replace('_', '', 'in2studyfinder') . '_pi2' =>
-        'FILE:EXT:in2studyfinder' . '/Configuration/FlexForms/FlexformStudyfinderDetail.xml',
-    str_replace('_', '', 'in2studyfinder') . '_fastsearch' =>
-        'FILE:EXT:in2studyfinder/Configuration/FlexForms/FlexformStudyfinderFastSearch.xml'
-];
-
-foreach ($flexformConfiguration as $pluginSignature => $flexformPath) {
-    $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
-        $pluginSignature,
-        $flexformPath
-    );
-}
