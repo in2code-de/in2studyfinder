@@ -7,10 +7,10 @@ $EM_CONF['in2studyfinder'] = [
     'author' => 'Sebastian Stein',
     'author_email' => 'sebastian.stein@in2code.de',
     'state' => 'stable',
-    'version' => '9.0.1',
+    'version' => '10.0.0-dev',
     'constraints' => [
         'depends' => [
-            'typo3' => '11.5.0-11.5.99',
+            'typo3' => '12.0.0-12.99.99',
         ],
         'conflicts' => [],
         'suggests' => [],
