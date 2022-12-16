@@ -106,7 +106,7 @@ class CheckboxViewHelper extends AbstractFormFieldViewHelper
         if (is_array($this->arguments['possibleFilters']) && !empty($this->arguments['possibleFilters'])) {
             if (
                 !isset($this->arguments['possibleFilters'][$propertyName]) ||
-                !in_array($objectId, $this->arguments['possibleFilters'][$propertyName], true)
+                !in_array((int)$objectId, $this->arguments['possibleFilters'][$propertyName], true)
             ) {
                 $this->tag->addAttribute('disabled', 'disabled');
             }
