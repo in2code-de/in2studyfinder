@@ -175,11 +175,7 @@ class FilterService extends AbstractService
             $defaultQuerySettings->setStoragePageIds([$this->settings['settingsPid']]);
             $defaultQuerySettings->setLanguageOverlayMode(true);
 
-            // In TYPO3 11 repositories still need the Object Manager for initialization
-            // this will change with TYPO3 12
-            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-            $repository = $objectManager->get($repositoryClassName);
-
+            $repository = GeneralUtility::makeInstance($repositoryClassName);
             $repository->setDefaultQuerySettings($defaultQuerySettings);
 
             $this->filter[$filterName]['repository'] = $repositoryClassName;
