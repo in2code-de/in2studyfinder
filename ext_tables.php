@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('TYPO3')) {
     die('Access denied.');
 }
@@ -28,54 +29,30 @@ $extensionName = 'In2studyfinder';
     $ll . 'plugin.pi2'
 );
 
-if (TYPO3_MODE === 'BE') {
+/**
+ * Register Icons
+ */
+$iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+    \TYPO3\CMS\Core\Imaging\IconRegistry::class
+);
+$iconRegistry->registerIcon(
+    'in2studyfinder-plugin-icon',
+    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    ['source' => 'EXT:in2studyfinder/Resources/Public/Icons/Extension.svg']
+);
 
-    /**
-     * Include Backend Module
-     */
-    if (TYPO3_MODE === 'BE' && \In2code\In2studyfinder\Utility\ConfigurationUtility::isBackendModuleEnabled()) {
-        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-            $extensionName,
-            'web',
-            'm1',
-            '',
-            [
-                $controller => 'list, export'
-            ],
-            [
-                'access' => 'user,group',
-                'icon' => 'EXT:in2studyfinder/Resources/Public/Icons/Extension.svg',
-                'labels' => 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:wizardItemTitle',
-                'navigationComponentId' => '',
-            ]
-        );
-    }
+/**
+ * Add to ContentElementWizard
+ */
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
+    '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:in2studyfinder/Configuration/TSConfig/ContentElementWizard.typoscript">'
+);
 
-    /**
-     * Register Icons
-     */
-    $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-        \TYPO3\CMS\Core\Imaging\IconRegistry::class
-    );
-    $iconRegistry->registerIcon(
-        'in2studyfinder-plugin-icon',
-        \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-        ['source' => 'EXT:in2studyfinder/Resources/Public/Icons/Extension.svg']
-    );
-
-    /**
-     * Add to ContentElementWizard
-     */
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
-        '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:in2studyfinder/Configuration/TSConfig/ContentElementWizard.typoscript">'
-    );
-
-    /**
-     * Register default export types
-     */
-    $GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportTypes']['CSV'] =
-        \In2code\In2studyfinder\Export\ExportTypes\CsvExport::class;
-}
+/**
+ * Register default export types
+ */
+$GLOBALS['TYPO3_CONF_VARS']['EXT']['in2studyfinder']['exportTypes']['CSV'] =
+    \In2code\In2studyfinder\Export\ExportTypes\CsvExport::class;
 
 /**
  * Include Flexform
