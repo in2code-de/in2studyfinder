@@ -87,10 +87,6 @@ $tables = [
 ];
 
 foreach ($tables as $table) {
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-        $table,
-        'EXT:in2studyfinder/Resources/Private/Language/locallang_csh_' . $table . '.xlf'
-    );
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages(
         $table
     );
