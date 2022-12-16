@@ -1,24 +1,24 @@
 <f:be.pageRenderer
-        includeRequireJsModules="{
+	includeRequireJsModules="{
    0:'TYPO3/CMS/In2studyfinder/Backend/Backend'
 }"
-    includeCssFiles="{
+	includeCssFiles="{
    0:'{f:uri.resource(path:\'Css/backend.css\')}'
 }"
->
-    <div class="module">
-        <div id="module-docheader t3js-module-docheader">
-            <div class="module-docheader-functions">
-                <f:comment>
-                    <f:render partial="Backend/Tabs"/>
-                </f:comment>
-            </div>
-        </div>
-        <div class="module-body t3js-module-body" id="module-body">
-						<f:flashMessages />
-						<f:render section="main" />
-        </div>
-    </div>
+/>
 
-    <f:render partial="Loader" arguments="{_all}"/>
-</f:be.pageRenderer>
+<div class="module">
+	<div id="module-docheader t3js-module-docheader">
+		<div class="module-docheader-functions">
+			<f:comment>
+				<f:render partial="Backend/Tabs"/>
+			</f:comment>
+		</div>
+	</div>
+	<div class="module-body t3js-module-body" id="module-body">
+		<f:flashMessages/>
+		<f:render section="main"/>
+	</div>
+</div>
+
+<f:render partial="Loader" arguments="{_all}"/>
