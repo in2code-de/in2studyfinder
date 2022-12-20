@@ -41,18 +41,14 @@ class StudyCourseRepository extends AbstractRepository
         foreach ($options as $name => $array) {
             if ($array[0] === 'true') {
                 $constraints[] = $query->logicalOr(
-                    [
-                        $query->logicalNot($query->equals($name, '')),
-                        $query->greaterThan($name, 0),
-                    ]
+                    $query->logicalNot($query->equals($name, '')),
+                    $query->greaterThan($name, 0),
                 );
             } elseif ($array[0] === 'false') {
                 $constraints[] = $query->logicalOr(
-                    [
-                        $query->equals($name, 0),
-                        $query->equals($name, ''),
-                        $query->equals($name, null),
-                    ]
+                    $query->equals($name, 0),
+                    $query->equals($name, ''),
+                    $query->equals($name, null),
                 );
             } else {
                 $constraints[] = $query->in($name . '.uid', $array);
@@ -60,7 +56,7 @@ class StudyCourseRepository extends AbstractRepository
         }
 
         if (!empty($constraints)) {
-            $query->matching($query->logicalAnd($constraints));
+            $query->matching($query->logicalAnd(...$constraints));
         }
 
         return $query->execute();
