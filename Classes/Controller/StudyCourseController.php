@@ -77,7 +77,7 @@ class StudyCourseController extends AbstractController
         }
 
         $studyCourses = $this->courseService->findBySearchOptions(
-            $this->filterService->setSettings($this->settings)->prepareSearchOptions($searchOptions),
+            $this->filterService->resolveFilterPropertyPath($searchOptions),
             $currentPluginRecord
         );
 
