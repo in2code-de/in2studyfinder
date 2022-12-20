@@ -99,7 +99,7 @@ class Filter {
       let filterStatus = this.isFilterSet(filterOptionContainer);
 
       if (filterStatus) {
-        if (this.filter.indexOf(filterOptionContainer.closest('[data-filtergroup]')) === -1) {
+        if (this.filter.indexOf(filterOptionContainer.closest('[data-filtergroup]').getAttribute('data-filtergroup')) === -1) {
           this.filter.push(filterOptionContainer.closest('[data-filtergroup]').getAttribute('data-filtergroup'));
         }
 
@@ -107,6 +107,11 @@ class Filter {
 
         showAllCheckbox.checked = false;
         showAllCheckbox.disabled = false;
+      } else {
+        let index = this.filter.indexOf(filterOptionContainer.closest('[data-filtergroup]').getAttribute('data-filtergroup'));
+        if (index !== -1) {
+          this.filter.splice(index, 1);
+        }
       }
 
     }.bind(this));
