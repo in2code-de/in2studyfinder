@@ -8,27 +8,34 @@ use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 use In2code\In2studyfinder\Domain\Service\CourseService;
 use In2code\In2studyfinder\Service\ExportService;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * @SuppressWarnings(PHPMD.LongVariable)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class BackendController extends AbstractController
 {
     protected CourseService $courseService;
+    protected StudyCourseRepository $studyCourseRepository;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected PageRenderer $pageRenderer;
 
-    /**
-     * @var StudyCourseRepository
-     */
-    protected $studyCourseRepository;
-
-    public function __construct(StudyCourseRepository $studyCourseRepository, CourseService $courseService)
-    {
+    public function __construct(
+        StudyCourseRepository $studyCourseRepository,
+        CourseService $courseService,
+        ModuleTemplateFactory $moduleTemplateFactory,
+        PageRenderer $pageRenderer
+    ) {
         $this->studyCourseRepository = $studyCourseRepository;
         $this->courseService = $courseService;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
+        $this->pageRenderer = $pageRenderer;
     }
 
     /**
@@ -58,7 +65,7 @@ class BackendController extends AbstractController
             $this->addFlashMessage(
                 LocalizationUtility::translate('messages.noCourses.body', 'in2studyfinder'),
                 LocalizationUtility::translate('messages.noCourses.title', 'in2studyfinder'),
-                AbstractMessage::WARNING
+                ContextualFeedbackSeverity::WARNING
             );
         } else {
             $propertyArray =
@@ -84,7 +91,12 @@ class BackendController extends AbstractController
             ]
         );
 
-        return $this->htmlResponse();
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/In2studyfinder/Backend/Backend');
+        $this->pageRenderer->addCssFile('EXT:in2studyfinder/Resources/Public/Css/backend.css');
+        $moduleTemplate->setContent($this->view->render());
+
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**
@@ -101,7 +113,7 @@ class BackendController extends AbstractController
             $this->addFlashMessage(
                 LocalizationUtility::translate('messages.notAllRequiredFieldsSet.body', 'in2studyfinder'),
                 LocalizationUtility::translate('messages.notAllRequiredFieldsSet.title', 'in2studyfinder'),
-                AbstractMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
 
             $this->forward('list');
@@ -156,7 +168,7 @@ class BackendController extends AbstractController
                     $this->addFlashMessage(
                         'export provider class "' . $providerClass . '" was not found',
                         'export provider class not found',
-                        AbstractMessage::ERROR
+                        ContextualFeedbackSeverity::ERROR
                     );
                 } else {
                     $possibleDataProvider[$providerName] = $providerClass;
@@ -173,7 +185,7 @@ class BackendController extends AbstractController
             $this->addFlashMessage(
                 LocalizationUtility::translate('messages.noStoragePid.body', 'in2studyfinder'),
                 LocalizationUtility::translate('messages.noStoragePid.title', 'in2studyfinder'),
-                AbstractMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
         }
 
@@ -181,7 +193,7 @@ class BackendController extends AbstractController
             $this->addFlashMessage(
                 LocalizationUtility::translate('messages.noSettingsPid.body', 'in2studyfinder'),
                 LocalizationUtility::translate('messages.noSettingsPid.title', 'in2studyfinder'),
-                AbstractMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
         }
     }
