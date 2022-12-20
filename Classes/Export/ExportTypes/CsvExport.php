@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace In2code\In2studyfinder\Export\ExportTypes;
 
+use In2code\In2studyfinder\Event\ManipulateCsvPropertyBeforeExport;
 use In2code\In2studyfinder\Export\AbstractExport;
 use In2code\In2studyfinder\Export\Configuration\ExportConfiguration;
 use In2code\In2studyfinder\Export\ExportInterface;
@@ -17,19 +18,15 @@ class CsvExport extends AbstractExport implements ExportInterface
 
     /**
      * @throws Exception
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
      */
     public function export(ExportConfiguration $exportConfiguration): string
     {
         $recordRows = [];
         foreach ($exportConfiguration->getRecordsToExport() as $row => $record) {
             foreach (array_values($record) as $property) {
-                $this->signalSlotDispatcher->dispatch(
-                    self::class,
-                    'manipulatePropertyBeforeExport',
-                    [&$property]
-                );
+                $property = $this->eventDispatcher->dispatch(
+                    new ManipulateCsvPropertyBeforeExport($property)
+                )->getProperty();
 
                 $recordRows[$row] .= '"' . $property . '";';
             }

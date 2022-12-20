@@ -91,9 +91,9 @@ Version 10.x and above
 * PHP 8.1 and above
 
 
-## Signals
+## Events
 
-manipulatePropertyBeforeExport: this signal allows the manipulation of values before they are exported to the CSV
+ManipulateCsvPropertyBeforeExport: this event allows the manipulation of values before they are exported to the CSV
 
 ## Contribution
 
