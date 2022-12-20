@@ -41,32 +41,11 @@ class StudyCourseController extends AbstractController
 
     /**
      * Strip empty options from incoming (selected) filters
-     *
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
     public function initializeFilterAction(): void
     {
         $this->filterService->initialize();
-
-        if ($this->request->hasArgument('searchOptions')) {
-            $searchOptions = array_filter((array)$this->request->getArgument('searchOptions'));
-            $this->request->setArgument('searchOptions', $searchOptions);
-
-            if (ConfigurationUtility::isPersistentFilterEnabled()) {
-                FrontendUtility::getTyposcriptFrontendController()
-                    ->fe_user
-                    ->setAndSaveSessionData('tx_in2studycourse_filter', $searchOptions);
-            }
-        } else {
-            if (ConfigurationUtility::isPersistentFilterEnabled()) {
-                $this->request->setArgument(
-                    'searchOptions',
-                    FrontendUtility::getTyposcriptFrontendController()
-                        ->fe_user
-                        ->getSessionData('tx_in2studycourse_filter')
-                );
-            }
-        }
+        $this->filterService->setSettings($this->settings);
     }
 
     /**
@@ -74,6 +53,12 @@ class StudyCourseController extends AbstractController
      */
     public function filterAction(array $searchOptions = [], array $pluginInformation = []): ResponseInterface
     {
+        $searchOptions = $this->filterService->sanitizeSearch($searchOptions);
+
+        if (ConfigurationUtility::isPersistentFilterEnabled()) {
+            $searchOptions = $this->filterService->loadOrSetPersistedFilter($searchOptions);
+        }
+
         if (!empty($pluginInformation)) {
             // if the current call is an ajax / fetch request
             $currentPluginRecord =
