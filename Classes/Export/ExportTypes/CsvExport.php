@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace In2code\In2studyfinder\Export\ExportTypes;
 
-use In2code\In2studyfinder\Event\ManipulateCsvPropertyBeforeExport;
+use In2code\In2studyfinder\Event\ManipulateCsvPropertyBeforeExportEvent;
 use In2code\In2studyfinder\Export\AbstractExport;
 use In2code\In2studyfinder\Export\Configuration\ExportConfiguration;
 use In2code\In2studyfinder\Export\ExportInterface;
@@ -25,7 +25,7 @@ class CsvExport extends AbstractExport implements ExportInterface
         foreach ($exportConfiguration->getRecordsToExport() as $row => $record) {
             foreach (array_values($record) as $property) {
                 $property = $this->eventDispatcher->dispatch(
-                    new ManipulateCsvPropertyBeforeExport($property)
+                    new ManipulateCsvPropertyBeforeExportEvent($property)
                 )->getProperty();
 
                 $recordRows[$row] .= '"' . $property . '";';
