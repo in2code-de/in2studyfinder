@@ -39,6 +39,7 @@ class Quickselect {
 
   init() {
     this.tomSelect = new TomSelect(this.in2studyfinderContainer.querySelector(this.identifier.select), this.settings);
+    this.tomSelect.clear();
   }
 
   update(studyfinderContainer) {
