@@ -11,6 +11,9 @@ class Quickselect {
     this.settings = {
       maxOptions: null,
       searchField: ['text', 'keywords'],
+      onBlur: function() {
+        this.clear(); // prevents the "preselect" bug of firefox 106
+      },
       onItemAdd: function(value, item) {
         let url = item.getAttribute('data-url');
 
@@ -40,7 +43,6 @@ class Quickselect {
 
   init() {
     this.tomSelect = new TomSelect(this.in2studyfinderContainer.querySelector(this.identifier.select), this.settings);
-    this.tomSelect.clear();
   }
 
   update(studyfinderContainer) {
