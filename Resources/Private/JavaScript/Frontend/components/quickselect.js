@@ -9,6 +9,7 @@ class Quickselect {
     };
 
     this.settings = {
+      maxOptions: null,
       searchField: ['text', 'keywords'],
       onItemAdd: function(value, item) {
         let url = item.getAttribute('data-url');
@@ -39,6 +40,7 @@ class Quickselect {
 
   init() {
     this.tomSelect = new TomSelect(this.in2studyfinderContainer.querySelector(this.identifier.select), this.settings);
+    this.tomSelect.clear();
   }
 
   update(studyfinderContainer) {
