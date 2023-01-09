@@ -11,8 +11,8 @@ class Quickselect {
     this.settings = {
       maxOptions: null,
       searchField: ['text', 'keywords'],
-      onBlur: function() {
-        this.clear(); // prevents the "preselect" bug of firefox 106
+      onDropdownOpen: function() {
+       this.clear(); // prevents the "preselect" bug of firefox 106
       },
       onItemAdd: function(value, item) {
         let url = item.getAttribute('data-url');
