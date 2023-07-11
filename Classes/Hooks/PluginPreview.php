@@ -184,7 +184,7 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
         $this->row = $row;
 
         $this->settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
-        $this->templatePathAndFile = $this->settings['backend']['pluginPreviewTemplate'] ?? [];
+        $this->templatePathAndFile = $this->settings['backend']['pluginPreviewTemplate'] ?? '';
 
         $flexFormService = GeneralUtility::makeInstance(FlexFormService::class);
         $this->flexFormData = $flexFormService->convertFlexFormContentToArray($this->row['pi_flexform']);
