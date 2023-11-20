@@ -213,6 +213,7 @@ ddev ssh
 
 [Migrations from version 8 to 9](./Documentation/Migration/8to9.md)
 [Migrations from version 9 to 10](./Documentation/Migration/9to10.md)
+[Migrations from version 10 to 11](./Documentation/Migration/10to11.md)
 
 ### External used libraries
 
@@ -229,7 +230,7 @@ ddev ssh
 
 | Version | Date       | State        | Description                                                                                                                                                                                                                                   |
 |---------|------------|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 10.0.0  | xxxx-xx-xx | [!!!]FEATURE | Add TYPO3 12 support                                                                                                                                                                                                                          |
+| 11.0.0  | 2023-11-21 | [!!!]FEATURE | Add TYPO3 12 support                                                                                                                                                                                                                          |
 | 9.0.1   | 2022-11-28 | BUGFIX       | Minor bugfixes, for further information see: [Commits](https://github.com/in2code-de/in2studyfinder/commits/9.0.1)                                                                                                                            |
 | 9.0.0   | 2022-11-22 | [!!!]FEATURE | Add PHP8 support, add php code quality tools, complete javascript overhaul (no requirement of jQuery anymore) see [Migration from 8 to 9](./Documentation/Migration/8to9.md) for further information                                          |
 | 8.0.3   | 2022-10-14 | BUGFIX       | Fix export problem "Cannot unpack array with string keys" by passing values from signal to slot                                                                                                                                               |
