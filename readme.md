@@ -80,14 +80,14 @@ Version 7.x
 * TYPO3 9.5 or 10.4
 * PHP 7.2
 
-Version 8.x and above
+Version 8.x - 10.x
 
-* TYPO3 11.5 and above
-* PHP 7.4 and above
+* TYPO3 11.5
+* PHP 7.4 - 8.0
 
-Version 10.x and above
+Version 11.x and above
 
-* TYPO3 12.x and above
+* TYPO3 12.4 and above
 * PHP 8.1 and above
 
 
@@ -231,6 +231,10 @@ ddev ssh
 | Version | Date       | State        | Description                                                                                                                                                                                                                                   |
 |---------|------------|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | 11.0.0  | 2023-11-21 | [!!!]FEATURE | Add TYPO3 12 support                                                                                                                                                                                                                          |
+| 10.0.0  | 2023-07-11 | [!!!]BUGFIX  | prevent javascript exception while paginate if no filter is present in the current template                                                                                                                                                   |
+| 9.0.4   | 2023-01-20 | BUGFIX       | Minor bugfixes, for further information see: [Commits](https://github.com/in2code-de/in2studyfinder/commits/9.0.4)                                                                                                                            |
+| 9.0.3   | 2023-01-09 | BUGFIX       | Minor bugfixes, for further information see: [Commits](https://github.com/in2code-de/in2studyfinder/commits/9.0.3)                                                                                                                            |
+| 9.0.2   | 2023-01-09 | BUGFIX       | Minor bugfixes, for further information see: [Commits](https://github.com/in2code-de/in2studyfinder/commits/9.0.2)                                                                                                                            |
 | 9.0.1   | 2022-11-28 | BUGFIX       | Minor bugfixes, for further information see: [Commits](https://github.com/in2code-de/in2studyfinder/commits/9.0.1)                                                                                                                            |
 | 9.0.0   | 2022-11-22 | [!!!]FEATURE | Add PHP8 support, add php code quality tools, complete javascript overhaul (no requirement of jQuery anymore) see [Migration from 8 to 9](./Documentation/Migration/8to9.md) for further information                                          |
 | 8.0.3   | 2022-10-14 | BUGFIX       | Fix export problem "Cannot unpack array with string keys" by passing values from signal to slot                                                                                                                                               |

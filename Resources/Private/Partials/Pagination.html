@@ -3,7 +3,7 @@
 		<ul class="in2studyfinder__pagebrowser js-in2studyfinder-pagebrowser">
 			<f:if condition="{pagination.previousPageNumber} && {pagination.previousPageNumber} >= {pagination.firstPageNumber}">
 				<li class="previous">
-					<a href="{in2studyfinder:pagination.uri(arguments:'{currentPage:pagination.previousPageNumber}',name:name)}" title="previous" class="in2studyfinder__pagebrowser-page js-in2studyfinder-pagination-link js-in2studyfinder-pagination-previous">
+					<a href="{in2studyfinder:pagination.uri(arguments:'{currentPage:pagination.previousPageNumber}',name:name)}" title="previous" data-target-page="{pagination.previousPageNumber}" class="in2studyfinder__pagebrowser-page js-in2studyfinder-pagination-link js-in2studyfinder-pagination-previous">
 						&laquo;
 					</a>
 				</li>
@@ -20,7 +20,7 @@
 					</f:then>
 					<f:else>
 						<li>
-							<a href="{in2studyfinder:pagination.uri(arguments:'{currentPage:page}',name:name)}" class="in2studyfinder__pagebrowser-page js-in2studyfinder-pagination-link">{page}</a>
+							<a href="{in2studyfinder:pagination.uri(arguments:'{currentPage:page}',name:name)}" class="in2studyfinder__pagebrowser-page js-in2studyfinder-pagination-link" data-target-page="{page}">{page}</a>
 						</li>
 					</f:else>
 				</f:if>
@@ -30,7 +30,7 @@
 			</f:if>
 			<f:if condition="{pagination.nextPageNumber} && {pagination.nextPageNumber} <= {pagination.lastPageNumber}">
 				<li class="next">
-					<a href="{in2studyfinder:pagination.uri(arguments:'{currentPage:pagination.nextPageNumber}',name:name)}" title="next" class="in2studyfinder__pagebrowser-page js-in2studyfinder-pagination-link js-in2studyfinder-pagination-next">
+					<a href="{in2studyfinder:pagination.uri(arguments:'{currentPage:pagination.nextPageNumber}',name:name)}" title="next" data-target-page="{pagination.nextPageNumber}" class="in2studyfinder__pagebrowser-page js-in2studyfinder-pagination-link js-in2studyfinder-pagination-next">
 						&raquo;
 					</a>
 				</li>
