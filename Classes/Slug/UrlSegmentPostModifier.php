@@ -8,13 +8,14 @@ use In2code\In2studyfinder\Domain\Model\AcademicDegree;
 use In2code\In2studyfinder\Domain\Model\Graduation;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use LogicException;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
- * Class UrlSegmentPostModifier
+ * @SuppressWarnings(PHPMD.Superglobals)
  */
 class UrlSegmentPostModifier
 {
@@ -29,7 +30,6 @@ class UrlSegmentPostModifier
     {
         $this->configuration = $configuration;
         $graduationTitle = '';
-
         if ($this->isNewRecord()) {
             if (!empty($this->configuration['record']['academic_degree'])) {
                 $graduationTitle =
@@ -48,9 +48,6 @@ class UrlSegmentPostModifier
         return $slug;
     }
 
-    /**
-     * @throws \Doctrine\DBAL\DBALException
-     */
     protected function getGraduationTitle(int $academicDegreeUid = -1): string
     {
         $queryBuilder =
@@ -101,36 +98,27 @@ class UrlSegmentPostModifier
 
     protected function isNewRecord(): bool
     {
-        if ($this->isRecalculateSlug()) {
-            $recordUid = GeneralUtility::_GP('recordId');
-
-            if (!MathUtility::canBeInterpretedAsInteger($recordUid)) {
-                return true;
-            }
-        } else {
-            $data = GeneralUtility::_GP('data');
-            if (is_array($data) && key($data) === StudyCourse::TABLE) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->isRecalculateSlug() &&
+            !MathUtility::canBeInterpretedAsInteger($this->getRequest()->getParsedBody()['recordId']);
     }
 
     protected function getStudyCourseRecordIdentifier(): int
     {
-        if (!empty($this->configuration['record']['uid'])) {
-            $identifier = $this->configuration['record']['uid'];
-        } elseif ((int)GeneralUtility::_GP('recordId') > 0) {
-            $identifier = (int)GeneralUtility::_GP('recordId');
-        } else {
+        $identifier = $this->getRequest()->getParsedBody()['recordId'];
+        if (!MathUtility::canBeInterpretedAsInteger($identifier)) {
             throw new LogicException('No record identifier given', 1585056768);
         }
-        return $identifier;
+
+        return (int)$identifier;
     }
 
     protected function isRecalculateSlug(): bool
     {
-        return GeneralUtility::_GP('route') === '/ajax/record/slug/suggest';
+        return $this->getRequest()->getAttribute('route')->getPath() === '/ajax/record/slug/suggest';
+    }
+
+    private function getRequest(): ServerRequestInterface
+    {
+        return $GLOBALS['TYPO3_REQUEST'];
     }
 }
