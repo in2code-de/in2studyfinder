@@ -13,7 +13,6 @@ use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
-use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -91,16 +90,12 @@ class PaginateViewHelper extends AbstractViewHelper
 
     protected static function getPageNumber(array $arguments, RenderingContextInterface $renderingContext): int
     {
-        $extensionName = $renderingContext->getRequest()->getControllerExtensionName();
-        $pluginName = $renderingContext->getRequest()->getPluginName();
-        $extensionService = GeneralUtility::makeInstance(ExtensionService::class);
-        $pluginNamespace = $extensionService->getPluginNamespace($extensionName, $pluginName);
-        $variables = GeneralUtility::_GP($pluginNamespace);
-        if ($variables !== null) {
-            if (!empty($variables[self::getName($arguments)]['currentPage'])) {
-                return (int)$variables[self::getName($arguments)]['currentPage'];
-            }
+        $request = $renderingContext->getRequest();
+        if (!is_null($request) && $request->hasArgument(self::getName($arguments)) &&
+            array_key_exists('currentPage', $request->getArgument(self::getName($arguments)))) {
+            return (int)$request->getArgument(self::getName($arguments))['currentPage'];
         }
+
         return 1;
     }
 
