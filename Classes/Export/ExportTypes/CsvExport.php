@@ -23,7 +23,8 @@ class CsvExport extends AbstractExport implements ExportInterface
     {
         $recordRows = [];
         foreach ($exportConfiguration->getRecordsToExport() as $row => $record) {
-            foreach (array_values($record) as $property) {
+            $recordRows[$row] = '';
+            foreach ($record as $property) {
                 $property = $this->eventDispatcher->dispatch(
                     new ManipulateCsvPropertyBeforeExportEvent($property)
                 )->getProperty();
