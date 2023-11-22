@@ -91,8 +91,11 @@ class PaginateViewHelper extends AbstractViewHelper
     protected static function getPageNumber(array $arguments, RenderingContextInterface $renderingContext): int
     {
         $request = $renderingContext->getRequest();
-        if (!is_null($request) && $request->hasArgument(self::getName($arguments)) &&
-            array_key_exists('currentPage', $request->getArgument(self::getName($arguments)))) {
+        if (
+            !is_null($request) &&
+            $request->hasArgument(self::getName($arguments)) &&
+            array_key_exists('currentPage', $request->getArgument(self::getName($arguments)))
+        ) {
             return (int)$request->getArgument(self::getName($arguments))['currentPage'];
         }
 
