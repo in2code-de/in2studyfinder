@@ -40,24 +40,11 @@ class StudyCourseController extends AbstractController
     }
 
     /**
-     * Strip empty options from incoming (selected) filters
-     */
-    public function initializeFilterAction(): void
-    {
-        $this->filterService->initialize();
-        $this->filterService->setSettings($this->settings);
-    }
-
-    /**
      * @param array $pluginInformation contains additional plugin information from ajax / fetch requests
      */
     public function filterAction(array $searchOptions = [], array $pluginInformation = []): ResponseInterface
     {
-        $searchOptions = $this->filterService->sanitizeSearch($searchOptions);
-
-        if (ConfigurationUtility::isPersistentFilterEnabled()) {
-            $searchOptions = $this->filterService->loadOrSetPersistedFilter($searchOptions);
-        }
+        $this->filterService->initialize();
 
         if (!empty($pluginInformation)) {
             // if the current call is an ajax / fetch request
@@ -74,6 +61,13 @@ class StudyCourseController extends AbstractController
                 );
         } else {
             $currentPluginRecord = $this->configurationManager->getContentObject()->data;
+        }
+
+        $this->filterService->setSettings($this->settings);
+        $searchOptions = $this->filterService->sanitizeSearch($searchOptions);
+
+        if (ConfigurationUtility::isPersistentFilterEnabled()) {
+            $searchOptions = $this->filterService->loadOrSetPersistedFilter($searchOptions);
         }
 
         $studyCourses = $this->courseService->findBySearchOptions(
