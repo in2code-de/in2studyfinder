@@ -93,7 +93,7 @@ class UrlSegmentPostModifier
                 );
         }
 
-        return (string)$queryBuilder->execute()->fetchColumn();
+        return (string)$queryBuilder->executeQuery()->fetchOne();
     }
 
     protected function isNewRecord(): bool

@@ -40,13 +40,13 @@ class PageUtility
             if ($permClause !== '') {
                 $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($permClause));
             }
-            $statement = $queryBuilder->execute();
-            while ($row = $statement->fetchAssociative()) {
+
+            foreach ($queryBuilder->executeQuery()->fetchAllAssociative() as $page) {
                 if ($begin <= 0) {
-                    $theList .= ',' . $row['uid'];
+                    $theList .= ',' . $page['uid'];
                 }
                 if ($depth > 1) {
-                    $theSubList = self::getTreeList($row['uid'], $depth - 1, $begin - 1, $permClause);
+                    $theSubList = self::getTreeList((int)$page['uid'], $depth - 1, $begin - 1, $permClause);
                     if (!empty($theList) && !empty($theSubList) && ($theSubList[0] !== ',')) {
                         $theList .= ',';
                     }

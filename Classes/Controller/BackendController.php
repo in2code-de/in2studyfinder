@@ -139,7 +139,7 @@ class BackendController extends AbstractController
             ->from('sys_language')
             ->where($queryBuilder->expr()->eq('hidden', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)))
             ->orderBy('sorting')
-            ->execute()->fetchAll();
+            ->executeQuery()->fetchAllAssociative();
 
         foreach ($languageRecords as $languageRecord) {
             $sysLanguages[(int)$languageRecord['uid']] =
