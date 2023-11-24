@@ -80,14 +80,20 @@ Version 7.x
 * TYPO3 9.5 or 10.4
 * PHP 7.2
 
-Version 8.x and above
+Version 8.x - 10.x
 
-* TYPO3 11.5 and above
-* PHP 7.4 and above
+* TYPO3 11.5
+* PHP 7.4 - 8.0
 
-## Signals
+Version 11.x and above
 
-manipulatePropertyBeforeExport: this signal allows the manipulation of values before they are exported to the CSV
+* TYPO3 12.4 and above
+* PHP 8.1 and above
+
+
+## Events
+
+ManipulateCsvPropertyBeforeExport: this event allows the manipulation of values before they are exported to the CSV
 
 ## Contribution
 
@@ -207,6 +213,7 @@ ddev ssh
 
 [Migrations from version 8 to 9](./Documentation/Migration/8to9.md)
 [Migrations from version 9 to 10](./Documentation/Migration/9to10.md)
+[Migrations from version 10 to 11](./Documentation/Migration/10to11.md)
 
 ### External used libraries
 
@@ -223,6 +230,7 @@ ddev ssh
 
 | Version | Date       | State        | Description                                                                                                                                                                                                                                   |
 |---------|------------|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 11.0.0  | 2023-11-24 | [!!!]FEATURE | Add TYPO3 12 support                                                                                                                                                                                                                          |
 | 10.0.0  | 2023-07-11 | [!!!]BUGFIX  | prevent javascript exception while paginate if no filter is present in the current template                                                                                                                                                   |
 | 9.0.4   | 2023-01-20 | BUGFIX       | Minor bugfixes, for further information see: [Commits](https://github.com/in2code-de/in2studyfinder/commits/9.0.4)                                                                                                                            |
 | 9.0.3   | 2023-01-09 | BUGFIX       | Minor bugfixes, for further information see: [Commits](https://github.com/in2code-de/in2studyfinder/commits/9.0.3)                                                                                                                            |

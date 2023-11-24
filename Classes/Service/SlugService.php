@@ -12,10 +12,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class SlugService
 {
-    protected ?QueryBuilder $queryBuilder = null;
-
     protected array $fieldConfig = [];
-
     protected ?SlugHelper $slugHelper = null;
 
     /**
@@ -31,10 +28,6 @@ class SlugService
                 'path_segment',
                 $this->fieldConfig
             );
-
-        /** @var QueryBuilder $queryBuilder */
-        $this->queryBuilder =
-            GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(StudyCourse::TABLE);
     }
 
     /**
@@ -42,34 +35,36 @@ class SlugService
      */
     public function performUpdates(): array
     {
-        $this->queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder =
+            GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(StudyCourse::TABLE);
+
+        $queryBuilder->getRestrictions()->removeAll();
         $databaseQueries = [];
 
-        $statement = $this->queryBuilder->select('*')
-            ->from(StudyCourse::TABLE)
+        $records = $queryBuilder->select('*')->from(StudyCourse::TABLE)
             ->where(
-                $this->queryBuilder->expr()->orX(
-                    $this->queryBuilder->expr()->eq(
+                $queryBuilder->expr()->or(
+                    $queryBuilder->expr()->eq(
                         'url_segment',
-                        $this->queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
                     ),
-                    $this->queryBuilder->expr()->isNull('url_segment')
+                    $queryBuilder->expr()->isNull('url_segment')
                 )
-            )
-            ->execute();
-        while ($record = $statement->fetch()) {
+            )->executeQuery()->fetchAllAssociative();
+
+        foreach ($records as $record) {
             if ((string)$record['title'] !== '') {
                 $slug = $this->slugHelper->generate($record, (int)$record['pid']);
-                $this->queryBuilder->update(StudyCourse::TABLE)
+                $queryBuilder->update(StudyCourse::TABLE)
                     ->where(
-                        $this->queryBuilder->expr()->eq(
+                        $queryBuilder->expr()->eq(
                             'uid',
-                            $this->queryBuilder->createNamedParameter($record['uid'], \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($record['uid'], \PDO::PARAM_INT)
                         )
                     )
                     ->set('url_segment', $slug);
-                $databaseQueries[] = $this->queryBuilder->getSQL();
-                $this->queryBuilder->execute();
+                $databaseQueries[] = $queryBuilder->getSQL();
+                $queryBuilder->executeStatement();
             }
         }
 
@@ -81,20 +76,23 @@ class SlugService
      */
     public function isSlugUpdateRequired(): bool
     {
-        $this->queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder =
+            GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(StudyCourse::TABLE);
 
-        $count = $this->queryBuilder->count('uid')
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $count = $queryBuilder->count('uid')
             ->from(StudyCourse::TABLE)
             ->where(
-                $this->queryBuilder->expr()->orX(
-                    $this->queryBuilder->expr()->eq(
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->eq(
                         'url_segment',
-                        $this->queryBuilder->createNamedParameter('')
+                        $queryBuilder->createNamedParameter('')
                     ),
-                    $this->queryBuilder->expr()->isNull('url_segment')
+                    $queryBuilder->expr()->isNull('url_segment')
                 )
             )
-            ->execute()->fetchColumn(0);
+            ->executeQuery()->fetchOne();
 
         return $count > 0;
     }

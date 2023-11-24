@@ -33,13 +33,13 @@
 # *) Set $GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'] = 9 together with the TypoScript properties
 #    config.compressJs and config.compressCss for GZIP compression of Frontend JS and CSS files.
 
-#<FilesMatch "\.js\.gzip$">
-#	AddType "text/javascript" .gzip
+#<FilesMatch "\.js\.gz">
+#	AddType "text/javascript" .gz
 #</FilesMatch>
-#<FilesMatch "\.css\.gzip$">
-#	AddType "text/css" .gzip
+#<FilesMatch "\.css\.gz">
+#	AddType "text/css" .gz
 #</FilesMatch>
-#AddEncoding gzip .gzip
+#AddEncoding x-gzip .gz
 
 <IfModule mod_deflate.c>
 	# Force compression for mangled `Accept-Encoding` request headers
@@ -111,7 +111,7 @@
 # This affects Frontend and Backend and increases performance.
 <IfModule mod_expires.c>
 
-	ExpiresActive on
+	ExpiresActive On
 	ExpiresDefault                                      "access plus 1 month"
 
 	ExpiresByType text/css                              "access plus 1 year"
@@ -259,7 +259,7 @@ AddDefaultCharset utf-8
 # Send the CORS header for images when browsers request it.
 <IfModule mod_setenvif.c>
 	<IfModule mod_headers.c>
-		<FilesMatch "\.(bmp|cur|gif|ico|jpe?g|png|svgz?|webp)$">
+		<FilesMatch "\.(avifs?|bmp|cur|gif|ico|jpe?g|png|svgz?|webp)$">
 			SetEnvIf Origin ":" IS_CORS
 			Header set Access-Control-Allow-Origin "*" env=IS_CORS
 		</FilesMatch>
@@ -278,8 +278,6 @@ AddDefaultCharset utf-8
 
 
 ### Begin: Rewriting and Access ###
-
-# You need rewriting, if you use a URL-Rewriting extension (RealURL, CoolUri).
 
 <IfModule mod_rewrite.c>
 
@@ -305,7 +303,7 @@ AddDefaultCharset utf-8
 	# IMPORTANT: This rule has to be the very first RewriteCond in order to work!
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteRule ^(.+)\.(\d+)\.(php|js|css|png|jpg|gif|gzip)$ %{ENV:CWD}$1.$3 [L]
+	RewriteRule ^(.+)\.(\d+)\.(php|js|css|png|jpg|gif|gz)$ %{ENV:CWD}$1.$3 [L]
 
 	# Access block for folders
 	RewriteRule _(?:recycler|temp)_/ - [F]
@@ -377,7 +375,7 @@ Options -MultiViews
 <IfModule mod_headers.c>
 	# Force IE to render pages in the highest available mode
 	Header set X-UA-Compatible "IE=edge"
-	<FilesMatch "\.(appcache|crx|css|eot|gif|htc|ico|jpe?g|js|m4a|m4v|manifest|mp4|oex|oga|ogg|ogv|otf|pdf|png|safariextz|svgz?|ttf|vcf|webapp|webm|webp|woff2?|xml|xpi)$">
+	<FilesMatch "\.(appcache|avifs?|crx|css|eot|gif|htc|ico|jpe?g|js|m4a|m4v|manifest|mp4|oex|oga|ogg|ogv|otf|pdf|png|safariextz|svgz?|ttf|vcf|webapp|webm|webp|woff2?|xml|xpi)$">
 		Header unset X-UA-Compatible
 	</FilesMatch>
 

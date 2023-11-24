@@ -51,7 +51,7 @@ class RecordUtility extends AbstractUtility
                     'l18n_parent',
                     $queryBuilder->createNamedParameter((int)$records[0]['uid'], \PDO::PARAM_INT)
                 )
-            )->execute()->fetchAll();
+            )->executeQuery()->fetchAllAssociative();
 
         foreach ($translatedRecords as $translatedRecord) {
             if (!array_key_exists((int)$translatedRecord['sys_language_uid'], $records)) {
@@ -139,7 +139,7 @@ class RecordUtility extends AbstractUtility
                 $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($where));
             }
 
-            $row = $queryBuilder->execute()->fetch();
+            $row = $queryBuilder->executeQuery()->fetchAssociative();
             if ($row) {
                 return $row;
             }
