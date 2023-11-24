@@ -20,6 +20,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 class UrlSegmentPostModifier
 {
     protected array $configuration = [];
+    protected int $courseId = -1;
+    protected int $academicDegree = -1;
 
     /**
      * @noinspection PhpUnusedParameterInspection
@@ -29,15 +31,16 @@ class UrlSegmentPostModifier
     public function extendWithGraduation(array $configuration, SlugHelper $slugHelper): string
     {
         $this->configuration = $configuration;
-        $graduationTitle = '';
-        if ($this->isNewRecord()) {
-            if (!empty($this->configuration['record']['academic_degree'])) {
-                $graduationTitle =
-                    $this->getGraduationTitle((int)$this->configuration['record']['academic_degree']);
-            }
-        } else {
-            $graduationTitle = $this->getGraduationTitle();
+
+        if (!$this->isUpgradeWizard() && !$this->isNewRecord()) {
+            $this->courseId = $this->getStudyCourseRecordIdentifier();
         }
+
+        if (!empty($this->configuration['record']['academic_degree'])) {
+            $this->academicDegree = (int)$this->configuration['record']['academic_degree'];
+        }
+
+        $graduationTitle = $this->getGraduationTitle();
 
         if (!empty($graduationTitle)) {
             $slug = $configuration['slug'] . '-' . $graduationTitle;
@@ -48,15 +51,15 @@ class UrlSegmentPostModifier
         return $slug;
     }
 
-    protected function getGraduationTitle(int $academicDegreeUid = -1): string
+    protected function getGraduationTitle(): string
     {
         $queryBuilder =
             GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(StudyCourse::TABLE);
 
         $queryBuilder->select(Graduation::TABLE . '.title');
 
-        if ($academicDegreeUid > 0) {
-            $queryBuilder
+        if ($this->academicDegree > 0) {
+            return (string)$queryBuilder
                 ->from(Graduation::TABLE)
                 ->leftJoin(
                     Graduation::TABLE,
@@ -67,8 +70,14 @@ class UrlSegmentPostModifier
                         AcademicDegree::TABLE . '.graduation'
                     )
                 )
-                ->where($queryBuilder->expr()->eq(AcademicDegree::TABLE . '.uid', $academicDegreeUid));
-        } else {
+                ->where(
+                    $queryBuilder->expr()->eq(AcademicDegree::TABLE . '.uid',
+                        $this->academicDegree
+                    )
+                )->executeQuery()->fetchOne();
+        }
+
+        if ($this->courseId > 0) {
             $queryBuilder->from(StudyCourse::TABLE)
                 ->leftJoin(
                     StudyCourse::TABLE,
@@ -89,11 +98,20 @@ class UrlSegmentPostModifier
                     )
                 )
                 ->where(
-                    $queryBuilder->expr()->eq(StudyCourse::TABLE . '.uid', $this->getStudyCourseRecordIdentifier())
+                    $queryBuilder->expr()->eq(StudyCourse::TABLE . '.uid', $this->courseId)
                 );
+
+            return (string)$queryBuilder->executeQuery()->fetchOne();
         }
 
-        return (string)$queryBuilder->executeQuery()->fetchOne();
+        return '';
+    }
+
+    private function isUpgradeWizard(): bool
+    {
+        return !is_null(GeneralUtility::_GP('install')) &&
+            array_key_exists('action', GeneralUtility::_GP('install')) &&
+            GeneralUtility::_GP('install')['action'] === 'upgradeWizardsExecute';
     }
 
     protected function isNewRecord(): bool
