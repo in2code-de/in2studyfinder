@@ -217,7 +217,7 @@ class FilterService extends AbstractService
                 [
                     'filterName' => $filterName,
                     'filterConfiguration' => $filterConfiguration,
-                    'additionalInfo' => ['class' => self::class, 'method' => __METHOD__, 'line' => __LINE__]
+                    'additionalInfo' => ['class' => self::class, 'method' => __METHOD__, 'line' => __LINE__],
                 ]
             );
             unset($this->filter[$filterName]);
@@ -230,7 +230,7 @@ class FilterService extends AbstractService
             $this->logger->error(
                 'No plugin.tx_in2studyfinder.settings.settingsPid is set! This results in not appearing filter options in the frontend.',
                 [
-                    'additionalInfo' => ['class' => self::class, 'method' => __METHOD__, 'line' => __LINE__]
+                    'additionalInfo' => ['class' => self::class, 'method' => __METHOD__, 'line' => __LINE__],
                 ]
             );
         }
@@ -242,7 +242,7 @@ class FilterService extends AbstractService
                     'propertyPath' => $filterProperties['propertyPath'],
                     'frontendLabel' => $this->buildFrontendLabel($filterProperties),
                     'disabledInFrontend' => $this->isFilterInFrontendVisible($filterProperties),
-                    'singleSelect' => $filterProperties['singleSelect'] ?? ''
+                    'singleSelect' => $filterProperties['singleSelect'] ?? '',
                 ];
 
                 switch ($filterProperties['type']) {
@@ -261,7 +261,7 @@ class FilterService extends AbstractService
                     [
                         'filterName' => $filterName,
                         'filterProperties' => $filterProperties,
-                        'additionalInfo' => ['class' => self::class, 'method' => __METHOD__, 'line' => __LINE__]
+                        'additionalInfo' => ['class' => self::class, 'method' => __METHOD__, 'line' => __LINE__],
                     ]
                 );
             }
@@ -270,15 +270,17 @@ class FilterService extends AbstractService
 
     protected function getTypoScriptFilterConfiguration(): array
     {
-        if (is_array($this->settings['filters']) && !empty($this->settings['filters'])) {
-            return $this->settings['filters'];
+        $filters = $this->settings['filters'] ?? [];
+
+        if (is_array($filters) && !empty($filters)) {
+            return $filters;
         }
 
         $this->logger->error(
             'No typoscript filter configuration found!',
             [
                 'settings' => $this->settings,
-                'additionalInfo' => ['class' => self::class, 'method' => __METHOD__, 'line' => __LINE__]
+                'additionalInfo' => ['class' => self::class, 'method' => __METHOD__, 'line' => __LINE__],
             ]
         );
 
