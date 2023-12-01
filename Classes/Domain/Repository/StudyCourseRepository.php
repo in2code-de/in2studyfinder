@@ -31,8 +31,9 @@ class StudyCourseRepository extends AbstractRepository
         /**
          * add settings pid
          */
-        if (!in_array((int)$settings['settingsPid'], $storagePids)) {
-            $storagePids[] = (int)$settings['settingsPid'];
+        $settingsPid = (int)($settings['settingsPid'] ?? 0);
+        if (!in_array($settingsPid, $storagePids)) {
+            $storagePids[] = $settingsPid;
         }
 
         $query->getQuerySettings()->setStoragePageIds($storagePids);
