@@ -51,7 +51,15 @@ class StudyCourseRepository extends AbstractRepository
                     $query->equals($name, null),
                 );
             } else {
-                $constraints[] = $query->in($name . '.uid', $array);
+                $filterKey = array_keys(array_combine(array_keys($settings['filters'] ?? []), array_column($settings['filters'] ?? [], 'propertyPath')),$name);
+                $filter = $settings['filters'][$filterKey[0]] ?? [];
+                if ($filter !== []) {
+                    if ($filter['type'] === 'integer') {
+                        $constraints[] = $query->in($name , $array);
+                    } else {
+                        $constraints[] = $query->in($name . '.uid', $array);
+                    }
+                }
             }
         }
 

@@ -78,11 +78,19 @@ plugin.tx_in2studyfinder {
 				#                disabledInFrontend = 1
 			}
 
-			#            credits {
-			#                type = boolean
-			#                propertyPath = ectsCredits
-			#                frontendLabel = FrontendLabel
-			#            }
+			#			credits {
+			#				type = boolean
+			#				propertyPath = ectsCredits
+			#				frontendLabel = FrontendLabel
+			#			}
+
+			#			courses {
+			#				type = integer
+			#				singleSelect = 0
+			#				propertyPath = uid
+			#				disabledInFrontend = 1
+			#				frontendLabel = Studycourse
+			#			}
 		}
 
 		backend {
