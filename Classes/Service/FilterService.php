@@ -270,8 +270,10 @@ class FilterService extends AbstractService
 
     protected function getTypoScriptFilterConfiguration(): array
     {
-        if (is_array($this->settings['filters']) && !empty($this->settings['filters'])) {
-            return $this->settings['filters'];
+        $filters = $this->settings['filters'] ?? [];
+
+        if (is_array($filters) && !empty($filters)) {
+            return $filters;
         }
 
         $this->logger->error(
