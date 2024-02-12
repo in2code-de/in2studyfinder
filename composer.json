@@ -78,7 +78,7 @@
 			"TYPO3\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
 		],
 		"package-states": [
-			".build/bin/typo3cms install:fixfolderstructure"
+			".build/bin/typo3 install:fixfolderstructure"
 		],
 		"install-hooks": ["sh ./.github/hooks/setup.sh"],
 		"post-install-cmd": ["@install-hooks"],
