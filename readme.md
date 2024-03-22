@@ -70,20 +70,31 @@ sandra.pohl@in2code.de
 
 ## Requirements
 
-Version 6.x:
+### Version 10.x.x
 
+* TYPO3 11.5
+* PHP 7.4, 8.x
+
+### Version 12.x.x
+
+* TYPO3 12.4
+* PHP 8.x
+
+### Unmaintained versions
+
+#### Version 6.x
 * TYPO3 8.7 or 9.5
 * PHP 5.6
 
-Version 7.x
-
+#### Version 7.x
 * TYPO3 9.5 or 10.4
 * PHP 7.2
 
-Version 8.x and above
-
+#### Version 8.x and above
 * TYPO3 11.5 and above
 * PHP 7.4 and above
+
+
 
 ## Signals
 
