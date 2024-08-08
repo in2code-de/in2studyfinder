@@ -109,6 +109,11 @@ class UrlSegmentPostModifier
 
     private function isUpgradeWizard(): bool
     {
+        // call via cli
+        if (http_response_code() === false) {
+            return true;
+        }
+
         return !is_null(GeneralUtility::_GP('install')) &&
             array_key_exists('action', GeneralUtility::_GP('install')) &&
             GeneralUtility::_GP('install')['action'] === 'upgradeWizardsExecute';
