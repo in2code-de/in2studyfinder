@@ -144,8 +144,16 @@ if (window.in2studyfinder !== null) {
     let in2studyfinder = window.in2studyfinder;
     let instance = in2studyfinder.getInstance(0);
 
-    instance.pagination.afterLoad = function() {
-        console.log('after Load');
+    instance.pagination.onClick = function() {
+        console.log('onPaginationClick');
+    }
+
+    instance.filter.onClick = function() {
+        console.log('onFilterClick');
+    };
+
+    instance.onUpdate = function() {
+        console.log('onInstanceUpdate');
     };
 }
 ```
@@ -160,11 +168,15 @@ if (window.in2studyfinder !== null) {
 
 **Instance:**
 
-nothing yet.
+| event name                                  | description                          |
+|---------------------------------------------|--------------------------------------|
+| onUpdate                                    | is executed after every fetch call.  |
 
 **Filter:**
 
-nothing yet.
+| event name                                  | description                               |
+|---------------------------------------------|-------------------------------------------|
+| onClick                                     | executed after the pagination link click. |
 
 **Quicksearch:**
 
@@ -172,11 +184,9 @@ nothing yet.
 
 **Pagination:**
 
-| event name | description                                         |
-|------------|-----------------------------------------------------|
-| afterClick | is executed after the click on a pagination link    |
-| afterLoad  | is executed after the pagination fetch was executed |
-| onUpdate   | is executed if the update function is executed      |
+| event name                                  | description                               |
+|---------------------------------------------|-------------------------------------------|
+| onClick                                     | executed after the pagination link click. |
 
 ### Code quality tools
 
@@ -214,6 +224,7 @@ ddev ssh
 [Migrations from version 8 to 9](./Documentation/Migration/8to9.md)
 [Migrations from version 9 to 10](./Documentation/Migration/9to10.md)
 [Migrations from version 10 to 11](./Documentation/Migration/10to11.md)
+[Migrations from version 11 to 12](./Documentation/Migration/11to12.md)
 
 ### External used libraries
 

@@ -45,7 +45,7 @@ class Filter {
 
   setEventListener() {
     // hide filter button
-    this.filterElement.querySelector(this.identifier.hideFilterButton).addEventListener('click', function(event) {
+    this.filterElement.querySelector(this.identifier.hideFilterButton).addEventListener('click', function (event) {
       if (this.filter.length === 0) {
         this.toggleFilterVisibility();
       } else {
@@ -55,19 +55,19 @@ class Filter {
     }.bind(this));
 
     // show filter button
-    this.filterElement.querySelector(this.identifier.showFilterButton).addEventListener('click', function(event) {
+    this.filterElement.querySelector(this.identifier.showFilterButton).addEventListener('click', function (event) {
       this.toggleFilterVisibility(event);
     }.bind(this));
 
 
-    this.filterElement.querySelectorAll(this.identifier.filterSection).forEach(function(fieldSet) {
+    this.filterElement.querySelectorAll(this.identifier.filterSection).forEach(function (fieldSet) {
       // visibility toggle of filter sections
-      fieldSet.querySelector(this.identifier.filterLegend).addEventListener('click', function(event) {
+      fieldSet.querySelector(this.identifier.filterLegend).addEventListener('click', function (event) {
         event.target.nextElementSibling.classList.toggle(this.identifier.hideElement.substring(1));
       }.bind(this));
 
       // tab navigation for filter
-      fieldSet.addEventListener('keypress', function(event) {
+      fieldSet.addEventListener('keypress', function (event) {
         if (event.which === 13) {
           event.target.querySelector(this.identifier.filterLegend).click();
         }
@@ -85,7 +85,7 @@ class Filter {
     if (this.filter.length > 0 && this.openFilterOnLoad) {
       this.toggleFilterVisibility();
 
-      this.filter.forEach(function(filterName) {
+      this.filter.forEach(function (filterName) {
         let filterFieldset = this.filterElement.querySelector('[data-filtergroup="' + filterName + '"]');
         let filter = filterFieldset.querySelector(this.identifier.filterOptionContainer);
 
@@ -95,7 +95,7 @@ class Filter {
   }
 
   prepareCheckboxes() {
-    this.filterElement.querySelectorAll(this.identifier.filterOptionContainer).forEach(function(filterOptionContainer) {
+    this.filterElement.querySelectorAll(this.identifier.filterOptionContainer).forEach(function (filterOptionContainer) {
       let filterStatus = this.isFilterSet(filterOptionContainer);
 
       if (filterStatus) {
@@ -158,7 +158,7 @@ class Filter {
     let selectionString = '';
     let filterFieldSets = this.filterElement.querySelectorAll(this.identifier.filterSection);
 
-    filterFieldSets.forEach(function(filterFieldSet) {
+    filterFieldSets.forEach(function (filterFieldSet) {
       let selectedOptions = filterFieldSet.querySelectorAll(this.identifier.filterCheckbox + ':checked, ' + this.identifier.filterRadio + ':checked');
 
       if (selectedOptions.length > 0) {
@@ -192,7 +192,7 @@ class Filter {
   updateFilterByHashArguments(hashArguments) {
     let page = 1;
 
-    hashArguments.forEach(function(hashArgument) {
+    hashArguments.forEach(function (hashArgument) {
       // if argument page is set
       if (hashArgument.name === 'page') {
         page = hashArgument.values[0];
@@ -221,12 +221,13 @@ class Filter {
   };
 
   setFilterCheckboxEventListener() {
-    this.filterElement.querySelector(this.identifier.filterSectionContainer).addEventListener('click', function(evt) {
+    this.filterElement.querySelector(this.identifier.filterSectionContainer).addEventListener('click', function (evt) {
         let target = evt.target;
 
         if (target.tagName === 'INPUT') {
           // if a show all checkbox is clicked
           if (target.classList.contains(this.identifier.filterShowAllCheckbox.substring(1))) {
+            this.onClick(evt);
             let filterContainer = target.closest(this.identifier.filterOptionContainer);
             this.resetFilter(filterContainer);
           }
@@ -234,6 +235,7 @@ class Filter {
           // if a specific filter checkbox is clicked
           if (target.classList.contains(this.identifier.filterCheckbox.substring(1)) || target.classList.contains(this.identifier.filterRadio.substring(1))) {
             let showAllCheckbox = target.closest(this.identifier.filterOptionContainer).querySelector(this.identifier.filterShowAllCheckbox);
+            this.onClick(evt);
             showAllCheckbox.checked = false;
             showAllCheckbox.disabled = false;
           }
@@ -301,6 +303,9 @@ class Filter {
     }
 
     return status;
+  }
+
+  onClick() {
   }
 }
 
