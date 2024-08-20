@@ -51,6 +51,7 @@ return [
         'type' => [
             'exclude' => true,
             'label' => $ll . 'typeOfStudy.type',
+            'l10n_mode' => 'prefixLangTitle',
             'config' => [
                 'type' => 'input',
                 'size' => 30,

@@ -52,6 +52,7 @@ if (In2code\In2studyfinder\Utility\ConfigurationUtility::isEnableGlobalData()) {
             'title' => [
                 'exclude' => true,
                 'label' => $ll . 'title',
+                'l10n_mode' => 'prefixLangTitle',
                 'config' => [
                     'type' => 'input',
                     'size' => 30,
