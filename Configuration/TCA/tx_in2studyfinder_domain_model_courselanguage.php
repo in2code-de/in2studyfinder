@@ -51,6 +51,7 @@ return [
         'language' => [
             'exclude' => true,
             'label' => $ll . 'courseLanguage.language',
+            'l10n_mode' => 'prefixLangTitle',
             'config' => [
                 'type' => 'input',
                 'size' => 30,

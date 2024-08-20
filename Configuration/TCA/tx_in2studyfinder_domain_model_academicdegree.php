@@ -50,6 +50,7 @@ return [
         'endtime' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForEndTime(),
         'degree' => [
             'exclude' => true,
+            'l10n_mode' => 'prefixLangTitle',
             'label' => $ll . 'academicDegree.degree',
             'config' => [
                 'type' => 'input',
