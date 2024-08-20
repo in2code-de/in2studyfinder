@@ -50,6 +50,7 @@ return [
         'title' => [
             'exclude' => true,
             'label' => $ll . 'department',
+            'l10n_mode' => 'prefixLangTitle',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
