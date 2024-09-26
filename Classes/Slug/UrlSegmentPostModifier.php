@@ -120,6 +120,14 @@ class UrlSegmentPostModifier
             if (is_array($data) && key($data) === StudyCourse::TABLE) {
                 return true;
             }
+            $cmd = GeneralUtility::_GP('cmd');
+            if (is_array($cmd) && array_key_exists(StudyCourse::TABLE, $cmd) && is_array($cmd[StudyCourse::TABLE])) {
+                foreach ($cmd[StudyCourse::TABLE] as $recordCmd) {
+                    if (isset($recordCmd['localize']) && $recordCmd['localize']) {
+                        return true;
+                    }
+                }
+            }
         }
 
         return false;
