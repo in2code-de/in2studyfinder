@@ -186,7 +186,8 @@ class Filter {
       selectionString = '#' + selectionString;
     }
 
-    window.location = location.protocol + '//' + location.host + location.pathname + (location.search ? location.search : '') + selectionString;
+    const url = location.protocol + '//' + location.host + location.pathname + (location.search ? location.search : '') + selectionString;
+    history.pushState({}, '', url);
   };
 
   updateFilterByHashArguments(hashArguments) {
