@@ -17,7 +17,7 @@ class PageUtility
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    public function getTreeList(int $uid, int $depth, int $begin = 0, string $permClause = ''): string
+    public static function getTreeList(int $uid, int $depth, int $begin = 0, string $permClause = ''): string
     {
         $theList = '';
 

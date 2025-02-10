@@ -27,7 +27,7 @@
 		"typo3/cms-core": "^12"
 	},
 	"require-dev": {
-		"helhum/typo3-console": "^7.0",
+		"helhum/typo3-console": "^8.0",
 		"roave/security-advisories": "dev-latest",
 		"typo3/cms-backend": "^12",
 		"typo3/cms-belog": "^12",
@@ -78,7 +78,7 @@
 			"TYPO3\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
 		],
 		"package-states": [
-			".build/bin/typo3cms install:fixfolderstructure"
+			".build/bin/typo3 install:fixfolderstructure"
 		],
 		"install-hooks": ["sh ./.github/hooks/setup.sh"],
 		"post-install-cmd": ["@install-hooks"],
