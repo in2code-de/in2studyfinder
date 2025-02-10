@@ -149,7 +149,7 @@ class StudyCourseController extends AbstractController
             $this->view->assign('studyCourse', $studyCourse);
         } else {
             $studyCourseListPage = $this->settings['flexform']['studyCourseListPage'] ?? '';
-            $this->redirect('filterAction', null, null, null, $studyCourseListPage);
+            return $this->redirect('filterAction', null, null, null, $studyCourseListPage);
         }
 
         return $this->htmlResponse();
