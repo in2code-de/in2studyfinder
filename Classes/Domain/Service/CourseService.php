@@ -81,7 +81,7 @@ class CourseService extends AbstractService
         }
         if (!empty($studyCourse->getMetaKeywords())) {
             $metaTagManager->getManagerForProperty('keywords')->addProperty(
-                'description',
+                'keywords',
                 $studyCourse->getMetaKeywords()
             );
         }
