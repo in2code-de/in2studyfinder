@@ -68,7 +68,8 @@ class RecordUtility extends AbstractUtility
             GeneralUtility::makeInstance(PageRepository::class)->getRecordOverlay(
                 TtContent::TABLE,
                 self::getRecord(TtContent::TABLE, $recordUid),
-                $languageUid
+                $languageUid,
+                'on'
             );
 
         if (!empty($record)) {
