@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace In2code\In2studyfinder\Ai\Service;
 
-use In2code\In2studyfinder\Ai\Command\CreateEmbeddingsCommand;
+use In2code\In2studyfinder\Command\CreateEmbeddingsCommand;
 use In2code\In2studyfinder\Ai\Exception\FileNotFoundException;
 use In2code\In2studyfinder\Ai\Exception\InvalidVectorException;
 use TYPO3\CMS\Core\Core\Environment;
