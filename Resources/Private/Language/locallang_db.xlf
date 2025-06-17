@@ -289,6 +289,25 @@
 			<trans-unit id="availableItems">
 				<source>Available Items</source>
 			</trans-unit>
+
+			<trans-unit id="chatbot.plugin.title">
+				<source>Chatbot</source>
+			</trans-unit>
+			<trans-unit id="chatbot.plugin.settings.isWidget">
+				<source>Display as widget</source>
+			</trans-unit>
+			<trans-unit id="extension_configuration.mistralApiKey">
+				<source>Mistral API Key</source>
+			</trans-unit>
+			<trans-unit id="extension_configuration.mistralApiKey.description">
+				<source>API key for Mistral AI service</source>
+			</trans-unit>
+			<trans-unit id="extension_configuration.detailPid">
+				<source>Detail Page ID</source>
+			</trans-unit>
+			<trans-unit id="extension_configuration.detailPid.description">
+				<source>Page ID for the study course detail page</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

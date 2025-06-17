@@ -7,3 +7,21 @@ services:
   In2code\In2studyfinder\:
     resource: '../Classes/*'
     exclude: '../Classes/Domain/Model/*'
+
+  _instanceof:
+    In2code\In2studyfinder\Ai\Tool\ToolInterface:
+      tags: [ 'tool' ]
+
+  In2code\In2studyfinder\Ai\Adapter\MistralAdapter:
+    arguments:
+      $tools: !tagged_iterator tool
+
+  In2code\In2studyfinder\Ai\Service\ToolResultService:
+    arguments:
+      $tools: !tagged_iterator tool
+
+  In2code\In2studyfinder\Command\CreateEmbeddingsCommand:
+    tags:
+      - name: 'console.command'
+        command: 'in2studyfinder:createEmbeddings'
+        schedulable: true

@@ -8,3 +8,7 @@ enableCaching = 1
 enablePersistentFilter = 0
 # cat=basic/enable/050; type=boolean; label=Enable the in2studyfinder backend module
 enableBackendModule = 1
+# cat=basic/enable; type=string; label=LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:extension_configuration.mistralApiKey; description=LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:extension_configuration.mistralApiKey.description
+mistralApiKey =
+# cat=basic/enable; type=int; label=LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:extension_configuration.detailPid; description=LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:extension_configuration.detailPid.description
+detailPid = 0

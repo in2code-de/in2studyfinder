@@ -379,6 +379,25 @@
 				<source>Available Items</source>
 				<target>Verfügbare Felder</target>
 			</trans-unit>
+
+			<trans-unit id="chatbot.plugin.title">
+				<target>Chatbot</target>
+			</trans-unit>
+			<trans-unit id="chatbot.plugin.settings.isWidget">
+				<target>Anzeige als Widget</target>
+			</trans-unit>
+			<trans-unit id="extension_configuration.mistralApiKey">
+				<target>Mistral API-Schlüssel</target>
+			</trans-unit>
+			<trans-unit id="extension_configuration.mistralApiKey.description">
+				<target>API-Schlüssel für den Mistral AI-Dienst</target>
+			</trans-unit>
+			<trans-unit id="extension_configuration.detailPid">
+				<target>Detailseiten-ID</target>
+			</trans-unit>
+			<trans-unit id="extension_configuration.detailPid.description">
+				<target>Seiten-ID für die Studiengangsdetailseite</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

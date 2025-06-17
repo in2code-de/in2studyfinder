@@ -1,0 +1,23 @@
+<T3DataStructure>
+  <sheets>
+    <sDEF>
+      <ROOT>
+        <TCEforms>
+          <sheetTitle>Settings</sheetTitle>
+        </TCEforms>
+        <type>array</type>
+        <el>
+          <settings.isWidget>
+            <TCEforms>
+              <label>LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:chatbot.plugin.settings.isWidget</label>
+              <config>
+                <type>check</type>
+                <default>0</default>
+              </config>
+            </TCEforms>
+          </settings.isWidget>
+        </el>
+      </ROOT>
+    </sDEF>
+  </sheets>
+</T3DataStructure>
