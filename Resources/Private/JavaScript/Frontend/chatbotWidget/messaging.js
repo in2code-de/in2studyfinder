@@ -23,13 +23,14 @@ export class Messaging {
         this.ui.hideDefaultPrompt();
 
         try {
-            const response = await fetch('/studyfinderAiChatbot.json', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ message })
-            });
+            const response = await fetch(
+              this.chatbotWidget.getAttribute('data-chatbot-url'),
+              {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json',},
+                    body: JSON.stringify({ message })
+                  }
+            );
 
             const data = await response.json();
 
