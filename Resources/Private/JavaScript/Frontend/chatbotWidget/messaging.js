@@ -1,4 +1,11 @@
-// Messaging Component for MistralChatbot
+import { marked } from 'marked';
+
+marked.setOptions({
+    sanitize: false, // Disable sanitization to preserve HTML structure
+    gfm: true,
+    breaks: true,
+});
+
 export class Messaging {
     constructor(chatbotWidget, ui) {
         this.chatbotWidget = chatbotWidget;
@@ -8,7 +15,7 @@ export class Messaging {
     async sendMessage(message) {
         if (!message.trim()) return;
 
-        this.addMessage(message, 'user');
+        this.addMessage(message);
 
         // Reset textarea height after clearing
         const input = this.chatbotWidget.querySelector('[data-chatbot-input]');
@@ -39,13 +46,13 @@ export class Messaging {
 
             if (data.success) {
                 // Show message with typing effect
-                this.addMessageWithTypingEffect(data.message, 'assistant');
+                this.addMessageWithTypingEffect(data.message);
             } else {
-                this.addMessageWithTypingEffect('Entschuldigung, es gab einen Fehler.', 'assistant');
+                this.addMessageWithTypingEffect('Entschuldigung, es gab einen Fehler.');
             }
         } catch (error) {
             this.removeTypingIndicator(typingIndicator);
-            this.addMessageWithTypingEffect('Verbindungsfehler. Bitte versuchen Sie es später.', 'assistant');
+            this.addMessageWithTypingEffect('Verbindungsfehler. Bitte versuchen Sie es später.');
         }
     }
 
@@ -71,40 +78,77 @@ export class Messaging {
         }
     }
 
-    addMessage(text, sender) {
+    addMessage(text) {
         const messages = this.chatbotWidget.querySelector('[data-chatbot-messages]');
         const messageEl = document.createElement('div');
-        messageEl.className = `message ${sender}`;
+        messageEl.className = `message user`;
         messageEl.textContent = text;
         messages.appendChild(messageEl);
         messages.scrollTop = messages.scrollHeight;
     }
 
-    async addMessageWithTypingEffect(text, sender) {
+    async addMessageWithTypingEffect(text) {
         const messages = this.chatbotWidget.querySelector('[data-chatbot-messages]');
         const messageEl = document.createElement('div');
-        messageEl.className = `message ${sender}`;
+        messageEl.className = `message assistant`;
+        messageEl.innerHTML = '';
         messages.appendChild(messageEl);
 
-        // Simulate typing effect
-        let i = 0;
-        const typeSpeed = 30; // Milliseconds per character
+        // Parse the markdown to HTML
+        const htmlContent = this.getMarkdownHTML(text);
+        const speed = 30;
+        let partIndex = 0;
+        let charIndex = 0;
 
-        const typeWriter = () => {
-            if (i < text.length) {
-                let char = text.charAt(i);
+        // Pre-parse the string into an array of text and HTML tags
+        const parts = htmlContent.split(/(<[^>]+>)/).filter(Boolean);
 
-                if (char === '\n') {
-                    char = '<br>';
-                }
+        // This variable will hold the HTML that has been "typed" so far
+        let progressHTML = '';
 
-                messageEl.innerHTML += char;
-                i++;
-                messages.scrollTop = messages.scrollHeight;
-                setTimeout(typeWriter, typeSpeed);
+        function typeWriter() {
+          messageEl.innerHTML = progressHTML;
+          messages.scrollTop = messages.scrollHeight;
+
+          if (partIndex < parts.length) {
+            const currentPart = parts[partIndex];
+
+            // Check if the current part is an HTML tag
+            if (currentPart.startsWith('<') && currentPart.endsWith('>')) {
+              // If it's a tag, add it to our progress string instantly
+              progressHTML += currentPart;
+              partIndex++;
+              // Process the next part immediately without a delay
+              requestAnimationFrame(typeWriter);
+            } else {
+              // If it's plain text, type it out character by character
+              if (charIndex < currentPart.length) {
+                // Add the next character to our progress string
+                progressHTML += currentPart.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeWriter, speed);
+              } else {
+                // Move to the next part when the current text part is finished
+                charIndex = 0;
+                partIndex++;
+                // Process the next part immediately
+                requestAnimationFrame(typeWriter);
+              }
             }
-        };
+          }
+        }
 
+        // Start the typing effect
         typeWriter();
+    }
+
+    getMarkdownHTML(text) {
+      let htmlContent = marked.parse(text);
+      if (typeof htmlContent !== 'string') {
+        return text;
+      }
+
+      const regex = /\n(\s*\n)+(?=\s*([*+-]|\d+\.)\s)/g;
+      return htmlContent.replace(regex, '\n');
     }
 }

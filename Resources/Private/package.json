@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
-    "tom-select": "^2.2"
+    "tom-select": "^2.2",
+    "marked": "^4.3.0"
   }
 }
