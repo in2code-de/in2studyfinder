@@ -31,9 +31,15 @@ class ChatController extends ActionController
     {
         $requestBody = json_decode($this->request->getBody()->getContents(), true);
         $message =  isset($requestBody['message']) ? (string)$requestBody['message'] : null;
+        $topNResults = isset($requestBody['topNResults']) ? (int)$requestBody['topNResults'] : null;
 
         if ($message === null) {
             return json_encode(['success' => false, 'errorCode' => 1749708782]);
+        }
+
+        // Add topNResults to settings if provided
+        if ($topNResults !== null) {
+            $this->settings['topNResults'] = $topNResults;
         }
 
         try {

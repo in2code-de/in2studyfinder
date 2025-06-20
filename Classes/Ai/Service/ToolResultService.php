@@ -26,7 +26,7 @@ class ToolResultService
     /**
      * @throws ToolNotFoundException
      */
-    public function getResultMessages(array $toolCalls): array
+    public function getResultMessages(array $toolCalls, array $pluginSettings): array
     {
         $results = [];
 
@@ -38,7 +38,8 @@ class ToolResultService
             $toolMessage = $this->getToolMessage(
                 $this->getToolFromName($toolName),
                 json_decode($rawArguments, true),
-                $callId
+                $callId,
+                $pluginSettings
             );
 
             if ($toolMessage !== null) {
@@ -49,14 +50,18 @@ class ToolResultService
         return $results;
     }
 
-    private function getToolMessage(ToolInterface $tool, array $arguments, ?string $toolCallId): ?array
-    {
+    private function getToolMessage(
+        ToolInterface $tool,
+        array $arguments,
+        ?string $toolCallId,
+        array $pluginSettings = []
+    ): ?array {
         try {
             return [
                 'role' => 'tool',
                 'tool_call_id' => $toolCallId,
                 'name' => $tool->getName(),
-                'content' => json_encode($tool->execute($arguments)),
+                'content' => json_encode($tool->execute($arguments, $pluginSettings)),
             ];
         } catch (Throwable $throwable) {
             $this->logger->error($throwable->getMessage());

@@ -13,6 +13,6 @@ interface ToolInterface
     /**
      * @throws MissingArgumentException
      */
-    public function execute(array $arguments);
+    public function execute(array $arguments, array $pluginSettings);
     public function getName(): string;
 }

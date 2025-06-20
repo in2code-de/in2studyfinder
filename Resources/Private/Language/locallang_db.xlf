@@ -296,6 +296,21 @@
 			<trans-unit id="chatbot.plugin.settings.isWidget">
 				<source>Display as widget</source>
 			</trans-unit>
+			<trans-unit id="chatbot.plugin.settings.chatbotName">
+				<source>Chatbot Name</source>
+			</trans-unit>
+			<trans-unit id="chatbot.plugin.settings.defaultPrompts">
+				<source>Default Prompts</source>
+			</trans-unit>
+			<trans-unit id="chatbot.plugin.settings.defaultPrompts.description">
+				<source>One prompt per line</source>
+			</trans-unit>
+			<trans-unit id="chatbot.plugin.settings.topNResults">
+				<source>Number of Results</source>
+			</trans-unit>
+			<trans-unit id="chatbot.plugin.settings.welcomeMessage">
+				<source>Welcome Message</source>
+			</trans-unit>
 			<trans-unit id="extension_configuration.mistralApiKey">
 				<source>Mistral API Key</source>
 			</trans-unit>

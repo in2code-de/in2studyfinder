@@ -41,7 +41,10 @@ class MistralChatbot {
         const sendBtn = this.chatbotWidget.querySelector('[data-chatbot-send]');
         const input = this.chatbotWidget.querySelector('[data-chatbot-input]');
         const toggle = this.chatbotWidget.querySelector('[data-chatbot-toggle]');
-        const defaultPrompt = this.chatbotWidget.querySelector('[data-defaultprompt]');
+        const defaultPromptsContainer = this.chatbotWidget.querySelector('[data-defaultprompts]');
+
+        // Initialize default prompts
+        this.initDefaultPrompts(defaultPromptsContainer, input);
 
         sendBtn.addEventListener('click', () => {
             const message = input.value.trim();
@@ -60,11 +63,39 @@ class MistralChatbot {
             const isMinimized = this.ui.toggleChat();
             this.storage.saveMinimizedState(isMinimized);
         });
+    }
 
-        defaultPrompt.addEventListener('click', (e) => {
-            that.ui.hideDefaultPrompt();
-            input.value = e.target.innerHTML.trim();
-            that.ui.adjustTextareaHeight(input);
+    initDefaultPrompts(container, input) {
+        if (!container) return;
+
+        const that = this;
+        const promptsText = container.getAttribute('data-prompts');
+
+        if (!promptsText) return;
+
+        // Clear existing content
+        container.innerHTML = '';
+
+        // Split by newlines and create prompt elements
+        const prompts = promptsText.split('\n');
+
+        prompts.forEach(prompt => {
+            const trimmedPrompt = prompt.trim();
+            if (trimmedPrompt) {
+                const promptElement = document.createElement('div');
+                promptElement.className = 'defaultprompt';
+                promptElement.setAttribute('data-defaultprompt', '');
+                promptElement.textContent = trimmedPrompt;
+
+                // Add click event listener
+                promptElement.addEventListener('click', (e) => {
+                    that.ui.hideDefaultPrompt();
+                    input.value = e.target.textContent.trim();
+                    that.ui.adjustTextareaHeight(input);
+                });
+
+                container.appendChild(promptElement);
+            }
         });
     }
 }

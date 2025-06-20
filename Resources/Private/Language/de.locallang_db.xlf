@@ -386,6 +386,21 @@
 			<trans-unit id="chatbot.plugin.settings.isWidget">
 				<target>Anzeige als Widget</target>
 			</trans-unit>
+			<trans-unit id="chatbot.plugin.settings.chatbotName">
+				<target>Chatbot-Name</target>
+			</trans-unit>
+			<trans-unit id="chatbot.plugin.settings.defaultPrompts">
+				<target>Standard-Prompts</target>
+			</trans-unit>
+			<trans-unit id="chatbot.plugin.settings.defaultPrompts.description">
+				<target>Ein Prompt pro Zeile</target>
+			</trans-unit>
+			<trans-unit id="chatbot.plugin.settings.topNResults">
+				<target>Anzahl der Ergebnisse</target>
+			</trans-unit>
+			<trans-unit id="chatbot.plugin.settings.welcomeMessage">
+				<target>Willkommensnachricht</target>
+			</trans-unit>
 			<trans-unit id="extension_configuration.mistralApiKey">
 				<target>Mistral API-Schlüssel</target>
 			</trans-unit>

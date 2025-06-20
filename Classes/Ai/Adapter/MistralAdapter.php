@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace In2code\In2studyfinder\Ai\Adapter;
 
 use In2code\In2studyfinder\Ai\Exception\MissingApiKeyException;
+use In2code\In2studyfinder\Ai\Exception\ToolNotFoundException;
 use In2code\In2studyfinder\Ai\Service\ConfigurationService;
 use In2code\In2studyfinder\Ai\Service\Prompt\PromptInterface;
 use In2code\In2studyfinder\Ai\Service\ToolResultService;
@@ -36,6 +37,9 @@ class MistralAdapter implements AIAdapterInterface
         $this->tools = $tools;
     }
 
+    /**
+     * @throws ToolNotFoundException
+     */
     public function sendMessage(string $message, array $pluginSettings): array
     {
         $requestBody = [
@@ -52,7 +56,7 @@ class MistralAdapter implements AIAdapterInterface
         $result = $this->sendRequest($this->getApiUrl(), $requestBody);
 
         if (isset($result['choices'][0]['message']['tool_calls'])) {
-            return $this->sendFollowUpMessage($result['choices'][0]['message']['tool_calls'], $message);
+            return $this->sendFollowUpMessage($result['choices'][0]['message']['tool_calls'], $message, $pluginSettings);
         }
 
         return [
@@ -61,14 +65,17 @@ class MistralAdapter implements AIAdapterInterface
         ];
     }
 
-    private function sendFollowUpMessage(array $toolCalls, string $originalMessage): array
+    /**
+     * @throws ToolNotFoundException
+     */
+    private function sendFollowUpMessage(array $toolCalls, string $originalMessage, array $pluginSettings): array
     {
         $messages = [
             ['role' => 'user', 'content' => $originalMessage],
             ['role' => 'assistant', 'content' => null, 'tool_calls' => $toolCalls]
         ];
 
-        foreach ($this->getToolResults($toolCalls) as $result) {
+        foreach ($this->getToolResults($toolCalls, $pluginSettings) as $result) {
             $messages[] = $result;
         }
 

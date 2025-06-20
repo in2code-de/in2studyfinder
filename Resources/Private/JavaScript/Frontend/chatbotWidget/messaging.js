@@ -30,12 +30,18 @@ export class Messaging {
         this.ui.hideDefaultPrompt();
 
         try {
+            // Get topNResults setting if available
+            const topNResults = this.chatbotWidget.getAttribute('data-chatbot-top-n') || 3;
+
             const response = await fetch(
               this.chatbotWidget.getAttribute('data-chatbot-url'),
               {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json',},
-                    body: JSON.stringify({ message })
+                    body: JSON.stringify({
+                        message,
+                        topNResults: parseInt(topNResults, 10)
+                    })
                   }
             );
 

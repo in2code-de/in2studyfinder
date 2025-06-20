@@ -70,7 +70,7 @@ class StudyCourseSearch implements ToolInterface
      * @throws InvalidVectorException
      * @throws \Exception
      */
-    public function execute(array $arguments)
+    public function execute(array $arguments, array $pluginSettings)
     {
         // Get search terms from arguments
         $searchTerms = (array)$this->getArgument('search_terms', $arguments);
@@ -78,8 +78,8 @@ class StudyCourseSearch implements ToolInterface
         // Get combined vector for all search terms
         $searchVector = $this->getSearchTermsAsVectors($searchTerms);
 
-        // Get top results using the combined vector
-        $studyCourses = $this->cosineSimilarityService->getTopNResults($searchVector);
+        $amount = (int)($pluginSettings['topNResults'] ?? 3);
+        $studyCourses = $this->cosineSimilarityService->getTopNResults($searchVector, $amount);
 
         // Query database for study course details
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)

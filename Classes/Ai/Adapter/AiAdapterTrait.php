@@ -58,9 +58,9 @@ trait AiAdapterTrait
     /**
      * @throws ToolNotFoundException
      */
-    private function getToolResults(array $toolCalls): array
+    private function getToolResults(array $toolCalls, array $pluginSettings): array
     {
-        return $this->toolResultService->getResultMessages($toolCalls);
+        return $this->toolResultService->getResultMessages($toolCalls, $pluginSettings);
     }
 
     private function getToolConfigurations(): array

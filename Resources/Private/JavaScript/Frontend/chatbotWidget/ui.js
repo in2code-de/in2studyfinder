@@ -6,8 +6,10 @@ export class UI {
     }
 
     hideDefaultPrompt() {
-        const defaultPrompt = this.chatbotWidget.querySelector('[data-defaultprompt]');
-        defaultPrompt.classList.add('u-hide');
+        const defaultPrompts = this.chatbotWidget.querySelector('[data-defaultprompts]');
+        if (defaultPrompts) {
+            defaultPrompts.classList.add('u-hide');
+        }
     }
 
     setupAutoResize() {
