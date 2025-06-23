@@ -9,5 +9,13 @@ mod.wizards.newContentElement.wizardItems.plugins {
 				list_type = in2studyfinder_pi1
 			}
 		}
+		in2studyfinder_chatbot {
+			iconIdentifier = in2studyfinder-chatbot-icon
+			title = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:chatbot.plugin.title
+			description = LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:chatbot.plugin.description
+			tt_content_defValues {
+				CType = in2studyfinder_chatbot
+			}
+		}
 	}
 }
