@@ -293,6 +293,9 @@
 			<trans-unit id="chatbot.plugin.title">
 				<source>Chatbot</source>
 			</trans-unit>
+			<trans-unit id="chatbot.plugin.description">
+				<source>Adds a chatbot to find studycourses based on Mistral AI.</source>
+			</trans-unit>
 			<trans-unit id="chatbot.plugin.settings.isWidget">
 				<source>Display as widget</source>
 			</trans-unit>

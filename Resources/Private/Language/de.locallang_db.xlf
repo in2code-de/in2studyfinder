@@ -383,6 +383,9 @@
 			<trans-unit id="chatbot.plugin.title">
 				<target>Chatbot</target>
 			</trans-unit>
+			<trans-unit id="chatbot.plugin.description">
+				<target>Fügt einen Chatbot für die Suche nach Studiengängen basierend auf Mistral AI.</target>
+			</trans-unit>
 			<trans-unit id="chatbot.plugin.settings.isWidget">
 				<target>Anzeige als Widget</target>
 			</trans-unit>
