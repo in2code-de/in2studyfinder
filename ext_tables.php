@@ -28,13 +28,6 @@ $extensionName = 'In2studyfinder';
     $ll . 'plugin.pi2'
 );
 
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'in2studyfinder',
-    'Chatbot',
-    $ll . 'chatbot.plugin.title',
-    'EXT:in2studyfinder/Resources/Public/Icons/chatbot.svg'
-);
-
 if (TYPO3_MODE === 'BE') {
 
     /**
