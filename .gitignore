@@ -23,6 +23,7 @@ var/
 
 .ddev/**
 !.ddev/commands/host/initialize
+!.ddev/commands/web/typo3
 !.ddev/config.yaml
 !.ddev/docker-compose.typo3.yaml
 

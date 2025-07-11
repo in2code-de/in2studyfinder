@@ -2,8 +2,7 @@
 return [
     'BE' => [
         'debug' => true,
-        'explicitADmode' => 'explicitAllow',
-        'installToolPassword' => '$argon2i$v=19$m=65536,t=16,p=1$Y0Zkc2tFVUFzaWs3S1JUMA$VUYXEG49usrpbDP9cKfC0GrhRAtGICi5B7HGJ4LVYtg',
+        'installToolPassword' => '$argon2i$v=19$m=65536,t=16,p=1$M2Rma0QvWDhuZWlubjNmaw$GNQhyTx+WUwjV0EuzRII4KuIf9l6mI8aRR5L7ec7xas',
         'passwordHashing' => [
             'className' => 'TYPO3\\CMS\\Core\\Crypto\\PasswordHashing\\Argon2iPasswordHash',
             'options' => [],
@@ -23,6 +22,13 @@ return [
                     'collate' => 'utf8mb4_unicode_ci',
                 ],
                 'user' => 'db',
+            ],
+        ],
+    ],
+    'EXTCONF' => [
+        'lang' => [
+            'availableLanguages' => [
+                'de',
             ],
         ],
     ],
@@ -54,20 +60,16 @@ return [
     ],
     'FE' => [
         'debug' => true,
-        'disableNoCacheParameter' => true,
         'passwordHashing' => [
             'className' => 'TYPO3\\CMS\\Core\\Crypto\\PasswordHashing\\Argon2iPasswordHash',
             'options' => [],
         ],
     ],
     'GFX' => [
-        'processor' => 'ImageMagick',
-        'processor_allowTemporaryMasksAsPng' => false,
-        'processor_colorspace' => 'sRGB',
-        'processor_effects' => true,
+        'processor' => 'GraphicsMagick',
+        'processor_effects' => false,
         'processor_enabled' => true,
         'processor_path' => '/usr/bin/',
-        'processor_path_lzw' => '/usr/bin/',
     ],
     'LOG' => [
         'TYPO3' => [
@@ -76,7 +78,7 @@ return [
                     'writerConfiguration' => [
                         'notice' => [
                             'TYPO3\CMS\Core\Log\Writer\FileWriter' => [
-                                'disabled' => true,
+                                'disabled' => false,
                             ],
                         ],
                     ],
@@ -110,12 +112,6 @@ return [
                         'compression' => true,
                     ],
                 ],
-                'pagesection' => [
-                    'backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend',
-                    'options' => [
-                        'compression' => true,
-                    ],
-                ],
                 'rootline' => [
                     'backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend',
                     'options' => [
@@ -124,17 +120,14 @@ return [
                 ],
             ],
         ],
-        'devIPmask' => '',
-        'displayErrors' => 0,
-        'encryptionKey' => 'd38c6c3eba5b63a952a6c91238205abd7fa52e89d4ae98cb66dcd908f0ce441570b26ad56c54417947f2bf09d2897e69',
-        'exceptionalErrors' => 4096,
-        'features' => [
-            'unifiedPageTranslationHandling' => true,
-            'yamlImportsFollowDeclarationOrder' => true,
-        ],
-        'sitename' => 'in2studyfinder -- DDEV',
+        'devIPmask' => '*',
+        'displayErrors' => 1,
+        'encryptionKey' => 'zuh6538f5wr1l3klkl5t59ztwoz8ug25rvh2zl4xs9wmqcvhdf5o39ji0a9wgaslzpblqawrx951jz3lv596fe9x9po48j4v',
+        'exceptionalErrors' => 12290,
+        'sitename' => 'EXT:in2studyfinder',
         'systemMaintainers' => [
             1,
         ],
+        'trustedHostsPattern' => '.*.*',
     ],
 ];
