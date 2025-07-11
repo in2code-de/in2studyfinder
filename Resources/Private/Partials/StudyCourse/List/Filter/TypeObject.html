@@ -3,7 +3,7 @@
 <f:if condition="{filterType.singleSelect} == 1">
 	<f:then>
 		<f:form.radio name="searchOptions[{filterTypeName}][]" id="{filterTypeName}_{option.uid}"
-									class="in2studyfinder__radio in2studyfinder-js-radio" value="{option.uid}"
+									class="in2studyfinder__radio js-in2studyfinder-radio" value="{option.uid}"
 									checked="{f:if(condition: '{searchedOptions.{filterTypeName}.0} == {option.uid}', then: 'true', else: 'false')}"/>
 		<label for="{filterTypeName}_{option.uid}" class="in2studyfinder__radio-label">{option.optionField}</label>
 	</f:then>

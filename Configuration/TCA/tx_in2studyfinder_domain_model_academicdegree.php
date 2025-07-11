@@ -21,6 +21,7 @@ return [
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
         'delete' => 'deleted',
+        'sortby' => 'sorting',
         'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
@@ -50,6 +51,7 @@ return [
         'endtime' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForEndTime(),
         'degree' => [
             'exclude' => true,
+            'l10n_mode' => 'prefixLangTitle',
             'label' => $ll . 'academicDegree.degree',
             'config' => [
                 'type' => 'input',
