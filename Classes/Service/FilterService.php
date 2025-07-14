@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace In2code\In2studyfinder\Service;
 
-use In2code\In2studyfinder\Domain\Model\StudyCourseInterface;
+use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
@@ -141,7 +141,7 @@ class FilterService extends AbstractService
         $availableOptions = [];
 
         foreach ($this->filter as $filterName => $filter) {
-            /** @var $studyCourse StudyCourseInterface */
+            /** @var $studyCourse StudyCourse */
             foreach ($studyCourses as $studyCourse) {
                 $property = ObjectAccess::getPropertyPath($studyCourse, $filter['propertyPath']);
 

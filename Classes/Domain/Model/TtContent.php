@@ -6,10 +6,7 @@ namespace In2code\In2studyfinder\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
-/**
- * Model of tt_content
- */
-class TtContent extends AbstractEntity implements TtContentInterface
+class TtContent extends AbstractEntity
 {
     public const TABLE = 'tt_content';
 }

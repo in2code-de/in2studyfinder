@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace In2code\In2studyfinder\Domain\Service;
 
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
-use In2code\In2studyfinder\Domain\Model\StudyCourseInterface;
 use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 use In2code\In2studyfinder\PageTitle\CoursePageTitleProvider;
 use In2code\In2studyfinder\Service\PluginService;
@@ -61,7 +60,7 @@ class CourseService extends AbstractService
         return $studyCourses;
     }
 
-    public function setPageTitleAndMetadata(StudyCourseInterface $studyCourse): void
+    public function setPageTitleAndMetadata(StudyCourse $studyCourse): void
     {
         GeneralUtility::makeInstance(CoursePageTitleProvider::class)->setTitle($studyCourse->getDetailPageTitle());
         $metaTagManager = GeneralUtility::makeInstance(MetaTagManagerRegistry::class);

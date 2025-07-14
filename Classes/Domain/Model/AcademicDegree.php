@@ -6,18 +6,13 @@ namespace In2code\In2studyfinder\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
-class AcademicDegree extends AbstractEntity implements AcademicDegreeInterface
+class AcademicDegree extends AbstractEntity
 {
     public const TABLE = 'tx_in2studyfinder_domain_model_academicdegree';
 
     protected string $degree = '';
 
     protected ?Graduation $graduation = null;
-
-    public function __construct()
-    {
-        //$this->graduation = new Graduation();
-    }
 
     public function getDegree(): string
     {
@@ -29,12 +24,12 @@ class AcademicDegree extends AbstractEntity implements AcademicDegreeInterface
         $this->degree = $degree;
     }
 
-    public function getGraduation(): ?GraduationInterface
+    public function getGraduation(): ?Graduation
     {
         return $this->graduation;
     }
 
-    public function setGraduation(GraduationInterface $graduation): void
+    public function setGraduation(Graduation $graduation): void
     {
         $this->graduation = $graduation;
     }

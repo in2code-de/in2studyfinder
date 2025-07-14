@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace In2code\In2studyfinder\Utility;
 
-use In2code\In2studyfinder\Domain\Model\GlobalDataInterface;
+use In2code\In2studyfinder\Domain\Model\GlobalData;
 use In2code\In2studyfinder\Domain\Repository\GlobalDataRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -21,7 +21,7 @@ class GlobalDataUtility extends AbstractUtility
      */
     public static function getDefaultPreset(
         string $globalDataRepositoryClass = GlobalDataRepository::class
-    ): ?GlobalDataInterface {
+    ): ?GlobalData {
         $defaultPreset = null;
 
         $globalDataRepository = GeneralUtility::makeInstance($globalDataRepositoryClass);
