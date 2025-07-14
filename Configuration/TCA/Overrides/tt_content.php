@@ -1,45 +1,54 @@
 <?php
 
+declare(strict_types=1);
+
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+
 defined('TYPO3') or die();
 
-/**
- * filter plugin
- */
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'In2studyfinder',
-    'Pi1',
-    'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:plugin.pi1'
-);
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['in2studyfinder_pi1'] = 'pi_flexform';
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
-    'in2studyfinder_pi1',
-    'FILE:EXT:in2studyfinder/Configuration/FlexForms/FlexformStudyfinderList.xml'
-);
+$extensionKey = 'In2studyfinder';
+$languagePrefix = 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:';
+$flexFormFolder = 'FILE:EXT:in2studyfinder/Configuration/FlexForm/Plugin/';
 
-/**
- * detail plugin
- */
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'In2studyfinder',
-    'Pi2',
-    'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:plugin.pi2'
-);
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['in2studyfinder_pi2'] = 'pi_flexform';
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
-    'in2studyfinder_pi2',
-    'FILE:EXT:in2studyfinder/Configuration/FlexForms/FlexformStudyfinderDetail.xml'
-);
+$plugins = [
+    'filter' => [
+        'name' => 'Filter',
+        'title' => $languagePrefix . 'plugin.pi1',
+        'flexForm' => $flexFormFolder . 'Filter.xml',
+    ],
+    'detail' => [
+        'name' => 'Detail',
+        'title' => $languagePrefix . 'plugin.pi2',
+        'flexForm' => $flexFormFolder . 'Detail.xml',
+    ],
+    'fastSearch' => [
+        'name' => 'FastSearch',
+        'title' => $languagePrefix . 'plugin.fastSearch',
+        'flexForm' => $flexFormFolder . 'FastSearch.xml',
+    ],
+];
 
-/**
- * fast search plugin
- */
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'In2studyfinder',
-    'FastSearch',
-    'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:plugin.fastSearch'
-);
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['in2studyfinder_fastsearch'] = 'pi_flexform';
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
-    'in2studyfinder_fastsearch',
-    'FILE:EXT:in2studyfinder/Configuration/FlexForms/FlexformStudyfinderFastSearch.xml'
-);
+foreach ($plugins as $plugin) {
+    $pluginSignature = ExtensionUtility::registerPlugin(
+        $extensionKey,
+        $plugin['name'],
+        $plugin['title'],
+        'in2studyfinder-plugin-icon',
+        'Studyfinder',
+        'Meine tolle beschreibung!'
+    );
+
+    ExtensionManagementUtility::addToAllTCAtypes(
+        'tt_content',
+        '--div--;Configuration,pi_flexform,',
+        $pluginSignature,
+        'after:subheader',
+    );
+
+    ExtensionManagementUtility::addPiFlexFormValue(
+        '*',
+        $plugin['flexForm'],
+        $pluginSignature,
+    );
+}
