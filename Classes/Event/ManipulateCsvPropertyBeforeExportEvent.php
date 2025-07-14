@@ -6,11 +6,8 @@ namespace In2code\In2studyfinder\Event;
 
 class ManipulateCsvPropertyBeforeExportEvent
 {
-    private mixed $property;
-
-    public function __construct($property)
+    public function __construct(private mixed $property)
     {
-        $this->property = $property;
     }
 
     public function getProperty(): mixed

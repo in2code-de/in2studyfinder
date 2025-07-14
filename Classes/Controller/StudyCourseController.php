@@ -12,7 +12,6 @@ use In2code\In2studyfinder\Service\FilterService;
 use In2code\In2studyfinder\Utility\CacheUtility;
 use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\FlexFormUtility;
-use In2code\In2studyfinder\Utility\FrontendUtility;
 use In2code\In2studyfinder\Utility\RecordUtility;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -23,20 +22,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class StudyCourseController extends AbstractController
 {
-    protected FilterService $filterService;
-
-    protected CourseService $courseService;
-
-    protected FacilityService $facilityService;
-
     public function __construct(
-        FilterService $filterService,
-        CourseService $courseService,
-        FacilityService $facilityService
+        protected FilterService $filterService,
+        protected CourseService $courseService,
+        protected FacilityService $facilityService
     ) {
-        $this->filterService = $filterService;
-        $this->courseService = $courseService;
-        $this->facilityService = $facilityService;
     }
 
     /**
@@ -46,7 +36,7 @@ class StudyCourseController extends AbstractController
     {
         $this->filterService->initialize();
 
-        if (!empty($pluginInformation)) {
+        if ($pluginInformation !== []) {
             // if the current call is an ajax / fetch request
             $currentPluginRecord =
                 RecordUtility::getRecordWithLanguageOverlay(
@@ -60,7 +50,7 @@ class StudyCourseController extends AbstractController
                     FlexFormUtility::getFlexForm($currentPluginRecord['pi_flexform'], 'settings')
                 );
         } else {
-            $currentPluginRecord = $this->configurationManager->getContentObject()->data;
+            $currentPluginRecord = $this->request->getAttribute('currentContentObject')->data;
         }
 
         $this->filterService->setSettings($this->settings);
@@ -95,7 +85,7 @@ class StudyCourseController extends AbstractController
      */
     public function fastSearchAction(): ResponseInterface
     {
-        $currentPluginRecord = $this->configurationManager->getContentObject()->data;
+        $currentPluginRecord = $this->request->getAttribute('currentContentObject')->data;
         $studyCourses =
             $this->courseService->findBySearchOptions([], $currentPluginRecord);
 
@@ -142,7 +132,7 @@ class StudyCourseController extends AbstractController
      */
     public function detailAction(StudyCourse $studyCourse = null): ResponseInterface
     {
-        if ($studyCourse) {
+        if ($studyCourse instanceof \In2code\In2studyfinder\Domain\Model\StudyCourse) {
             $this->courseService->setPageTitleAndMetadata($studyCourse);
             CacheUtility::addCacheTags([$studyCourse]);
 

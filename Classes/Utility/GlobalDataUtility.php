@@ -13,13 +13,7 @@ class GlobalDataUtility extends AbstractUtility
     public static function existDefaultPreset(GlobalDataRepository $globalDataRepository): bool
     {
         /** @var $globalDataRepository GlobalDataRepository */
-        if ($globalDataRepository->countDefaultPreset() > 0) {
-            $status = true;
-        } else {
-            $status = false;
-        }
-
-        return $status;
+        return $globalDataRepository->countDefaultPreset() > 0;
     }
 
     /**
@@ -32,10 +26,8 @@ class GlobalDataUtility extends AbstractUtility
 
         $globalDataRepository = GeneralUtility::makeInstance($globalDataRepositoryClass);
 
-        if ($globalDataRepository instanceof GlobalDataRepository) {
-            if (self::existDefaultPreset($globalDataRepository)) {
-                $defaultPreset = $globalDataRepository->findDefaultPreset();
-            }
+        if ($globalDataRepository instanceof GlobalDataRepository && self::existDefaultPreset($globalDataRepository)) {
+            return $globalDataRepository->findDefaultPreset();
         }
 
         return $defaultPreset;

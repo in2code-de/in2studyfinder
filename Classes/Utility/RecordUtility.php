@@ -49,7 +49,7 @@ class RecordUtility extends AbstractUtility
             ->where(
                 $queryBuilder->expr()->eq(
                     'l18n_parent',
-                    $queryBuilder->createNamedParameter((int)$records[0]['uid'], \PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter((int)$records[0]['uid'], \TYPO3\CMS\Core\Database\Connection::PARAM_INT)
                 )
             )->executeQuery()->fetchAllAssociative();
 
@@ -68,8 +68,7 @@ class RecordUtility extends AbstractUtility
             GeneralUtility::makeInstance(PageRepository::class)->getRecordOverlay(
                 TtContent::TABLE,
                 self::getRecord(TtContent::TABLE, $recordUid),
-                $languageUid,
-                'on'
+                $languageUid
             );
 
         if (!empty($record)) {
@@ -136,7 +135,7 @@ class RecordUtility extends AbstractUtility
             }
 
             // add custom where clause
-            if ($where) {
+            if ($where !== '' && $where !== '0') {
                 $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($where));
             }
 
@@ -145,6 +144,7 @@ class RecordUtility extends AbstractUtility
                 return $row;
             }
         }
+
         return null;
     }
 }

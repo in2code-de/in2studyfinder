@@ -43,6 +43,7 @@ class PaginateViewHelper extends AbstractViewHelper
         if ($arguments['objects'] === null) {
             return $renderChildrenClosure();
         }
+
         $templateVariableContainer = $renderingContext->getVariableProvider();
         $templateVariableContainer->add($arguments['as'], [
             'pagination' => self::getPagination($arguments, $renderingContext),

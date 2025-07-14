@@ -10,10 +10,15 @@ use TYPO3\CMS\Core\Core\Environment;
 class ExportConfiguration
 {
     protected array $propertiesToExport = [];
+
     protected bool $includeHidden = false;
+
     protected bool $includeDeleted = false;
+
     protected string $exportLocation = '';
+
     protected ExportInterface $exporter;
+
     protected array $recordsToExport = [];
 
     public function __construct()

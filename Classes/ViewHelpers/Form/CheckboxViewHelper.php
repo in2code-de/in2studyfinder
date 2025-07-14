@@ -29,7 +29,6 @@ class CheckboxViewHelper extends AbstractFormFieldViewHelper
             'f3-form-error'
         );
         $this->overrideArgument('value', 'string', 'Value of input tag. Required for checkboxes', true);
-        $this->registerUniversalTagAttributes();
         $this->registerArgument('checked', 'bool', 'Specifies that the input element should be preselected');
         $this->registerArgument('multiple', 'bool', 'Specifies whether this checkbox belongs to a multivalue (is part of a checkbox group)', false, false);
         $this->registerArgument(
@@ -64,6 +63,7 @@ class CheckboxViewHelper extends AbstractFormFieldViewHelper
         if ($this->hasMappingErrorOccurred()) {
             $propertyValue = $this->getLastSubmittedFormData();
         }
+
         if ($checked === null && $propertyValue === null) {
             $propertyValue = $this->getPropertyValue();
         }
@@ -71,11 +71,13 @@ class CheckboxViewHelper extends AbstractFormFieldViewHelper
         if ($propertyValue instanceof \Traversable) {
             $propertyValue = iterator_to_array($propertyValue);
         }
+
         if (is_array($propertyValue)) {
             $propertyValue = array_map([$this, 'convertToPlainValue'], $propertyValue);
             if ($checked === null) {
                 $checked = in_array($valueAttribute, $propertyValue, true);
             }
+
             $nameAttribute .= '[]';
         } elseif ($multiple === true) {
             $nameAttribute .= '[]';
@@ -101,25 +103,18 @@ class CheckboxViewHelper extends AbstractFormFieldViewHelper
 
     protected function setDisabledIfNotAvailable(): void
     {
-        [$propertyName, $objectId] = explode('_', $this->arguments['id']);
+        [$propertyName, $objectId] = explode('_', (string) $this->additionalArguments['id']);
 
-        if (is_array($this->arguments['possibleFilters']) && !empty($this->arguments['possibleFilters'])) {
-            if (
-                !isset($this->arguments['possibleFilters'][$propertyName]) ||
-                !in_array((int)$objectId, $this->arguments['possibleFilters'][$propertyName], true)
-            ) {
-                $this->tag->addAttribute('disabled', 'disabled');
-            }
+        if (is_array($this->arguments['possibleFilters']) && !empty($this->arguments['possibleFilters']) && (!isset($this->arguments['possibleFilters'][$propertyName]) || !in_array((int)$objectId, $this->arguments['possibleFilters'][$propertyName], true))) {
+            $this->tag->addAttribute('disabled', 'disabled');
         }
     }
 
     protected function setSelectedIfPreviouslySelected(): void
     {
-        [$propertyName, $objectId] = explode('_', $this->arguments['id']);
-        if (isset($this->arguments['searchedOptions'][$propertyName])) {
-            if (in_array($objectId, $this->arguments['searchedOptions'][$propertyName], true)) {
-                $this->tag->addAttribute('checked', true);
-            }
+        [$propertyName, $objectId] = explode('_', (string) $this->additionalArguments['id']);
+        if (isset($this->arguments['searchedOptions'][$propertyName]) && in_array($objectId, $this->arguments['searchedOptions'][$propertyName], true)) {
+            $this->tag->addAttribute('checked', true);
         }
     }
 }

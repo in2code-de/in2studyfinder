@@ -20,7 +20,12 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 class UrlSegmentPostModifier
 {
     protected array $configuration = [];
+    public function __construct(private readonly \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool)
+    {
+    }
+
     protected int $courseId = -1;
+
     protected int $academicDegree = -1;
 
     /**
@@ -42,19 +47,17 @@ class UrlSegmentPostModifier
 
         $graduationTitle = $this->getGraduationTitle();
 
-        if (!empty($graduationTitle)) {
-            $slug = $configuration['slug'] . '-' . $graduationTitle;
-        } else {
-            $slug = $configuration['slug'];
+        if ($graduationTitle !== '') {
+            return $configuration['slug'] . '-' . $graduationTitle;
         }
 
-        return $slug;
+        return $configuration['slug'];
     }
 
     protected function getGraduationTitle(): string
     {
         $queryBuilder =
-            GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(StudyCourse::TABLE);
+            $this->connectionPool->getQueryBuilderForTable(StudyCourse::TABLE);
 
         $queryBuilder->select(Graduation::TABLE . '.title');
 
@@ -114,9 +117,9 @@ class UrlSegmentPostModifier
             return true;
         }
 
-        return !is_null(GeneralUtility::_GP('install')) &&
-            array_key_exists('action', GeneralUtility::_GP('install')) &&
-            GeneralUtility::_GP('install')['action'] === 'upgradeWizardsExecute';
+        return !is_null($GLOBALS['TYPO3_REQUEST']->getParsedBody()['install'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['install'] ?? null) &&
+            array_key_exists('action', $GLOBALS['TYPO3_REQUEST']->getParsedBody()['install'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['install'] ?? null) &&
+            ($GLOBALS['TYPO3_REQUEST']->getParsedBody()['install'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['install'] ?? null)['action'] === 'upgradeWizardsExecute';
     }
 
     protected function isNewRecord(): bool

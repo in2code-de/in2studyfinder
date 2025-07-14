@@ -56,7 +56,7 @@ class StudyCourseRepository extends AbstractRepository
             }
         }
 
-        if (!empty($constraints)) {
+        if ($constraints !== []) {
             $query->matching($query->logicalAnd(...$constraints));
         }
 

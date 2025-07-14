@@ -37,17 +37,15 @@ class PluginService extends AbstractService
     public function preparePluginRestrictions(array $flexFormRestrictions, array $filter): array
     {
         $restrictions = [];
-        if (!empty($flexFormRestrictions)) {
-            foreach ($flexFormRestrictions as $filterName => $uid) {
-                if ($uid !== '' && array_key_exists($filterName, $filter)) {
-                    $restrictions[$filterName] = GeneralUtility::intExplode(',', $uid, true);
-                } else {
-                    $this->logger->info(
-                        'Remove the plugin filter restriction for filter: "' . $filterName .
-                        '". Because the given restriction is not defined in the typoscript filter section.',
-                        ['additionalInfo' => ['class' => self::class, 'method' => __METHOD__, 'line' => __LINE__]]
-                    );
-                }
+        foreach ($flexFormRestrictions as $filterName => $uid) {
+            if ($uid !== '' && array_key_exists($filterName, $filter)) {
+                $restrictions[$filterName] = GeneralUtility::intExplode(',', $uid, true);
+            } else {
+                $this->logger->info(
+                    'Remove the plugin filter restriction for filter: "' . $filterName .
+                    '". Because the given restriction is not defined in the typoscript filter section.',
+                    ['additionalInfo' => ['class' => self::class, 'method' => __METHOD__, 'line' => __LINE__]]
+                );
             }
         }
 

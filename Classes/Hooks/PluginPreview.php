@@ -32,9 +32,7 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
      * @param string $headerContent Header content
      * @param string $itemContent Item content
      * @param array $row Record row of tt_content
-     * @return void
      * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
-     *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function preProcess(
@@ -43,12 +41,12 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
         &$headerContent,
         &$itemContent,
         array &$row
-    ) {
+    ): void {
         $this->initialize($row);
         $listType = $this->row['list_type'];
 
         if ($this->isStudyfinderListType($listType)) {
-            if (empty($this->settings)) {
+            if ($this->settings === []) {
                 $drawItem = false;
                 $itemContent = $this->getNoTyposcriptTemplateWarning();
             } else {
@@ -75,7 +73,7 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
     protected function getPluginInformation(string $pluginName): string
     {
         $standaloneView = GeneralUtility::makeInstance(StandaloneView::class);
-        $standaloneView->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($this->templatePathAndFile));
+        $standaloneView->getRenderingContext()->getTemplatePaths()->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($this->templatePathAndFile));
 
         $standaloneView->assignMultiple(
             [
@@ -127,6 +125,7 @@ class PluginPreview implements PageLayoutViewDrawItemHookInterface
                         ]
                     );
                 }
+
                 break;
         }
 

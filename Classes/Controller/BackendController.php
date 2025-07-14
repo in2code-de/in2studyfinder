@@ -9,10 +9,15 @@ use In2code\In2studyfinder\Domain\Service\CourseService;
 use In2code\In2studyfinder\Service\ExportService;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
+use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
+use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
+use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -21,25 +26,17 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  */
 class BackendController extends AbstractController
 {
-    protected CourseService $courseService;
-    protected StudyCourseRepository $studyCourseRepository;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-    protected PageRenderer $pageRenderer;
-
     public function __construct(
-        StudyCourseRepository $studyCourseRepository,
-        CourseService $courseService,
-        ModuleTemplateFactory $moduleTemplateFactory,
-        PageRenderer $pageRenderer
+        protected StudyCourseRepository $studyCourseRepository,
+        protected CourseService $courseService,
+        protected ModuleTemplateFactory $moduleTemplateFactory,
+        protected PageRenderer $pageRenderer,
+        private readonly ConnectionPool $connectionPool
     ) {
-        $this->studyCourseRepository = $studyCourseRepository;
-        $this->courseService = $courseService;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
-        $this->pageRenderer = $pageRenderer;
     }
 
     /**
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     * @throws NoSuchArgumentException
      */
     public function listAction(): ResponseInterface
     {
@@ -61,7 +58,7 @@ class BackendController extends AbstractController
 
         $possibleExportDataProvider = $this->getPossibleExportDataProvider();
 
-        if (empty($studyCourses)) {
+        if ($studyCourses === []) {
             $this->addFlashMessage(
                 LocalizationUtility::translate('messages.noCourses.body', 'in2studyfinder'),
                 LocalizationUtility::translate('messages.noCourses.title', 'in2studyfinder'),
@@ -94,37 +91,38 @@ class BackendController extends AbstractController
         $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/In2studyfinder/Backend/Backend');
         $this->pageRenderer->addCssFile('EXT:in2studyfinder/Resources/Public/Css/backend.css');
+
         $moduleTemplate->setContent($this->view->render());
 
         return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     * @throws StopActionException
+     * @throws InvalidQueryException
      */
     public function exportAction(
         string $exporter,
         int $recordLanguage,
         array $selectedProperties,
         array $courseList
-    ): void {
-        if (empty($selectedProperties) || empty($courseList)) {
+    ): ResponseInterface {
+        if ($selectedProperties === [] || $courseList === []) {
             $this->addFlashMessage(
                 LocalizationUtility::translate('messages.notAllRequiredFieldsSet.body', 'in2studyfinder'),
                 LocalizationUtility::translate('messages.notAllRequiredFieldsSet.title', 'in2studyfinder'),
                 ContextualFeedbackSeverity::ERROR
             );
-
-            $this->forward('list');
+            return new ForwardResponse('list');
         }
 
-        $courses = $this->studyCourseRepository->findByUidsAndLanguage($courseList, (int)$recordLanguage);
+        $courses = $this->studyCourseRepository->findByUidsAndLanguage($courseList, $recordLanguage);
 
         $exportService =
             GeneralUtility::makeInstance(ExportService::class, $exporter, $selectedProperties, $courses->toArray());
 
         $exportService->export();
+        return $this->htmlResponse();
     }
 
     protected function getSysLanguages(): array
@@ -133,11 +131,12 @@ class BackendController extends AbstractController
             0 => 'default'
         ];
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_language');
         $languageRecords = $queryBuilder
             ->select('*')
             ->from('sys_language')
-            ->where($queryBuilder->expr()->eq('hidden', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)))
+            ->where($queryBuilder->expr()->eq('hidden',
+                $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)))
             ->orderBy('sorting')
             ->executeQuery()->fetchAllAssociative();
 

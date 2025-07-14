@@ -31,6 +31,7 @@ class CsvExport extends AbstractExport implements ExportInterface
 
                 $recordRows[$row] .= '"' . $property . '";';
             }
+
             $recordRows[$row] .= PHP_EOL;
         }
 
@@ -48,7 +49,7 @@ class CsvExport extends AbstractExport implements ExportInterface
                 true
             )
         ) {
-            throw new Exception('Export file could not be created!');
+            throw new Exception('Export file could not be created!', 9808338669);
         }
 
         return $exportConfiguration->getExportLocation() . $this->fileName;
@@ -62,6 +63,6 @@ class CsvExport extends AbstractExport implements ExportInterface
             $standaloneView->assign($key, $variable);
         }
 
-        return trim($standaloneView->render());
+        return trim((string) $standaloneView->render());
     }
 }

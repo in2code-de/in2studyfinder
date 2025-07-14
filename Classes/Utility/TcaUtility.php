@@ -177,7 +177,7 @@ class TcaUtility extends AbstractUtility
         int $minItems = 0,
         int $maxItems = 9999,
         string $l10nMode = 'exclude'
-    ) {
+    ): array {
         return [
             'exclude' => $exclude,
             'l10n_mode' => $l10nMode,
@@ -207,7 +207,7 @@ class TcaUtility extends AbstractUtility
 
     public static function getAddWizard(string $table, string $pid = '###CURRENT_PID###'): array
     {
-        $wizard = [
+        return [
             'type' => 'script',
             'title' => 'LLL:EXT:cms/locallang_tca.xlf:sys_template.basedOn_add',
             'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
@@ -220,13 +220,11 @@ class TcaUtility extends AbstractUtility
                 'name' => 'wizard_add',
             ],
         ];
-
-        return $wizard;
     }
 
     public static function getEditWizard(): array
     {
-        $wizard = [
+        return [
             'type' => 'popup',
             'title' => 'Edit',
             'popup_onlyOpenIfSelected' => 1,
@@ -236,8 +234,6 @@ class TcaUtility extends AbstractUtility
                 'name' => 'wizard_edit',
             ]
         ];
-
-        return $wizard;
     }
 
     public static function getLinkWizard(
@@ -245,7 +241,7 @@ class TcaUtility extends AbstractUtility
         string $allowedExtensions = '',
         string $blindLinkFields = ''
     ): array {
-        $linkWizard = [
+        return [
             'type' => 'popup',
             'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_link_formlabel',
             'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
@@ -259,8 +255,6 @@ class TcaUtility extends AbstractUtility
                 'blindLinkFields' => $blindLinkFields,
             ],
         ];
-
-        return $linkWizard;
     }
 
     public static function setExtbaseType(
@@ -312,12 +306,12 @@ class TcaUtility extends AbstractUtility
     ): void {
         $newShowItem = $GLOBALS['TCA'][$table]['types']['0']['showitem'];
 
-        $fieldArray = explode(',', $newShowItem);
+        $fieldArray = explode(',', (string) $newShowItem);
 
-        array_walk($fieldArray, [self::class, 'trimValue']);
+        array_walk($fieldArray, self::trimValue(...));
 
         if (in_array($insertAfter, $fieldArray)) {
-            $arrayKey = array_search($insertAfter, $fieldArray) + 1;
+            $arrayKey = array_search($insertAfter, $fieldArray, true) + 1;
             array_splice($fieldArray, $arrayKey, 0, [$field]);
         } else {
             $fieldArray[] = $field;
@@ -339,7 +333,7 @@ class TcaUtility extends AbstractUtility
         bool $addLineBreakAfter = false
     ): void {
         $newShowItem = $GLOBALS['TCA'][$table]['palettes'][$palette]['showitem'];
-        $fieldArray = explode(',', $newShowItem);
+        $fieldArray = explode(',', (string) $newShowItem);
         $iterator = 0;
         $insertFieldArray = [];
 
@@ -350,6 +344,7 @@ class TcaUtility extends AbstractUtility
             if ($addLineBreakBefore) {
                 $preLineBreak = '--linebreak--,';
             }
+
             if ($addLineBreakAfter) {
                 $afterLineBreak = ',--linebreak--';
             }
@@ -359,7 +354,7 @@ class TcaUtility extends AbstractUtility
             $iterator++;
         }
 
-        array_walk($fieldArray, [self::class, 'trimValue']);
+        array_walk($fieldArray, self::trimValue(...));
 
         if (in_array($insertAfter, $fieldArray, true)) {
             $arrayKey = array_search($insertAfter, $fieldArray, true) + 1;
@@ -419,13 +414,13 @@ class TcaUtility extends AbstractUtility
         }
 
         if ($status) {
-            $showItemArray = explode(',', $GLOBALS['TCA'][$table][$section][$sectionName]['showitem']);
+            $showItemArray = explode(',', (string) $GLOBALS['TCA'][$table][$section][$sectionName]['showitem']);
 
-            array_walk($showItemArray, [self::class, 'trimValue']);
+            array_walk($showItemArray, self::trimValue(...));
 
             foreach ($fields as $field) {
                 if (in_array($field, $showItemArray)) {
-                    unset($showItemArray[array_search($field, $showItemArray)]);
+                    unset($showItemArray[array_search($field, $showItemArray, true)]);
                 }
             }
 

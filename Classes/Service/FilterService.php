@@ -6,7 +6,6 @@ namespace In2code\In2studyfinder\Service;
 
 use In2code\In2studyfinder\Domain\Model\StudyCourseInterface;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
-use In2code\In2studyfinder\Utility\FrontendUtility;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -23,17 +22,14 @@ class FilterService extends AbstractService
 
     protected array $filter = [];
 
-    protected PluginService $pluginService;
-
     /**
      * FilterService constructor.
      */
-    public function __construct(LoggerInterface $logger, PluginService $pluginService)
+    public function __construct(LoggerInterface $logger, protected PluginService $pluginService)
     {
         parent::__construct($logger);
 
         $this->settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
-        $this->pluginService = $pluginService;
     }
 
     public function initialize(): void
@@ -77,7 +73,7 @@ class FilterService extends AbstractService
     /**
      * updates the filter keys to the actual property path
      */
-    public function resolveFilterPropertyPath($searchOptions): array
+    public function resolveFilterPropertyPath(array $searchOptions): array
     {
         $filter = $this->getFilter();
 
@@ -93,13 +89,11 @@ class FilterService extends AbstractService
 
     public function loadOrSetPersistedFilter(array $searchOptions): array
     {
-        if (!empty($searchOptions)) {
-            FrontendUtility::getTyposcriptFrontendController()
-                ->fe_user
+        if ($searchOptions !== []) {
+            $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')
                 ->setAndSaveSessionData('tx_in2studycourse_filter', array_filter($searchOptions));
         } else {
-            $sessionData = FrontendUtility::getTyposcriptFrontendController()
-                ->fe_user
+            $sessionData = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')
                 ->getSessionData('tx_in2studycourse_filter');
             if (!empty($sessionData)) {
                 return (array)$sessionData;
@@ -132,7 +126,7 @@ class FilterService extends AbstractService
      */
     public function disableFilterFrontendRenderingByPluginRestrictions(): void
     {
-        foreach ($this->getPluginFilterRestrictions() as $filterName => $values) {
+        foreach (array_keys($this->getPluginFilterRestrictions()) as $filterName) {
             if (array_key_exists($filterName, $this->filter)) {
                 $this->filter[$filterName]['disabledInFrontend'] = true;
             }
@@ -160,6 +154,7 @@ class FilterService extends AbstractService
                         } elseif ($property instanceof AbstractDomainObject) {
                             $availableOptions[$filterName][$property->getUid()] = $property->getUid();
                         }
+
                         break;
                     case 'boolean':
                         if ($property !== '' && $property !== 0 && $property !== false) {
@@ -167,6 +162,7 @@ class FilterService extends AbstractService
                         } else {
                             $availableOptions[$filterName][1] = 'false';
                         }
+
                         break;
                     default:
                         break;
@@ -181,7 +177,7 @@ class FilterService extends AbstractService
     {
         $frontendLabel = LocalizationUtility::translate($filterConfiguration['frontendLabel'], 'in2studyfinder');
         if ($frontendLabel === null) {
-            $frontendLabel = $filterConfiguration['frontendLabel'];
+            return $filterConfiguration['frontendLabel'];
         }
 
         return $frontendLabel;
@@ -204,7 +200,9 @@ class FilterService extends AbstractService
         if (class_exists($repositoryClassName)) {
             $defaultQuerySettings = GeneralUtility::makeInstance(QuerySettingsInterface::class);
             $defaultQuerySettings->setStoragePageIds([$this->settings['settingsPid']]);
-            $defaultQuerySettings->setLanguageOverlayMode(true);
+            $languageAspect = $defaultQuerySettings->getLanguageAspect();
+            $languageAspect = new \TYPO3\CMS\Core\Context\LanguageAspect($languageAspect->getId(), $languageAspect->getContentId(), \TYPO3\CMS\Core\Context\LanguageAspect::OVERLAYS_MIXED);
+            $defaultQuerySettings->setLanguageAspect($languageAspect);
 
             $repository = GeneralUtility::makeInstance($repositoryClassName);
             $repository->setDefaultQuerySettings($defaultQuerySettings);
@@ -272,7 +270,7 @@ class FilterService extends AbstractService
     {
         $filters = $this->settings['filters'] ?? [];
 
-        if (is_array($filters) && !empty($filters)) {
+        if (is_array($filters) && $filters !== []) {
             return $filters;
         }
 

@@ -26,7 +26,8 @@ class CacheUtility
                 $cacheTags[$localizedUid] = 'tx_in2studyfinder_uid_' . $localizedUid;
             }
         }
-        if (count($cacheTags) > 0) {
+
+        if ($cacheTags !== []) {
             FrontendUtility::getTyposcriptFrontendController()->addCacheTags($cacheTags);
         }
     }

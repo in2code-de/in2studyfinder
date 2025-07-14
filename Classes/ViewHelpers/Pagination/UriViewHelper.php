@@ -12,9 +12,16 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 class UriViewHelper extends AbstractTagBasedViewHelper
 {
     /**
+     * Constructor
+     */
+    public function __construct(private readonly \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder $uriBuilder)
+    {
+        parent::__construct();
+    }
+    /**
      * Initialize arguments
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
         $this->registerArgument('name', 'string', 'identifier important if more widgets on same page', false, 'widget');
@@ -28,8 +35,9 @@ class UriViewHelper extends AbstractTagBasedViewHelper
      */
     public function render(): string
     {
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $uriBuilder = $this->uriBuilder;
         $uriBuilder->setRequest($this->renderingContext->getRequest());
+
         $extensionName = $this->renderingContext->getRequest()->getControllerExtensionName();
         $pluginName = $this->renderingContext->getRequest()->getPluginName();
         $extensionService = GeneralUtility::makeInstance(ExtensionService::class);
@@ -39,9 +47,11 @@ class UriViewHelper extends AbstractTagBasedViewHelper
         if ($this->hasArgument('action')) {
             $arguments['action'] = $this->arguments['action'];
         }
+
         if ($this->hasArgument('format') && $this->arguments['format'] !== '') {
             $arguments['format'] = $this->arguments['format'];
         }
+
         $uriBuilder->reset()
             ->setArguments([$argumentPrefix => $arguments])
             ->setAddQueryString(true)
@@ -50,6 +60,7 @@ class UriViewHelper extends AbstractTagBasedViewHelper
         if (is_string($addQueryStringMethod)) {
             $uriBuilder->setAddQueryStringMethod($addQueryStringMethod);
         }
+
         return $uriBuilder->build();
     }
 }

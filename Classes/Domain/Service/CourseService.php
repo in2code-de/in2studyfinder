@@ -24,23 +24,16 @@ class CourseService extends AbstractService
 {
     protected array $settings = [];
 
-    protected PluginService $pluginService;
-
-    protected StudyCourseRepository $studyCourseRepository;
-
     /**
      * @var ReflectionService
      */
-    protected $reflectionService;
+    protected object $reflectionService;
 
     public function __construct(
-        StudyCourseRepository $studyCourseRepository,
-        PluginService $pluginService
+        protected StudyCourseRepository $studyCourseRepository,
+        protected PluginService $pluginService
     ) {
         parent::__construct();
-
-        $this->studyCourseRepository = $studyCourseRepository;
-        $this->pluginService = $pluginService;
         $this->reflectionService = GeneralUtility::makeInstance(ReflectionService::class);
     }
 
@@ -48,7 +41,7 @@ class CourseService extends AbstractService
     {
         $storagePids = $this->pluginService->getPluginStoragePids($pluginRecord);
 
-        if (!empty($storagePids)) {
+        if ($storagePids !== []) {
             $searchOptions['storagePids'] = $storagePids;
         }
 
@@ -73,13 +66,13 @@ class CourseService extends AbstractService
         GeneralUtility::makeInstance(CoursePageTitleProvider::class)->setTitle($studyCourse->getDetailPageTitle());
         $metaTagManager = GeneralUtility::makeInstance(MetaTagManagerRegistry::class);
 
-        if (!empty($studyCourse->getMetaDescription())) {
+        if ($studyCourse->getMetaDescription() !== '') {
             $metaTagManager->getManagerForProperty('description')->addProperty(
                 'description',
                 $studyCourse->getMetaDescription()
             );
         }
-        if (!empty($studyCourse->getMetaKeywords())) {
+        if ($studyCourse->getMetaKeywords() !== '') {
             $metaTagManager->getManagerForProperty('keywords')->addProperty(
                 'keywords',
                 $studyCourse->getMetaKeywords()
@@ -153,11 +146,7 @@ class CourseService extends AbstractService
     protected function getCacheIdentifierForStudyCourses(array $options): string
     {
         // create cache Identifier
-        if (empty($options)) {
-            $optionsIdentifier = 'allStudyCourses';
-        } else {
-            $optionsIdentifier = json_encode($options, JSON_THROW_ON_ERROR);
-        }
+        $optionsIdentifier = $options === [] ? 'allStudyCourses' : json_encode($options, JSON_THROW_ON_ERROR);
 
         return md5(
             FrontendUtility::getCurrentPageIdentifier()

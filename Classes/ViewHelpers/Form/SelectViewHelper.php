@@ -18,6 +18,13 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
  */
 class SelectViewHelper extends AbstractSelectViewHelper
 {
+    /**
+     * Constructor
+     */
+    public function __construct(private readonly \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder $uriBuilder)
+    {
+        parent::__construct();
+    }
     public function initializeArguments(): void
     {
         parent::initializeArguments();
@@ -59,51 +66,46 @@ class SelectViewHelper extends AbstractSelectViewHelper
             $optionsArgument = $optionsArgument->toArray();
         }
 
-        if ($this->hasArgument('action')) {
-            $action = $this->arguments['action'];
-        } else {
-            $action = 'detail';
-        }
+        $action = $this->hasArgument('action') ? $this->arguments['action'] : 'detail';
 
         if ($this->hasArgument('detailPageUid')) {
             $pageUid = $this->arguments['detailPageUid'];
         }
 
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $uriBuilder = $this->uriBuilder;
 
         foreach ($optionsArgument as $value) {
-            if ($this->hasArgument('additionalOptionAttributes')) {
-                if ($value instanceof AbstractDomainObject) {
-                    $label = '';
+            if (!$this->hasArgument('additionalOptionAttributes')) {
+                continue;
+            }
+            if (!$value instanceof AbstractDomainObject) {
+                continue;
+            }
+            $label = '';
+            if (array_key_exists($value->getUid(), $originalOptions)) {
+                $label = $originalOptions[$value->getUid()];
+            }
+            $updatedOptions[$value->getUid()]['label'] = $label;
+            foreach ($this->arguments['additionalOptionAttributes'] as $attribute => $property) {
+                $updatedOptions[$value->getUid()]['additionalAttributes'][$attribute] =
+                    \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath(
+                        $value,
+                        $property
+                    );
 
-                    if (array_key_exists($value->getUid(), $originalOptions)) {
-                        $label = $originalOptions[$value->getUid()];
-                    }
+                $uri =
+                    $uriBuilder->reset()->setRequest($this->getRequest());
 
-                    $updatedOptions[$value->getUid()]['label'] = $label;
-
-                    foreach ($this->arguments['additionalOptionAttributes'] as $attribute => $property) {
-                        $updatedOptions[$value->getUid()]['additionalAttributes'][$attribute] =
-                            \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath(
-                                $value,
-                                $property
-                            );
-
-                        $uri =
-                            $uriBuilder->reset()->setRequest($this->getRequest());
-
-                        if (!empty($pageUid)) {
-                            $uri->setTargetPageUid((int)$pageUid);
-                        }
-
-                        $uri->uriFor(
-                            $action,
-                            ['studyCourse' => $value]
-                        );
-
-                        $updatedOptions[$value->getUid()]['additionalAttributes']['data-url'] = $uri->build();
-                    }
+                if (!empty($pageUid)) {
+                    $uri->setTargetPageUid((int)$pageUid);
                 }
+
+                $uri->uriFor(
+                    $action,
+                    ['studyCourse' => $value]
+                );
+
+                $updatedOptions[$value->getUid()]['additionalAttributes']['data-url'] = $uri->build();
             }
         }
 
@@ -119,6 +121,7 @@ class SelectViewHelper extends AbstractSelectViewHelper
             if ('' === $value && empty($attributes)) {
                 continue;
             }
+
             $isSelected = $this->isSelected($value);
 
             $additionalAttributes = [];
@@ -155,22 +158,15 @@ class SelectViewHelper extends AbstractSelectViewHelper
         if ($isSelected) {
             $output .= ' selected="selected"';
         }
-        $output .= '>' . htmlspecialchars($label) . '</option>';
-        return $output;
+        return $output . ('>' . htmlspecialchars($label) . '</option>');
     }
 
-    /**
-     * @param array $additionalAttributes
-     * @return string
-     */
     protected function getAdditionalAttributesString(array $additionalAttributes): string
     {
         $output = '';
 
-        if (!empty($additionalAttributes)) {
-            foreach ($additionalAttributes as $attribute => $value) {
-                $output .= ' ' . htmlspecialchars($attribute) . '="' . htmlspecialchars($value) . '"';
-            }
+        foreach ($additionalAttributes as $attribute => $value) {
+            $output .= ' ' . htmlspecialchars($attribute) . '="' . htmlspecialchars((string) $value) . '"';
         }
 
         return ltrim($output);

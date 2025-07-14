@@ -24,9 +24,11 @@ class PageUtility
         if ($uid < 0) {
             $uid = abs($uid);
         }
+
         if ($begin === 0) {
             $theList = $uid;
         }
+
         if ($uid && $depth > 0) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
@@ -45,15 +47,18 @@ class PageUtility
                 if ($begin <= 0) {
                     $theList .= ',' . $page['uid'];
                 }
+
                 if ($depth > 1) {
                     $theSubList = self::getTreeList((int)$page['uid'], $depth - 1, $begin - 1, $permClause);
-                    if (!empty($theList) && !empty($theSubList) && ($theSubList[0] !== ',')) {
+                    if (!empty($theList) && ($theSubList !== '' && $theSubList !== '0') && ($theSubList[0] !== ',')) {
                         $theList .= ',';
                     }
+
                     $theList .= $theSubList;
                 }
             }
         }
+
         return (string)$theList;
     }
 }

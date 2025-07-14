@@ -31,16 +31,19 @@ class ForViewHelper extends AbstractViewHelper
         if (is_array($for)) {
             $sortedStudyCourses = [];
             foreach ($for as $studyCourse) {
-                $sortedStudyCourses[substr(strtoupper($studyCourse->getTitle()), 0, 1)][] = $studyCourse;
+                $sortedStudyCourses[substr(strtoupper((string) $studyCourse->getTitle()), 0, 1)][] = $studyCourse;
             }
+
             $results = [];
             foreach ($sortedStudyCourses as $capitalLetter => $course) {
                 $this->setVariable($letter, $capitalLetter);
                 $this->setVariable($as, $course);
                 $results[] = $this->renderChildren();
             }
-            return implode($results);
+
+            return implode('', $results);
         }
+
         return '';
     }
 
@@ -49,6 +52,7 @@ class ForViewHelper extends AbstractViewHelper
         if ($this->templateVariableContainer->exists($name)) {
             $this->templateVariableContainer->remove($name);
         }
+
         $this->templateVariableContainer->add($name, $value);
     }
 }

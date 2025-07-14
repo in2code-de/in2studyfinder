@@ -104,6 +104,7 @@ class ExportService
                 if ($record->_getProperty($propertyName) === null) {
                     return '';
                 }
+
                 /** @var $record DomainObjectInterface */
                 $record = $record->_getProperty($propertyName);
             }
@@ -121,8 +122,8 @@ class ExportService
     {
         try {
             return $record->_getProperty($property);
-        } catch (Exception $extension) {
-            throw new RuntimeException('Property Path could not resolved"');
+        } catch (Exception) {
+            throw new RuntimeException('Property Path could not resolved"', 5534665034);
         }
     }
 

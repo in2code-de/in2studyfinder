@@ -31,7 +31,6 @@ abstract class AbstractSelectViewHelper extends AbstractFormFieldViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerUniversalTagAttributes();
         $this->registerTagAttribute('size', 'string', 'Size of input field');
         $this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
         $this->registerArgument('options', 'array', 'Associative array with internal IDs as key, and the values are displayed in the select box. Can be combined with or replaced by child f:form.select.* nodes.');
@@ -52,11 +51,13 @@ abstract class AbstractSelectViewHelper extends AbstractFormFieldViewHelper
         if ($this->arguments['required']) {
             $this->tag->addAttribute('required', 'required');
         }
+
         $name = $this->getName();
         if ($this->arguments['multiple']) {
             $this->tag->addAttribute('multiple', 'multiple');
             $name .= '[]';
         }
+
         $this->tag->addAttribute('name', $name);
         $options = $this->getOptions();
 
@@ -79,6 +80,7 @@ abstract class AbstractSelectViewHelper extends AbstractFormFieldViewHelper
             for ($i = 1; $i < $optionsCount; $i++) {
                 $this->registerFieldNameForFormTokenGeneration($name);
             }
+
             // save the parent field name so that any child f:form.select.option
             // tag will know to call registerFieldNameForFormTokenGeneration
             // this is the reason why "self::class" is used instead of static::class (no LSB)
@@ -100,12 +102,12 @@ abstract class AbstractSelectViewHelper extends AbstractFormFieldViewHelper
         } else {
             $tagContent .= $childContent;
         }
+
         $tagContent = $prependContent . $tagContent;
 
         $this->tag->forceClosingTag(true);
         $this->tag->setContent($tagContent);
-        $content .= $this->tag->render();
-        return $content;
+        return $content . $this->tag->render();
     }
 
     /**
@@ -119,6 +121,7 @@ abstract class AbstractSelectViewHelper extends AbstractFormFieldViewHelper
             $label = $this->arguments['prependOptionLabel'];
             $output .= $this->renderOptionTag((string)$value, (string)$label, false) . LF;
         }
+
         return $output;
     }
 
@@ -132,6 +135,7 @@ abstract class AbstractSelectViewHelper extends AbstractFormFieldViewHelper
             $isSelected = $this->isSelected($value);
             $output .= $this->renderOptionTag((string)$value, (string)$label, $isSelected) . LF;
         }
+
         return $output;
     }
 
@@ -147,6 +151,7 @@ abstract class AbstractSelectViewHelper extends AbstractFormFieldViewHelper
         if (!is_array($this->arguments['options']) && !$this->arguments['options'] instanceof \Traversable) {
             return [];
         }
+
         $options = [];
         $optionsArgument = $this->arguments['options'];
         foreach ($optionsArgument as $key => $value) {
@@ -166,15 +171,16 @@ abstract class AbstractSelectViewHelper extends AbstractFormFieldViewHelper
                 } elseif (is_object($value) && method_exists($value, '__toString')) {
                     $key = (string)$value;
                 } elseif (is_object($value)) {
-                    throw new Exception('No identifying value for object of class "' . get_class($value) . '" found.', 1247826696);
+                    throw new Exception('No identifying value for object of class "' . $value::class . '" found.', 1247826696);
                 }
+
                 if ($this->hasArgument('optionLabelField')) {
                     $value = ObjectAccess::getPropertyPath($value, $this->arguments['optionLabelField']);
                     if (is_object($value)) {
                         if (method_exists($value, '__toString')) {
                             $value = (string)$value;
                         } else {
-                            throw new Exception('Label value for object of class "' . get_class($value) . '" was an object without a __toString() method.', 1247827553);
+                            throw new Exception('Label value for object of class "' . $value::class . '" was an object without a __toString() method.', 1247827553);
                         }
                     }
                 } elseif (is_object($value) && method_exists($value, '__toString')) {
@@ -184,11 +190,14 @@ abstract class AbstractSelectViewHelper extends AbstractFormFieldViewHelper
                     $value = $this->persistenceManager->getIdentifierByObject($value);
                 }
             }
+
             $options[$key] = $value;
         }
+
         if ($this->arguments['sortByOptionLabel']) {
             asort($options, SORT_LOCALE_STRING);
         }
+
         return $options;
     }
 
@@ -204,14 +213,17 @@ abstract class AbstractSelectViewHelper extends AbstractFormFieldViewHelper
         if ($value === $selectedValue || (string)$value === $selectedValue) {
             return true;
         }
+
         if ($this->hasArgument('multiple')) {
             if ($selectedValue === null && $this->arguments['selectAllByDefault'] === true) {
                 return true;
             }
+
             if (is_array($selectedValue) && in_array($value, $selectedValue)) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -227,10 +239,12 @@ abstract class AbstractSelectViewHelper extends AbstractFormFieldViewHelper
         if (!is_array($value) && !$value instanceof \Traversable) {
             return $this->getOptionValueScalar($value);
         }
+
         $selectedValues = [];
         foreach ($value as $selectedValueElement) {
             $selectedValues[] = $this->getOptionValueScalar($selectedValueElement);
         }
+
         return $selectedValues;
     }
 
@@ -246,12 +260,15 @@ abstract class AbstractSelectViewHelper extends AbstractFormFieldViewHelper
             if ($this->hasArgument('optionValueField')) {
                 return ObjectAccess::getPropertyPath($valueElement, $this->arguments['optionValueField']);
             }
+
             // @todo use $this->persistenceManager->isNewObject() once it is implemented
             if ($this->persistenceManager->getIdentifierByObject($valueElement) !== null) {
                 return $this->persistenceManager->getIdentifierByObject($valueElement);
             }
+
             return (string)$valueElement;
         }
+
         return $valueElement;
     }
 
@@ -269,7 +286,6 @@ abstract class AbstractSelectViewHelper extends AbstractFormFieldViewHelper
         if ($isSelected) {
             $output .= ' selected="selected"';
         }
-        $output .= '>' . htmlspecialchars($label) . '</option>';
-        return $output;
+        return $output . ('>' . htmlspecialchars($label) . '</option>');
     }
 }

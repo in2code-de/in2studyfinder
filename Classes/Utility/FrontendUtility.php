@@ -14,7 +14,7 @@ class FrontendUtility
 {
     public static function getCurrentPageIdentifier(): int
     {
-        return (int)self::getTyposcriptFrontendController()->id;
+        return $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.page.information')->getId();
     }
 
     /**

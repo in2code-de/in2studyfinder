@@ -17,6 +17,7 @@ class FileUtility extends AbstractUtility
         foreach ($files as $file) {
             $array[] = $file;
         }
+
         return $array;
     }
 
@@ -42,7 +43,7 @@ class FileUtility extends AbstractUtility
     public static function createFolderIfNotExists(string $path): void
     {
         if (!is_dir($path) && !GeneralUtility::mkdir($path)) {
-            throw new RuntimeException('Folder ' . self::getRelativeFolder($path) . ' could not be create!');
+            throw new RuntimeException('Folder ' . self::getRelativeFolder($path) . ' could not be create!', 8451014118);
         }
     }
 
@@ -62,6 +63,7 @@ class FileUtility extends AbstractUtility
         if (is_file($absolutePathAndFile)) {
             $lines = file($absolutePathAndFile);
         }
+
         array_unshift($lines, $content);
         GeneralUtility::writeFile($absolutePathAndFile, implode('', $lines));
     }
@@ -69,8 +71,9 @@ class FileUtility extends AbstractUtility
     public static function getRelativeFolder(string $path): string
     {
         if (PathUtility::isAbsolutePath($path)) {
-            $path = PathUtility::getRelativePathTo($path);
+            return PathUtility::getRelativePathTo($path);
         }
+
         return $path;
     }
 }

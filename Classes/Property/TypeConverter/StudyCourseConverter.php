@@ -13,6 +13,11 @@ use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
 class StudyCourseConverter extends PersistentObjectConverter
 {
     /**
+     * @var string
+     */
+    public $targetType;
+
+    /**
      * @var string[]
      */
     protected $sourceTypes = [

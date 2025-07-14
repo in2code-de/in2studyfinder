@@ -21,19 +21,33 @@ class StudyCourse extends AbstractEntity implements StudyCourseInterface
     public const TABLE = 'tx_in2studyfinder_domain_model_studycourse';
 
     protected string $title = '';
+
     protected int $standardPeriodOfStudy = 0;
+
     protected int $ectsCredits = 0;
+
     protected float $tuitionFee = 0.0;
+
     protected string $teaser = '';
+
     protected string $description = '';
+
     protected int $universityPlace = 0;
+
     protected string $metaPagetitle = '';
+
     protected string $metaKeywords = '';
+
     protected string $metaDescription = '';
+
     protected bool $differentPreset = false;
+
     protected int $sysLanguageUid = 0;
+
     protected bool $hidden = false;
+
     protected bool $deleted = false;
+
     protected int $l10nParent = 0;
 
     /**
@@ -279,7 +293,7 @@ class StudyCourse extends AbstractEntity implements StudyCourseInterface
         $this->typesOfStudy->attach($typeOfStudy);
     }
 
-    public function removeTypeOfStudy(TypeOfStudyInterface $typeOfStudyToRemove)
+    public function removeTypeOfStudy(TypeOfStudyInterface $typeOfStudyToRemove): void
     {
         $this->typesOfStudy->detach($typeOfStudyToRemove);
     }
@@ -421,17 +435,15 @@ class StudyCourse extends AbstractEntity implements StudyCourseInterface
     public function getGlobalData(): ?GlobalDataInterface
     {
         if ($this->isDifferentPreset()) {
-            $globalData = $this->getGlobalDataPreset();
-        } else {
-            $globalData = GlobalDataUtility::getDefaultPreset();
+            return $this->getGlobalDataPreset();
         }
 
-        return $globalData;
+        return GlobalDataUtility::getDefaultPreset();
     }
 
     public function getTitleWithAcademicDegree(): string
     {
-        if (!empty($this->getAcademicDegree()) && !empty($this->getAcademicDegree()->getDegree())) {
+        if ($this->getAcademicDegree() instanceof \In2code\In2studyfinder\Domain\Model\AcademicDegreeInterface && !in_array($this->getAcademicDegree()->getDegree(), ['', '0'], true)) {
             return $this->getTitle() . ' - ' . $this->getAcademicDegree()->getDegree();
         }
 
@@ -486,23 +498,22 @@ class StudyCourse extends AbstractEntity implements StudyCourseInterface
 
     public function getDetailPageTitle(): string
     {
-        if (!empty($this->getMetaPagetitle())) {
-            $detailPageTitle = $this->getMetaPagetitle();
-        } else {
-            $detailPageTitle = $this->getTitleWithAcademicDegree();
+        if (!in_array($this->getMetaPagetitle(), ['', '0'], true)) {
+            return $this->getMetaPagetitle();
         }
 
-        return $detailPageTitle;
+        return $this->getTitleWithAcademicDegree();
     }
 
     public function getContentElementIdList(): string
     {
         $idList = [];
-        if ($this->getContentElements() !== null) {
+        if ($this->getContentElements() instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage) {
             foreach ($this->getContentElements() as $contentElement) {
                     $idList[] = $contentElement->getUid();
             }
         }
+
         return implode(',', $idList);
     }
 

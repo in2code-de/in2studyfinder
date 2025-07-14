@@ -22,12 +22,6 @@ class ExtensionUtility extends AbstractUtility
 
     public static function isIn2studycoursesExtendLoaded(): bool
     {
-        $isLoaded = false;
-
-        if (ExtensionManagementUtility::isLoaded('in2studyfinder_extend')) {
-            $isLoaded = true;
-        }
-
-        return $isLoaded;
+        return ExtensionManagementUtility::isLoaded('in2studyfinder_extend');
     }
 }

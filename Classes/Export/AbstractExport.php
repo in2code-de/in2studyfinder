@@ -12,6 +12,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 class AbstractExport implements ExportInterface
 {
     protected string $fileExtension = '';
+
     protected EventDispatcherInterface $eventDispatcher;
 
     public function __construct()
@@ -31,27 +32,19 @@ class AbstractExport implements ExportInterface
     ): StandaloneView {
         $standaloneView = GeneralUtility::makeInstance(StandaloneView::class);
 
-        $standaloneView->setLayoutRootPaths(
-            [
-                0 => GeneralUtility::getFileAbsFileName($layoutPath)
-            ]
-        );
+        $standaloneView->getRenderingContext()->getTemplatePaths()->setLayoutRootPaths([
+            0 => GeneralUtility::getFileAbsFileName($layoutPath)
+        ]);
 
-        $standaloneView->setTemplateRootPaths(
-            [
-                0 => GeneralUtility::getFileAbsFileName($templatePath)
-            ]
-        );
+        $standaloneView->getRenderingContext()->getTemplatePaths()->setTemplateRootPaths([
+            0 => GeneralUtility::getFileAbsFileName($templatePath)
+        ]);
 
-        $standaloneView->setPartialRootPaths(
-            [
-                0 => GeneralUtility::getFileAbsFileName($partialPath)
-            ]
-        );
+        $standaloneView->getRenderingContext()->getTemplatePaths()->setPartialRootPaths([
+            0 => GeneralUtility::getFileAbsFileName($partialPath)
+        ]);
 
-        $standaloneView->setTemplatePathAndFilename(
-            GeneralUtility::getFileAbsFileName($templateFilePath)
-        );
+        $standaloneView->getRenderingContext()->getTemplatePaths()->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateFilePath));
 
         return $standaloneView;
     }

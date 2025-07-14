@@ -12,9 +12,6 @@ class AcademicDegree extends AbstractEntity implements AcademicDegreeInterface
 
     protected string $degree = '';
 
-    /**
-     * @var \In2code\In2studyfinder\Domain\Model\Graduation|null
-     */
     protected ?Graduation $graduation = null;
 
     public function __construct()
