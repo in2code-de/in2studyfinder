@@ -58,17 +58,23 @@ class StudyCourse extends AbstractEntity
 
     protected ?GlobalData $globalDataPreset = null;
 
+    /** @var ObjectStorage<Category> */
     protected ObjectStorage $categories;
 
+    /** @var ObjectStorage<TtContent> */
     protected ObjectStorage $contentElements;
 
+    /** @var ObjectStorage<TypeOfStudy> */
     protected ObjectStorage $typesOfStudy;
 
-    protected ?ObjectStorage $courseLanguages;
+    /** @var ObjectStorage<CourseLanguage> */
+    protected ObjectStorage $courseLanguages;
 
-    protected ?ObjectStorage $admissionRequirements;
+    /** @var ObjectStorage<AdmissionRequirement> */
+    protected ObjectStorage $admissionRequirements;
 
-    protected ?ObjectStorage $startsOfStudy;
+    /** @var ObjectStorage<StartOfStudy> */
+    protected ObjectStorage $startsOfStudy;
 
     public function __construct()
     {
@@ -289,33 +295,21 @@ class StudyCourse extends AbstractEntity
         $this->admissionRequirements->detach($admissionRequirementToRemove);
     }
 
-    /**
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\StartOfStudy>|null
-     */
     public function getStartsOfStudy(): ObjectStorage
     {
         return $this->startsOfStudy;
     }
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\In2code\In2studyfinder\Domain\Model\StartOfStudy>
-     */
     public function setStartsOfStudy(ObjectStorage $startsOfStudy): void
     {
         $this->startsOfStudy = $startsOfStudy;
     }
 
-    /**
-     * @param StartOfStudy
-     */
     public function addStartOfStudy(StartOfStudy $startOfStudy): void
     {
         $this->startsOfStudy->attach($startOfStudy);
     }
 
-    /**
-     * @param StartOfStudy
-     */
     public function removeStartOfStudy(StartOfStudy $startOfStudyToRemove): void
     {
         $this->startsOfStudy->detach($startOfStudyToRemove);
@@ -409,17 +403,11 @@ class StudyCourse extends AbstractEntity
         $this->deleted = $deleted;
     }
 
-    /**
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\Category>|null
-     */
     public function getCategories(): ?ObjectStorage
     {
         return $this->categories;
     }
 
-    /**
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\Category>
-     */
     public function setCategories(ObjectStorage $categories): void
     {
         $this->categories = $categories;
