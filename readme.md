@@ -113,20 +113,19 @@ Happy coding
 
 ### Build Css and JavaScript
 
+> DDEV:
+
+run command ```ddev build```
+
+> Local:
+
 Requirements: node.js, npm, nvm
 
-```
-cd Resources/Private && nvm use
-npm install
-```
+* cd Resources/Private && nvm use
+* npm install
+* npm run build:backend
+* npm run build:frontend
 
-#### Backend
-
-```npm run build:backend```
-
-#### Frontend
-
-```npm run build:frontend```
 
 ### Javascript Events
 
