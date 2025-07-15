@@ -70,7 +70,7 @@ class StudyCourseRepository extends AbstractRepository
         int $sysLanguageUid = 0,
         bool $includeDeleted = false,
         bool $ignoreEnableFields = false
-    ): array {
+    ): QueryResultInterface {
         $query = $this->createQuery();
         $constraints = [];
 
@@ -90,10 +90,10 @@ class StudyCourseRepository extends AbstractRepository
         }
 
         if (!empty($constraints)) {
-            $query->matching($query->logicalAnd($constraints));
+            $query->matching($query->logicalAnd(...$constraints));
         }
 
-        return $query->execute()->toArray();
+        return $query->execute();
     }
 
     /**

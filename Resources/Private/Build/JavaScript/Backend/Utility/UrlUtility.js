@@ -1,77 +1,67 @@
-define([], function() {
-	'use strict';
+const UrlUtility = {
+  /**
+   * Removes a parameter from a given URL.
+   * @param {string} urlString - The URL to modify.
+   * @param {string} parameter - The name of the parameter to remove.
+   * @returns {string} The modified URL.
+   */
+  removeParameterFromUrl(urlString, parameter) {
+    try {
+      const url = new URL(urlString);
+      url.searchParams.delete(parameter);
+      return url.toString();
+    } catch (e) {
+      // Handle cases where the urlString is not a full URL (e.g., /path?a=1)
+      // This fallback handles relative URLs but is less robust than the URL API.
+      const [path, params] = urlString.split('?');
+      if (!params) {
+        return urlString;
+      }
+      const searchParams = new URLSearchParams(params);
+      searchParams.delete(parameter);
+      const newParams = searchParams.toString();
+      return newParams ? `${path}?${newParams}` : path;
+    }
+  },
 
-	var UrlUtility = {};
+  /**
+   * Gets the value of a parameter from a URL.
+   * @param {string} urlString - The URL to parse.
+   * @param {string} parameter - The name of the parameter to find.
+   * @returns {string|null} The value of the parameter or null if not found.
+   */
+  getParameterFromUrl(urlString, parameter) {
+    try {
+      const url = new URL(urlString);
+      return url.searchParams.get(parameter);
+    } catch (e) {
+      // Fallback for relative URLs
+      const params = urlString.split('?')[1] || '';
+      return new URLSearchParams(params).get(parameter);
+    }
+  },
 
-	/**
-	 * initialized all functions
-	 *
-	 * @return {void}
-	 */
-	UrlUtility.removeParameterFromUrl = function(url, parameter) {
-		var urlParts = url.split('?');
-		if (urlParts.length >= 2) {
+  /**
+   * Adds a parameter and its value to a URL.
+   * If the parameter already exists, its value is updated.
+   * @param {string} urlString - The URL to modify.
+   * @param {string} attribute - The name of the parameter to add.
+   * @param {string} value - The value of the parameter.
+   * @returns {string} The modified URL.
+   */
+  addAttributeToUrl(urlString, attribute, value) {
+    try {
+      const url = new URL(urlString);
+      url.searchParams.set(attribute, value);
+      return url.toString();
+    } catch (e) {
+      // Fallback for relative URLs
+      const [path, params] = urlString.split('?');
+      const searchParams = new URLSearchParams(params);
+      searchParams.set(attribute, value);
+      return `${path}?${searchParams.toString()}`;
+    }
+  },
+};
 
-			var prefix = encodeURIComponent(parameter) + '=';
-			var pars = urlParts[1].split(/[&;]/g);
-
-			//reverse iteration as may be destructive
-			for (var i = pars.length; i-- > 0;) {
-				//idiom for string.startsWith
-				if (pars[i].lastIndexOf(prefix, 0) !== -1) {
-					pars.splice(i, 1);
-				}
-			}
-
-			url = urlParts[0] + (pars.length > 0 ? '?' + pars.join('&') : "");
-			return url;
-		} else {
-			return url;
-		}
-	};
-
-	UrlUtility.getParameterFromUrl = function(url, parameter) {
-
-		var parts = url.split('?'),
-			value = '';
-
-		if (parts.length >= 2) {
-
-			var queryString = parts[1];
-			queryString = '&' + queryString;
-
-			var prefix = encodeURIComponent(parameter) + '=';
-			var parameters = queryString.split(/[&;]/g);
-			for (var i = parameters.length; i-- > 0;) {
-				if (parameters[i].lastIndexOf(prefix, 0) !== -1) {
-					value = parameters[i].split('=')[1];
-					break;
-				}
-			}
-		}
-
-		return value;
-	};
-
-	/**
-	 *
-	 * @param url
-	 * @param attribute
-	 * @param value
-	 * @returns {string|*}
-	 */
-	UrlUtility.addAttributeToUrl = function(url, attribute, value) {
-
-		var divider = '?';
-
-		if (url.indexOf('?') !== -1) {
-			divider = '&';
-		}
-
-		url += divider + attribute + '=' + value;
-
-		return url;
-	};
-
-	return UrlUtility;
-});
+export default UrlUtility;

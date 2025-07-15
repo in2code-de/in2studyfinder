@@ -1,14 +1,14 @@
 'use strict';
 
 var gulp = require('gulp');
-var uglify = require('gulp-uglify');
+var terser = require('gulp-terser');
 var plumber = require('gulp-plumber');
 var del = require('del');
 
 var paths = {
   scripts: {
     src: 'JavaScript/Backend/**/*.js',
-    dest: '../Public/JavaScript/Backend'
+    dest: '../../Public/JavaScript/Backend'
   }
 };
 
@@ -19,7 +19,7 @@ function clean() {
 function scripts() {
   return gulp.src(paths.scripts.src)
     .pipe(plumber())
-    .pipe(uglify())
+    .pipe(terser())
     .pipe(gulp.dest(paths.scripts.dest));
 }
 

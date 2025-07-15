@@ -34,9 +34,5 @@ plugin.tx_in2studyfinder {
 			# cat=plugin.tx_in2studyfinder//a; type=text; label= Css Source from In2studyfinder
 			in2studyfinderCss = EXT:in2studyfinder/Resources/Public/Css/style.css
 		}
-
-		backend {
-			pluginPreviewTemplate = EXT:in2studyfinder/Resources/Private/Templates/StudyCourse/Hook/PluginPreview.html
-		}
 	}
 }

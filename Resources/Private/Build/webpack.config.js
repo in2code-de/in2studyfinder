@@ -1,4 +1,6 @@
 const path = require('path');
+const TerserPlugin = require("terser-webpack-plugin");
+
 
 // frontend
 module.exports =
@@ -6,7 +8,7 @@ module.exports =
     mode: 'development',
     entry: ['./JavaScript/Frontend/main.js', './Sass/backend.scss', './Sass/demo.scss', './Sass/style.scss'],
     output: {
-      path: path.resolve(__dirname, '../Public/'),
+      path: path.resolve(__dirname, '../../Public/'),
       filename: 'JavaScript/[name].js'
     },
     module: {
@@ -35,6 +37,16 @@ module.exports =
       ]
     },
     optimization: {
-      minimize: true
-    }
+      minimize: true,
+      minimizer: [
+        new TerserPlugin({
+          extractComments: false,
+          terserOptions: {
+            format: {
+              comments: false,
+            },
+          },
+        }),
+      ],
+    },
   };

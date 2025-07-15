@@ -1,52 +1,31 @@
-define(['TYPO3/CMS/In2studyfinder/Backend/Modules/Export/SelectCoursesModule', 'TYPO3/CMS/In2studyfinder/Backend/Modules/Export/SelectPropertiesModule'], function(SelectCoursesModule, SelectPropertiesModule) {
-	'use strict';
+import SelectCoursesModule from './Export/SelectCoursesModule.js';
+import SelectPropertiesModule from './Export/SelectPropertiesModule.js';
 
-	var ExportModule = {
-		selectedPropertiesCount: 0,
-		propertyList: []
-	};
+class ExportModule {
 
-	/**
-	 * initialized all functions
-	 *
-	 * @return {void}
-	 */
-	ExportModule.initialize = function() {
-		SelectCoursesModule.initialize();
-		SelectPropertiesModule.initialize();
-		ExportModule.addEventListener();
-	};
+  initialize() {
+    SelectCoursesModule.initialize();
+    SelectPropertiesModule.initialize();
+    this.#addEventListener();
+  }
 
-	/**
-	 * Initialize event listener
-	 */
-	ExportModule.addEventListener = function() {
+  #addEventListener() {
+    const exportButton = document.querySelector('.js-in2studyfinder-export-courses');
+    exportButton?.addEventListener('click', () => this.#exportCourses());
+  }
 
-		// export button
-		var exportButton = document.querySelector('.js-in2studyfinder-export-courses');
-		exportButton.addEventListener('click', ExportModule.exportCourses);
+  #exportCourses() {
+    this.#selectAllProperties();
+  }
 
-	};
+  #selectAllProperties() {
+    const propertiesList = document.querySelector('.js-in2studyfinder-selected-properties-list');
+    if (!propertiesList) return;
 
-	/**
-	 * export courses
-	 */
-	ExportModule.exportCourses = function() {
-		ExportModule.addSelectionToSelectedPropertiesList();
-	};
+    for (const option of propertiesList.options) {
+      option.selected = true;
+    }
+  }
+}
 
-	/**
-	 * selects all items from the selected items select box
-	 */
-	ExportModule.addSelectionToSelectedPropertiesList = function() {
-		var selectedCoursesList = document.querySelector('.js-in2studyfinder-selected-properties-list');
-
-		// set all elements to selected
-		for (var i = 0; i < selectedCoursesList.options.length; i++) {
-			selectedCoursesList.options[i].selected = true;
-		}
-	};
-
-	ExportModule.initialize();
-	return ExportModule;
-});
+export default new ExportModule();

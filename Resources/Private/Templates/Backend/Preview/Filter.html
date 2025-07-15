@@ -1,0 +1,186 @@
+<html data-namespace-typo3-fluid="true"
+			xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+			xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+			xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+>
+
+<div class="{cType}-preview">
+	<div class="{cType}-preview-inner">
+		<f:if condition="{extendedVariables.errors.missingExtensionSettings}">
+			<f:be.infobox title="Missing TypoScript!"
+										state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_ERROR')}">
+				Please include the in2studyfinder Site Set for this Site!
+			</f:be.infobox>
+		</f:if>
+
+		<h2>
+			<f:translate
+				key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:pluginInformation.extensionTitle"/>
+		</h2>
+
+		<div class="card-container">
+			<f:if condition="{extendedVariables.detailPage.uid}">
+				<f:then>
+					<div class="card card-size-small">
+						<div class="card-header">
+							<div class="card-header-body">
+								<h2 class="card-title">
+									<f:translate
+										key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:pluginInformation.detailView"/>
+									:
+								</h2>
+								<span class="card-subtitle">
+									<a href="{be:uri.editRecord(uid:'{extendedVariables.detailPage.uid}', table:'pages')}">
+									<core:icon identifier="actions-document-open"/>
+									{extendedVariables.detailPage.title} (uid = {extendedVariables.detailPage.uid})
+								</a>
+								</span>
+							</div>
+						</div>
+					</div>
+				</f:then>
+			</f:if>
+
+			<div class="card card-size-small">
+				<div class="card-header">
+					<div class="card-header-body">
+						<h2 class="card-title">Headline</h2>
+						<span class="card-subtitle">Subtitle</span>
+					</div>
+				</div>
+			</div>
+			<div class="card card-size-small">
+				<div class="card-header">
+					<div class="card-header-body">
+						<h2 class="card-title">Headline</h2>
+						<span class="card-subtitle">Subtitle</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="table-fit">
+			<table class="table table-striped">
+				<tbody>
+				<f:if condition="{extendedVariables.detailPage.uid}">
+					<f:then>
+						<tr>
+							<td>
+								<strong>
+									<f:translate
+										key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:pluginInformation.detailView"/>
+								</strong>
+							</td>
+							<td>
+								{extendedVariables.detailPage.title} (uid = {extendedVariables.detailPage.uid})
+							</td>
+							<td class="col-control">
+								<div class="btn-group" role="group">
+									<a class="btn btn-default" href="{be:uri.editRecord(uid:'{extendedVariables.detailPage.uid}', table:'pages')}">
+										<core:icon identifier="actions-document-open" size="small"/>
+									</a>
+								</div>
+							</td>
+						</tr>
+					</f:then>
+				</f:if>
+				</tbody>
+			</table>
+		</div>
+
+		<strong>
+			<f:translate
+				key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:pluginInformation.departments"/>
+			: </strong>
+		<f:render section="Filter"
+							arguments="{type: flexFormData.settings.flexform.select.department, typeArray:departmentArray}"/>
+
+		<strong>
+			<f:translate
+				key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:pluginInformation.faculties"/>
+			: </strong>
+		<f:render section="Filter"
+							arguments="{type: flexFormData.settings.flexform.select.faculty, typeArray:facultyArray}"/>
+
+		<strong>
+			<f:translate
+				key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:pluginInformation.academicDegrees"/>
+			: </strong>
+		<f:render section="Filter"
+							arguments="{type: flexFormData.settings.flexform.select.academicDegree, typeArray:academicDegreeArray}"/>
+		<br/>
+		<f:render section="RecordStoragePage" arguments="{_all}"/>
+	</div>
+</div>
+
+<f:section name="Filter">
+	<f:if condition="{type}">
+		<f:then>
+			<f:for each="{typeArray}" as="typeRecord" iteration="iteration">
+				{typeRecord.title}
+				<f:if condition="{iteration.isLast}">
+					<f:else>
+						,
+					</f:else>
+				</f:if>
+			</f:for>
+		</f:then>
+		<f:else>
+			<f:translate
+				key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:pluginInformation.showAll"/>
+		</f:else>
+	</f:if>
+	<br/>
+</f:section>
+
+<f:section name="RecordStoragePage">
+	<f:if condition="{recordStoragePages}">
+		<f:then>
+			<table border="0" style="color: #5a5a5a;">
+				<tbody>
+				<f:for each="{recordStoragePages}" as="recordStoragePage" iteration="iterator">
+					<tr>
+						<f:if condition="{f:count(subject: recordStoragePages)} == 1">
+							<f:then>
+								<td>
+									<strong>
+										<f:translate
+											key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:pluginInformation.recordStoragePage"/>
+										:&nbsp;
+									</strong>
+								</td>
+								<td>{recordStoragePage.title} ({recordStoragePage.uid})</td>
+							</f:then>
+							<f:else>
+								<f:if condition="{iterator.isFirst}">
+									<f:then>
+										<td>
+											<strong>
+												<f:translate
+													key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:pluginInformation.recordStoragePages"/>
+												:&nbsp;
+											</strong>
+										</td>
+										<td>{recordStoragePage.title} ({recordStoragePage.uid})</td>
+									</f:then>
+									<f:else>
+										<td></td>
+										<td>{recordStoragePage.title} ({recordStoragePage.uid})</td>
+									</f:else>
+								</f:if>
+							</f:else>
+						</f:if>
+					</tr>
+				</f:for>
+				</tbody>
+			</table>
+		</f:then>
+		<f:else>
+			<strong style="color: red">
+				<f:translate
+					key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:pluginInformation.noStoragePage"/>
+			</strong>
+		</f:else>
+	</f:if>
+</f:section>
+</html>

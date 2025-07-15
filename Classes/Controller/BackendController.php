@@ -12,11 +12,12 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Pagination\SlidingWindowPagination;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
-use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
+use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -58,7 +59,7 @@ class BackendController extends AbstractController
 
         $possibleExportDataProvider = $this->getPossibleExportDataProvider();
 
-        if ($studyCourses === []) {
+        if ($studyCourses->count() === 0) {
             $this->addFlashMessage(
                 LocalizationUtility::translate('messages.noCourses.body', 'in2studyfinder'),
                 LocalizationUtility::translate('messages.noCourses.title', 'in2studyfinder'),
@@ -67,38 +68,51 @@ class BackendController extends AbstractController
         } else {
             $propertyArray =
                 $this->courseService->getCourseProperties(
-                    $studyCourses[0],
+                    $studyCourses->getFirst(),
                     $this->settings['backend']['export']['excludedPropertiesForExport'] ?? []
                 );
         }
 
-        $itemsPerPage = $this->settings['pagination']['itemsPerPage'] ?? 10;
+        $currentPage = $this->request->hasArgument('currentPageNumber')
+            ? (int)$this->request->getArgument('currentPageNumber')
+            : 1;
 
+        $itemsPerPage = (int)($this->settings['pagination']['itemsPerPage'] ?? 10);
         if ($this->request->hasArgument('itemsPerPage')) {
-            $itemsPerPage = $this->request->getArgument('itemsPerPage');
+            $itemsPerPage = (int)$this->request->getArgument('itemsPerPage');
         }
+        $maximumLinks = 15;
 
-        $this->view->assignMultiple(
+        $paginator = new QueryResultPaginator(
+            $studyCourses,
+            $currentPage,
+            $itemsPerPage,
+        );
+        $pagination = new SlidingWindowPagination(
+            $paginator,
+            $maximumLinks,
+        );
+
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate->assignMultiple(
             [
                 'studyCourses' => $studyCourses,
                 'exportDataProvider' => $possibleExportDataProvider,
                 'availableFieldsForExport' => $propertyArray,
                 'sysLanguages' => $this->getSysLanguages(),
-                'itemsPerPage' => $itemsPerPage
+                'itemsPerPage' => $itemsPerPage,
+                'pagination' => $pagination,
+                'paginator' => $paginator,
+                'currentPageNumber' => $currentPage
             ]
         );
-
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/In2studyfinder/Backend/Backend');
+        $this->pageRenderer->loadJavaScriptModule('@in2code/in2studyfinder/backend');
         $this->pageRenderer->addCssFile('EXT:in2studyfinder/Resources/Public/Css/backend.css');
 
-        $moduleTemplate->setContent($this->view->render());
-
-        return $this->htmlResponse($moduleTemplate->renderContent());
+        return $moduleTemplate->renderResponse('Backend/List');
     }
 
     /**
-     * @throws StopActionException
      * @throws InvalidQueryException
      */
     public function exportAction(

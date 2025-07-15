@@ -10,7 +10,7 @@ if (ConfigurationUtility::isBackendModuleEnabled()) {
             'position' => ['bottom'],
             'access' => 'user',
             'workspaces' => '*',
-            'path' => '/module/page/example', // ?
+            'path' => '/module/in2studyfinder/export',
             'labels' => 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod.xlf',
             'iconIdentifier' => 'in2studyfinder-plugin-icon',
             'extensionName' => 'In2studyfinder',

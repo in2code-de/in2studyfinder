@@ -47,10 +47,12 @@
   #UTILITIES-VISIBILITY
 \*------------------------------------*/
 .u-in2studyfinder-hide {
-  display: none !important; }
+  display: none !important;
+}
 
 .in2studyfinder.no-js .u-in2studyfinder-hide-if-no-js {
-  display: none !important; }
+  display: none !important;
+}
 
 /*------------------------------------*\
   #COMPONENTS-LOADER
@@ -86,28 +88,33 @@
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
   display: none;
   -webkit-transition: opacity 0.3s;
-  transition: opacity 0.3s; }
-  .in2studyfinder-loader--active {
-    opacity: 1;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex; }
-  .in2studyfinder-loader__icon {
-    -webkit-box-flex: 1;
-    -ms-flex: 1 1 auto;
-    flex: 1 1 auto;
-    -webkit-animation: in2studyfinder-loader-rotating 1s linear infinite;
-    animation: in2studyfinder-loader-rotating 1s linear infinite; }
+  transition: opacity 0.3s;
+}
+.in2studyfinder-loader--active {
+  opacity: 1;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+.in2studyfinder-loader__icon {
+  -webkit-box-flex: 1;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  -webkit-animation: in2studyfinder-loader-rotating 1s linear infinite;
+  animation: in2studyfinder-loader-rotating 1s linear infinite;
+}
 
 @keyframes in2studyfinder-loader-rotating {
   from {
     -webkit-transform: rotate(0deg);
-    transform: rotate(0deg); }
+    transform: rotate(0deg);
+  }
   to {
     -webkit-transform: rotate(360deg);
-    transform: rotate(360deg); } }
-
+    transform: rotate(360deg);
+  }
+}
 /*------------------------------------*\
   #COMPONENTS
 \*------------------------------------*/
@@ -115,10 +122,12 @@
   #UTILITIES-VISIBILITY
 \*------------------------------------*/
 .u-in2studyfinder-hide {
-  display: none !important; }
+  display: none !important;
+}
 
 .in2studyfinder.no-js .u-in2studyfinder-hide-if-no-js {
-  display: none !important; }
+  display: none !important;
+}
 
 /*------------------------------------*\
   #COMPONENTS-LOADER
@@ -154,44 +163,54 @@
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
   display: none;
   -webkit-transition: opacity 0.3s;
-  transition: opacity 0.3s; }
-  .in2studyfinder-loader--active {
-    opacity: 1;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex; }
-  .in2studyfinder-loader__icon {
-    -webkit-box-flex: 1;
-    -ms-flex: 1 1 auto;
-    flex: 1 1 auto;
-    -webkit-animation: in2studyfinder-loader-rotating 1s linear infinite;
-    animation: in2studyfinder-loader-rotating 1s linear infinite; }
+  transition: opacity 0.3s;
+}
+.in2studyfinder-loader--active {
+  opacity: 1;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+.in2studyfinder-loader__icon {
+  -webkit-box-flex: 1;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  -webkit-animation: in2studyfinder-loader-rotating 1s linear infinite;
+  animation: in2studyfinder-loader-rotating 1s linear infinite;
+}
 
 @keyframes in2studyfinder-loader-rotating {
   from {
     -webkit-transform: rotate(0deg);
-    transform: rotate(0deg); }
+    transform: rotate(0deg);
+  }
   to {
     -webkit-transform: rotate(360deg);
-    transform: rotate(360deg); } }
-
+    transform: rotate(360deg);
+  }
+}
 /*------------------------------------*\
   #COMPONENTS-PROPERTY-LIST
 \*------------------------------------*/
 .c-in2studyfinder-property-list-item {
   cursor: pointer;
-  margin-left: 15px; }
+  margin-left: 15px;
+}
 
 .c-in2studyfinder-property-list-optgroup {
   font-weight: bold;
   margin-top: 0;
-  margin-left: 30px; }
+  margin-left: 30px;
+}
 
 .in2studyfinder__pagebrowser {
   list-style: none;
-  display: inline-block; }
-  .in2studyfinder__pagebrowser li {
-    display: inline; }
-    .in2studyfinder__pagebrowser li .current {
-      color: #4c0; }
+  display: inline-block;
+}
+.in2studyfinder__pagebrowser li {
+  display: inline;
+}
+.in2studyfinder__pagebrowser li .current {
+  color: #4c0;
+}

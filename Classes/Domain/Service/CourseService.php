@@ -12,7 +12,6 @@ use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\FrontendUtility;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Property;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
@@ -118,10 +117,10 @@ class CourseService extends AbstractService
                     true
                 )
             ) {
-                $elementType = $property->getElementType();
-                $type = $property->getType();
+                $elementType = $property->getName();
+                $type = $property->getPrimaryType()->getBuiltinType();
 
-                if ($type === ObjectStorage::class) {
+                if ($property->isObjectStorageType()) {
                     if (class_exists($elementType)) {
                         $propertyArray[$property->getName()] = $this->getCoursePropertyList(
                             $this->reflectionService->getClassSchema($elementType)->getProperties(),

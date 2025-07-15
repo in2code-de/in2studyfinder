@@ -1,289 +1,173 @@
-define(['TYPO3/CMS/In2studyfinder/Backend/Utility/UiUtility', 'TYPO3/CMS/In2studyfinder/Backend/Utility/AjaxUtility', 'TYPO3/CMS/In2studyfinder/Backend/Utility/UrlUtility'], function(UiUtility, AjaxUtility, UrlUtility) {
-  'use strict';
+import AjaxUtility from "./../../Utility/AjaxUtility.js";
+import UrlUtility from './../../Utility/UrlUtility.js';
 
-  var SelectCoursesModule = {
-    coursesList: [],
-    identifiers: {
-      checkAllCheckbox: '.js-in2studyfinder-check-all',
-      paginationContainer: '.js-in2studyfinder-pagebrowser',
-      itemsPerPageSelect: '.js-in2studyfinder-itemsPerPage',
-      changeLanguageSelect: '.js-in2studyfinder-recordLanguage',
-      courseListTableBody: '.js-in2studyfinder-course-list',
-      loader: '.in2js-in2studyfinder-loader',
-      loaderActive: '.in2js-in2studyfinder-loader--active'
-    }
-  };
+class SelectCoursesModule {
 
-  /**
-   * initialized all functions
-   *
-   * @return {void}
-   */
-  SelectCoursesModule.initialize = function() {
-    SelectCoursesModule.preparePagination();
-    SelectCoursesModule.prepareSelectedCourses();
-    SelectCoursesModule.addEventListener();
-  };
-
-  /**
-   * initializes all event listeners
-   */
-  SelectCoursesModule.addEventListener = function() {
-
-    // event listener for select all courses checkbox
-    var selectAllCheckbox = document.querySelector(SelectCoursesModule.identifiers.checkAllCheckbox);
-    selectAllCheckbox.addEventListener('click', SelectCoursesModule.toggleAllCoursesSelect);
-
-    if (document.querySelector(SelectCoursesModule.identifiers.paginationContainer) !== null) {
-      // event listener for pagination
-      var paginationList = document.querySelector(SelectCoursesModule.identifiers.paginationContainer);
-      paginationList.addEventListener('click', SelectCoursesModule.callPagination);
-    }
-
-    // event listener for update the items per page
-    var itemsPerPageSelect = document.querySelector(SelectCoursesModule.identifiers.itemsPerPageSelect);
-    itemsPerPageSelect.onchange = function(event) {
-      SelectCoursesModule.updateItemsPerPage(event);
+    coursesList = [];
+    identifiers = {
+        checkAllCheckbox: '.js-in2studyfinder-check-all',
+        paginationContainer: '.js-in2studyfinder-pagebrowser',
+        itemsPerPageSelect: '.js-in2studyfinder-itemsPerPage',
+        changeLanguageSelect: '.js-in2studyfinder-recordLanguage',
+        courseListTableBody: '.js-in2studyfinder-course-list',
+        loader: '.in2js-in2studyfinder-loader',
+        loaderActive: '.in2js-in2studyfinder-loader--active',
+        selectCourseContainer: '.js-in2studyfinder-select-course-container',
+        selectedCoursesCount: '.js-in2studyfinder-selected-courses-count',
+        paginationTarget: '.js-in2studyfinder-pagination',
+        courseCheckbox: '.js-in2studyfinder-select-course',
     };
+    elements = {};
 
-    // event listener for update the record language
-    var recordLanguageSelect = document.querySelector(SelectCoursesModule.identifiers.changeLanguageSelect);
-    recordLanguageSelect.onchange = function(event) {
-      SelectCoursesModule.updateRecordLanguage(event);
-    };
-
-    // event listener for the selection of courses
-    var propertyList = document.querySelector(SelectCoursesModule.identifiers.courseListTableBody);
-    propertyList.addEventListener('click', SelectCoursesModule.toggleCourseSelection);
-  };
-
-  /**
-   * toggles the selection of all courses
-   * @param event
-   */
-  SelectCoursesModule.toggleAllCoursesSelect = function(event) {
-    var checkboxes = document.querySelectorAll('.js-in2studyfinder-select-course');
-    var selectAllCheckbox = event.target;
-    var status;
-
-    if (selectAllCheckbox.checked) {
-      status = 1;
-    } else {
-      status = 0;
+    initialize() {
+        this.#cacheElements();
+        this.#preparePagination();
+        this.#prepareSelectedCourses();
+        this.#addEventListeners();
+        this.#updateSelectedCoursesCount();
     }
 
-    for (var i = 0; i < checkboxes.length; i++) {
-      var checkbox = checkboxes[i];
-      var courseUid = checkbox.getAttribute('data-in2studyfinder-course-uid');
-      if (status === 0 && checkbox.checked) {
-        if (courseUid) {
-          SelectCoursesModule.removeCourseFromList(courseUid);
+    #cacheElements() {
+        for (const key in this.identifiers) {
+            this.elements[key] = document.querySelector(this.identifiers[key]);
         }
-      }
+    }
 
-      if (status === 1 && !checkbox.checked) {
-        if (courseUid) {
-          SelectCoursesModule.addCourseToList(courseUid);
+    #addEventListeners() {
+        this.elements.checkAllCheckbox?.addEventListener('click', (e) => this.#toggleAllCoursesSelect(e));
+        this.elements.paginationContainer?.addEventListener('click', (e) => this.#callPagination(e));
+        this.elements.itemsPerPageSelect?.addEventListener('change', (e) => this.#updateItemsPerPage(e));
+        this.elements.changeLanguageSelect?.addEventListener('change', (e) => this.#updateRecordLanguage(e));
+        this.elements.courseListTableBody?.addEventListener('click', (e) => this.#toggleCourseSelection(e));
+    }
+
+    #callPagination(event) {
+        event.preventDefault();
+        const url = event.target.href;
+        if (!url) return;
+        const itemsPerPage = this.elements.itemsPerPageSelect.value;
+
+        const fullUrl = UrlUtility.addAttributeToUrl(
+            url,
+            'itemsPerPage',
+            itemsPerPage
+        );
+
+        this.#paginationAjaxCall(fullUrl);
+    }
+
+    #paginationAjaxCall(url) {
+        AjaxUtility.ajaxCall(url, () => this.#onPaginationCallStart(), (response) => this.#onPaginationCallSuccess(response));
+    }
+
+    #onPaginationCallStart() {
+        this.elements.loader?.classList.add(this.identifiers.loaderActive.substring(1));
+    }
+
+    async #onPaginationCallSuccess(response) {
+        const responseText = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(responseText, 'text/html');
+
+        const newContent = doc.querySelector(this.identifiers.selectCourseContainer);
+
+        if (newContent) {
+            this.elements.selectCourseContainer.innerHTML = newContent.innerHTML;
         }
-      }
-      checkbox.checked = status;
+
+        this.initialize(); // Re-initialize to attach listeners to new content
+        this.elements.loader?.classList.remove(this.identifiers.loaderActive.substring(1));
     }
 
-    SelectCoursesModule.updateSelectedCoursesCount();
-  };
-
-  /**
-   * Set the Checkboxes checked for the available courses in the courseList
-   */
-  SelectCoursesModule.prepareSelectedCourses = function() {
-    var courseList = SelectCoursesModule.coursesList;
-
-    if (courseList.length > 0) {
-      // if courseList !== empty
-      // set every existing course from this page in the courseList to active
-      for (var i = 0; i < SelectCoursesModule.coursesList.length; i++) {
-        var checkbox = document.querySelector('#course-' + SelectCoursesModule.coursesList[i]);
-        if (checkbox !== null) {
-          checkbox.checked = 1;
+    #updateItemsPerPage(event) {
+        const url = event.target.selectedOptions[0]?.dataset.action;
+        if (url) {
+            this.#paginationAjaxCall(url);
         }
-      }
-    }
-  };
-
-  /**
-   * updates the results for the shown courses
-   * @param event
-   */
-  SelectCoursesModule.updateItemsPerPage = function(event) {
-    var selectedOptions = event.target.selectedOptions;
-    var url = selectedOptions[0].getAttribute('data-action');
-    if (typeof url !== 'undefined') {
-      SelectCoursesModule.paginationAjaxCall(url);
-    }
-  };
-
-  /**
-   * updates the results for the shown courses
-   * @param event
-   */
-  SelectCoursesModule.updateRecordLanguage = function(event) {
-    var selectedOptions = event.target.selectedOptions;
-    var url = selectedOptions[0].getAttribute('data-action');
-
-    if (typeof url !== 'undefined') {
-      if (SelectCoursesModule.resetCourseList()) {
-        SelectCoursesModule.paginationAjaxCall(url);
-      }
-    }
-  };
-
-  /**
-   *
-   * @param event
-   *
-   * @return {void}
-   */
-  SelectCoursesModule.callPagination = function(event) {
-    event.preventDefault();
-    var url = event.target.href;
-    var itemsPerPage = document.querySelector('.js-in2studyfinder-itemsPerPage').value;
-
-    if (typeof url !== 'undefined') {
-      url = UrlUtility.addAttributeToUrl(
-        url,
-        'tx_in2studyfinder_web_in2studyfinderm1[studyCoursesForPage][itemsPerPage]',
-        itemsPerPage
-      );
-      SelectCoursesModule.paginationAjaxCall(url);
-    }
-  };
-
-  /**
-   *
-   * @param url string
-   *
-   * @return {void}
-   */
-  SelectCoursesModule.paginationAjaxCall = function(url) {
-    AjaxUtility.ajaxCall(
-      url,
-      SelectCoursesModule.onPaginationCallStart,
-      SelectCoursesModule.onPaginationCallSuccess
-    );
-  };
-
-  /**
-   * @return {void}
-   */
-  SelectCoursesModule.onPaginationCallStart = function() {
-    UiUtility.toggleClassForElement(
-      document.querySelector(SelectCoursesModule.identifiers.loader),
-      SelectCoursesModule.identifiers.loaderActive
-    );
-  };
-
-  /**
-   * @param xhttp
-   *
-   * @return {void}
-   */
-  SelectCoursesModule.onPaginationCallSuccess = function(xhttp) {
-    var tempElement = document.createElement('div');
-    var selectCourseContainerClass = 'js-in2studyfinder-select-course-container';
-
-    tempElement.innerHTML = xhttp.responseText;
-
-    document.querySelector('.' + selectCourseContainerClass).innerHTML =
-      tempElement.querySelector('.' + selectCourseContainerClass).innerHTML;
-
-    SelectCoursesModule.initialize();
-    SelectCoursesModule.updateSelectedCoursesCount();
-    UiUtility.toggleClassForElement(
-      document.querySelector(SelectCoursesModule.identifiers.loader),
-      SelectCoursesModule.identifiers.loaderActive
-    );
-  };
-
-  /**
-   * @param event
-   *
-   * @return {void}
-   */
-  SelectCoursesModule.toggleCourseSelection = function(event) {
-    var selectedElement = event.target;
-
-    if (selectedElement.classList.contains('js-in2studyfinder-select-course')) {
-      if (selectedElement.checked) {
-        SelectCoursesModule.addCourseToList(selectedElement.value);
-      } else {
-        SelectCoursesModule.removeCourseFromList(selectedElement.value);
-      }
-
-      SelectCoursesModule.updateSelectedCoursesCount();
     }
 
-  };
-
-  /**
-   * @param courseUid
-   *
-   * @return void
-   */
-  SelectCoursesModule.addCourseToList = function(courseUid) {
-    SelectCoursesModule.coursesList.push(courseUid);
-  };
-
-  /**
-   * @param courseUid
-   *
-   * @return void
-   */
-  SelectCoursesModule.removeCourseFromList = function(courseUid) {
-    SelectCoursesModule.coursesList.pop(courseUid);
-  };
-
-  /**
-   * updates the selected courses count
-   */
-  SelectCoursesModule.updateSelectedCoursesCount = function() {
-    var element = document.querySelector('.js-in2studyfinder-selected-courses-count');
-    element.innerHTML = SelectCoursesModule.coursesList.length;
-  };
-
-  /**
-   * @returns {Array}
-   */
-  SelectCoursesModule.getCourseList = function() {
-    return SelectCoursesModule.coursesList;
-  };
-
-  /**
-   * move the pagination to the right spot in the dom
-   */
-  SelectCoursesModule.preparePagination = function() {
-    var pagination = document.querySelector(SelectCoursesModule.identifiers.paginationContainer);
-    if (pagination !== null) {
-      document.querySelector('.js-in2studyfinder-pagination').appendChild(pagination);
-    }
-  };
-
-  /**
-   * @returns {boolean}
-   */
-  SelectCoursesModule.resetCourseList = function() {
-    var status = true;
-
-    if (SelectCoursesModule.coursesList.length > 0) {
-      if (confirm('all currently selected courses will be deselected. Will you proceed?')) {
-        SelectCoursesModule.coursesList = [];
-        SelectCoursesModule.updateSelectedCoursesCount();
-      } else {
-        status = false;
-      }
+    #updateRecordLanguage(event) {
+        const url = event.target.selectedOptions[0]?.dataset.action;
+        console.log(url);
+        if (url && this.#resetCourseList()) {
+            this.#paginationAjaxCall(url);
+        }
     }
 
-    return status;
-  };
+    #toggleCourseSelection(event) {
+        const checkbox = event.target;
+        if (!checkbox.matches(this.identifiers.courseCheckbox)) return;
 
-  return SelectCoursesModule;
-});
+        if (checkbox.checked) {
+            this.#addCourseToList(checkbox.value);
+        } else {
+            this.#removeCourseFromList(checkbox.value);
+        }
+        this.#updateSelectedCoursesCount();
+    }
+
+    #toggleAllCoursesSelect(event) {
+        const isChecked = event.target.checked;
+        const checkboxes = document.querySelectorAll(this.identifiers.courseCheckbox);
+
+        for (const checkbox of checkboxes) {
+            checkbox.checked = isChecked;
+            const courseUid = checkbox.dataset.in2studyfinderCourseUid;
+            if (courseUid) {
+                if (isChecked) {
+                    this.#addCourseToList(courseUid);
+                } else {
+                    this.#removeCourseFromList(courseUid);
+                }
+            }
+        }
+        this.#updateSelectedCoursesCount();
+    }
+
+    #prepareSelectedCourses() {
+        if (this.coursesList.length === 0) return;
+
+        for (const courseId of this.coursesList) {
+            const checkbox = document.querySelector(`#course-${courseId}`);
+            if (checkbox) {
+                checkbox.checked = true;
+            }
+        }
+    }
+
+    #addCourseToList(courseUid) {
+        if (!this.coursesList.includes(courseUid)) {
+            this.coursesList.push(courseUid);
+        }
+    }
+
+    #removeCourseFromList(courseUid) {
+        this.coursesList = this.coursesList.filter(id => id !== courseUid);
+    }
+
+    #resetCourseList() {
+        if (this.coursesList.length > 0) {
+            if (confirm('Alle aktuell gewählten Kurse werden abgewählt. Wollen Sie fortfahren?')) {
+                this.coursesList = [];
+                this.#updateSelectedCoursesCount();
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    #updateSelectedCoursesCount() {
+        if (this.elements.selectedCoursesCount) {
+            this.elements.selectedCoursesCount.innerHTML = this.coursesList.length;
+        }
+    }
+
+    #preparePagination() {
+        if (this.elements.paginationContainer && this.elements.paginationTarget) {
+            this.elements.paginationTarget.appendChild(this.elements.paginationContainer);
+        }
+    }
+}
+
+export default new SelectCoursesModule();

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace In2code\In2studyfinder\Utility;
 
 use In2code\In2studyfinder\Domain\Model\TtContent;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -49,7 +50,8 @@ class RecordUtility extends AbstractUtility
             ->where(
                 $queryBuilder->expr()->eq(
                     'l18n_parent',
-                    $queryBuilder->createNamedParameter((int)$records[0]['uid'], \TYPO3\CMS\Core\Database\Connection::PARAM_INT)
+                    $queryBuilder->createNamedParameter((int)$records[0]['uid'],
+                        \TYPO3\CMS\Core\Database\Connection::PARAM_INT)
                 )
             )->executeQuery()->fetchAllAssociative();
 
@@ -62,14 +64,13 @@ class RecordUtility extends AbstractUtility
         return $records;
     }
 
-    public static function getRecordWithLanguageOverlay(int $recordUid, int $languageUid = 0): array
+    public static function getRecordWithLanguageOverlay(int $recordUid, LanguageAspect $languageAspect): array
     {
-        $record =
-            GeneralUtility::makeInstance(PageRepository::class)->getRecordOverlay(
-                TtContent::TABLE,
-                self::getRecord(TtContent::TABLE, $recordUid),
-                $languageUid
-            );
+        $record = GeneralUtility::makeInstance(PageRepository::class)->getLanguageOverlay(
+            TtContent::TABLE,
+            self::getRecord(TtContent::TABLE, $recordUid),
+            $languageAspect
+        );
 
         if (!empty($record)) {
             return $record;
