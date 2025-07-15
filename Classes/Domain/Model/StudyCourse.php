@@ -88,6 +88,7 @@ class StudyCourse extends AbstractEntity
         $this->startsOfStudy = new ObjectStorage();
         $this->typesOfStudy = new ObjectStorage();
         $this->admissionRequirements = new ObjectStorage();
+        $this->categories = new ObjectStorage();
     }
 
     public function getL10nParent(): int
@@ -403,7 +404,7 @@ class StudyCourse extends AbstractEntity
         $this->deleted = $deleted;
     }
 
-    public function getCategories(): ?ObjectStorage
+    public function getCategories(): ObjectStorage
     {
         return $this->categories;
     }
