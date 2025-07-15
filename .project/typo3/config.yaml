@@ -1,5 +1,9 @@
 base: 'https://in2studyfinder.ddev.site/'
-errorHandling: {  }
+dependencies:
+  - typo3/fluid-styled-content
+  - typo3/fluid-styled-content-css
+  - in2code/in2studyfinder
+  - in2code/in2studyfinderDemoStyles
 languages:
   -
     title: deutsch
@@ -8,14 +12,14 @@ languages:
     typo3Language: de
     locale: de_DE
     iso-639-1: de
-    websiteTitle: In2studyfinder -- Developmennt
+    websiteTitle: 'In2studyfinder -- Developmennt'
     navigationTitle: Deutsch
     hreflang: de-DE
     direction: ''
     fallbackType: strict
     fallbacks: ''
     flag: de
-    languageId: '0'
+    languageId: 0
   -
     title: English
     enabled: true
@@ -23,12 +27,23 @@ languages:
     typo3Language: default
     locale: en_US.UTF-8
     iso-639-1: en
-    websiteTitle: In2studyfinder -- Developmennt
+    websiteTitle: 'In2studyfinder -- Developmennt'
     navigationTitle: English
     hreflang: en-US
     direction: ltr
     flag: en-us-gb
-    languageId: '1'
+    languageId: 1
+  -
+    title: French
+    enabled: true
+    locale: fr_FR.utf8
+    hreflang: ''
+    base: /fr/
+    websiteTitle: ''
+    navigationTitle: ''
+    fallbackType: strict
+    fallbacks: ''
+    flag: fr
+    languageId: 2
 rootPageId: 1
-routes: {  }
 websiteTitle: ''
