@@ -146,7 +146,7 @@ in2studyfinderFilterAjax {
 	10 {
 		userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
 		extensionName = In2studyfinder
-		pluginName = Pi1
+		pluginName = Filter
 		vendorName = In2code
 		controller = StudyCourse
 		// the action is ignored at this point.
