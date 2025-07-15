@@ -39,7 +39,7 @@ class ExportService
     public function export(): void
     {
         $fullQualifiedFileName = $this->exportConfiguration->getExporter()->export($this->exportConfiguration);
-        $filename = FileUtility::getFilenameFromFileWithPath($fullQualifiedFileName);
+        $filename = basename($fullQualifiedFileName);
 
         $headers = [
             'Pragma' => 'public',

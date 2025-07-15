@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace In2code\In2studyfinder\Utility;
 
+use TYPO3\CMS\Core\Cache\CacheTag;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+
 class CacheUtility
 {
     /**
@@ -11,24 +14,22 @@ class CacheUtility
      *
      * Following cache tags will be added to tsfe:
      * "tx_in2studyfinder_uid_[course:uid]"
-     *
-     * @param array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
      */
-    public static function addCacheTags($recods): void
+    public static function addCacheTags(QueryResultInterface|array $records): void
     {
         $cacheTags = [];
-        foreach ($recods as $record) {
+        foreach ($records as $record) {
             $uid = $record->getUid();
             $localizedUid = $record->_getProperty('_localizedUid');
 
-            $cacheTags[$uid] = 'tx_in2studyfinder_uid_' . $uid;
+            $cacheTags[$uid] = new CacheTag('tx_in2studyfinder_uid_' . $uid);
             if ($localizedUid) {
-                $cacheTags[$localizedUid] = 'tx_in2studyfinder_uid_' . $localizedUid;
+                $cacheTags[$localizedUid] = new CacheTag('tx_in2studyfinder_uid_' . $localizedUid);
             }
         }
 
         if ($cacheTags !== []) {
-            FrontendUtility::getTyposcriptFrontendController()->addCacheTags($cacheTags);
+            $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.cache.collector')->addCacheTags(...$cacheTags);
         }
     }
 }

@@ -11,7 +11,6 @@ use LogicException;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
@@ -20,7 +19,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 class UrlSegmentPostModifier
 {
     protected array $configuration = [];
-    public function __construct(private readonly \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool)
+    public function __construct(private readonly ConnectionPool $connectionPool)
     {
     }
 
@@ -112,16 +111,14 @@ class UrlSegmentPostModifier
 
     private function isUpgradeWizard(): bool
     {
-        // call via cli
-        if (http_response_code() === false) {
+        if (PHP_SAPI === 'cli') {
             return true;
         }
 
-        return !is_null($GLOBALS['TYPO3_REQUEST']->getParsedBody()['install'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['install'] ?? null) &&
-            array_key_exists('action', $GLOBALS['TYPO3_REQUEST']->getParsedBody()['install'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['install'] ?? null) &&
-            ($GLOBALS['TYPO3_REQUEST']->getParsedBody()['install'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['install'] ?? null)['action'] === 'upgradeWizardsExecute';
+        $request = $this->getRequest();
+        $installParams = $request->getParsedBody()['install'] ?? $request->getQueryParams()['install'] ?? null;
+        return is_array($installParams) && ($installParams['action'] ?? null) === 'upgradeWizardsExecute';
     }
-
     protected function isNewRecord(): bool
     {
         return $this->isRecalculateSlug() &&

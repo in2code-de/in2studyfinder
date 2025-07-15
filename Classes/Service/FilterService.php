@@ -7,10 +7,10 @@ namespace In2code\In2studyfinder\Service;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
@@ -188,9 +188,6 @@ class FilterService extends AbstractService
         return (bool)($filterConfiguration['disabledInFrontend'] ?? false);
     }
 
-    /**
-     * @throws \TYPO3\CMS\Extbase\Object\Exception
-     */
     protected function buildObjectFilter(string $filterName, array $filterConfiguration): void
     {
         $repositoryClassName = ClassNamingUtility::translateModelNameToRepositoryName(
@@ -201,7 +198,7 @@ class FilterService extends AbstractService
             $defaultQuerySettings = GeneralUtility::makeInstance(QuerySettingsInterface::class);
             $defaultQuerySettings->setStoragePageIds([$this->settings['settingsPid']]);
             $languageAspect = $defaultQuerySettings->getLanguageAspect();
-            $languageAspect = new \TYPO3\CMS\Core\Context\LanguageAspect($languageAspect->getId(), $languageAspect->getContentId(), \TYPO3\CMS\Core\Context\LanguageAspect::OVERLAYS_MIXED);
+            $languageAspect = new LanguageAspect($languageAspect->getId(), $languageAspect->getContentId(), LanguageAspect::OVERLAYS_MIXED);
             $defaultQuerySettings->setLanguageAspect($languageAspect);
 
             $repository = GeneralUtility::makeInstance($repositoryClassName);

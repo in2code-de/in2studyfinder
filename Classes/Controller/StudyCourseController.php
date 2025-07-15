@@ -131,12 +131,10 @@ class StudyCourseController extends AbstractController
 
     /**
      * @param StudyCourse|null $studyCourse
-     *
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      */
     public function detailAction(StudyCourse $studyCourse = null): ResponseInterface
     {
-        if ($studyCourse instanceof \In2code\In2studyfinder\Domain\Model\StudyCourse) {
+        if ($studyCourse !== null) {
             $this->courseService->setPageTitleAndMetadata($studyCourse);
             CacheUtility::addCacheTags([$studyCourse]);
 

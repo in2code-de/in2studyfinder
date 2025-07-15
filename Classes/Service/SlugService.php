@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace In2code\In2studyfinder\Service;
 
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -34,7 +33,7 @@ class SlugService
     }
 
     /**
-     * @throws DBALException
+     * @throws Exception
      */
     public function performUpdates(): array
     {
@@ -75,7 +74,7 @@ class SlugService
     }
 
     /**
-     * @throws DBALException
+     * @throws Exception
      */
     public function isSlugUpdateRequired(): bool
     {
@@ -87,7 +86,7 @@ class SlugService
         $count = $queryBuilder->count('uid')
             ->from(StudyCourse::TABLE)
             ->where(
-                $queryBuilder->expr()->orX(
+                $queryBuilder->expr()->or(
                     $queryBuilder->expr()->eq(
                         'url_segment',
                         $queryBuilder->createNamedParameter('')

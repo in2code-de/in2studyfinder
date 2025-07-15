@@ -12,7 +12,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class PageUtility
 {
     /**
-     * @throws \Doctrine\DBAL\DBALException
      * @throws \Doctrine\DBAL\Driver\Exception
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)

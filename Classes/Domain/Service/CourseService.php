@@ -13,6 +13,7 @@ use In2code\In2studyfinder\Utility\FrontendUtility;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Property;
+use TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
 /**
@@ -23,9 +24,9 @@ class CourseService extends AbstractService
     protected array $settings = [];
 
     /**
-     * @var ReflectionService
+     * @var ReflectionService|null
      */
-    protected object $reflectionService;
+    protected ?ReflectionService $reflectionService = null;
 
     public function __construct(
         protected StudyCourseRepository $studyCourseRepository,
@@ -102,6 +103,7 @@ class CourseService extends AbstractService
 
     /**
      * @param Property[] $objectProperties
+     * @throws UnknownClassException
      */
     private function getCoursePropertyList(
         array $objectProperties,

@@ -22,17 +22,7 @@ class FrontendUtility
      */
     public static function getCurrentSysLanguageUid(): int
     {
-        /** @var LanguageAspect $languageAspect */
         $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
-
         return $languageAspect->getId();
-    }
-
-    /**
-     * @SuppressWarnings(PHPMD.Superglobals)
-     */
-    public static function getTyposcriptFrontendController(): TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'];
     }
 }

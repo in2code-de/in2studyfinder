@@ -25,10 +25,7 @@ class GlobalDataRepository extends AbstractRepository
         $query->getQuerySettings()->setRespectSysLanguage(false);
         $query->matching(
             $query->logicalAnd(
-                [
-                    $query->equals('default_preset', true),
-                    $query->equals('deleted', 0),
-                ]
+                $query->equals('default_preset', true), $query->equals('deleted', 0)
             )
         );
         return $query;

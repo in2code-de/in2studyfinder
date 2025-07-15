@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace In2code\In2studyfinder\Property\TypeConverter;
 
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
+use InvalidArgumentException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
 
@@ -39,8 +41,8 @@ class StudyCourseConverter extends PersistentObjectConverter
      * Convert an object from $source to an entity or a value object.
      *
      * @return object|null the target type
-     * @throws \InvalidArgumentException
-     * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException
+     * @throws InvalidArgumentException
+     * @throws InvalidTargetException
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
