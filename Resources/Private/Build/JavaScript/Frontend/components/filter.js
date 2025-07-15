@@ -118,8 +118,8 @@ class Filter {
   }
 
   call(paginationPage) {
-    let pid = this.filterElement.querySelector('input[name="tx_in2studyfinder_pi1[pluginInformation][pid]"]').value;
-    let language = this.filterElement.querySelector('input[name="tx_in2studyfinder_pi1[pluginInformation][languageUid]"]').value;
+    let pid = this.filterElement.querySelector('input[name="tx_in2studyfinder_filter[pluginInformation][pid]"]').value;
+    let language = this.filterElement.querySelector('input[name="tx_in2studyfinder_filter[pluginInformation][languageUid]"]').value;
     let paginationArgument = '';
     let instanceId = this.studyfinderElement.getAttribute('data-in2studyfinder-instance-id')
 
@@ -128,7 +128,7 @@ class Filter {
     }
 
     if (typeof paginationPage !== 'undefined') {
-      paginationArgument = '&tx_in2studyfinder_pi1[studyCoursesForPage][currentPage]=' + paginationPage;
+      paginationArgument = '&tx_in2studyfinder_filter[studyCoursesForPage][currentPage]=' + paginationPage;
     }
 
     LoaderUtility.enableLoader();
