@@ -14,6 +14,7 @@ use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\FlexFormUtility;
 use In2code\In2studyfinder\Utility\RecordUtility;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -37,11 +38,14 @@ class StudyCourseController extends AbstractController
         $this->filterService->initialize();
 
         if ($pluginInformation !== []) {
+            $site = $this->request->getAttribute('site');
+            $siteLanguage = $site->getLanguageById((int)$pluginInformation['languageUid']);
+
             // if the current call is an ajax / fetch request
             $currentPluginRecord =
                 RecordUtility::getRecordWithLanguageOverlay(
                     (int)$pluginInformation['pluginUid'],
-                    (int)$pluginInformation['languageUid']
+                    LanguageAspectFactory::createFromSiteLanguage($siteLanguage)
                 );
 
             $this->settings =
