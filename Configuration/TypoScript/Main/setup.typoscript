@@ -102,6 +102,7 @@ plugin.tx_in2studyfinder {
 					9 = hidden
 					10 = sorting
 					11 = parent
+          12 = l10Parent
 				}
 
 				includeDeleted = 0

@@ -119,23 +119,27 @@ class CourseService extends AbstractService
                     true
                 )
             ) {
-                $elementType = $property->getName();
+                $propertyName = $property->getName();
                 $type = $property->getPrimaryType()->getBuiltinType();
+                if ($type !== 'object') {
+                    $propertyArray[$propertyName] = $propertyName;
+                    continue;
+                }
 
+                $className = $property->getPrimaryType()->getClassName();
                 if ($property->isObjectStorageType()) {
-                    if (class_exists($elementType)) {
-                        $propertyArray[$property->getName()] = $this->getCoursePropertyList(
-                            $this->reflectionService->getClassSchema($elementType)->getProperties(),
+                    $childPropertyClassName = $property->getPrimaryCollectionValueType()->getClassName();
+                    if (class_exists($childPropertyClassName)) {
+                        $propertyArray[$propertyName] = $this->getCoursePropertyList(
+                            $this->reflectionService->getClassSchema($childPropertyClassName)->getProperties(),
                             $excludedFields
                         );
                     }
-                } elseif (class_exists($type)) {
-                    $propertyArray[$property->getName()] = $this->getCoursePropertyList(
-                        $this->reflectionService->getClassSchema($type)->getProperties(),
+                } else {
+                    $propertyArray[$propertyName] = $this->getCoursePropertyList(
+                        $this->reflectionService->getClassSchema($className)->getProperties(),
                         $excludedFields
                     );
-                } else {
-                    $propertyArray[$property->getName()] = $property->getName();
                 }
             }
         }
