@@ -48,7 +48,6 @@ return [
         ],
         'in2studyfinder' => [
             'enableBackendModule' => '1',
-            'enableCaching' => '1',
             'enableCategories' => '0',
             'enableGlobalData' => '0',
             'enablePersistentFilter' => '0',

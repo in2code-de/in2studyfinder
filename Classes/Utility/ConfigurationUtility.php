@@ -20,13 +20,6 @@ class ConfigurationUtility extends AbstractUtility
         return isset($extensionConfig['enableCategories']) && $extensionConfig['enableCategories'] === '1';
     }
 
-    public static function isCachingEnabled(): bool
-    {
-        $extensionConfig = AbstractUtility::getExtensionConfiguration();
-
-        return isset($extensionConfig['enableCaching']) && $extensionConfig['enableCaching'] === '1';
-    }
-
     public static function isPersistentFilterEnabled(): bool
     {
         $extensionConfig = AbstractUtility::getExtensionConfiguration();

@@ -8,8 +8,7 @@ use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 use In2code\In2studyfinder\PageTitle\CoursePageTitleProvider;
 use In2code\In2studyfinder\Service\PluginService;
-use In2code\In2studyfinder\Utility\ConfigurationUtility;
-use In2code\In2studyfinder\Utility\FrontendUtility;
+use In2code\In2studyfinder\Utility\CacheUtility;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Property;
@@ -32,7 +31,6 @@ class CourseService extends AbstractService
         protected StudyCourseRepository $studyCourseRepository,
         protected PluginService $pluginService
     ) {
-        parent::__construct();
         $this->reflectionService = GeneralUtility::makeInstance(ReflectionService::class);
     }
 
@@ -44,17 +42,13 @@ class CourseService extends AbstractService
             $searchOptions['storagePids'] = $storagePids;
         }
 
-        if (ConfigurationUtility::isCachingEnabled() && !is_null($this->cacheInstance)) {
-            $cacheIdentifier = $this->getCacheIdentifierForStudyCourses($searchOptions);
+        $cacheInstance = CacheUtility::getCacheInstance();
+        $cacheIdentifier = CacheUtility::getCacheIdentifierForStudyCourses($searchOptions);
+        $studyCourses = $cacheInstance->get($cacheIdentifier);
 
-            $studyCourses = $this->cacheInstance->get($cacheIdentifier);
-
-            if (!$studyCourses) {
-                $studyCourses = $this->searchAndSortStudyCourses($searchOptions);
-                $this->cacheInstance->set($cacheIdentifier, $studyCourses, ['in2studyfinder']);
-            }
-        } else {
+        if (!$studyCourses) {
             $studyCourses = $this->searchAndSortStudyCourses($searchOptions);
+            $cacheInstance->set($cacheIdentifier, $studyCourses, ['in2studyfinder']);
         }
 
         return $studyCourses;
@@ -145,19 +139,5 @@ class CourseService extends AbstractService
         }
 
         return $propertyArray;
-    }
-
-    protected function getCacheIdentifierForStudyCourses(array $options): string
-    {
-        // create cache Identifier
-        $optionsIdentifier = $options === [] ? 'allStudyCourses' : json_encode($options, JSON_THROW_ON_ERROR);
-
-        return md5(
-            FrontendUtility::getCurrentPageIdentifier()
-            . '-'
-            . FrontendUtility::getCurrentSysLanguageUid()
-            . '-'
-            . $optionsIdentifier
-        );
     }
 }

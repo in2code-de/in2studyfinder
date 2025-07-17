@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 use In2code\In2studyfinder\Controller\StudyCourseController;
 use In2code\In2studyfinder\Hooks\DataHandlerHook;
-use In2code\In2studyfinder\Hooks\PluginPreview;
 use In2code\In2studyfinder\Updates\StudyCourseSlugUpdater;
-use In2code\In2studyfinder\Utility\ConfigurationUtility;
+use In2code\In2studyfinder\Utility\CacheUtility;
+use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
@@ -45,24 +45,13 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clea
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['in2studyfinder'][] =
     'In2code\In2studyfinder\ViewHelpers';
 
-/**
- * Hook to show PluginInformation under a tt_content element in page module of type in2studyfinder
- */
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['in2studyfinder']
-    = PluginPreview::class;
-
-if (ConfigurationUtility::isCachingEnabled()) {
-    if (!is_array(
-        ($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['in2studyfinder'] ?? null)
-    )) {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['in2studyfinder'] = [];
-    }
-    if (!isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['in2studyfinder']['frontend'])) {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['in2studyfinder']['frontend'] =
-            VariableFrontend::class;
-    }
-    if (!isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['in2studyfinder']['groups'])) {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['in2studyfinder']['groups'] =
-            ['pages'];
-    }
+if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][CacheUtility::CACHE_NAME] ?? null)) {
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][CacheUtility::CACHE_NAME] = [
+        'frontend' => VariableFrontend::class,
+        'backend' => Typo3DatabaseBackend::class,
+        'groups' => ['pages'],
+        'options' => [
+            'defaultLifetime' => 3600,
+        ]
+    ];
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace In2code\In2studyfinder\Domain\Service;
 
 use In2code\In2studyfinder\Domain\Repository\FacultyRepository;
-use In2code\In2studyfinder\Utility\ConfigurationUtility;
+use In2code\In2studyfinder\Utility\CacheUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 
@@ -13,22 +13,17 @@ class FacilityService extends AbstractService
 {
     public function __construct(protected FacultyRepository $facultyRepository)
     {
-        parent::__construct();
     }
 
     public function getFacultyCount(array $settings = []): int
     {
-        if (!is_null($this->cacheInstance) && ConfigurationUtility::isCachingEnabled()) {
-            $cacheIdentifier = md5('facultyCount');
-            $facultyCount = $this->cacheInstance->get($cacheIdentifier);
+        $cacheInstance = CacheUtility::getCacheInstance();
+        $cacheIdentifier = md5('facultyCount');
+        $facultyCount = $cacheInstance->get($cacheIdentifier);
 
-            if (!$facultyCount) {
-                $facultyCount = $this->countFaculties($settings);
-
-                $this->cacheInstance->set($cacheIdentifier, $facultyCount, ['in2studyfinder']);
-            }
-        } else {
+        if (!$facultyCount) {
             $facultyCount = $this->countFaculties($settings);
+            $cacheInstance->set($cacheIdentifier, $facultyCount, ['in2studyfinder']);
         }
 
         if (!empty($facultyCount)) {
