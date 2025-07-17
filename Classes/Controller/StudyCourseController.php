@@ -7,6 +7,9 @@ namespace In2code\In2studyfinder\Controller;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Domain\Service\CourseService;
 use In2code\In2studyfinder\Domain\Service\FacilityService;
+use In2code\In2studyfinder\Event\ModifyDetailActionFluidVariablesEvent;
+use In2code\In2studyfinder\Event\ModifyFastSearchActionFluidVariablesEvent;
+use In2code\In2studyfinder\Event\ModifyFilterActionFluidVariablesEvent;
 use In2code\In2studyfinder\Property\TypeConverter\StudyCourseConverter;
 use In2code\In2studyfinder\Service\FilterService;
 use In2code\In2studyfinder\Utility\CacheUtility;
@@ -69,17 +72,18 @@ class StudyCourseController extends AbstractController
             $currentPluginRecord
         );
 
-        $this->view->assignMultiple(
-            [
-                'searchedOptions' => $searchOptions,
-                'filters' => $this->filterService->getFilter(),
-                'availableFilterOptions' => $this->filterService->getAvailableFilterOptions($studyCourses),
-                'studyCourseCount' => count($studyCourses),
-                'studyCourses' => $studyCourses,
-                'settings' => $this->settings,
-                'data' => $currentPluginRecord
-            ]
-        );
+        $fluidVariables = [
+            'searchedOptions' => $searchOptions,
+            'filters' => $this->filterService->getFilter(),
+            'availableFilterOptions' => $this->filterService->getAvailableFilterOptions($studyCourses),
+            'studyCourseCount' => count($studyCourses),
+            'studyCourses' => $studyCourses,
+            'settings' => $this->settings,
+            'data' => $currentPluginRecord
+        ];
+
+        $event = $this->eventDispatcher->dispatch(new ModifyFilterActionFluidVariablesEvent($this, $fluidVariables));
+        $this->view->assignMultiple($event->getFluidVariables());
 
         return $this->htmlResponse();
     }
@@ -93,15 +97,16 @@ class StudyCourseController extends AbstractController
         $studyCourses =
             $this->courseService->findBySearchOptions([], $currentPluginRecord);
 
-        $this->view->assignMultiple(
-            [
-                'studyCourseCount' => count($studyCourses),
-                'facultyCount' => $this->facilityService->getFacultyCount($this->settings),
-                'studyCourses' => $studyCourses,
-                'settings' => $this->settings,
-                'data' => $currentPluginRecord
-            ]
-        );
+        $fluidVariables =  [
+            'studyCourseCount' => count($studyCourses),
+            'facultyCount' => $this->facilityService->getFacultyCount($this->settings),
+            'studyCourses' => $studyCourses,
+            'settings' => $this->settings,
+            'data' => $currentPluginRecord
+        ];
+
+        $event = $this->eventDispatcher->dispatch(new ModifyFastSearchActionFluidVariablesEvent($this, $fluidVariables));
+        $this->view->assignMultiple($event->getFluidVariables());
 
         return $this->htmlResponse();
     }
@@ -138,7 +143,10 @@ class StudyCourseController extends AbstractController
             $this->courseService->setPageTitleAndMetadata($studyCourse);
             CacheUtility::addCacheTags([$studyCourse]);
 
-            $this->view->assign('studyCourse', $studyCourse);
+            $fluidVariables = ['studyCourse', $studyCourse];
+
+            $event = $this->eventDispatcher->dispatch(new ModifyDetailActionFluidVariablesEvent($this, $fluidVariables));
+            $this->view->assignMultiple($event->getFluidVariables());
         } else {
             $studyCourseListPage = $this->settings['flexform']['studyCourseListPage'] ?? '';
             return $this->redirect('filterAction', null, null, null, $studyCourseListPage);

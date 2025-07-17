@@ -444,33 +444,4 @@ class StudyCourse extends AbstractEntity
 
         return implode(',', $idList);
     }
-
-    /**
-     * compare function for sorting
-     *
-     * DE: ein Workaround für die Sortierung nach Titel. Da die Sortierung über das
-     * Repository ($defaultOrderings) bei übersetzten Datensätzen nicht richtig funktioniert.
-     * Soll nach anderen Kriterien sortiert werden kann diese Funktion einfach überschrieben werden.
-     *
-     * z.B.
-     *
-     * public static function cmpObj($studyCourseA, $studyCourseB)
-     * {
-     *     $al = strtolower($studyCourseA->getTitle());
-     *     $bl = strtolower($studyCourseB->getTitle());
-     *
-     *     if ($al == $bl) {
-     *       return $studyCourseB->getAcademicDegree()->getSorting() - $studyCourseB->getAcademicDegree()->getSorting();
-     *     }
-     *
-     *     return strcmp($studyCourseA->getTitle(), $studyCourseB->getTitle());
-     * }
-     *
-     * würde erst nach Titel alphabetisch und danach nach dem Akademischem Grad ("sorting" im Backend durch den
-     * Redakteur gepflegt) sortieren.
-     */
-    public static function cmpObj(StudyCourse $studyCourseA, StudyCourse $studyCourseB): int
-    {
-        return strcmp(strtolower($studyCourseA->getTitle()), strtolower($studyCourseB->getTitle()));
-    }
 }

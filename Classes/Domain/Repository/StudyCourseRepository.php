@@ -14,7 +14,7 @@ class StudyCourseRepository extends AbstractRepository
         'title' => QueryInterface::ORDER_ASCENDING,
     ];
 
-    public function findAllFilteredByOptions($options): QueryResultInterface
+    public function findAllFilteredByOptions($options): array
     {
         $query = $this->createQuery();
 
@@ -60,7 +60,7 @@ class StudyCourseRepository extends AbstractRepository
             $query->matching($query->logicalAnd(...$constraints));
         }
 
-        return $query->execute();
+        return $query->execute()->toArray();
     }
 
     /**

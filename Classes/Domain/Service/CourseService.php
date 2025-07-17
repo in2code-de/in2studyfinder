@@ -47,7 +47,7 @@ class CourseService extends AbstractService
         $studyCourses = $cacheInstance->get($cacheIdentifier);
 
         if (!$studyCourses) {
-            $studyCourses = $this->searchAndSortStudyCourses($searchOptions);
+            $studyCourses = $this->studyCourseRepository->findAllFilteredByOptions($searchOptions);
             $cacheInstance->set($cacheIdentifier, $studyCourses, ['in2studyfinder']);
         }
 
@@ -71,20 +71,6 @@ class CourseService extends AbstractService
                 $studyCourse->getMetaKeywords()
             );
         }
-    }
-
-    protected function searchAndSortStudyCourses(array $searchOptions): array
-    {
-        $studyCourses = $this
-            ->studyCourseRepository
-            ->findAllFilteredByOptions($searchOptions)
-            ->toArray();
-
-        if (array_key_exists(0, $studyCourses)) {
-            usort($studyCourses, [$studyCourses[0], 'cmpObj']);
-        }
-
-        return $studyCourses;
     }
 
     public function getCourseProperties(StudyCourse $course, array $excludedFields = []): array
