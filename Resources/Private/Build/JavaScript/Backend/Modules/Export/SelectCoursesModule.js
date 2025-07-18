@@ -11,7 +11,7 @@ class SelectCoursesModule {
         changeLanguageSelect: '.js-in2studyfinder-recordLanguage',
         courseListTableBody: '.js-in2studyfinder-course-list',
         loader: '.in2js-in2studyfinder-loader',
-        loaderActive: '.in2js-in2studyfinder-loader--active',
+        loaderActive: '.in2studyfinder-loader--active',
         selectCourseContainer: '.js-in2studyfinder-select-course-container',
         selectedCoursesCount: '.js-in2studyfinder-selected-courses-count',
         paginationTarget: '.js-in2studyfinder-pagination',
