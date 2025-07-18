@@ -191,7 +191,7 @@
 				<source>default preset for global fields</source>
 			</trans-unit>
 			<trans-unit id="pluginInformation.detailView">
-				<source>Detail View</source>
+				<source>Detail Plugin</source>
 			</trans-unit>
 			<trans-unit id="pluginInformation.recordStoragePage">
 				<source>Record Storage Page</source>
@@ -218,7 +218,7 @@
 				<source>Academic Degrees</source>
 			</trans-unit>
 			<trans-unit id="pluginInformation.listView">
-				<source>List View</source>
+				<source>Filter Plugin</source>
 			</trans-unit>
 			<trans-unit id="pluginInformation.extensionTitle">
 				<source>Studyfinder</source>
@@ -288,6 +288,12 @@
 			</trans-unit>
 			<trans-unit id="availableItems">
 				<source>Available Items</source>
+			</trans-unit>
+			<trans-unit id="pluginInformation.settings">
+				<source>Plugin Settings</source>
+			</trans-unit>
+			<trans-unit id="pluginInformation.fastsearchView">
+				<source>Fast Search Plugin</source>
 			</trans-unit>
 		</body>
 	</file>

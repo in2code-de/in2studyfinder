@@ -22,8 +22,8 @@ $plugins = [
         'title' => $languagePrefix . 'plugin.pi2',
         'flexForm' => $flexFormFolder . 'Detail.xml',
     ],
-    'fastSearch' => [
-        'name' => 'FastSearch',
+    'fastsearch' => [
+        'name' => 'Fastsearch',
         'title' => $languagePrefix . 'plugin.fastSearch',
         'flexForm' => $flexFormFolder . 'FastSearch.xml',
     ],
@@ -41,7 +41,7 @@ foreach ($plugins as $plugin) {
 
     ExtensionManagementUtility::addToAllTCAtypes(
         'tt_content',
-        '--div--;Configuration,pi_flexform,',
+        '--div--;Configuration,pi_flexform,recursive,pages',
         $pluginSignature,
         'after:subheader',
     );

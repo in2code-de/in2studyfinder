@@ -14,7 +14,7 @@ final class ExtbasePluginListTypeToCTypeUpdate extends \TYPO3\CMS\Install\Update
         return [
             'in2studyfinder_pi1' => 'in2studyfinder_filter',
             'in2studyfinder_pi2' => 'in2studyfinder_detail',
-            'in2studyfinder_fastSearch' => 'in2studyfinder_fastSearch',
+            'in2studyfinder_fastsearch' => 'in2studyfinder_fastsearch',
         ];
     }
 
@@ -25,6 +25,6 @@ final class ExtbasePluginListTypeToCTypeUpdate extends \TYPO3\CMS\Install\Update
 
     public function getDescription(): string
     {
-        return 'Migrates in2studyfinder_pi1, in2studyfinder_pi2, in2studyfinder_FastSearch from list_type to CType.';
+        return 'Migrates in2studyfinder_pi1, in2studyfinder_pi2, in2studyfinder_fastsearch from list_type to CType.';
     }
 }

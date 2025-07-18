@@ -248,8 +248,8 @@
 				<target>Standard Voreinstellung für globale Felder</target>
 			</trans-unit>
 			<trans-unit id="pluginInformation.detailView">
-				<source>Detail View</source>
-				<target>Detailansicht</target>
+				<source>Detail Plugin</source>
+				<target>Plugin: Detail</target>
 			</trans-unit>
 			<trans-unit id="pluginInformation.recordStoragePage">
 				<source>Record Storage Page</source>
@@ -284,8 +284,8 @@
 				<target>Akademische Grade</target>
 			</trans-unit>
 			<trans-unit id="pluginInformation.listView">
-				<source>List View</source>
-				<target>Listenansicht</target>
+				<source>Filter Plugin</source>
+				<target>Plugin: Filter</target>
 			</trans-unit>
 			<trans-unit id="pluginInformation.extensionTitle">
 				<source>Studyfinder</source>
@@ -378,6 +378,14 @@
 			<trans-unit id="availableItems">
 				<source>Available Items</source>
 				<target>Verfügbare Felder</target>
+			</trans-unit>
+			<trans-unit id="pluginInformation.settings">
+				<source>Plugin Settings</source>
+				<target>Plugin Konfiguration</target>
+			</trans-unit>
+			<trans-unit id="pluginInformation.fastsearchView">
+				<source>Fast Search Plugin</source>
+				<target>Plugin: Schnellauswahl</target>
 			</trans-unit>
 		</body>
 	</file>

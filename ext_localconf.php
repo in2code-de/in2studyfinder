@@ -22,7 +22,7 @@ ExtensionUtility::configurePlugin(
 
 ExtensionUtility::configurePlugin(
     'In2studyfinder',
-    'FastSearch',
+    'Fastsearch',
     [StudyCourseController::class => 'fastSearch'],
     [],
     ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,

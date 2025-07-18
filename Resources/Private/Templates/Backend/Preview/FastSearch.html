@@ -1,1 +1,126 @@
-ToDo
+<html data-namespace-typo3-fluid="true"
+			xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+			xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+			xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+>
+<div class="{cType}-preview">
+	<div class="{cType}-preview-inner">
+		<f:if condition="{extendedVariables.errors.missingExtensionSettings}">
+			<f:be.infobox title="Missing TypoScript!"
+										state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_ERROR')}">
+				Please include the in2studyfinder Site Set for this Site!
+			</f:be.infobox>
+		</f:if>
+
+		<h2>
+			<f:translate
+				key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:pluginInformation.fastsearchView"/>
+		</h2>
+
+		<h3>
+			<f:translate
+				key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:pluginInformation.settings"/>
+		</h3>
+		<div class="table-fit">
+			<table class="table table-striped">
+				<tbody>
+				<f:if condition="{extendedVariables.listPage.uid}">
+					<f:then>
+						<tr>
+							<td>
+								<strong>
+									<f:translate
+										key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:pluginInformation.listView"/>
+								</strong>
+							</td>
+							<td>
+								{extendedVariables.listPage.title} (uid = {extendedVariables.listPage.uid})
+							</td>
+							<f:comment>
+								<td class="col-control">
+									<div class="btn-group" role="group">
+										<a class="btn btn-default"
+											 href="{be:uri.editRecord(uid:'{extendedVariables.listPage.uid}', table:'pages')}">
+											<core:icon identifier="actions-document-open" size="small"/>
+										</a>
+									</div>
+								</td>
+							</f:comment>
+						</tr>
+					</f:then>
+				</f:if>
+				<f:if condition="{extendedVariables.detailPage.uid}">
+					<f:then>
+						<tr>
+							<td>
+								<strong>
+									<f:translate
+										key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:pluginInformation.detailView"/>
+								</strong>
+							</td>
+							<td>
+								{extendedVariables.detailPage.title} (uid = {extendedVariables.detailPage.uid})
+							</td>
+							<f:comment>
+								<td class="col-control">
+									<div class="btn-group" role="group">
+										<a class="btn btn-default"
+											 href="{be:uri.editRecord(uid:'{extendedVariables.detailPage.uid}', table:'pages')}">
+											<core:icon identifier="actions-document-open" size="small"/>
+										</a>
+									</div>
+								</td>
+							</f:comment>
+						</tr>
+					</f:then>
+				</f:if>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<f:render section="RecordStoragePages"/>
+</div>
+
+<f:section name="RecordStoragePages">
+	<h3>
+		<f:if condition="{f:count(subject: extendedVariables.recordStoragePages)} == 1">
+			<f:then>
+				<f:translate
+					key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:pluginInformation.recordStoragePage"/>
+			</f:then>
+			<f:else>
+				<f:translate
+					key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:pluginInformation.recordStoragePages"/>
+			</f:else>
+		</f:if>
+	</h3>
+
+	<div class="table-fit">
+		<table class="table table-striped">
+			<tbody>
+			<tr>
+				<td>
+					<f:if condition="{extendedVariables.recordStoragePages}">
+						<f:then>
+							<f:for each="{extendedVariables.recordStoragePages}" as="recordStoragePage" iteration="iterator">
+								{recordStoragePage.title} ({recordStoragePage.uid})
+								<f:if condition="!{iterator.isLast}">
+									<f:then>,</f:then>
+								</f:if>
+							</f:for>
+						</f:then>
+						<f:else>
+							<strong style="color: red">
+								<f:translate
+									key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:pluginInformation.noStoragePage"/>
+							</strong>
+						</f:else>
+					</f:if>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+</f:section>
+</html>

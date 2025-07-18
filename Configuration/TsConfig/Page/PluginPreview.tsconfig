@@ -4,7 +4,7 @@ mod.web_layout {
       # Your CType
       in2studyfinder_filter = EXT:in2studyfinder/Resources/Private/Templates/Backend/Preview/Filter.html
       in2studyfinder_detail = EXT:in2studyfinder/Resources/Private/Templates/Backend/Preview/Detail.html
-      in2studyfinder_fastSearch = EXT:in2studyfinder/Resources/Private/Templates/Backend/Preview/FastSearch.html
+      in2studyfinder_fastsearch = EXT:in2studyfinder/Resources/Private/Templates/Backend/Preview/FastSearch.html
     }
   }
 }
