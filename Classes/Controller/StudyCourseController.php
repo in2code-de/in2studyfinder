@@ -143,7 +143,7 @@ class StudyCourseController extends AbstractController
             $this->courseService->setPageTitleAndMetadata($studyCourse);
             CacheUtility::addCacheTags([$studyCourse]);
 
-            $fluidVariables = ['studyCourse', $studyCourse];
+            $fluidVariables = ['studyCourse' => $studyCourse];
 
             $event = $this->eventDispatcher->dispatch(new ModifyDetailActionFluidVariablesEvent($this, $fluidVariables));
             $this->view->assignMultiple($event->getFluidVariables());
