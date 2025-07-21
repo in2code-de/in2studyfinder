@@ -6,19 +6,19 @@ categories:
     parent: In2studyfinder
 
 settings:
-  in2studyfinder.templateRootPath:
+  plugin.tx_in2studyfinder.view.templateRootPath:
     label: 'Template root path'
     category: In2studyfinder.templates
     description: 'Path to template root'
     type: string
     default: EXT:in2studyfinder/Resources/Private/Templates/
-  in2studyfinder.partialRootPath:
+  plugin.tx_in2studyfinder.view.partialRootPath:
     label: 'Partial root path'
     category: In2studyfinder.templates
     description: 'Path to partial root'
     type: string
     default: EXT:in2studyfinder/Resources/Private/Partials/
-  in2studyfinder.layoutRootPath:
+  plugin.tx_in2studyfinder.view.layoutRootPath:
     label: 'Layout root path'
     category: In2studyfinder.templates
     description: 'Path to layout root'

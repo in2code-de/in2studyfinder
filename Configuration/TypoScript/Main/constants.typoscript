@@ -1,11 +1,11 @@
 plugin.tx_in2studyfinder {
 	view {
 		# cat=plugin.tx_in2studyfinder/file; type=string; label=Path to template root (FE)
-		templateRootPath = EXT:in2studyfinder/Resources/Private/Templates/
+		templateRootPath =
 		# cat=plugin.tx_in2studyfinder/file; type=string; label=Path to template partials (FE)
-		partialRootPath = EXT:in2studyfinder/Resources/Private/Partials/
+		partialRootPath =
 		# cat=plugin.tx_in2studyfinder/file; type=string; label=Path to template layouts (FE)
-		layoutRootPath = EXT:in2studyfinder/Resources/Private/Layouts/
+		layoutRootPath =
 	}
 
 	persistence {

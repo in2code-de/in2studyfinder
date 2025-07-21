@@ -7,9 +7,18 @@ config.pageTitleProviders {
 
 plugin.tx_in2studyfinder {
 	view {
-		templateRootPaths.0 = {$plugin.tx_in2studyfinder.view.templateRootPath}
-		partialRootPaths.0 = {$plugin.tx_in2studyfinder.view.partialRootPath}
-		layoutRootPaths.0 = {$plugin.tx_in2studyfinder.view.layoutRootPath}
+    templateRootPaths {
+      0 = EXT:in2studyfinder/Resources/Private/Templates/
+      1 = {$plugin.tx_in2studyfinder.view.templateRootPath}
+    }
+    partialRootPaths {
+      0 = EXT:in2studyfinder/Resources/Private/Partials/
+      1 = {$plugin.tx_in2studyfinder.view.partialRootPath}
+    }
+    layoutRootPaths {
+      0 = EXT:in2studyfinder/Resources/Private/Layouts/
+      1 = {$plugin.tx_in2studyfinder.view.layoutRootPath}
+    }
 	}
 
 	settings {
