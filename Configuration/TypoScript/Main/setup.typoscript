@@ -27,6 +27,7 @@ plugin.tx_in2studyfinder {
 
 		pagination {
 			itemsPerPage = {$plugin.tx_in2studyfinder.settings.pagination.itemsPerPage}
+      maximumNumberOfLinks = {$plugin.tx_in2studyfinder.settings.pagination.maximumNumberOfLinks}
 		}
 
 		filters {

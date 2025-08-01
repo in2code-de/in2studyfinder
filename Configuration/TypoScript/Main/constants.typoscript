@@ -24,6 +24,7 @@ plugin.tx_in2studyfinder {
 
 		pagination {
 			itemsPerPage = 10
+      maximumNumberOfLinks = 15
 		}
 
 		javascript {

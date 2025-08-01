@@ -18,6 +18,8 @@ use In2code\In2studyfinder\Utility\FlexFormUtility;
 use In2code\In2studyfinder\Utility\RecordUtility;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
+use TYPO3\CMS\Core\Pagination\ArrayPaginator;
+use TYPO3\CMS\Core\Pagination\SlidingWindowPagination;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
@@ -73,6 +75,23 @@ class StudyCourseController extends ActionController
             $currentPluginRecord
         );
 
+        $currentPage = $this->request->hasArgument('currentPageNumber')
+            ? (int)$this->request->getArgument('currentPageNumber')
+            : 1;
+
+        $itemsPerPage = (int)($this->settings['pagination']['itemsPerPage'] ?? 10);
+        $maximumLinks = (int)($this->settings['pagination']['maximumNumberOfLinks'] ?? 15);
+
+        $paginator = new ArrayPaginator(
+            $studyCourses,
+            $currentPage,
+            $itemsPerPage,
+        );
+        $pagination = new SlidingWindowPagination(
+            $paginator,
+            $maximumLinks,
+        );
+
         $fluidVariables = [
             'searchedOptions' => $searchOptions,
             'filters' => $this->filterService->getFilter(),
@@ -80,7 +99,9 @@ class StudyCourseController extends ActionController
             'studyCourseCount' => count($studyCourses),
             'studyCourses' => $studyCourses,
             'settings' => $this->settings,
-            'data' => $currentPluginRecord
+            'data' => $currentPluginRecord,
+            'pagination' => $pagination,
+            'paginator' => $paginator,
         ];
 
         $event = $this->eventDispatcher->dispatch(new ModifyFilterActionFluidVariablesEvent($this, $fluidVariables));
