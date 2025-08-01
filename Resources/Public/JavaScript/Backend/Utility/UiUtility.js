@@ -1,1 +1,0 @@
-const UiUtility={toggleClassForElement(e,l){e.classList.toggle(l)},hideElement(e){e.style.display="none"},showElement(e){e.style.display="inline-block"},showElementAsBlock(e){e.style.display="block"},removeStyles(e){e.removeAttribute("style")}};export default UiUtility;

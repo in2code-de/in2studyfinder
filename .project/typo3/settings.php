@@ -47,7 +47,6 @@ return [
             'offlineMode' => '0',
         ],
         'in2studyfinder' => [
-            'enableBackendModule' => '1',
             'enableCategories' => '0',
             'enableGlobalData' => '0',
             'enablePersistentFilter' => '0',

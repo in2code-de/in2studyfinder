@@ -4,5 +4,3 @@ enableGlobalData = 0
 enableCategories = 0
 # cat=basic/enable/040; type=boolean; label=Enable saving selected filters in the users's cookie
 enablePersistentFilter = 0
-# cat=basic/enable/050; type=boolean; label=Enable the in2studyfinder backend module
-enableBackendModule = 1

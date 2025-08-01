@@ -1,1 +1,0 @@
-const AjaxUtility={async ajaxCall(t,r,a){r();try{const r=await fetch(t);if(!r.ok)throw new Error(`HTTP error! Status: ${r.status}`);a(r)}catch(t){console.error("Error during AJAX call:",t)}}};export default AjaxUtility;

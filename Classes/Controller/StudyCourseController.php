@@ -19,12 +19,13 @@ use In2code\In2studyfinder\Utility\RecordUtility;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
  * @SuppressWarnings(PHPMD.LongVariable)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class StudyCourseController extends AbstractController
+class StudyCourseController extends ActionController
 {
     public function __construct(
         protected FilterService $filterService,
@@ -97,7 +98,7 @@ class StudyCourseController extends AbstractController
         $studyCourses =
             $this->courseService->findBySearchOptions([], $currentPluginRecord);
 
-        $fluidVariables =  [
+        $fluidVariables = [
             'studyCourseCount' => count($studyCourses),
             'facultyCount' => $this->facilityService->getFacultyCount($this->settings),
             'studyCourses' => $studyCourses,
@@ -105,7 +106,8 @@ class StudyCourseController extends AbstractController
             'data' => $currentPluginRecord
         ];
 
-        $event = $this->eventDispatcher->dispatch(new ModifyFastSearchActionFluidVariablesEvent($this, $fluidVariables));
+        $event = $this->eventDispatcher->dispatch(new ModifyFastSearchActionFluidVariablesEvent($this,
+            $fluidVariables));
         $this->view->assignMultiple($event->getFluidVariables());
 
         return $this->htmlResponse();
@@ -145,7 +147,8 @@ class StudyCourseController extends AbstractController
 
             $fluidVariables = ['studyCourse' => $studyCourse];
 
-            $event = $this->eventDispatcher->dispatch(new ModifyDetailActionFluidVariablesEvent($this, $fluidVariables));
+            $event = $this->eventDispatcher->dispatch(new ModifyDetailActionFluidVariablesEvent($this,
+                $fluidVariables));
             $this->view->assignMultiple($event->getFluidVariables());
         } else {
             $studyCourseListPage = $this->settings['flexform']['studyCourseListPage'] ?? '';

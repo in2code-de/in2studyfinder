@@ -6,7 +6,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 module.exports =
   {
     mode: 'development',
-    entry: ['./JavaScript/Frontend/main.js', './Sass/backend.scss', './Sass/demo.scss', './Sass/style.scss'],
+    entry: ['./JavaScript/Frontend/main.js', './Sass/demo.scss', './Sass/style.scss'],
     output: {
       path: path.resolve(__dirname, '../../Public/'),
       filename: 'JavaScript/[name].js'

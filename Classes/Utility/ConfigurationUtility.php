@@ -26,11 +26,4 @@ class ConfigurationUtility extends AbstractUtility
 
         return isset($extensionConfig['enablePersistentFilter']) && $extensionConfig['enablePersistentFilter'] === '1';
     }
-
-    public static function isBackendModuleEnabled(): bool
-    {
-        $extensionConfig = AbstractUtility::getExtensionConfiguration();
-
-        return isset($extensionConfig['enableBackendModule']) && $extensionConfig['enableBackendModule'] === '1';
-    }
 }

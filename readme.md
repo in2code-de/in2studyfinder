@@ -85,15 +85,21 @@ Version 8.x - 10.x
 * TYPO3 11.5
 * PHP 7.4 - 8.0
 
-Version 11.x and above
+Version 11.x - 12.x
 
 * TYPO3 12.4 and above
 * PHP 8.1 and above
 
+Version 13.x
+
+* TYPO3 13.4 and above
+* PHP 8.2 and above
 
 ## Events
 
-ManipulateCsvPropertyBeforeExport: this event allows the manipulation of values before they are exported to the CSV
+ModifyDetailActionFluidVariablesEvent: main event for fluid variable manipulation for the detail action
+ModifyFastSearchActionFluidVariablesEvent: main event for fluid variable manipulation for the fast search action
+ModifyFilterActionFluidVariablesEvent: main event for fluid variable manipulation for the filter action
 
 ## Contribution
 
@@ -117,13 +123,12 @@ Happy coding
 
 run command ```ddev build```
 
-> Local:
+> Native:
 
 Requirements: node.js, npm, nvm
 
 * cd Resources/Private && nvm use
 * npm install
-* npm run build:backend
 * npm run build:frontend
 
 
