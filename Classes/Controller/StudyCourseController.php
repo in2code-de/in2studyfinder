@@ -20,6 +20,7 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SlidingWindowPagination;
+use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
@@ -32,7 +33,8 @@ class StudyCourseController extends ActionController
     public function __construct(
         protected FilterService $filterService,
         protected CourseService $courseService,
-        protected FacilityService $facilityService
+        protected FacilityService $facilityService,
+        protected readonly FlexFormService $flexFormService
     ) {
     }
 
@@ -54,10 +56,11 @@ class StudyCourseController extends ActionController
                     LanguageAspectFactory::createFromSiteLanguage($siteLanguage)
                 );
 
+            $flexForm = $this->flexFormService->convertFlexFormContentToArray($currentPluginRecord['pi_flexform'] ?? '');
             $this->settings =
                 array_merge(
                     $this->settings,
-                    FlexFormUtility::getFlexForm($currentPluginRecord['pi_flexform'], 'settings')
+                    $flexForm['settings'] ?? []
                 );
         } else {
             $currentPluginRecord = $this->request->getAttribute('currentContentObject')->data;
@@ -75,8 +78,8 @@ class StudyCourseController extends ActionController
             $currentPluginRecord
         );
 
-        $currentPage = $this->request->hasArgument('currentPageNumber')
-            ? (int)$this->request->getArgument('currentPageNumber')
+        $currentPage = $this->request->hasArgument('currentPage')
+            ? (int)$this->request->getArgument('currentPage')
             : 1;
 
         $itemsPerPage = (int)($this->settings['pagination']['itemsPerPage'] ?? 10);
