@@ -128,7 +128,7 @@ class Filter {
     }
 
     if (typeof paginationPage !== 'undefined') {
-      paginationArgument = '&tx_in2studyfinder_filter[studyCoursesForPage][currentPage]=' + paginationPage;
+      paginationArgument = '&tx_in2studyfinder_filter[currentPage]=' + paginationPage;
     }
 
     LoaderUtility.enableLoader();
