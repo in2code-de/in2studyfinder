@@ -7,7 +7,6 @@ namespace In2code\In2studyfinder\Domain\Service;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Domain\Repository\StudyCourseRepository;
 use In2code\In2studyfinder\PageTitle\CoursePageTitleProvider;
-use In2code\In2studyfinder\Service\PluginService;
 use In2code\In2studyfinder\Utility\CacheUtility;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -21,17 +20,10 @@ class CourseService extends AbstractService
 
     public function __construct(
         protected StudyCourseRepository $studyCourseRepository,
-        protected PluginService $pluginService
     ) {}
 
     public function findBySearchOptions(array $searchOptions, array $pluginRecord): array
     {
-        $storagePids = $this->pluginService->getPluginStoragePids($pluginRecord);
-
-        if ($storagePids !== []) {
-            $searchOptions['storagePids'] = $storagePids;
-        }
-
         $cacheInstance = CacheUtility::getCacheInstance();
         $cacheIdentifier = CacheUtility::getCacheIdentifierForStudyCourses($searchOptions);
         $studyCourses = $cacheInstance->get($cacheIdentifier);

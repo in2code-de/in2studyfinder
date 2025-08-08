@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace In2code\In2studyfinder\Listener;
 
-use In2code\In2studyfinder\Service\PluginService;
-use In2code\In2studyfinder\Utility\ExtensionUtility;
+use In2code\In2studyfinder\Settings\ExtensionSettingsInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\Event\PageContentPreviewRenderingEvent;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -18,10 +18,11 @@ final class PageContentPreviewRendering
     public function __construct(
         protected readonly FlexFormService $flexFormService,
         protected readonly SiteFinder $siteFinder,
-        protected readonly PluginService $pluginService,
+        protected readonly ExtensionSettingsInterface $extensionSettings
     ) {
     }
 
+    #[AsEventListener]
     public function __invoke(PageContentPreviewRenderingEvent $event): void
     {
         $record = $event->getRecord();
@@ -30,7 +31,7 @@ final class PageContentPreviewRendering
             return;
         }
 
-        $typoScriptSettings = ExtensionUtility::getExtensionSettings('in2studyfinder');
+        $typoScriptSettings = $this->extensionSettings->getTypoScriptSettings();
         $flexForm = $this->flexFormService->convertFlexFormContentToArray($record['pi_flexform'] ?? '');
         $extendedVariables = [];
 
@@ -55,7 +56,7 @@ final class PageContentPreviewRendering
 
     protected function getRecordStoragePages(array $record): array
     {
-        $storagePids = $this->pluginService->getPluginStoragePids($record);
+        $storagePids = $this->extensionSettings->getConfiguredStoragePids();
 
         if ($storagePids === []) {
             return [];

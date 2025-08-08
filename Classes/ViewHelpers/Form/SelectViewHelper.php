@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace In2code\In2studyfinder\ViewHelpers\Form;
 
-use In2code\In2studyfinder\Utility\ExtensionUtility;
+use In2code\In2studyfinder\Settings\ExtensionSettingsInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
-use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
@@ -21,7 +19,7 @@ class SelectViewHelper extends AbstractSelectViewHelper
     /**
      * Constructor
      */
-    public function __construct(private readonly \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder $uriBuilder)
+    public function __construct(private readonly \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder $uriBuilder, private readonly ExtensionSettingsInterface $extensionSettings)
     {
         parent::__construct();
     }
@@ -57,7 +55,7 @@ class SelectViewHelper extends AbstractSelectViewHelper
         $originalOptions = parent::getOptions();
         $updatedOptions = [];
         $optionsArgument = $this->arguments['options'];
-        $settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
+        $settings = $this->extensionSettings->getTypoScriptSettings();
         if (ArrayUtility::isValidPath($settings, 'flexform/studyCourseDetailPage')) {
             $pageUid = $settings['flexform']['studyCourseDetailPage'];
         }

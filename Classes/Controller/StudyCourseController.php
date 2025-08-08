@@ -12,9 +12,8 @@ use In2code\In2studyfinder\Event\ModifyFastSearchActionFluidVariablesEvent;
 use In2code\In2studyfinder\Event\ModifyFilterActionFluidVariablesEvent;
 use In2code\In2studyfinder\Property\TypeConverter\StudyCourseConverter;
 use In2code\In2studyfinder\Service\FilterService;
+use In2code\In2studyfinder\Settings\ExtensionSettingsInterface;
 use In2code\In2studyfinder\Utility\CacheUtility;
-use In2code\In2studyfinder\Utility\ConfigurationUtility;
-use In2code\In2studyfinder\Utility\FlexFormUtility;
 use In2code\In2studyfinder\Utility\RecordUtility;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
@@ -34,7 +33,8 @@ class StudyCourseController extends ActionController
         protected FilterService $filterService,
         protected CourseService $courseService,
         protected FacilityService $facilityService,
-        protected readonly FlexFormService $flexFormService
+        protected readonly FlexFormService $flexFormService,
+        protected readonly ExtensionSettingsInterface $extensionSettings,
     ) {
     }
 
@@ -69,7 +69,7 @@ class StudyCourseController extends ActionController
         $this->filterService->setSettings($this->settings);
         $searchOptions = $this->filterService->sanitizeSearch($searchOptions);
 
-        if (ConfigurationUtility::isPersistentFilterEnabled()) {
+        if ($this->extensionSettings->isPersistentFilterEnabled()) {
             $searchOptions = $this->filterService->loadOrSetPersistedFilter($searchOptions);
         }
 

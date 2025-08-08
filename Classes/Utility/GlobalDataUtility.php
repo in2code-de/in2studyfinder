@@ -8,7 +8,7 @@ use In2code\In2studyfinder\Domain\Model\GlobalData;
 use In2code\In2studyfinder\Domain\Repository\GlobalDataRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class GlobalDataUtility extends AbstractUtility
+class GlobalDataUtility
 {
     public static function existDefaultPreset(GlobalDataRepository $globalDataRepository): bool
     {

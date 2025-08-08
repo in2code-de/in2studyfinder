@@ -1,10 +1,11 @@
 <?php
 
 use In2code\In2studyfinder\Domain\Model\GlobalData;
+use In2code\In2studyfinder\Settings\ExtensionSettings;
 
 $ll = 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:';
 
-if (In2code\In2studyfinder\Utility\ConfigurationUtility::isEnableGlobalData()) {
+if (ExtensionSettings::isEnableGlobalData()) {
     return [
         'ctrl' => [
             'title' => $ll . 'globalData',

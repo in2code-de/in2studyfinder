@@ -8,19 +8,16 @@ plugin.tx_in2studyfinder {
 		layoutRootPath =
 	}
 
-	persistence {
-		# cat=plugin.tx_in2studyfinder//a; type=string; label=Default storage PID
-		storagePid = 0
-		# cat=plugin.tx_in2studyfinder//a; type=string; label=Recursion level of the storagePid
-		recursive = 1
-
-	}
-
 	settings {
-		# cat=plugin.tx_in2studyfinder//a; type=string; label=Default storage PID
-		storagePid =
-		# cat=plugin.tx_in2studyfinder//a; type=string; label=Settings storage PID
-		settingsPid =
+		# cat=plugin.tx_in2studyfinder//a; type=string; label=Default storage pid for courses
+		storagePid = 0
+    # cat=plugin.tx_in2studyfinder//a; type=string; label=Recursion level of the course storage pids
+    storagePidRecursionLevel = 0
+
+    # cat=plugin.tx_in2studyfinder//a; type=string; label=Storage pid for course settings like faculty, department etc.
+		settingsPid = 0
+    # cat=plugin.tx_in2studyfinder//a; type=string; label=Recursion level of the settings pids
+    settingsPidRecursionLevel = 0
 
 		pagination {
 			itemsPerPage = 10

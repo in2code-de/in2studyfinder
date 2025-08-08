@@ -10,6 +10,8 @@ use In2code\In2studyfinder\Domain\Model\StartOfStudy;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Domain\Model\TtContent;
 use In2code\In2studyfinder\Domain\Model\TypeOfStudy;
+use In2code\In2studyfinder\Settings\ExtensionSettings;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 $ll = 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:';
 
@@ -341,7 +343,7 @@ $tcaConfiguration = [
     ],
 ];
 
-if (\In2code\In2studyfinder\Utility\ConfigurationUtility::isCategorisationEnabled()) {
+if (ExtensionSettings::isCategorisationEnabled()) {
 $tcaConfiguration['columns']['categories'] = [
     'config' => [
         'type' => 'category'
@@ -351,7 +353,7 @@ $tcaConfiguration['columns']['categories'] = [
 $tcaConfiguration['types']['0']['showitem'] .= ',--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories, categories,';
 }
 
-if (In2code\In2studyfinder\Utility\ConfigurationUtility::isEnableGlobalData()) {
+if (ExtensionSettings::isEnableGlobalData()) {
     $tcaConfiguration['columns']['different_preset'] = [
         'exclude' => true,
         'label' => $ll . 'differentPreset',

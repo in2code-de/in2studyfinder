@@ -6,12 +6,13 @@ namespace In2code\In2studyfinder\Utility;
 
 use In2code\In2studyfinder\Domain\Model\TtContent;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class RecordUtility extends AbstractUtility
+class RecordUtility
 {
     /**
      * gets a tt_content record with all translations. The array key represents the sys_language_uid of the record.
@@ -42,7 +43,7 @@ class RecordUtility extends AbstractUtility
             $records[0] = $record;
         }
 
-        $queryBuilder = self::getQueryBuilderForTable(TtContent::TABLE);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(TtContent::TABLE);
         $translatedRecords = $queryBuilder
             ->select('*')
             ->from(TtContent::TABLE)
@@ -103,7 +104,7 @@ class RecordUtility extends AbstractUtility
         int $sysLanguageUid = 0
     ): ?array {
         if ($uid > 0) {
-            $queryBuilder = self::getQueryBuilderForTable($table);
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
 
             // do not use enabled fields here
             if (!$respectEnableFields) {

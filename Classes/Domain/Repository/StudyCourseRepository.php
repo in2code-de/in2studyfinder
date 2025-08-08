@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace In2code\In2studyfinder\Domain\Repository;
 
-use In2code\In2studyfinder\Utility\ExtensionUtility;
+use In2code\In2studyfinder\Settings\ExtensionSettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
@@ -14,29 +14,16 @@ class StudyCourseRepository extends AbstractRepository
         'title' => QueryInterface::ORDER_ASCENDING,
     ];
 
+    public function __construct(protected readonly ExtensionSettingsInterface $extensionSettings)
+    {
+        parent::__construct();
+    }
+
     public function findAllFilteredByOptions($options): array
     {
         $query = $this->createQuery();
 
-        if (!empty($options['storagePids'])) {
-            $storagePids = $options['storagePids'];
-        } else {
-            $storagePids = $query->getQuerySettings()->getStoragePageIds();
-        }
-
-        unset($options['storagePids']);
-
-        $settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
-
-        /**
-         * add settings pid
-         */
-        $settingsPid = (int)($settings['settingsPid'] ?? 0);
-        if (!in_array($settingsPid, $storagePids)) {
-            $storagePids[] = $settingsPid;
-        }
-
-        $query->getQuerySettings()->setStoragePageIds($storagePids);
+        $query->getQuerySettings()->setStoragePageIds($this->extensionSettings->getConfiguredStoragePids());
 
         $constraints = [];
         foreach ($options as $name => $array) {

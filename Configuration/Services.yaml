@@ -7,8 +7,3 @@ services:
   In2code\In2studyfinder\:
     resource: '../Classes/*'
     exclude: '../Classes/Domain/Model/*'
-
-  In2code\In2studyfinder\Listener\PageContentPreviewRendering:
-    tags:
-      - name: event.listener
-        identifier: 'in2studyfinder/view/page-content-preview-rendering'

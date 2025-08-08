@@ -23,7 +23,10 @@ plugin.tx_in2studyfinder {
 
 	settings {
 		storagePid = {$plugin.tx_in2studyfinder.settings.storagePid}
-		settingsPid = {$plugin.tx_in2studyfinder.settings.settingsPid}
+    storagePidRecursionLevel = {$plugin.tx_in2studyfinder.settings.storagePidRecursionLevel}
+
+    settingsPid = {$plugin.tx_in2studyfinder.settings.settingsPid}
+    settingsPidRecursionLevel = {$plugin.tx_in2studyfinder.settings.settingsPidRecursionLevel}
 
 		pagination {
 			itemsPerPage = {$plugin.tx_in2studyfinder.settings.pagination.itemsPerPage}
@@ -98,12 +101,6 @@ plugin.tx_in2studyfinder {
 		backend {
 			pluginPreviewTemplate = {$plugin.tx_in2studyfinder.settings.backend.pluginPreviewTemplate}
 		}
-
-	}
-
-	persistence {
-		storagePid = {$plugin.tx_in2studyfinder.persistence.storagePid}
-		recursive = {$plugin.tx_in2studyfinder.persistence.recursive}
 	}
 }
 

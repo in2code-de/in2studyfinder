@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace In2code\In2studyfinder\Service;
 
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
-use In2code\In2studyfinder\Utility\ExtensionUtility;
+use In2code\In2studyfinder\Settings\ExtensionSettingsInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
@@ -16,20 +16,15 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
-class FilterService extends AbstractService
+class FilterService
 {
     protected array $settings = [];
 
     protected array $filter = [];
 
-    /**
-     * FilterService constructor.
-     */
-    public function __construct(LoggerInterface $logger, protected PluginService $pluginService)
+    public function __construct(protected readonly LoggerInterface $logger, protected readonly ExtensionSettingsInterface $extensionSettings)
     {
-        parent::__construct($logger);
-
-        $this->settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
+        $this->settings = $this->extensionSettings->getTypoScriptSettings();
     }
 
     public function initialize(): void
@@ -111,11 +106,22 @@ class FilterService extends AbstractService
 
     private function getPluginFilterRestrictions(): array
     {
+        $restrictions = [];
+
         if (array_key_exists('flexform', $this->settings)) {
-            return $this->pluginService->preparePluginRestrictions(
-                $this->settings['flexform']['select'] ?? [],
-                $this->getFilter()
-            );
+            foreach ($this->settings['flexform']['select'] as $filterName => $uid) {
+                if ($uid !== '' && array_key_exists($filterName, $this->getFilter())) {
+                    $restrictions[$filterName] = GeneralUtility::intExplode(',', $uid, true);
+                } else {
+                    $this->logger->info(
+                        'Remove the plugin filter restriction for filter: "' . $filterName .
+                        '". Because the given restriction is not defined in the typoscript filter section.',
+                        ['additionalInfo' => ['class' => self::class, 'method' => __METHOD__, 'line' => __LINE__]]
+                    );
+                }
+            }
+
+            return $restrictions;
         }
 
         return [];
