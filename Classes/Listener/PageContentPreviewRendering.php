@@ -56,7 +56,7 @@ final class PageContentPreviewRendering
 
     protected function getRecordStoragePages(array $record): array
     {
-        $storagePids = $this->extensionSettings->getConfiguredStoragePids();
+        $storagePids = $this->extensionSettings->getConfiguredStoragePids($record);
 
         if ($storagePids === []) {
             return [];
