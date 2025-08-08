@@ -14,56 +14,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class RecordUtility
 {
-    /**
-     * gets a tt_content record with all translations. The array key represents the sys_language_uid of the record.
-     *
-     * e.g.
-     *
-     * 0 => [
-     *      'uid' => 123,
-     *      'sys_language_uid' => 0,
-     *      ...
-     * ],
-     * 1 => [
-     *      'uid' => 124,
-     *      'sys_language_uid' => 1,
-     *      ...
-     * ]
-     *
-     */
-    public static function getRecordWithTranslations(int $uid): array
-    {
-        $records = [];
-        $record = self::getRecord(TtContent::TABLE, $uid);
-
-        if ($record['l18n_parent'] !== 0) {
-            $records[0] = self::getRecord(TtContent::TABLE, (int)$record['l18n_parent']);
-            $records[(int)$record['sys_language_uid']] = $record;
-        } else {
-            $records[0] = $record;
-        }
-
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(TtContent::TABLE);
-        $translatedRecords = $queryBuilder
-            ->select('*')
-            ->from(TtContent::TABLE)
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'l18n_parent',
-                    $queryBuilder->createNamedParameter((int)$records[0]['uid'],
-                        \TYPO3\CMS\Core\Database\Connection::PARAM_INT)
-                )
-            )->executeQuery()->fetchAllAssociative();
-
-        foreach ($translatedRecords as $translatedRecord) {
-            if (!array_key_exists((int)$translatedRecord['sys_language_uid'], $records)) {
-                $records[(int)$translatedRecord['sys_language_uid']] = $translatedRecord;
-            }
-        }
-
-        return $records;
-    }
-
     public static function getRecordWithLanguageOverlay(int $recordUid, LanguageAspect $languageAspect): array
     {
         $record = GeneralUtility::makeInstance(PageRepository::class)->getLanguageOverlay(
