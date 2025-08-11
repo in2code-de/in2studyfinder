@@ -223,12 +223,25 @@ ddev ssh
 ./.build/bin/phpcbf
 ```
 
+Functional:
+
+```
+./.build/vendor/bin/phpunit -c /var/www/html/FunctionalTests.xml
+```
+
+Unit:
+
+```
+./.build/vendor/bin/phpunit -c /var/www/html/UnitTests.xml
+```
+
 ### Migration
 
 * [Migrations from version 8 to 9](./Documentation/Migration/8to9.md)
 * [Migrations from version 9 to 10](./Documentation/Migration/9to10.md)
 * [Migrations from version 10 to 11](./Documentation/Migration/10to11.md)
 * [Migrations from version 11 to 12](./Documentation/Migration/11to12.md)
+* [Migrations from version 12 to 13](./Documentation/Migration/12to13.md)
 
 ### External used libraries
 
