@@ -87,7 +87,7 @@ Version 8.x - 10.x
 
 Version 11.x - 12.x
 
-* TYPO3 12.4 and above
+* TYPO3 12.4
 * PHP 8.1 and above
 
 Version 13.x
@@ -225,10 +225,10 @@ ddev ssh
 
 ### Migration
 
-[Migrations from version 8 to 9](./Documentation/Migration/8to9.md)
-[Migrations from version 9 to 10](./Documentation/Migration/9to10.md)
-[Migrations from version 10 to 11](./Documentation/Migration/10to11.md)
-[Migrations from version 11 to 12](./Documentation/Migration/11to12.md)
+* [Migrations from version 8 to 9](./Documentation/Migration/8to9.md)
+* [Migrations from version 9 to 10](./Documentation/Migration/9to10.md)
+* [Migrations from version 10 to 11](./Documentation/Migration/10to11.md)
+* [Migrations from version 11 to 12](./Documentation/Migration/11to12.md)
 
 ### External used libraries
 
@@ -245,6 +245,7 @@ ddev ssh
 
 | Version | Date       | State        | Description                                                                                                                                                                                                                                   |
 |---------|------------|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 13.0.0  | xxxx-xx-xx | [!!!]FEATURE | Add TYPO3 13 support, various code cleanups: [Commits](https://github.com/in2code-de/in2studyfinder/commits/13.0.0)                                                                                                                           |
 | 12.1.0  | 2025-07-07 | FEATURE      | Allow backend sorting of filter items, set correct meta tag property type for keywords. For further information see: [Commits](https://github.com/in2code-de/in2studyfinder/commits/12.1.0)                                                   |
 | 12.0.2  | 2025-05-23 | BUGFIX       | Add missing release preparations                                                                                                                                                                                                              |
 | 12.0.1  | 2025-05-23 | BUGFIX       | Fix ajax requests in non default language                                                                                                                                                                                                     |
