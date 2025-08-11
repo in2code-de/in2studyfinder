@@ -13,7 +13,6 @@
                         <label>LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:listView</label>
                         <config>
                             <type>group</type>
-                            <internal_type>db</internal_type>
                             <allowed>pages</allowed>
                             <size>1</size>
                             <maxitems>1</maxitems>
@@ -25,7 +24,6 @@
                         <label>LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:detailView</label>
                         <config>
                             <type>group</type>
-                            <internal_type>db</internal_type>
                             <allowed>pages</allowed>
                             <size>1</size>
                             <maxitems>1</maxitems>
