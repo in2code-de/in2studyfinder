@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace In2code\In2studyfinder\Ai\Service;
+namespace In2code\In2studyfinder\Ai\Service\Embedding;
 
-use In2code\In2studyfinder\Command\CreateEmbeddingsCommand;
 use In2code\In2studyfinder\Ai\Exception\FileNotFoundException;
 use In2code\In2studyfinder\Ai\Exception\InvalidVectorException;
+use In2code\In2studyfinder\Command\CreateEmbeddingsCommand;
 use TYPO3\CMS\Core\Core\Environment;
 
 class CosineSimilarityService

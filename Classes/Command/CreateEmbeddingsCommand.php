@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace In2code\In2studyfinder\Command;
 
-use In2code\In2studyfinder\Ai\Adapter\MistralAdapter;
+use In2code\In2studyfinder\Ai\Service\Embedding\HandlerService;
+use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Throwable;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class CreateEmbeddingsCommand extends Command
@@ -20,16 +20,16 @@ class CreateEmbeddingsCommand extends Command
     public const EMBEDDING_TITLE_FIELDNAME = 'title_embedding';
     public const EMBEDDING_DESCRIPTION_FIELDNAME = 'teaser_embedding';
 
-    protected MistralAdapter $mistralAdapter;
+    protected HandlerService $handlerService;
     protected LoggerInterface $logger;
 
     public function __construct(
         LoggerInterface $logger,
-        MistralAdapter $mistralAdapter,
+        HandlerService $handlerService,
         string $name = null
     ) {
         $this->logger = $logger;
-        $this->mistralAdapter = $mistralAdapter;
+        $this->handlerService = $handlerService;
         parent::__construct($name);
     }
 
@@ -54,30 +54,8 @@ class CreateEmbeddingsCommand extends Command
         }
 
         $output->writeln(sprintf('Found %d study courses.', count($studyCourses)));
-
-        // Create embeddings
-        $embeddings = [];
-
-        foreach ($studyCourses as $studyCourse) {
-            $output->writeln(sprintf('Processing study course: %s (ID: %d)', $studyCourse['title'], $studyCourse['uid']));
-
-            // Create embedding for title
-            $embeddingsResponse = $this->createEmbedding([$studyCourse['title'], $studyCourse['teaser']]);
-
-            // Store embeddings
-            $embeddings[$studyCourse['uid']] = [
-                'uid' => $studyCourse['uid'],
-                self::EMBEDDING_TITLE_FIELDNAME => $embeddingsResponse[0]['embedding'],
-                self::EMBEDDING_DESCRIPTION_FIELDNAME => $embeddingsResponse[1]['embedding'],
-            ];
-        }
-
-        // Save embeddings to JSON file in fileadmin
-        $jsonFilePath = Environment::getPublicPath() . self::EMBEDDING_JSON_URL;
-        $this->saveEmbeddingsToFile($embeddings, $jsonFilePath);
-
-        $output->writeln(sprintf('Embeddings saved to %s', $jsonFilePath));
-
+        $this->handlerService->create($studyCourses, StudyCourse::TABLE, ['title', 'teaser']);
+        $output->writeln('Embeddings saved');
         return Command::SUCCESS;
     }
 
@@ -96,25 +74,5 @@ class CreateEmbeddingsCommand extends Command
             $this->logger->error('Error fetching studycourses: ' . $throwable);
             return [];
         }
-    }
-
-    private function createEmbedding(array $texts): array
-    {
-        try {
-            return $this->mistralAdapter->createEmbedding($texts);
-        } catch (Throwable $throwable) {
-            $this->logger->error('Error creating embedding: ' . $throwable->getMessage());
-            return [];
-        }
-    }
-
-    private function saveEmbeddingsToFile(array $embeddings, string $filePath): void
-    {
-        $directory = dirname($filePath);
-        if (!is_dir($directory)) {
-            GeneralUtility::mkdir_deep($directory);
-        }
-
-        file_put_contents($filePath, json_encode($embeddings, JSON_PRETTY_PRINT));
     }
 }
