@@ -11,5 +11,5 @@ interface AIAdapterInterface
     /**
      * @throws ClientException
      */
-    public function sendMessage(string $message, array $pluginSettings): array;
+    public function sendMessage(array $messages, array $pluginSettings): array;
 }

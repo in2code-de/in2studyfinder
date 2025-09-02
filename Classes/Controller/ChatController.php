@@ -5,21 +5,17 @@ declare(strict_types=1);
 namespace In2code\In2studyfinder\Controller;
 
 use GuzzleHttp\Exception\ClientException;
-use In2code\In2studyfinder\Ai\Adapter\MistralAdapter;
+use In2code\In2studyfinder\Ai\Service\ChatService;
 use Psr\Log\LoggerInterface;
-use Throwable;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 class ChatController extends ActionController
 {
-    private MistralAdapter $mistralAdapter;
+    private ChatService $chatService;
     private LoggerInterface $logger;
 
-    public function __construct(
-        MistralAdapter $mistralAdapter,
-        LoggerInterface $logger
-    ) {
-        $this->mistralAdapter = $mistralAdapter;
+    public function __construct(ChatService $chatService, LoggerInterface $logger) {
+        $this->chatService = $chatService;
         $this->logger = $logger;
     }
 
@@ -29,25 +25,12 @@ class ChatController extends ActionController
 
     public function chatAction(): string
     {
-        $requestBody = json_decode($this->request->getBody()->getContents(), true);
-        $message =  isset($requestBody['message']) ? (string)$requestBody['message'] : null;
-        $topNResults = isset($requestBody['topNResults']) ? (int)$requestBody['topNResults'] : null;
-
-        if ($message === null) {
-            return json_encode(['success' => false, 'errorCode' => 1749708782]);
-        }
-
-        // Add topNResults to settings if provided
-        if ($topNResults !== null) {
-            $this->settings['topNResults'] = $topNResults;
-        }
-
         try {
-            return json_encode($this->mistralAdapter->sendMessage($message, $this->settings));
+            return json_encode($this->chatService->chat($this->request, $this->settings));
         } catch (ClientException $exception) {
             $this->logger->error($exception->getResponse()->getBody()->getContents());
             return json_encode(['success' => false, 'errorCode' => $exception->getCode()]);
-        } catch (Throwable $throwable) {
+        } catch (\Throwable $throwable) {
             $this->logger->error($throwable->getMessage());
             return json_encode(['success' => false, 'errorCode' => $throwable->getCode()]);
         }

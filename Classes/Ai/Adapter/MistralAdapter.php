@@ -40,14 +40,11 @@ class MistralAdapter implements AIAdapterInterface
     /**
      * @throws ToolNotFoundException
      */
-    public function sendMessage(string $message, array $pluginSettings): array
+    public function sendMessage(array $messages, array $pluginSettings): array
     {
         $requestBody = [
             'model' => 'mistral-large-latest',
-            'messages' => [
-                ['role' => 'system', 'content' => $this->getSystemPrompt($pluginSettings)],
-                ['role' => 'user', 'content' => $message]
-            ],
+            'messages' => $messages,
             'temperature' => 0.3,
             'max_tokens' => 1000,
             'tools' => $this->getToolConfigurations(),
@@ -56,24 +53,25 @@ class MistralAdapter implements AIAdapterInterface
         $result = $this->sendRequest($this->getApiUrl(), $requestBody);
 
         if (isset($result['choices'][0]['message']['tool_calls'])) {
-            return $this->sendFollowUpMessage($result['choices'][0]['message']['tool_calls'], $message, $pluginSettings);
+            return $this->sendFollowUpMessage($result['choices'][0]['message']['tool_calls'], $messages, $pluginSettings);
         }
+
+        $resultMessage = $this->sendRequest($this->getApiUrl(), $requestBody)['choices'][0]['message']['content'] ??
+            'Keine Antwort erhalten';
 
         return [
             'success' => true,
-            'message' => $result['choices'][0]['message']['content'] ?? 'Keine Antwort erhalten'
+            'message' => $resultMessage,
+            'history' => $this->appendResponse($messages, $resultMessage)
         ];
     }
 
     /**
      * @throws ToolNotFoundException
      */
-    private function sendFollowUpMessage(array $toolCalls, string $originalMessage, array $pluginSettings): array
+    private function sendFollowUpMessage(array $toolCalls, array $messages, array $pluginSettings): array
     {
-        $messages = [
-            ['role' => 'user', 'content' => $originalMessage],
-            ['role' => 'assistant', 'content' => null, 'tool_calls' => $toolCalls]
-        ];
+        $messages[] = ['role' => 'assistant', 'content' => null, 'tool_calls' => $toolCalls];
 
         foreach ($this->getToolResults($toolCalls, $pluginSettings) as $result) {
             $messages[] = $result;
@@ -86,12 +84,20 @@ class MistralAdapter implements AIAdapterInterface
             'max_tokens' => 1000
         ];
 
-        $result = $this->sendRequest($this->getApiUrl(), $requestBody);
+        $resultMessage = $this->sendRequest($this->getApiUrl(), $requestBody)['choices'][0]['message']['content'] ??
+            'Keine Antwort erhalten';
 
         return [
             'success' => true,
-            'message' => $result['choices'][0]['message']['content'] ?? 'Keine Antwort erhalten'
+            'message' => $resultMessage,
+            'history' => $this->appendResponse($messages, $resultMessage)
         ];
+    }
+
+    private function appendResponse(array $messages, string $responseContent): array
+    {
+        $messages[] = ['role' => 'assistant', 'content' => $responseContent];
+        return $messages;
     }
 
 
