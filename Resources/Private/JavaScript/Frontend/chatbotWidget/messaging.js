@@ -105,6 +105,7 @@ export class Messaging {
         const speed = 30;
         let partIndex = 0;
         let charIndex = 0;
+        let userHasScrolled = false;
 
         // Pre-parse the string into an array of text and HTML tags
         const parts = htmlContent.split(/(<[^>]+>)/).filter(Boolean);
@@ -112,9 +113,22 @@ export class Messaging {
         // This variable will hold the HTML that has been "typed" so far
         let progressHTML = '';
 
+        // Track if user has scrolled up during typing
+        const scrollHandler = () => {
+            const isAtBottom = messages.scrollTop >= messages.scrollHeight - messages.clientHeight - 5;
+            if (!isAtBottom) {
+                userHasScrolled = true;
+            }
+        };
+        messages.addEventListener('scroll', scrollHandler);
+
         function typeWriter() {
           messageEl.innerHTML = progressHTML;
-          messages.scrollTop = messages.scrollHeight;
+
+          // Only auto-scroll if user hasn't manually scrolled up
+          if (!userHasScrolled) {
+              messages.scrollTop = messages.scrollHeight;
+          }
 
           if (partIndex < parts.length) {
             const currentPart = parts[partIndex];
@@ -141,6 +155,9 @@ export class Messaging {
                 requestAnimationFrame(typeWriter);
               }
             }
+          } else {
+            // Typing is complete, remove scroll listener
+            messages.removeEventListener('scroll', scrollHandler);
           }
         }
 
