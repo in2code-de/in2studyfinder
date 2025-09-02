@@ -25,3 +25,6 @@ services:
       - name: 'console.command'
         command: 'in2studyfinder:createEmbeddings'
         schedulable: true
+
+  In2code\In2studyfinder\Hooks\EmbeddingsMonitor:
+    public: true
