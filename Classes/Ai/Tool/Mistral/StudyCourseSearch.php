@@ -7,14 +7,15 @@ namespace In2code\In2studyfinder\Ai\Tool\Mistral;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Exception;
 use In2code\In2studyfinder\Ai\Adapter\MistralAdapter;
+use In2code\In2studyfinder\Ai\Embedding\Service\CosineSimilarityService;
 use In2code\In2studyfinder\Ai\Exception\FileNotFoundException;
 use In2code\In2studyfinder\Ai\Exception\InvalidVectorException;
 use In2code\In2studyfinder\Ai\Exception\MissingArgumentException;
-use In2code\In2studyfinder\Ai\Service\Embedding\CosineSimilarityService;
 use In2code\In2studyfinder\Ai\Service\LinkService;
 use In2code\In2studyfinder\Ai\Tool\ToolInterface;
 use In2code\In2studyfinder\Ai\Tool\Traits\GetArgumentTrait;
 use In2code\In2studyfinder\Ai\Tool\Traits\NameTrait;
+use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -79,14 +80,14 @@ class StudyCourseSearch implements ToolInterface
         $searchVector = $this->getSearchTermsAsVectors($searchTerms);
 
         $amount = (int)($pluginSettings['topNResults'] ?? 3);
-        $studyCourses = $this->cosineSimilarityService->getTopNResults($searchVector, $amount);
+        $studyCourses = $this->cosineSimilarityService->getTopNResults($searchVector, StudyCourse::TABLE, $amount);
 
         // Query database for study course details
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('tx_in2studyfinder_domain_model_studycourse');
+            ->getQueryBuilderForTable(StudyCourse::TABLE);
 
         $studyCourses = $queryBuilder->select('uid', 'title', 'description', 'sys_language_uid')
-            ->from('tx_in2studyfinder_domain_model_studycourse')
+            ->from(StudyCourse::TABLE)
             ->where(
                 $queryBuilder->expr()->in(
                     'uid',

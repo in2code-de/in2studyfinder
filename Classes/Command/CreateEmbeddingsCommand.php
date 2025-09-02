@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace In2code\In2studyfinder\Command;
 
-use In2code\In2studyfinder\Ai\Service\Embedding\HandlerService;
+use In2code\In2studyfinder\Ai\Embedding\EmbeddingsHandler;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -16,16 +16,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class CreateEmbeddingsCommand extends Command
 {
-    public const EMBEDDING_JSON_URL = '/fileadmin/in2studyfinder/chatbot/embeddings/studyCourses.json';
-    public const EMBEDDING_TITLE_FIELDNAME = 'title_embedding';
-    public const EMBEDDING_DESCRIPTION_FIELDNAME = 'teaser_embedding';
-
-    protected HandlerService $handlerService;
+    protected EmbeddingsHandler $handlerService;
     protected LoggerInterface $logger;
 
     public function __construct(
         LoggerInterface $logger,
-        HandlerService $handlerService,
+        EmbeddingsHandler $handlerService,
         string $name = null
     ) {
         $this->logger = $logger;
@@ -54,7 +50,7 @@ class CreateEmbeddingsCommand extends Command
         }
 
         $output->writeln(sprintf('Found %d study courses.', count($studyCourses)));
-        $this->handlerService->create($studyCourses, StudyCourse::TABLE, ['title', 'teaser']);
+        $this->handlerService->create($studyCourses, StudyCourse::TABLE);
         $output->writeln('Embeddings saved');
         return Command::SUCCESS;
     }
@@ -62,12 +58,12 @@ class CreateEmbeddingsCommand extends Command
     private function getStudyCourses(): array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('tx_in2studyfinder_domain_model_studycourse');
+            ->getQueryBuilderForTable(StudyCourse::TABLE);
 
         try {
             return $queryBuilder
                 ->select('uid', 'title', 'teaser')
-                ->from('tx_in2studyfinder_domain_model_studycourse')
+                ->from(StudyCourse::TABLE)
                 ->execute()
                 ->fetchAllAssociative();
         } catch (Throwable $throwable) {

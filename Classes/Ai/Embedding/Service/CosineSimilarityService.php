@@ -2,15 +2,22 @@
 
 declare(strict_types=1);
 
-namespace In2code\In2studyfinder\Ai\Service\Embedding;
+namespace In2code\In2studyfinder\Ai\Embedding\Service;
 
+use In2code\In2studyfinder\Ai\Embedding\EmbeddingsConfiguration;
+use In2code\In2studyfinder\Ai\Embedding\Repository\EmbeddingRepository;
 use In2code\In2studyfinder\Ai\Exception\FileNotFoundException;
 use In2code\In2studyfinder\Ai\Exception\InvalidVectorException;
-use In2code\In2studyfinder\Command\CreateEmbeddingsCommand;
-use TYPO3\CMS\Core\Core\Environment;
 
 class CosineSimilarityService
 {
+    protected EmbeddingRepository $embeddingRepository;
+
+    public function __construct(EmbeddingRepository $embeddingRepository)
+    {
+        $this->embeddingRepository = $embeddingRepository;
+    }
+
     /**
      * Get top N results based on cosine similarity with search vectors
      *
@@ -21,12 +28,12 @@ class CosineSimilarityService
      * @param array $searchVectors Single vector or array of vectors
      * @param int $amount Number of results to return
      * @return array Top N results sorted by similarity
-     * @throws FileNotFoundException
      * @throws InvalidVectorException
+     * @throws FileNotFoundException
      */
-    public function getTopNResults(array $searchVectors, int $amount = 3): array
+    public function getTopNResults(array $searchVectors, string $tableName, int $amount = 3): array
     {
-        $embeddings = $this->getEmbeddings();
+        $embeddings = $this->embeddingRepository->get($tableName);
 
         // Check if $searchVectors is a single vector or multiple vectors
         // If the first element is a number, it's a single vector
@@ -40,18 +47,13 @@ class CosineSimilarityService
             $vectorCount = count($vectorsArray);
 
             foreach ($vectorsArray as $searchVector) {
-                $textSimilarity = $this->cosineSimilarity(
-                    $searchVector,
-                    $embedding[CreateEmbeddingsCommand::EMBEDDING_TITLE_FIELDNAME]
-                );
-
-                $descriptionSimilarity = $this->cosineSimilarity(
-                    $searchVector,
-                    $embedding[CreateEmbeddingsCommand::EMBEDDING_DESCRIPTION_FIELDNAME]
-                );
+                $fieldSimilarities = 0;
+                foreach (EmbeddingsConfiguration::getAllowedFields($tableName) as $field) {
+                    $fieldSimilarities += $this->cosineSimilarity($searchVector, $embedding[$field]);
+                }
 
                 // Add the average of text and description similarity for this vector
-                $totalSimilarity += ($textSimilarity + $descriptionSimilarity) / 2;
+                $totalSimilarity += $fieldSimilarities / count(EmbeddingsConfiguration::getAllowedFields($tableName));
             }
 
             // Calculate the average similarity across all vectors
@@ -82,20 +84,6 @@ class CosineSimilarityService
         }
 
         return $dot / (sqrt($normA) * sqrt($normB));
-    }
-
-    /**
-     * @throws FileNotFoundException
-     */
-    private function getEmbeddings(): array
-    {
-        $jsonFilePath = Environment::getPublicPath() . CreateEmbeddingsCommand::EMBEDDING_JSON_URL;
-        $file = file_get_contents($jsonFilePath);
-        if ($file === false) {
-            throw new FileNotFoundException('File not found', 1750067196);
-        }
-
-        return json_decode($file, true);
     }
 
     private function sortBySimilarity(array $embeddings): array
