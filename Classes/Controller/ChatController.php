@@ -26,7 +26,9 @@ class ChatController extends ActionController
     public function chatAction(): string
     {
         try {
-            return json_encode($this->chatService->chat($this->request, $this->settings));
+            $response = $this->chatService->chat($this->request, $this->settings);
+            unset($response['history']);
+            return json_encode($response);
         } catch (ClientException $exception) {
             $this->logger->error($exception->getResponse()->getBody()->getContents());
             return json_encode(['success' => false, 'errorCode' => $exception->getCode()]);

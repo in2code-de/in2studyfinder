@@ -6,9 +6,8 @@ namespace In2code\In2studyfinder\Ai\Service;
 
 use In2code\In2studyfinder\Ai\Adapter\MistralAdapter;
 use In2code\In2studyfinder\Ai\Service\Prompt\PromptInterface;
+use In2code\In2studyfinder\Service\FeSessionService;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Session\UserSession;
-use TYPO3\CMS\Core\Session\UserSessionManager;
 
 class ChatService
 {
@@ -16,9 +15,15 @@ class ChatService
 
     protected PromptInterface $prompt;
     protected MistralAdapter $mistralAdapter;
+    protected FeSessionService $feSessionService;
 
-    public function __construct(MistralAdapter $mistralAdapter, PromptInterface $prompt) {
+    public function __construct(
+        MistralAdapter $mistralAdapter,
+        PromptInterface $prompt,
+        FeSessionService $feSessionService
+    ) {
         $this->mistralAdapter = $mistralAdapter;
+        $this->feSessionService = $feSessionService;
         $this->prompt = $prompt;
     }
 
@@ -29,13 +34,11 @@ class ChatService
             return ['success' => false, 'errorCode' => 1749708782];
         }
 
-        $session = $this->getSession($request);
-        $history = $this->getHistory($session, $pluginSettings);
+        $history = $this->getHistory($request, $pluginSettings);
         $history[] = ['role' => 'user', 'content' => $message];
         $response = $this->mistralAdapter->sendMessage($history, $pluginSettings);
+        $this->feSessionService->saveToSession(self::SESSION_KEY, $response['history'], $request);
 
-        $this->updateHistory($session, $response['history']);
-        unset($response['history']);
         return $response;
     }
 
@@ -44,28 +47,15 @@ class ChatService
 //        $this->session->set(self::SESSION_KEY, null);
     }
 
-    protected function getHistory(UserSession  $session, array $pluginSettings): array
+    protected function getHistory(ServerRequestInterface $request, array $pluginSettings): array
     {
-        $history = $session->get(self::SESSION_KEY);
+        $history = $this->feSessionService->getFromSession(self::SESSION_KEY, $request);
 
         if (!is_array($history) || $history === []) {
             $history[] = ['role' => 'system', 'content' => $this->prompt->getLocalizedPrompt($pluginSettings)];
         }
 
         return $history;
-    }
-
-    protected function updateHistory(UserSession $session, array $newMessages): void
-    {
-        $session->set(self::SESSION_KEY, $newMessages);
-        $manager = UserSessionManager::create('FE');
-        $manager->fixateAnonymousSession($session);
-    }
-
-    protected function getSession(ServerRequestInterface $request): UserSession
-    {
-        $manager = UserSessionManager::create('FE');
-        return $manager->createFromRequestOrAnonymous($request, self::SESSION_KEY);
     }
 
     protected function getRequestBody(ServerRequestInterface $request): array
