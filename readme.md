@@ -313,11 +313,11 @@ nothing yet.
 
 #### Execute extension tests:
 
-| ddev command        | description                    |
-|---------------------|--------------------------------|
-| ddev testAll        | executes all extension tests   |
-| ddev testUnit       | executes only unit tests       |
-| ddev testFunctional | executes only functional tests |
+| ddev command         | description                    |
+|----------------------|--------------------------------|
+| ddev test-all        | executes all extension tests   |
+| ddev test-unit       | executes only unit tests       |
+| ddev test-functional | executes only functional tests |
 
 ### Code quality tools
 

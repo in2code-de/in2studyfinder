@@ -25,9 +25,12 @@ var/
 !.ddev/commands/host/initialize
 !.ddev/commands/web/typo3
 !.ddev/commands/web/build
-!.ddev/commands/web/testAll
-!.ddev/commands/web/testFunctional
-!.ddev/commands/web/testUnit
+!.ddev/commands/web/test-all
+!.ddev/commands/web/test-functional
+!.ddev/commands/web/test-unit
+!.ddev/commands/web/qa-php
+!.ddev/commands/web/qa-php-fixer
+
 !.ddev/config.yaml
 !.ddev/docker-compose.typo3.yaml
 
