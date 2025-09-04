@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace In2code\In2studyfinder\Ai\Adapter;
 
 use GuzzleHttp\Exception\ClientException;
-use In2code\In2studyfinder\Ai\Exception\ToolNotFoundException;
+use In2code\In2studyfinder\Exception\ToolNotFoundException;
 use In2code\In2studyfinder\Ai\Service\Prompt\PromptInterface;
 use In2code\In2studyfinder\Ai\Service\ToolResultService;
 use In2code\In2studyfinder\Ai\Tool\ToolInterface;

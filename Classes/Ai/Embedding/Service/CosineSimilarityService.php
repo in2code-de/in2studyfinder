@@ -6,8 +6,8 @@ namespace In2code\In2studyfinder\Ai\Embedding\Service;
 
 use In2code\In2studyfinder\Ai\Embedding\EmbeddingsConfiguration;
 use In2code\In2studyfinder\Ai\Embedding\Repository\EmbeddingRepository;
-use In2code\In2studyfinder\Ai\Exception\FileNotFoundException;
-use In2code\In2studyfinder\Ai\Exception\InvalidVectorException;
+use In2code\In2studyfinder\Exception\FileNotFoundException;
+use In2code\In2studyfinder\Exception\InvalidVectorException;
 
 class CosineSimilarityService
 {

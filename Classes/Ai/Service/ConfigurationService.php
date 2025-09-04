@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace In2code\In2studyfinder\Ai\Service;
 
 use Exception;
-use In2code\In2studyfinder\Ai\Exception\MissingApiKeyException;
+use In2code\In2studyfinder\Exception\MissingApiKeyException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

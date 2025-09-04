@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace In2code\In2studyfinder\Ai\Embedding\Repository;
 
-use In2code\In2studyfinder\Ai\Exception\FileNotFoundException;
+use In2code\In2studyfinder\Exception\FileNotFoundException;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

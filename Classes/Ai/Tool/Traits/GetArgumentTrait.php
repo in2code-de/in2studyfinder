@@ -2,7 +2,7 @@
 
 namespace In2code\In2studyfinder\Ai\Tool\Traits;
 
-use In2code\In2studyfinder\Ai\Exception\MissingArgumentException;
+use In2code\In2studyfinder\Exception\MissingArgumentException;
 
 trait GetArgumentTrait
 {

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace In2code\In2studyfinder\Ai\Adapter;
 
-use In2code\In2studyfinder\Ai\Exception\MissingApiKeyException;
-use In2code\In2studyfinder\Ai\Exception\ToolNotFoundException;
+use In2code\In2studyfinder\Exception\MissingApiKeyException;
+use In2code\In2studyfinder\Exception\ToolNotFoundException;
 use In2code\In2studyfinder\Ai\Service\ConfigurationService;
 use In2code\In2studyfinder\Ai\Service\Prompt\PromptInterface;
 use In2code\In2studyfinder\Ai\Service\ToolResultService;

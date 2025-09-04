@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace In2code\In2studyfinder\Ai\Tool;
 
-use In2code\In2studyfinder\Ai\Exception\MissingArgumentException;
+use In2code\In2studyfinder\Exception\MissingArgumentException;
 
 interface ToolInterface
 {
