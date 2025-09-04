@@ -101,8 +101,6 @@ ModifyDetailActionFluidVariablesEvent: main event for fluid variable manipulatio
 ModifyFastSearchActionFluidVariablesEvent: main event for fluid variable manipulation for the fast search action
 ModifyFilterActionFluidVariablesEvent: main event for fluid variable manipulation for the filter action
 
-
-
 ## Migration
 
 * [Migrations from version 8 to 9](./Documentation/Migration/8to9.md)
@@ -123,8 +121,9 @@ ModifyFilterActionFluidVariablesEvent: main event for fluid variable manipulatio
 * A2: Please ask in2code for professional service or individual importers
 
 > :warning: **TYPO3 14 compatibility**\
-> See [EAP page (DE)](https://www.in2code.de/agentur/typo3-extensions/early-access-programm/) or [EAP page (EN)](https://www.in2code.de/en/agency/typo3-extensions/early-access-program/) for more information how to get access to a TYPO3 14 version
-
+> See [EAP page (DE)](https://www.in2code.de/agentur/typo3-extensions/early-access-programm/)
+> or [EAP page (EN)](https://www.in2code.de/en/agency/typo3-extensions/early-access-program/) for more information how to
+> get access to a TYPO3 14 version
 
 ## Changelog
 
@@ -196,16 +195,18 @@ ModifyFilterActionFluidVariablesEvent: main event for fluid variable manipulatio
 Contributions are always welcome.
 
 *Pull requests** are welcome in general! Please note these requirements:
+
 * Unit Tests must still work
 * Behaviour Tests must still work
 * Describe how to test your pull request
 * TYPO3 coding guidelines must be respected
 
-- **Bugfixes**: Please describe what kind of bug your fix solve and give us feedback how to reproduce the issue. We're going
+- **Bugfixes**: Please describe what kind of bug your fix solve and give us feedback how to reproduce the issue. We're
+  going
   to accept only bugfixes that can be reproduced.
-- **Features**: Not every feature is relevant for the bulk of the users. In addition: We don't want to make the extension
+- **Features**: Not every feature is relevant for the bulk of the users. In addition: We don't want to make the
+  extension
   even more complicated in usability for an edge case feature. Please discuss a new feature before.
-
 
 In order to ease the contributions, we provide a ddev setup.
 
@@ -228,7 +229,7 @@ Happy coding
 | 9, 10   | 11 ELTS    | 7.4 - 8.0 | Security Updates - if you want feature backports ask for an offer | typo3-11 |
 | 8       | 11 ELTS    | 7.4       | Out of support                                                    | typo3-11 |
 | 7       | 9, 10 ELTS | 7.2       | Security Updates - if you want feature backports ask for an offer | typo3-09 |
-| 6.x     | 8, 9 ELTS  | 7.2       | Out of support                                                    | master |
+| 6.x     | 8, 9 ELTS  | 7.2       | Out of support                                                    | master   |
 | 5.x     | 7, 8       | 7.2       | Out of support                                                    | master   |
 | 4.x     | 6, 7, 8    | 7.0       | Out of support                                                    | master   |
 | 3.x     | 6, 7, 8    | 7.0       | Out of support                                                    | master   |
@@ -247,7 +248,6 @@ Requirements: node.js, npm, nvm
 * npm install
 * npm run build:frontend
 
-
 ### Javascript Events
 
 it is possible to execute your own javascript code on specific events.
@@ -259,20 +259,21 @@ page.includeJSFooter.studyfinderExtenal = EXT:YOUREXTENSION/Resources/Public/Jav
 ```
 
 extend.js:
+
 ```javascript
 if (window.in2studyfinder !== null) {
     let in2studyfinder = window.in2studyfinder;
     let instance = in2studyfinder.getInstance(0);
 
-    instance.pagination.onClick = function() {
+    instance.pagination.onClick = function () {
         console.log('onPaginationClick');
     }
 
-    instance.filter.onClick = function() {
+    instance.filter.onClick = function () {
         console.log('onFilterClick');
     };
 
-    instance.onUpdate = function() {
+    instance.onUpdate = function () {
         console.log('onInstanceUpdate');
     };
 }
@@ -288,15 +289,15 @@ if (window.in2studyfinder !== null) {
 
 **Instance:**
 
-| event name                                  | description                          |
-|---------------------------------------------|--------------------------------------|
-| onUpdate                                    | is executed after every fetch call.  |
+| event name | description                         |
+|------------|-------------------------------------|
+| onUpdate   | is executed after every fetch call. |
 
 **Filter:**
 
-| event name                                  | description                               |
-|---------------------------------------------|-------------------------------------------|
-| onClick                                     | executed after the pagination link click. |
+| event name | description                               |
+|------------|-------------------------------------------|
+| onClick    | executed after the pagination link click. |
 
 **Quicksearch:**
 
@@ -304,47 +305,32 @@ nothing yet.
 
 **Pagination:**
 
-| event name                                  | description                               |
-|---------------------------------------------|-------------------------------------------|
-| onClick                                     | executed after the pagination link click. |
+| event name | description                               |
+|------------|-------------------------------------------|
+| onClick    | executed after the pagination link click. |
 
 ### Testing
 
 #### Execute extension tests:
 
-| ddev command        | description                     |
-|---------------------|---------------------------------|
-| ddev testAll        | executes all extension tests    |
-| ddev testUnit       | executes only unit tests        |
-| ddev testFunctional | executes only functional tests  |
+| ddev command        | description                    |
+|---------------------|--------------------------------|
+| ddev testAll        | executes all extension tests   |
+| ddev testUnit       | executes only unit tests       |
+| ddev testFunctional | executes only functional tests |
 
 ### Code quality tools
 
 we use phpmd and phpcs for code quality checks.
 The quality checks will be executed automatic before a commit with a pre-commit hook.
 
+#### Automatic fixes with phpcbf
+
 Some violations can be fixed automatic with the phpcs fixer (phpcbf).
-For automatic fixes execute `ddev ssh` and then `./.build/bin/phpcbf`
+For automatic fixes execute `ddev qa-php-fixer`
 
-#### Execute QA Tests manually:
+#### Execute QA Tests:
 
-PHPCS:
-
-```
-ddev ssh
-./.build/bin/phpcs
-```
-
-PHPMD:
-
-```
-ddev ssh
-./.build/bin/phpmd Classes/ ansi .phpmd.xml
-```
-
-PHPCBF:
-
-```
-ddev ssh
-./.build/bin/phpcbf
-```
+| ddev command | description                            |
+|--------------|----------------------------------------|
+| ddev qa-php  | executes phpcs and phpmd quality tools |
