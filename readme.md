@@ -110,6 +110,120 @@ ModifyFilterActionFluidVariablesEvent: main event for fluid variable manipulatio
 * [Migrations from version 12 to 13](./Documentation/Migration/12to13.md)
 
 ## External used libraries
+Requirements: node.js >= 20, npm, nvm
+
+```
+cd Resources/Private && nvm use
+npm install
+```
+
+#### Backend
+
+```npm run build:backend```
+
+#### Frontend
+
+```npm run build:frontend```
+
+### Javascript Events
+
+it is possible to execute your own javascript code on specific events.
+
+**Example:**
+
+```typo3_typoscript
+page.includeJSFooter.studyfinderExtenal = EXT:YOUREXTENSION/Resources/Public/JavaScript/extend.js
+```
+
+extend.js:
+```javascript
+if (window.in2studyfinder !== null) {
+    let in2studyfinder = window.in2studyfinder;
+    let instance = in2studyfinder.getInstance(0);
+
+    instance.pagination.onClick = function() {
+        console.log('onPaginationClick');
+    }
+
+    instance.filter.onClick = function() {
+        console.log('onFilterClick');
+    };
+
+    instance.onUpdate = function() {
+        console.log('onInstanceUpdate');
+    };
+}
+```
+
+#### API:
+
+**Studyfinder:**
+
+| function    | description                                                    |
+|-------------|----------------------------------------------------------------|
+| getInstance | returns the requested instance. Parameter instanceId (integer) |
+
+**Instance:**
+
+| event name                                  | description                          |
+|---------------------------------------------|--------------------------------------|
+| onUpdate                                    | is executed after every fetch call.  |
+
+**Filter:**
+
+| event name                                  | description                               |
+|---------------------------------------------|-------------------------------------------|
+| onClick                                     | executed after the pagination link click. |
+
+**Quicksearch:**
+
+nothing yet.
+
+**Pagination:**
+
+| event name                                  | description                               |
+|---------------------------------------------|-------------------------------------------|
+| onClick                                     | executed after the pagination link click. |
+
+### Code quality tools
+
+we use phpmd and phpcs for code quality checks.
+The quality checks will be executed automatic before a commit with a pre-commit hook.
+
+Some violations can be fixed automatic with the phpcs fixer (phpcbf).
+For automatic fixes execute `ddev ssh` and then `./.build/bin/phpcbf`
+
+#### Execute Tests manually:
+
+PHPCS:
+
+```
+ddev ssh
+./.build/bin/phpcs
+```
+
+PHPMD:
+
+```
+ddev ssh
+./.build/bin/phpmd Classes/ ansi .phpmd.xml
+```
+
+PHPCBF:
+
+```
+ddev ssh
+./.build/bin/phpcbf
+```
+
+### Migration
+
+[Migrations from version 8 to 9](./Documentation/Migration/8to9.md)
+[Migrations from version 9 to 10](./Documentation/Migration/9to10.md)
+[Migrations from version 10 to 11](./Documentation/Migration/10to11.md)
+[Migrations from version 11 to 12](./Documentation/Migration/11to12.md)
+
+### External used libraries
 
     * https://tom-select.js.org/
 
@@ -130,6 +244,7 @@ ModifyFilterActionFluidVariablesEvent: main event for fluid variable manipulatio
 | Version | Date       | State        | Description                                                                                                                                                                                                                                   |
 |---------|------------|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | 13.0.0  | 2025-09-02 | [!!!]FEATURE | Add TYPO3 13 support, various code cleanups: [Commits](https://github.com/in2code-de/in2studyfinder/commits/13.0.0)                                                                                                                           |
+| 12.1.1  | 2025-08-25 | TASK         | Bump nodejs build dependencies. The nodejs modules used to build the JavaScript and CSS have been updated.                                                                                                                                    |
 | 12.1.0  | 2025-07-07 | FEATURE      | Allow backend sorting of filter items, set correct meta tag property type for keywords. For further information see: [Commits](https://github.com/in2code-de/in2studyfinder/commits/12.1.0)                                                   |
 | 12.0.2  | 2025-05-23 | BUGFIX       | Add missing release preparations                                                                                                                                                                                                              |
 | 12.0.1  | 2025-05-23 | BUGFIX       | Fix ajax requests in non default language                                                                                                                                                                                                     |
