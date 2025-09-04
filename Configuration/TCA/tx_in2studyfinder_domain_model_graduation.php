@@ -1,10 +1,8 @@
 <?php
+
+use In2code\In2studyfinder\Domain\Model\Graduation;
+
 $ll = 'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:';
-$table = \In2code\In2studyfinder\Domain\Model\Graduation::TABLE;
-$icon =
-    TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
-        'EXT:in2studyfinder/Resources/Public/Icons/' . $table . '.png'
-    );
 
 return [
     'ctrl' => [
@@ -12,13 +10,11 @@ return [
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
-        'dividers2tabs' => true,
-        'versioningWS' => 2,
-        'versioning_followPages' => true,
-        'languageField' => 'sys_language_uid',
+        'versioningWS' => true,
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
+        'languageField' => 'sys_language_uid',
+        'translationSource' => 'l10n_source',
         'delete' => 'deleted',
         'sortby' => 'sorting',
         'enablecolumns' => [
@@ -27,27 +23,29 @@ return [
             'endtime' => 'endtime',
         ],
         'searchFields' => 'title,',
-        'iconfile' => $icon,
+        'iconfile' => 'EXT:in2studyfinder/Resources/Public/Icons/' . Graduation::TABLE . '.png',
     ],
     'types' => [
         '0' => [
-            'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime',
+            'showitem' => 'title,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,--palette--;;language,
+            --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,--palette--;;hidden,--palette--;;access,
+            ',
+        ],
+    ],
+    'palettes' => [
+        'hidden' => [
+            'showitem' => 'hidden',
+        ],
+        'language' => [
+            'showitem' => 'sys_language_uid,l18n_parent',
+        ],
+        'access' => [
+            'label' => 'LLL:EXT:frontend/Resources/private/Language/locallang_ttc.xlf:palette.access',
+            'showitem' => 'starttime,endtime,--linebreak--,fe_group',
         ],
     ],
     'columns' => [
-        'sys_language_uid' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
-            'config' => [
-                'type' => 'language',
-            ],
-        ],
-        'l10n_parent' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForL10nParent($table),
-        'l10n_diffsource' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForL10nDiffsource(),
-        't3ver_label' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForT3verLabel(),
-        'hidden' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForHidden(),
-        'starttime' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForStartTime(),
-        'endtime' => In2code\In2studyfinder\Utility\TcaUtility::getFullTcaForEndTime(),
         'title' => [
             'exclude' => true,
             'label' => $ll . 'title',
@@ -55,7 +53,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim,required',
+                'required' => true,
+                'eval' => 'trim',
                 'max' => 255,
             ],
         ],

@@ -8,8 +8,7 @@ CHANGES=$(git diff --name-status --cached)
 # if the changelist contains .php files, run php-cs-fixer in the PHP container
 if echo "$CHANGES" | grep -q -E "^[AMCR].+(\.php)$"; then
     echo "Running PHP QA checks..."
-    ddev exec -s web .build/bin/phpcs
-    ddev exec -s web .build/bin/phpmd Classes/ ansi .phpmd.xml
+    ddev qa-php
 
     if [[ $? -ne 0 ]]; then
         exit 1

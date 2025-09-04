@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace In2code\In2studyfinder\Utility;
 
+use Doctrine\DBAL\Exception;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -12,10 +13,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class PageUtility
 {
     /**
-     * @throws \Doctrine\DBAL\DBALException
-     * @throws \Doctrine\DBAL\Driver\Exception
-     *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @throws Exception
      */
     public static function getTreeList(int $uid, int $depth, int $begin = 0, string $permClause = ''): string
     {
@@ -24,9 +23,11 @@ class PageUtility
         if ($uid < 0) {
             $uid = abs($uid);
         }
+
         if ($begin === 0) {
             $theList = $uid;
         }
+
         if ($uid && $depth > 0) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
@@ -45,15 +46,18 @@ class PageUtility
                 if ($begin <= 0) {
                     $theList .= ',' . $page['uid'];
                 }
+
                 if ($depth > 1) {
                     $theSubList = self::getTreeList((int)$page['uid'], $depth - 1, $begin - 1, $permClause);
-                    if (!empty($theList) && !empty($theSubList) && ($theSubList[0] !== ',')) {
+                    if (!empty($theList) && ($theSubList !== '' && $theSubList !== '0') && ($theSubList[0] !== ',')) {
                         $theList .= ',';
                     }
+
                     $theList .= $theSubList;
                 }
             }
         }
+
         return (string)$theList;
     }
 }

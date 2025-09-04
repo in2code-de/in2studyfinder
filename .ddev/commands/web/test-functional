@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo 'Run functional tests:'
+./.build/vendor/bin/phpunit -c /var/www/html/FunctionalTests.xml

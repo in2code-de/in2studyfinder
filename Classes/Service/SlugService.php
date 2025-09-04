@@ -4,21 +4,23 @@ declare(strict_types=1);
 
 namespace In2code\In2studyfinder\Service;
 
+use Doctrine\DBAL\Exception;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class SlugService
 {
     protected array $fieldConfig = [];
+
     protected ?SlugHelper $slugHelper = null;
 
     /**
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    public function __construct()
+    public function __construct(private readonly ConnectionPool $connectionPool)
     {
         $this->fieldConfig = $GLOBALS['TCA'][StudyCourse::TABLE]['columns']['url_segment']['config'];
         $this->slugHelper =
@@ -31,12 +33,12 @@ class SlugService
     }
 
     /**
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws Exception
      */
     public function performUpdates(): array
     {
         $queryBuilder =
-            GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(StudyCourse::TABLE);
+            $this->connectionPool->getQueryBuilderForTable(StudyCourse::TABLE);
 
         $queryBuilder->getRestrictions()->removeAll();
         $databaseQueries = [];
@@ -46,7 +48,7 @@ class SlugService
                 $queryBuilder->expr()->or(
                     $queryBuilder->expr()->eq(
                         'url_segment',
-                        $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter('', Connection::PARAM_STR)
                     ),
                     $queryBuilder->expr()->isNull('url_segment')
                 )
@@ -59,7 +61,7 @@ class SlugService
                     ->where(
                         $queryBuilder->expr()->eq(
                             'uid',
-                            $queryBuilder->createNamedParameter($record['uid'], \PDO::PARAM_INT)
+                            $queryBuilder->createNamedParameter($record['uid'], Connection::PARAM_INT)
                         )
                     )
                     ->set('url_segment', $slug);
@@ -72,19 +74,19 @@ class SlugService
     }
 
     /**
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws Exception
      */
     public function isSlugUpdateRequired(): bool
     {
         $queryBuilder =
-            GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(StudyCourse::TABLE);
+            $this->connectionPool->getQueryBuilderForTable(StudyCourse::TABLE);
 
         $queryBuilder->getRestrictions()->removeAll();
 
         $count = $queryBuilder->count('uid')
             ->from(StudyCourse::TABLE)
             ->where(
-                $queryBuilder->expr()->orX(
+                $queryBuilder->expr()->or(
                     $queryBuilder->expr()->eq(
                         'url_segment',
                         $queryBuilder->createNamedParameter('')

@@ -4,36 +4,34 @@ declare(strict_types=1);
 
 namespace In2code\In2studyfinder\Service;
 
-use In2code\In2studyfinder\Domain\Model\StudyCourseInterface;
-use In2code\In2studyfinder\Utility\ExtensionUtility;
-use In2code\In2studyfinder\Utility\FrontendUtility;
+use In2code\In2studyfinder\Domain\Model\StudyCourse;
+use In2code\In2studyfinder\Settings\ExtensionSettingsInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
-class FilterService extends AbstractService
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @todo refactor:
+ *  - services should be stateless (see: https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/PhpArchitecture/Services.html)
+ *  - reduce complexity
+ */
+class FilterService
 {
     protected array $settings = [];
 
     protected array $filter = [];
 
-    protected PluginService $pluginService;
-
-    /**
-     * FilterService constructor.
-     */
-    public function __construct(LoggerInterface $logger, PluginService $pluginService)
+    public function __construct(protected readonly LoggerInterface $logger, protected readonly ExtensionSettingsInterface $extensionSettings)
     {
-        parent::__construct($logger);
-
-        $this->settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
-        $this->pluginService = $pluginService;
+        $this->settings = $this->extensionSettings->getTypoScriptSettings();
     }
 
     public function initialize(): void
@@ -77,7 +75,7 @@ class FilterService extends AbstractService
     /**
      * updates the filter keys to the actual property path
      */
-    public function resolveFilterPropertyPath($searchOptions): array
+    public function resolveFilterPropertyPath(array $searchOptions): array
     {
         $filter = $this->getFilter();
 
@@ -93,13 +91,11 @@ class FilterService extends AbstractService
 
     public function loadOrSetPersistedFilter(array $searchOptions): array
     {
-        if (!empty($searchOptions)) {
-            FrontendUtility::getTyposcriptFrontendController()
-                ->fe_user
+        if ($searchOptions !== []) {
+            $this->getRequest()->getAttribute('frontend.user')
                 ->setAndSaveSessionData('tx_in2studycourse_filter', array_filter($searchOptions));
         } else {
-            $sessionData = FrontendUtility::getTyposcriptFrontendController()
-                ->fe_user
+            $sessionData = $this->getRequest()->getAttribute('frontend.user')
                 ->getSessionData('tx_in2studycourse_filter');
             if (!empty($sessionData)) {
                 return (array)$sessionData;
@@ -117,11 +113,22 @@ class FilterService extends AbstractService
 
     private function getPluginFilterRestrictions(): array
     {
+        $restrictions = [];
+
         if (array_key_exists('flexform', $this->settings)) {
-            return $this->pluginService->preparePluginRestrictions(
-                $this->settings['flexform']['select'] ?? [],
-                $this->getFilter()
-            );
+            foreach ($this->settings['flexform']['select'] as $filterName => $uid) {
+                if ($uid !== '' && array_key_exists($filterName, $this->getFilter())) {
+                    $restrictions[$filterName] = GeneralUtility::intExplode(',', $uid, true);
+                } else {
+                    $this->logger->info(
+                        'Remove the plugin filter restriction for filter: "' . $filterName .
+                        '". Because the given restriction is not defined in the typoscript filter section.',
+                        ['additionalInfo' => ['class' => self::class, 'method' => __METHOD__, 'line' => __LINE__]]
+                    );
+                }
+            }
+
+            return $restrictions;
         }
 
         return [];
@@ -132,7 +139,7 @@ class FilterService extends AbstractService
      */
     public function disableFilterFrontendRenderingByPluginRestrictions(): void
     {
-        foreach ($this->getPluginFilterRestrictions() as $filterName => $values) {
+        foreach (array_keys($this->getPluginFilterRestrictions()) as $filterName) {
             if (array_key_exists($filterName, $this->filter)) {
                 $this->filter[$filterName]['disabledInFrontend'] = true;
             }
@@ -147,7 +154,7 @@ class FilterService extends AbstractService
         $availableOptions = [];
 
         foreach ($this->filter as $filterName => $filter) {
-            /** @var $studyCourse StudyCourseInterface */
+            /** @var $studyCourse StudyCourse */
             foreach ($studyCourses as $studyCourse) {
                 $property = ObjectAccess::getPropertyPath($studyCourse, $filter['propertyPath']);
 
@@ -160,6 +167,7 @@ class FilterService extends AbstractService
                         } elseif ($property instanceof AbstractDomainObject) {
                             $availableOptions[$filterName][$property->getUid()] = $property->getUid();
                         }
+
                         break;
                     case 'boolean':
                         if ($property !== '' && $property !== 0 && $property !== false) {
@@ -167,6 +175,7 @@ class FilterService extends AbstractService
                         } else {
                             $availableOptions[$filterName][1] = 'false';
                         }
+
                         break;
                     default:
                         break;
@@ -181,7 +190,7 @@ class FilterService extends AbstractService
     {
         $frontendLabel = LocalizationUtility::translate($filterConfiguration['frontendLabel'], 'in2studyfinder');
         if ($frontendLabel === null) {
-            $frontendLabel = $filterConfiguration['frontendLabel'];
+            return $filterConfiguration['frontendLabel'];
         }
 
         return $frontendLabel;
@@ -192,9 +201,6 @@ class FilterService extends AbstractService
         return (bool)($filterConfiguration['disabledInFrontend'] ?? false);
     }
 
-    /**
-     * @throws \TYPO3\CMS\Extbase\Object\Exception
-     */
     protected function buildObjectFilter(string $filterName, array $filterConfiguration): void
     {
         $repositoryClassName = ClassNamingUtility::translateModelNameToRepositoryName(
@@ -204,7 +210,9 @@ class FilterService extends AbstractService
         if (class_exists($repositoryClassName)) {
             $defaultQuerySettings = GeneralUtility::makeInstance(QuerySettingsInterface::class);
             $defaultQuerySettings->setStoragePageIds([$this->settings['settingsPid']]);
-            $defaultQuerySettings->setLanguageOverlayMode(true);
+            $languageAspect = $defaultQuerySettings->getLanguageAspect();
+            $languageAspect = new LanguageAspect($languageAspect->getId(), $languageAspect->getContentId(), LanguageAspect::OVERLAYS_MIXED);
+            $defaultQuerySettings->setLanguageAspect($languageAspect);
 
             $repository = GeneralUtility::makeInstance($repositoryClassName);
             $repository->setDefaultQuerySettings($defaultQuerySettings);
@@ -272,7 +280,7 @@ class FilterService extends AbstractService
     {
         $filters = $this->settings['filters'] ?? [];
 
-        if (is_array($filters) && !empty($filters)) {
+        if (is_array($filters) && $filters !== []) {
             return $filters;
         }
 
@@ -285,5 +293,13 @@ class FilterService extends AbstractService
         );
 
         return [];
+    }
+
+    /**
+     * @SuppressWarnings(PHPMD.Superglobals)
+     */
+    private function getRequest(): ServerRequestInterface
+    {
+        return $GLOBALS['TYPO3_REQUEST'];
     }
 }

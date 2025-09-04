@@ -1,0 +1,19 @@
+// Responsiveness
+
+// Breakpoints
+// The container gap, which acts as the offset for breakpoints
+$gap: 1rem !default;
+$column-gap: 0.625rem;
+
+$phone: 320px !default;
+$phone-5: 400px !default;
+$phablet-small: 600px !default;
+$phablet: 640px !default;
+$tablet: 768px !default;
+$desktop: 960px!default;
+$widescreen: 1152px !default;
+$fullhd: 1344px !default;
+
+// Width of Side navigation
+$side-nav: 18rem !default;
+

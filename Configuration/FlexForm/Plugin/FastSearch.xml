@@ -1,0 +1,37 @@
+<T3DataStructure>
+    <meta>
+        <langDisable>1</langDisable>
+    </meta>
+    <sheets>
+        <main>
+            <ROOT>
+                <sheetTitle>LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:detailView</sheetTitle>
+                <type>array</type>
+                <el>
+                    <settings.flexform.studyCourseListPage>
+                        <exclude>1</exclude>
+                        <label>LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:listView</label>
+                        <config>
+                            <type>group</type>
+                            <allowed>pages</allowed>
+                            <size>1</size>
+                            <maxitems>1</maxitems>
+                            <minitems>1</minitems>
+                        </config>
+                    </settings.flexform.studyCourseListPage>
+                    <settings.flexform.studyCourseDetailPage>
+                        <exclude>1</exclude>
+                        <label>LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:detailView</label>
+                        <config>
+                            <type>group</type>
+                            <allowed>pages</allowed>
+                            <size>1</size>
+                            <maxitems>1</maxitems>
+                            <minitems>1</minitems>
+                        </config>
+                    </settings.flexform.studyCourseDetailPage>
+                </el>
+            </ROOT>
+        </main>
+    </sheets>
+</T3DataStructure>

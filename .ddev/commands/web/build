@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd Resources/Private/Build/
+
+echo 'Build frontend:'
+npm run build:frontend

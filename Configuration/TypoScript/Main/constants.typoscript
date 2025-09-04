@@ -1,29 +1,27 @@
 plugin.tx_in2studyfinder {
 	view {
 		# cat=plugin.tx_in2studyfinder/file; type=string; label=Path to template root (FE)
-		templateRootPath = EXT:in2studyfinder/Resources/Private/Templates/
+		templateRootPath =
 		# cat=plugin.tx_in2studyfinder/file; type=string; label=Path to template partials (FE)
-		partialRootPath = EXT:in2studyfinder/Resources/Private/Partials/
+		partialRootPath =
 		# cat=plugin.tx_in2studyfinder/file; type=string; label=Path to template layouts (FE)
-		layoutRootPath = EXT:in2studyfinder/Resources/Private/Layouts/
-	}
-
-	persistence {
-		# cat=plugin.tx_in2studyfinder//a; type=string; label=Default storage PID
-		storagePid = 0
-		# cat=plugin.tx_in2studyfinder//a; type=string; label=Recursion level of the storagePid
-		recursive = 1
-
+		layoutRootPath =
 	}
 
 	settings {
-		# cat=plugin.tx_in2studyfinder//a; type=string; label=Default storage PID
-		storagePid =
-		# cat=plugin.tx_in2studyfinder//a; type=string; label=Settings storage PID
-		settingsPid =
+		# cat=plugin.tx_in2studyfinder//a; type=string; label=Default storage pid for courses
+		storagePid = 0
+    # cat=plugin.tx_in2studyfinder//a; type=string; label=Recursion level of the course storage pids
+    storagePidRecursionLevel = 0
+
+    # cat=plugin.tx_in2studyfinder//a; type=string; label=Storage pid for course settings like faculty, department etc.
+		settingsPid = 0
+    # cat=plugin.tx_in2studyfinder//a; type=string; label=Recursion level of the settings pids
+    settingsPidRecursionLevel = 0
 
 		pagination {
 			itemsPerPage = 10
+      maximumNumberOfLinks = 15
 		}
 
 		javascript {
@@ -33,10 +31,6 @@ plugin.tx_in2studyfinder {
 		css {
 			# cat=plugin.tx_in2studyfinder//a; type=text; label= Css Source from In2studyfinder
 			in2studyfinderCss = EXT:in2studyfinder/Resources/Public/Css/style.css
-		}
-
-		backend {
-			pluginPreviewTemplate = EXT:in2studyfinder/Resources/Private/Templates/StudyCourse/Hook/PluginPreview.html
 		}
 	}
 }

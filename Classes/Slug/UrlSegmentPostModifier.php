@@ -11,7 +11,6 @@ use LogicException;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
@@ -20,7 +19,12 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 class UrlSegmentPostModifier
 {
     protected array $configuration = [];
+    public function __construct(private readonly ConnectionPool $connectionPool)
+    {
+    }
+
     protected int $courseId = -1;
+
     protected int $academicDegree = -1;
 
     /**
@@ -42,19 +46,17 @@ class UrlSegmentPostModifier
 
         $graduationTitle = $this->getGraduationTitle();
 
-        if (!empty($graduationTitle)) {
-            $slug = $configuration['slug'] . '-' . $graduationTitle;
-        } else {
-            $slug = $configuration['slug'];
+        if ($graduationTitle !== '') {
+            return $configuration['slug'] . '-' . $graduationTitle;
         }
 
-        return $slug;
+        return $configuration['slug'];
     }
 
     protected function getGraduationTitle(): string
     {
         $queryBuilder =
-            GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(StudyCourse::TABLE);
+            $this->connectionPool->getQueryBuilderForTable(StudyCourse::TABLE);
 
         $queryBuilder->select(Graduation::TABLE . '.title');
 
@@ -71,7 +73,8 @@ class UrlSegmentPostModifier
                     )
                 )
                 ->where(
-                    $queryBuilder->expr()->eq(AcademicDegree::TABLE . '.uid',
+                    $queryBuilder->expr()->eq(
+                        AcademicDegree::TABLE . '.uid',
                         $this->academicDegree
                     )
                 )->executeQuery()->fetchOne();
@@ -109,16 +112,14 @@ class UrlSegmentPostModifier
 
     private function isUpgradeWizard(): bool
     {
-        // call via cli
-        if (http_response_code() === false) {
+        if (PHP_SAPI === 'cli') {
             return true;
         }
 
-        return !is_null(GeneralUtility::_GP('install')) &&
-            array_key_exists('action', GeneralUtility::_GP('install')) &&
-            GeneralUtility::_GP('install')['action'] === 'upgradeWizardsExecute';
+        $request = $this->getRequest();
+        $installParams = $request->getParsedBody()['install'] ?? $request->getQueryParams()['install'] ?? null;
+        return is_array($installParams) && ($installParams['action'] ?? null) === 'upgradeWizardsExecute';
     }
-
     protected function isNewRecord(): bool
     {
         return $this->isRecalculateSlug() &&

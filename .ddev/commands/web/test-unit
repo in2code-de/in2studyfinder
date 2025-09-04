@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo 'Run unit tests:'
+ ./.build/vendor/bin/phpunit -c /var/www/html/UnitTests.xml

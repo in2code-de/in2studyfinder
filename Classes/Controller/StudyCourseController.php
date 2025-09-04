@@ -7,36 +7,35 @@ namespace In2code\In2studyfinder\Controller;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Domain\Service\CourseService;
 use In2code\In2studyfinder\Domain\Service\FacilityService;
+use In2code\In2studyfinder\Event\ModifyDetailActionFluidVariablesEvent;
+use In2code\In2studyfinder\Event\ModifyFastSearchActionFluidVariablesEvent;
+use In2code\In2studyfinder\Event\ModifyFilterActionFluidVariablesEvent;
 use In2code\In2studyfinder\Property\TypeConverter\StudyCourseConverter;
 use In2code\In2studyfinder\Service\FilterService;
+use In2code\In2studyfinder\Settings\ExtensionSettingsInterface;
 use In2code\In2studyfinder\Utility\CacheUtility;
-use In2code\In2studyfinder\Utility\ConfigurationUtility;
-use In2code\In2studyfinder\Utility\FlexFormUtility;
-use In2code\In2studyfinder\Utility\FrontendUtility;
 use In2code\In2studyfinder\Utility\RecordUtility;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Context\LanguageAspectFactory;
+use TYPO3\CMS\Core\Pagination\ArrayPaginator;
+use TYPO3\CMS\Core\Pagination\SlidingWindowPagination;
+use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
  * @SuppressWarnings(PHPMD.LongVariable)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class StudyCourseController extends AbstractController
+class StudyCourseController extends ActionController
 {
-    protected FilterService $filterService;
-
-    protected CourseService $courseService;
-
-    protected FacilityService $facilityService;
-
     public function __construct(
-        FilterService $filterService,
-        CourseService $courseService,
-        FacilityService $facilityService
+        protected FilterService $filterService,
+        protected CourseService $courseService,
+        protected FacilityService $facilityService,
+        protected readonly FlexFormService $flexFormService,
+        protected readonly ExtensionSettingsInterface $extensionSettings,
     ) {
-        $this->filterService = $filterService;
-        $this->courseService = $courseService;
-        $this->facilityService = $facilityService;
     }
 
     /**
@@ -46,46 +45,69 @@ class StudyCourseController extends AbstractController
     {
         $this->filterService->initialize();
 
-        if (!empty($pluginInformation)) {
+        if ($pluginInformation !== []) {
+            $site = $this->request->getAttribute('site');
+            $siteLanguage = $site->getLanguageById((int)$pluginInformation['languageUid']);
+
             // if the current call is an ajax / fetch request
             $currentPluginRecord =
                 RecordUtility::getRecordWithLanguageOverlay(
                     (int)$pluginInformation['pluginUid'],
-                    (int)$pluginInformation['languageUid']
+                    LanguageAspectFactory::createFromSiteLanguage($siteLanguage)
                 );
 
+            $flexForm = $this->flexFormService->convertFlexFormContentToArray($currentPluginRecord['pi_flexform'] ?? '');
             $this->settings =
                 array_merge(
                     $this->settings,
-                    FlexFormUtility::getFlexForm($currentPluginRecord['pi_flexform'], 'settings')
+                    $flexForm['settings'] ?? []
                 );
         } else {
-            $currentPluginRecord = $this->configurationManager->getContentObject()->data;
+            $currentPluginRecord = $this->request->getAttribute('currentContentObject')->data;
         }
 
         $this->filterService->setSettings($this->settings);
         $searchOptions = $this->filterService->sanitizeSearch($searchOptions);
 
-        if (ConfigurationUtility::isPersistentFilterEnabled()) {
+        if ($this->extensionSettings->isPersistentFilterEnabled()) {
             $searchOptions = $this->filterService->loadOrSetPersistedFilter($searchOptions);
         }
 
         $studyCourses = $this->courseService->findBySearchOptions(
-            $this->filterService->resolveFilterPropertyPath($searchOptions),
-            $currentPluginRecord
+            $this->filterService->resolveFilterPropertyPath($searchOptions)
         );
 
-        $this->view->assignMultiple(
-            [
-                'searchedOptions' => $searchOptions,
-                'filters' => $this->filterService->getFilter(),
-                'availableFilterOptions' => $this->filterService->getAvailableFilterOptions($studyCourses),
-                'studyCourseCount' => count($studyCourses),
-                'studyCourses' => $studyCourses,
-                'settings' => $this->settings,
-                'data' => $currentPluginRecord
-            ]
+        $currentPage = $this->request->hasArgument('currentPage')
+            ? (int)$this->request->getArgument('currentPage')
+            : 1;
+
+        $itemsPerPage = (int)($this->settings['pagination']['itemsPerPage'] ?? 10);
+        $maximumLinks = (int)($this->settings['pagination']['maximumNumberOfLinks'] ?? 15);
+
+        $paginator = new ArrayPaginator(
+            $studyCourses,
+            $currentPage,
+            $itemsPerPage,
         );
+        $pagination = new SlidingWindowPagination(
+            $paginator,
+            $maximumLinks,
+        );
+
+        $fluidVariables = [
+            'searchedOptions' => $searchOptions,
+            'filters' => $this->filterService->getFilter(),
+            'availableFilterOptions' => $this->filterService->getAvailableFilterOptions($studyCourses),
+            'studyCourseCount' => count($studyCourses),
+            'studyCourses' => $studyCourses,
+            'settings' => $this->settings,
+            'data' => $currentPluginRecord,
+            'pagination' => $pagination,
+            'paginator' => $paginator,
+        ];
+
+        $event = $this->eventDispatcher->dispatch(new ModifyFilterActionFluidVariablesEvent($this, $fluidVariables));
+        $this->view->assignMultiple($event->getFluidVariables());
 
         return $this->htmlResponse();
     }
@@ -95,19 +117,23 @@ class StudyCourseController extends AbstractController
      */
     public function fastSearchAction(): ResponseInterface
     {
-        $currentPluginRecord = $this->configurationManager->getContentObject()->data;
+        $currentPluginRecord = $this->request->getAttribute('currentContentObject')->data;
         $studyCourses =
-            $this->courseService->findBySearchOptions([], $currentPluginRecord);
+            $this->courseService->findBySearchOptions([]);
 
-        $this->view->assignMultiple(
-            [
-                'studyCourseCount' => count($studyCourses),
-                'facultyCount' => $this->facilityService->getFacultyCount($this->settings),
-                'studyCourses' => $studyCourses,
-                'settings' => $this->settings,
-                'data' => $currentPluginRecord
-            ]
-        );
+        $fluidVariables = [
+            'studyCourseCount' => count($studyCourses),
+            'facultyCount' => $this->facilityService->getFacultyCount($this->settings),
+            'studyCourses' => $studyCourses,
+            'settings' => $this->settings,
+            'data' => $currentPluginRecord
+        ];
+
+        $event = $this->eventDispatcher->dispatch(new ModifyFastSearchActionFluidVariablesEvent(
+            $this,
+            $fluidVariables
+        ));
+        $this->view->assignMultiple($event->getFluidVariables());
 
         return $this->htmlResponse();
     }
@@ -137,16 +163,20 @@ class StudyCourseController extends AbstractController
 
     /**
      * @param StudyCourse|null $studyCourse
-     *
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      */
     public function detailAction(StudyCourse $studyCourse = null): ResponseInterface
     {
-        if ($studyCourse) {
+        if ($studyCourse !== null) {
             $this->courseService->setPageTitleAndMetadata($studyCourse);
             CacheUtility::addCacheTags([$studyCourse]);
 
-            $this->view->assign('studyCourse', $studyCourse);
+            $fluidVariables = ['studyCourse' => $studyCourse];
+
+            $event = $this->eventDispatcher->dispatch(new ModifyDetailActionFluidVariablesEvent(
+                $this,
+                $fluidVariables
+            ));
+            $this->view->assignMultiple($event->getFluidVariables());
         } else {
             $studyCourseListPage = $this->settings['flexform']['studyCourseListPage'] ?? '';
             return $this->redirect('filterAction', null, null, null, $studyCourseListPage);
