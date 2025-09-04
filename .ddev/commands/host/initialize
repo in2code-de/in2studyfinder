@@ -14,6 +14,9 @@ fi
 echo "Fetching database and fileadmin"
 git lfs pull
 
+echo "Initialize git hooks"
+./.github/hooks/setup.sh
+
 echo "Symlink configuration"
 cp .build/vendor/typo3/cms-install/Resources/Private/FolderStructureTemplateFiles/root-htaccess .build/public/.htaccess
 mkdir -p .build/config/sites/main
