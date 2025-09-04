@@ -157,6 +157,7 @@ plugin.tx_in2studyfinder_chatbot {
                 - ALWAYS use the available tools for specific searches
                 - Do not invent degree programs or information – use tools
                 - For unclear requests: ask follow-up questions
+                - Do not suggest courses that are not in the database
 
                 COMMON SCENARIOS:
                 - Undecided: Ask about interests and strengths
@@ -204,6 +205,7 @@ plugin.tx_in2studyfinder_chatbot {
                 - Nutze IMMER die verfügbaren Tools für konkrete Suchen
                 - Erfinde keine Studiengänge oder Informationen, verwende Tools
                 - Bei unklaren Anfragen: Stelle Rückfragen
+                - Schlage keine Studiengänge die nicht in der Datenbank sind vor
 
                 HÄUFIGE SZENARIEN:
                 - Unentschlossene: Frage nach Interessen und Stärken
