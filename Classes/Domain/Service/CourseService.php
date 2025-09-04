@@ -20,7 +20,8 @@ class CourseService extends AbstractService
 
     public function __construct(
         protected StudyCourseRepository $studyCourseRepository,
-    ) {}
+    ) {
+    }
 
     public function findBySearchOptions(array $searchOptions, array $pluginRecord): array
     {

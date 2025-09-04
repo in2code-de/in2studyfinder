@@ -445,7 +445,8 @@ class StudyCourse extends AbstractEntity
         return implode(',', $idList);
     }
 
-    public function getInitialLetter(): string {
+    public function getInitialLetter(): string
+    {
         return substr(strtoupper($this->getTitle()), 0, 1);
     }
 }

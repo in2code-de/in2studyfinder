@@ -73,7 +73,8 @@ class UrlSegmentPostModifier
                     )
                 )
                 ->where(
-                    $queryBuilder->expr()->eq(AcademicDegree::TABLE . '.uid',
+                    $queryBuilder->expr()->eq(
+                        AcademicDegree::TABLE . '.uid',
                         $this->academicDegree
                     )
                 )->executeQuery()->fetchOne();

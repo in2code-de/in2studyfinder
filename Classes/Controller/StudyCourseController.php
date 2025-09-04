@@ -130,8 +130,10 @@ class StudyCourseController extends ActionController
             'data' => $currentPluginRecord
         ];
 
-        $event = $this->eventDispatcher->dispatch(new ModifyFastSearchActionFluidVariablesEvent($this,
-            $fluidVariables));
+        $event = $this->eventDispatcher->dispatch(new ModifyFastSearchActionFluidVariablesEvent(
+            $this,
+            $fluidVariables
+        ));
         $this->view->assignMultiple($event->getFluidVariables());
 
         return $this->htmlResponse();
@@ -171,8 +173,10 @@ class StudyCourseController extends ActionController
 
             $fluidVariables = ['studyCourse' => $studyCourse];
 
-            $event = $this->eventDispatcher->dispatch(new ModifyDetailActionFluidVariablesEvent($this,
-                $fluidVariables));
+            $event = $this->eventDispatcher->dispatch(new ModifyDetailActionFluidVariablesEvent(
+                $this,
+                $fluidVariables
+            ));
             $this->view->assignMultiple($event->getFluidVariables());
         } else {
             $studyCourseListPage = $this->settings['flexform']['studyCourseListPage'] ?? '';

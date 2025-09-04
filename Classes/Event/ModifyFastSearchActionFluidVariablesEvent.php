@@ -8,9 +8,12 @@ use In2code\In2studyfinder\Controller\StudyCourseController;
 
 final class ModifyFastSearchActionFluidVariablesEvent
 {
-    public function __construct(private readonly StudyCourseController $controller, private array $fluidVariables) {}
+    public function __construct(private readonly StudyCourseController $controller, private array $fluidVariables)
+    {
+    }
 
-    public function getController(): StudyCourseController {
+    public function getController(): StudyCourseController
+    {
         return $this->controller;
     }
 
