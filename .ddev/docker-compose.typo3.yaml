@@ -9,4 +9,8 @@ services:
       - MYSQL_USER=db
       - MYSQL_HOST=db
       - MAIL_HOST=localhost:1025
-
+      - typo3DatabaseName=testing
+      - typo3DatabaseHost=db
+      - typo3DatabaseUsername=root
+      - typo3DatabasePassword=root
+      - typo3DatabasePort=3306

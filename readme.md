@@ -308,6 +308,16 @@ nothing yet.
 |---------------------------------------------|-------------------------------------------|
 | onClick                                     | executed after the pagination link click. |
 
+### Testing
+
+#### Execute extension tests:
+
+| ddev command        | description                     |
+|---------------------|---------------------------------|
+| ddev testAll        | executes all extension tests    |
+| ddev testUnit       | executes only unit tests        |
+| ddev testFunctional | executes only functional tests  |
+
 ### Code quality tools
 
 we use phpmd and phpcs for code quality checks.
@@ -316,7 +326,7 @@ The quality checks will be executed automatic before a commit with a pre-commit 
 Some violations can be fixed automatic with the phpcs fixer (phpcbf).
 For automatic fixes execute `ddev ssh` and then `./.build/bin/phpcbf`
 
-#### Execute Tests manually:
+#### Execute QA Tests manually:
 
 PHPCS:
 
@@ -337,16 +347,4 @@ PHPCBF:
 ```
 ddev ssh
 ./.build/bin/phpcbf
-```
-
-Functional:
-
-```
-./.build/vendor/bin/phpunit -c /var/www/html/FunctionalTests.xml
-```
-
-Unit:
-
-```
-./.build/vendor/bin/phpunit -c /var/www/html/UnitTests.xml
 ```

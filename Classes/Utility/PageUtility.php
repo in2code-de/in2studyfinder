@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace In2code\In2studyfinder\Utility;
 
+use Doctrine\DBAL\Exception;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -12,9 +13,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class PageUtility
 {
     /**
-     * @throws \Doctrine\DBAL\Driver\Exception
-     *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @throws Exception
      */
     public static function getTreeList(int $uid, int $depth, int $begin = 0, string $permClause = ''): string
     {
