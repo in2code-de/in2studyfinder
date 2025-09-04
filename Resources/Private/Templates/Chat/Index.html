@@ -1,4 +1,5 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+			xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
 			data-namespace-typo3-fluid="true">
 
 <f:asset.script identifier="in2studyfinderChatbot" type="module"
@@ -26,6 +27,7 @@
 				<div class="chatbot-input">
 					<textarea class="chatbot-input" data-chatbot-input placeholder="{f:translate(key:'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:chatbot.textarea.placeholder')}" rows="1"></textarea>
 					<button class="chatbot-send" data-chatbot-send><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:chatbot.button.send"/></button>
+					<button class="delete-btn" data-action-url="{f:uri.action(action: 'deleteHistory', pageType: 1749648666, absolute: 1)}" data-chatbot-delete title="Delete conversation"><core:icon identifier="actions-delete" /></button>
 				</div>
 			</div>
 		</div>
@@ -51,6 +53,7 @@
 				<div class="chatbot-input">
 					<textarea class="chatbot-input" data-chatbot-input placeholder="{f:translate(key:'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:chatbot.textarea.placeholder')}" rows="1"></textarea>
 					<button class="chatbot-send" data-chatbot-send><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:chatbot.button.send"/></button>
+					<button class="delete-btn" data-action-url="{f:uri.action(action: 'deleteHistory', pageType: 1749648666, absolute: 1)}" data-chatbot-delete title="Delete conversation"><core:icon identifier="actions-delete" /></button>
 				</div>
 			</div>
 		</div>

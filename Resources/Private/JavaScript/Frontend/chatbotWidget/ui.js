@@ -12,6 +12,13 @@ export class UI {
         }
     }
 
+    showDefaultPrompt() {
+        const defaultPrompts = this.chatbotWidget.querySelector('[data-defaultprompts]');
+        if (defaultPrompts) {
+            defaultPrompts.classList.remove('u-hide');
+        }
+    }
+
     setupAutoResize() {
         const input = this.chatbotWidget.querySelector('[data-chatbot-input]');
         if (!input) return;

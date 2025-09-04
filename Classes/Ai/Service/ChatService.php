@@ -42,9 +42,9 @@ class ChatService
         return $response;
     }
 
-    public function deleteHistory(): void
+    public function deleteHistory(ServerRequestInterface $request): void
     {
-//        $this->session->set(self::SESSION_KEY, null);
+        $this->feSessionService->saveToSession(self::SESSION_KEY, null, $request);
     }
 
     protected function getHistory(ServerRequestInterface $request, array $pluginSettings): array

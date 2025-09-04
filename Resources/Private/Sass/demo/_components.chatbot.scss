@@ -293,6 +293,36 @@ textarea.chatbot-input {
     }
 }
 
+.delete-btn {
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+    border: 1px solid rgba(220, 53, 69, 0.2);
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    @include flex-center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+
+    &:hover {
+        background: rgba(220, 53, 69, 0.15);
+        border-color: rgba(220, 53, 69, 0.3);
+        transform: translateY(-1px);
+        @include box-shadow(0 2px 8px rgba(220, 53, 69, 0.2));
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+
+    svg, .icon {
+        width: 16px;
+        height: 16px;
+    }
+}
+
 /* Responsive Design */
 @media (max-width: 480px) {
     .chatbot-container {

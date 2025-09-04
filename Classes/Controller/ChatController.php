@@ -37,4 +37,10 @@ class ChatController extends ActionController
             return json_encode(['success' => false, 'errorCode' => $throwable->getCode()]);
         }
     }
+
+    public function deleteHistoryAction(): string
+    {
+        $this->chatService->deleteHistory($this->request);
+        return json_encode(['success' => true]);
+    }
 }

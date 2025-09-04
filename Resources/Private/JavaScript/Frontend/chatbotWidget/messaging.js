@@ -62,6 +62,38 @@ export class Messaging {
         }
     }
 
+    async deleteHistory(url) {
+        try {
+            const response = await fetch(
+                url,
+                {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({})
+                }
+            );
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Clear all messages except the welcome message
+                const messages = this.chatbotWidget.querySelector('[data-chatbot-messages]');
+                const welcomeMessage = messages.querySelector('.message.assistant');
+                messages.innerHTML = '';
+                if (welcomeMessage) {
+                    messages.appendChild(welcomeMessage);
+                }
+
+                // Show default prompts again
+                this.ui.showDefaultPrompt();
+            } else {
+                console.error('Failed to delete chat history');
+            }
+        } catch (error) {
+            console.error('Error deleting chat history:', error);
+        }
+    }
+
     showTypingIndicator() {
         const messages = this.chatbotWidget.querySelector('[data-chatbot-messages]');
         const typingEl = document.createElement('div');

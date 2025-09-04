@@ -32,11 +32,11 @@ $extensionName = 'In2studyfinder';
     'in2studyfinder',
     'Chatbot',
     [
-        \In2code\In2studyfinder\Controller\ChatController::class => 'index,chat',
+        \In2code\In2studyfinder\Controller\ChatController::class => 'index,chat,deleteHistory',
     ],
     // non cacheable actions
     [
-        \In2code\In2studyfinder\Controller\ChatController::class => 'chat',
+        \In2code\In2studyfinder\Controller\ChatController::class => 'chat,deleteHistory',
     ],
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );
