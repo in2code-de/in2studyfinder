@@ -74,8 +74,7 @@ class StudyCourseController extends ActionController
         }
 
         $studyCourses = $this->courseService->findBySearchOptions(
-            $this->filterService->resolveFilterPropertyPath($searchOptions),
-            $currentPluginRecord
+            $this->filterService->resolveFilterPropertyPath($searchOptions)
         );
 
         $currentPage = $this->request->hasArgument('currentPage')
@@ -120,7 +119,7 @@ class StudyCourseController extends ActionController
     {
         $currentPluginRecord = $this->request->getAttribute('currentContentObject')->data;
         $studyCourses =
-            $this->courseService->findBySearchOptions([], $currentPluginRecord);
+            $this->courseService->findBySearchOptions([]);
 
         $fluidVariables = [
             'studyCourseCount' => count($studyCourses),

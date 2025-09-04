@@ -23,7 +23,7 @@ class CourseService extends AbstractService
     ) {
     }
 
-    public function findBySearchOptions(array $searchOptions, array $pluginRecord): array
+    public function findBySearchOptions(array $searchOptions): array
     {
         $cacheInstance = CacheUtility::getCacheInstance();
         $cacheIdentifier = CacheUtility::getCacheIdentifierForStudyCourses($searchOptions);
