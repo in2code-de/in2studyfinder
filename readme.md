@@ -97,9 +97,11 @@ Version 13.x
 
 ## Events
 
-ModifyDetailActionFluidVariablesEvent: main event for fluid variable manipulation for the detail action
-ModifyFastSearchActionFluidVariablesEvent: main event for fluid variable manipulation for the fast search action
-ModifyFilterActionFluidVariablesEvent: main event for fluid variable manipulation for the filter action
+| event name                                | description                                                           |
+|-------------------------------------------|-----------------------------------------------------------------------|
+| ModifyDetailActionFluidVariablesEvent     | main event for fluid variable manipulation for the detail action      |
+| ModifyFastSearchActionFluidVariablesEvent | main event for fluid variable manipulation for the fast search action |
+| ModifyFilterActionFluidVariablesEvent     | main event for fluid variable manipulation for the filter action      |
 
 ## Migration
 
