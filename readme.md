@@ -113,7 +113,7 @@ Happy coding
 
 ### Build Css and JavaScript
 
-Requirements: node.js, npm, nvm
+Requirements: node.js >= 20, npm, nvm
 
 ```
 cd Resources/Private && nvm use
@@ -241,6 +241,7 @@ ddev ssh
 
 | Version | Date       | State        | Description                                                                                                                                                                                                                                   |
 |---------|------------|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 12.1.1  | 2025-08-25 | TASK         | Bump nodejs build dependencies. The nodejs modules used to build the JavaScript and CSS have been updated.                                                                                                                                    |
 | 12.1.0  | 2025-07-07 | FEATURE      | Allow backend sorting of filter items, set correct meta tag property type for keywords. For further information see: [Commits](https://github.com/in2code-de/in2studyfinder/commits/12.1.0)                                                   |
 | 12.0.2  | 2025-05-23 | BUGFIX       | Add missing release preparations                                                                                                                                                                                                              |
 | 12.0.1  | 2025-05-23 | BUGFIX       | Fix ajax requests in non default language                                                                                                                                                                                                     |
