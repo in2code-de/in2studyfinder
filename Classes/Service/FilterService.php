@@ -6,6 +6,7 @@ namespace In2code\In2studyfinder\Service;
 
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use In2code\In2studyfinder\Settings\ExtensionSettingsInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
@@ -16,6 +17,12 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @todo refactor:
+ *  - services should be stateless (see: https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/PhpArchitecture/Services.html)
+ *  - reduce complexity
+ */
 class FilterService
 {
     protected array $settings = [];
@@ -85,10 +92,10 @@ class FilterService
     public function loadOrSetPersistedFilter(array $searchOptions): array
     {
         if ($searchOptions !== []) {
-            $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')
+            $this->getRequest()->getAttribute('frontend.user')
                 ->setAndSaveSessionData('tx_in2studycourse_filter', array_filter($searchOptions));
         } else {
-            $sessionData = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')
+            $sessionData = $this->getRequest()->getAttribute('frontend.user')
                 ->getSessionData('tx_in2studycourse_filter');
             if (!empty($sessionData)) {
                 return (array)$sessionData;
@@ -286,5 +293,13 @@ class FilterService
         );
 
         return [];
+    }
+
+    /**
+     * @SuppressWarnings(PHPMD.Superglobals)
+     */
+    private function getRequest(): ServerRequestInterface
+    {
+        return $GLOBALS['TYPO3_REQUEST'];
     }
 }

@@ -20,6 +20,8 @@ class CacheUtility
      *
      * Following cache tags will be added to tsfe:
      * "tx_in2studyfinder_uid_[course:uid]"
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
     public static function addCacheTags(QueryResultInterface|array $records): void
     {

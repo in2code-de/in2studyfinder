@@ -12,6 +12,9 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 class FrontendUtility
 {
+    /**
+     * @SuppressWarnings(PHPMD.Superglobals)
+     */
     public static function getCurrentPageIdentifier(): int
     {
         return $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.page.information')->getId();

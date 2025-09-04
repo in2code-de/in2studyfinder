@@ -96,7 +96,7 @@ class ExtensionSettings implements ExtensionSettingsInterface
     {
         $storagePids = [];
 
-        foreach ($configuration as $type => $typeConfiguration) {
+        foreach ($configuration as $typeConfiguration) {
             $pids = GeneralUtility::intExplode(',', $typeConfiguration['pids']);
 
             if (array_key_exists('recursive', $typeConfiguration) && $typeConfiguration['recursive'] > 0) {
@@ -115,6 +115,9 @@ class ExtensionSettings implements ExtensionSettingsInterface
         return array_unique($storagePids);
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.Superglobals)
+     */
     protected function getRequest(): ServerRequestInterface
     {
         return $GLOBALS['TYPO3_REQUEST'];

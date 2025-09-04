@@ -13,6 +13,8 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
  * @todo refactor
  *
  * this is currently the default select viewHelper with additional functionality
+ *
+ * @SuppressWarnings(PHPMD.NPathComplexity)
  */
 class SelectViewHelper extends AbstractSelectViewHelper
 {
