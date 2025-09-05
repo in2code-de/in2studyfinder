@@ -11,21 +11,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ConfigurationService
 {
-    /**
-     * @throws MissingApiKeyException
-     */
     public function getMistralApiKey(): string
     {
-        $apiKey = (string)$this->getExtensionConfiguration('mistralApiKey');
-
-        if (empty($apiKey)) {
-            throw new MissingApiKeyException(
-                'Mistral API key is not set. Please configure it in the extension settings.',
-                1749650734
-            );
-        }
-
-        return $apiKey;
+        return (string)$this->getExtensionConfiguration('mistralApiKey');
     }
 
     /**

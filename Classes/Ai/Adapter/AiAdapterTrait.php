@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace In2code\In2studyfinder\Ai\Adapter;
 
 use GuzzleHttp\Exception\ClientException;
+use In2code\In2studyfinder\Exception\MissingApiKeyException;
 use In2code\In2studyfinder\Exception\ToolNotFoundException;
 use In2code\In2studyfinder\Ai\Service\Prompt\PromptInterface;
 use In2code\In2studyfinder\Ai\Service\ToolResultService;
@@ -25,13 +26,24 @@ trait AiAdapterTrait
         return $this->apiUrl;
     }
 
+    /**
+     * @throws MissingApiKeyException
+     */
     private function getApiKey(): string
     {
+        if (empty($this->apiKey)) {
+            throw new MissingApiKeyException(
+                'Mistral API key is not set. Please configure it in the extension settings.',
+                1749650734
+            );
+        }
+
         return $this->apiKey;
     }
 
     /**
      * @throws ClientException
+     * @throws MissingApiKeyException
      */
     private function sendRequest(string $url, array $requestBody): array
     {
