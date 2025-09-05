@@ -7,6 +7,7 @@ namespace In2code\In2studyfinder\Ai\Service;
 use In2code\In2studyfinder\Ai\Adapter\MistralAdapter;
 use In2code\In2studyfinder\Ai\Service\Prompt\PromptInterface;
 use In2code\In2studyfinder\Service\FeSessionService;
+use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 
 class ChatService
@@ -29,17 +30,15 @@ class ChatService
 
     public function chat(ServerRequestInterface $request, array $pluginSettings): array
     {
-        $message = $this->getRequestBody($request)['message'] ?? null;
-        if ($message === null) {
-            return ['success' => false, 'errorCode' => 1749708782];
-        }
+        $message = $this->getRequestBody($request)['message'] ?? throw new InvalidArgumentException('Message is missing', 1749708782);
 
         $history = $this->getHistory($request, $pluginSettings);
         $history[] = ['role' => 'user', 'content' => $message];
-        $response = $this->mistralAdapter->sendMessage($history, $pluginSettings);
-        $this->feSessionService->saveToSession(self::SESSION_KEY, $response['history'], $request);
 
-        return $response;
+        $messages = $this->mistralAdapter->sendMessage($history, $pluginSettings);
+        $this->feSessionService->saveToSession(self::SESSION_KEY, $messages, $request);
+
+        return $messages;
     }
 
     public function deleteHistory(ServerRequestInterface $request): void

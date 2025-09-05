@@ -51,52 +51,28 @@ class MistralAdapter implements AIAdapterInterface
         ];
 
         $result = $this->sendRequest($this->getApiUrl(), $requestBody);
+        $message = $result['choices'][0]['message'];
+        $messages[] = $message;
 
-        if (isset($result['choices'][0]['message']['tool_calls'])) {
-            return $this->sendFollowUpMessage($result['choices'][0]['message']['tool_calls'], $messages, $pluginSettings);
+        if (isset($message['tool_calls'])) {
+            $messages = $this->sendMessage(
+                $this->buildToolCalls($message, $messages, $pluginSettings),
+                $pluginSettings
+            );
         }
 
-        $resultMessage = $this->sendRequest($this->getApiUrl(), $requestBody)['choices'][0]['message']['content'] ??
-            'Keine Antwort erhalten';
-
-        return [
-            'success' => true,
-            'message' => $resultMessage,
-            'history' => $this->appendResponse($messages, $resultMessage)
-        ];
+        return $messages;
     }
 
     /**
      * @throws ToolNotFoundException
      */
-    private function sendFollowUpMessage(array $toolCalls, array $messages, array $pluginSettings): array
+    private function buildToolCalls(array $message, array $messages, array $pluginSettings): array
     {
-        $messages[] = ['role' => 'assistant', 'content' => null, 'tool_calls' => $toolCalls];
-
-        foreach ($this->getToolResults($toolCalls, $pluginSettings) as $result) {
+        foreach ($this->getToolResults($message['tool_calls'], $pluginSettings) as $result) {
             $messages[] = $result;
         }
 
-        $requestBody = [
-            'model' => 'mistral-large-latest',
-            'messages' => $messages,
-            'temperature' => 0.3,
-            'max_tokens' => 1000
-        ];
-
-        $resultMessage = $this->sendRequest($this->getApiUrl(), $requestBody)['choices'][0]['message']['content'] ??
-            'Keine Antwort erhalten';
-
-        return [
-            'success' => true,
-            'message' => $resultMessage,
-            'history' => $this->appendResponse($messages, $resultMessage)
-        ];
-    }
-
-    private function appendResponse(array $messages, string $responseContent): array
-    {
-        $messages[] = ['role' => 'assistant', 'content' => $responseContent];
         return $messages;
     }
 
