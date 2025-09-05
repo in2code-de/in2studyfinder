@@ -162,6 +162,12 @@
 			<trans-unit id="pleaseSelectCourse">
 				<source>Select degree program or enter keyword</source>
 			</trans-unit>
+			<trans-unit id="chatbot.textarea.placeholder">
+				<source>Ask your question...</source>
+			</trans-unit>
+			<trans-unit id="chatbot.button.send">
+				<source>Send</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

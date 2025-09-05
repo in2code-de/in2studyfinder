@@ -1,0 +1,61 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+			xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+			data-namespace-typo3-fluid="true">
+
+<f:asset.script identifier="in2studyfinderChatbot" type="module"
+								src="EXT:in2studyfinder/Resources/Public/JavaScript/chatbot.js"/>
+
+<f:if condition="{settings.isWidget}">
+	<f:then>
+		<div class="chatbotwidget-container" data-chatbot-container-widget data-chatbot-url="{f:uri.action(action: 'chat', pageType: 1749648666, absolute: 1)}">
+			<div class="chatbot-header">
+				<h2>{settings.chatbotName -> f:or(alternative: 'ChatBot Assistant')} <span class="status-indicator"></span></h2>
+				<button class="toggle-btn" data-chatbot-toggle>−</button>
+			</div>
+
+			<div class="chatbotwidget-body" data-chatbotwidget-body>
+				<div class="chatbot-messages" data-chatbot-messages>
+					<div class="message assistant">
+						{settings.welcomeMessage -> f:or(alternative: 'Willkommen! Ich bin dein virtueller Assistant. Wie kann ich dir heute helfen?')}
+					</div>
+				</div>
+
+				<div class="defaultprompts" data-defaultprompts data-prompts="{settings.defaultPrompts}">
+					<!-- Default prompts will be populated by JavaScript -->
+				</div>
+
+				<div class="chatbot-input">
+					<textarea class="chatbot-input" data-chatbot-input placeholder="{f:translate(key:'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:chatbot.textarea.placeholder')}" rows="1"></textarea>
+					<button class="chatbot-send" data-chatbot-send><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:chatbot.button.send"/></button>
+					<button class="delete-btn" data-action-url="{f:uri.action(action: 'deleteHistory', pageType: 1749648666, absolute: 1)}" data-chatbot-delete title="Delete conversation"><core:icon identifier="actions-delete" /></button>
+				</div>
+			</div>
+		</div>
+	</f:then>
+	<f:else>
+		<div class="chatbot-container" data-chatbot-container data-chatbot-url="{f:uri.action(action: 'chat', pageType: 1749648666, absolute: 1)}">
+			<div class="chatbot-header">
+				<h2>{settings.chatbotName -> f:or(alternative: 'ChatBot Assistant')} <span class="status-indicator"></span></h2>
+				<button class="toggle-btn" data-chatbot-toggle>−</button>
+			</div>
+
+			<div class="chatbotwidget-body" data-chatbotwidget-body>
+				<div class="chatbot-messages" data-chatbot-messages>
+					<div class="message assistant">
+						{settings.welcomeMessage -> f:or(alternative: 'Willkommen! Ich bin dein virtueller Assistant. Wie kann ich dir heute helfen?')}
+					</div>
+				</div>
+
+				<div class="defaultprompts" data-defaultprompts data-prompts="{settings.defaultPrompts}">
+					<!-- Default prompts will be populated by JavaScript -->
+				</div>
+
+				<div class="chatbot-input">
+					<textarea class="chatbot-input" data-chatbot-input placeholder="{f:translate(key:'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:chatbot.textarea.placeholder')}" rows="1"></textarea>
+					<button class="chatbot-send" data-chatbot-send><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:chatbot.button.send"/></button>
+					<button class="delete-btn" data-action-url="{f:uri.action(action: 'deleteHistory', pageType: 1749648666, absolute: 1)}" data-chatbot-delete title="Delete conversation"><core:icon identifier="actions-delete" /></button>
+				</div>
+			</div>
+		</div>
+	</f:else>
+</f:if>

@@ -295,6 +295,43 @@
 			<trans-unit id="pluginInformation.fastsearchView">
 				<source>Fast Search Plugin</source>
 			</trans-unit>
+
+			<trans-unit id="chatbot.plugin.title">
+				<source>Chatbot</source>
+			</trans-unit>
+			<trans-unit id="chatbot.plugin.description">
+				<source>Adds a chatbot to find studycourses based on Mistral AI.</source>
+			</trans-unit>
+			<trans-unit id="chatbot.plugin.settings.isWidget">
+				<source>Display as widget</source>
+			</trans-unit>
+			<trans-unit id="chatbot.plugin.settings.chatbotName">
+				<source>Chatbot Name</source>
+			</trans-unit>
+			<trans-unit id="chatbot.plugin.settings.defaultPrompts">
+				<source>Default Prompts</source>
+			</trans-unit>
+			<trans-unit id="chatbot.plugin.settings.defaultPrompts.description">
+				<source>One prompt per line</source>
+			</trans-unit>
+			<trans-unit id="chatbot.plugin.settings.topNResults">
+				<source>Number of Results</source>
+			</trans-unit>
+			<trans-unit id="chatbot.plugin.settings.welcomeMessage">
+				<source>Welcome Message</source>
+			</trans-unit>
+			<trans-unit id="extension_configuration.mistralApiKey">
+				<source>Mistral API Key</source>
+			</trans-unit>
+			<trans-unit id="extension_configuration.mistralApiKey.description">
+				<source>API key for Mistral AI service</source>
+			</trans-unit>
+			<trans-unit id="extension_configuration.detailPid">
+				<source>Detail Page ID</source>
+			</trans-unit>
+			<trans-unit id="extension_configuration.detailPid.description">
+				<source>Page ID for the study course detail page</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

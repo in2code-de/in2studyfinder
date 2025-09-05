@@ -1,0 +1,65 @@
+<T3DataStructure>
+  <sheets>
+    <sDEF>
+      <ROOT>
+        <TCEforms>
+          <sheetTitle>Settings</sheetTitle>
+        </TCEforms>
+        <type>array</type>
+        <el>
+          <settings.isWidget>
+            <TCEforms>
+              <label>LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:chatbot.plugin.settings.isWidget</label>
+              <config>
+                <type>check</type>
+                <default>0</default>
+              </config>
+            </TCEforms>
+          </settings.isWidget>
+          <settings.chatbotName>
+            <TCEforms>
+              <label>LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:chatbot.plugin.settings.chatbotName</label>
+              <config>
+                <type>input</type>
+                <default>ChatBot Assistant</default>
+              </config>
+            </TCEforms>
+          </settings.chatbotName>
+          <settings.defaultPrompts>
+            <TCEforms>
+              <label>LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:chatbot.plugin.settings.defaultPrompts</label>
+              <description>LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:chatbot.plugin.settings.defaultPrompts.description</description>
+              <config>
+                <type>text</type>
+                <default>Kannst du mir helfen einen Studiengang zu finden?</default>
+              </config>
+            </TCEforms>
+          </settings.defaultPrompts>
+          <settings.topNResults>
+            <TCEforms>
+              <label>LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:chatbot.plugin.settings.topNResults</label>
+              <config>
+                <type>input</type>
+                <eval>int</eval>
+                <default>3</default>
+                <range>
+                  <lower>1</lower>
+                  <upper>10</upper>
+                </range>
+              </config>
+            </TCEforms>
+          </settings.topNResults>
+          <settings.welcomeMessage>
+            <TCEforms>
+              <label>LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:chatbot.plugin.settings.welcomeMessage</label>
+              <config>
+                <type>text</type>
+                <default>Willkommen! Ich bin dein virtueller Assistant. Wie kann ich dir heute helfen?</default>
+              </config>
+            </TCEforms>
+          </settings.welcomeMessage>
+        </el>
+      </ROOT>
+    </sDEF>
+  </sheets>
+</T3DataStructure>

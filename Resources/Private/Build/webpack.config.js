@@ -6,7 +6,10 @@ const TerserPlugin = require("terser-webpack-plugin");
 module.exports =
   {
     mode: 'development',
-    entry: ['./JavaScript/Frontend/main.js', './Sass/demo.scss', './Sass/style.scss'],
+    entry: {
+      main: ['./JavaScript/Frontend/main.js', './Sass/demo.scss', './Sass/style.scss'],
+      chatbot: './JavaScript/Frontend/chatbot.js',
+    },
     output: {
       path: path.resolve(__dirname, '../../Public/'),
       filename: 'JavaScript/[name].js'
