@@ -22,6 +22,7 @@ class ChatController extends ActionController
 
     public function indexAction(): ResponseInterface
     {
+        $this->chatService->deleteHistory($this->request);
         return $this->htmlResponse();
     }
 
