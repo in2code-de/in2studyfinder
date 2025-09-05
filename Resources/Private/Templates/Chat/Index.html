@@ -7,7 +7,7 @@
 
 <f:if condition="{settings.isWidget}">
 	<f:then>
-		<div data-chatbot-container-widget data-chatbot-url="{f:uri.page(pageType: 1749648666, absolute: 1)}" class="chatbotwidget-container">
+		<div class="chatbotwidget-container" data-chatbot-container-widget data-chatbot-url="{f:uri.action(action: 'chat', pageType: 1749648666, absolute: 1)}">
 			<div class="chatbot-header">
 				<h2>{settings.chatbotName -> f:or(alternative: 'ChatBot Assistant')} <span class="status-indicator"></span></h2>
 				<button class="toggle-btn" data-chatbot-toggle>−</button>
@@ -33,7 +33,7 @@
 		</div>
 	</f:then>
 	<f:else>
-		<div class="chatbot-container" data-chatbot-container data-chatbot-url="{f:uri.page(pageType: 1749648666, absolute: 1)}">
+		<div class="chatbot-container" data-chatbot-container data-chatbot-url="{f:uri.action(action: 'chat', pageType: 1749648666, absolute: 1)}">
 			<div class="chatbot-header">
 				<h2>{settings.chatbotName -> f:or(alternative: 'ChatBot Assistant')} <span class="status-indicator"></span></h2>
 				<button class="toggle-btn" data-chatbot-toggle>−</button>

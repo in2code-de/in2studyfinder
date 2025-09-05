@@ -282,8 +282,6 @@ studyFinderAiChatbot {
         vendorName = In2code
         controller = Chat
         action = chat
-        switchableControllerActions.Chat.1 = chat
-        switchableControllerActions.Chat.2 = deleteHistory
     }
 }
 
