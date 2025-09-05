@@ -26,3 +26,4 @@ var/
 !.ddev/config.yaml
 !.ddev/docker-compose.typo3.yaml
 
+!.project/config

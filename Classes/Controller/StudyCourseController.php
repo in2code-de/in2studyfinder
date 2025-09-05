@@ -14,6 +14,7 @@ use In2code\In2studyfinder\Utility\ConfigurationUtility;
 use In2code\In2studyfinder\Utility\FlexFormUtility;
 use In2code\In2studyfinder\Utility\FrontendUtility;
 use In2code\In2studyfinder\Utility\RecordUtility;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -39,40 +40,12 @@ class StudyCourseController extends AbstractController
     }
 
     /**
-     * Strip empty options from incoming (selected) filters
-     *
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     * @param array $pluginInformation contains additional plugin information from ajax / fetch requests
      */
-    public function initializeFilterAction(): void
+    public function filterAction(array $searchOptions = [], array $pluginInformation = []): ResponseInterface
     {
         $this->filterService->initialize();
 
-        if ($this->request->hasArgument('searchOptions')) {
-            $searchOptions = array_filter((array)$this->request->getArgument('searchOptions'));
-            $this->request->setArgument('searchOptions', $searchOptions);
-
-            if (ConfigurationUtility::isPersistentFilterEnabled()) {
-                FrontendUtility::getTyposcriptFrontendController()
-                    ->fe_user
-                    ->setAndSaveSessionData('tx_in2studycourse_filter', $searchOptions);
-            }
-        } else {
-            if (ConfigurationUtility::isPersistentFilterEnabled()) {
-                $this->request->setArgument(
-                    'searchOptions',
-                    FrontendUtility::getTyposcriptFrontendController()
-                        ->fe_user
-                        ->getSessionData('tx_in2studycourse_filter')
-                );
-            }
-        }
-    }
-
-    /**
-     * @param array $pluginInformation contains additional plugin information from ajax / fetch requests
-     */
-    public function filterAction(array $searchOptions = [], array $pluginInformation = []): void
-    {
         if (!empty($pluginInformation)) {
             // if the current call is an ajax / fetch request
             $currentPluginRecord =
@@ -90,8 +63,15 @@ class StudyCourseController extends AbstractController
             $currentPluginRecord = $this->configurationManager->getContentObject()->data;
         }
 
+        $this->filterService->setSettings($this->settings);
+        $searchOptions = $this->filterService->sanitizeSearch($searchOptions);
+
+        if (ConfigurationUtility::isPersistentFilterEnabled()) {
+            $searchOptions = $this->filterService->loadOrSetPersistedFilter($searchOptions);
+        }
+
         $studyCourses = $this->courseService->findBySearchOptions(
-            $this->filterService->setSettings($this->settings)->prepareSearchOptions($searchOptions),
+            $this->filterService->resolveFilterPropertyPath($searchOptions),
             $currentPluginRecord
         );
 
@@ -106,12 +86,14 @@ class StudyCourseController extends AbstractController
                 'data' => $currentPluginRecord
             ]
         );
+
+        return $this->htmlResponse();
     }
 
     /**
      * fastSearchAction
      */
-    public function fastSearchAction(): void
+    public function fastSearchAction(): ResponseInterface
     {
         $currentPluginRecord = $this->configurationManager->getContentObject()->data;
         $studyCourses =
@@ -126,6 +108,8 @@ class StudyCourseController extends AbstractController
                 'data' => $currentPluginRecord
             ]
         );
+
+        return $this->htmlResponse();
     }
 
     /**
@@ -156,7 +140,7 @@ class StudyCourseController extends AbstractController
      *
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      */
-    public function detailAction(StudyCourse $studyCourse = null): void
+    public function detailAction(StudyCourse $studyCourse = null): ResponseInterface
     {
         if ($studyCourse) {
             $this->courseService->setPageTitleAndMetadata($studyCourse);
@@ -165,7 +149,9 @@ class StudyCourseController extends AbstractController
             $this->view->assign('studyCourse', $studyCourse);
         } else {
             $studyCourseListPage = $this->settings['flexform']['studyCourseListPage'] ?? '';
-            $this->redirect('filterAction', null, null, null, $studyCourseListPage);
+            return $this->redirect('filterAction', null, null, null, $studyCourseListPage);
         }
+
+        return $this->htmlResponse();
     }
 }

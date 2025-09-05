@@ -15,8 +15,9 @@ class Pagination {
   }
 
   init() {
-    this.paginationElement.querySelectorAll(this.identifier.paginationLink).forEach(function(item) {
-      item.addEventListener('click', function(event) {
+    this.paginationElement.querySelectorAll(this.identifier.paginationLink).forEach(function (item) {
+      item.addEventListener('click', function (event) {
+        this.onClick(event);
         this.call(event);
       }.bind(this));
     }.bind(this));
@@ -26,19 +27,16 @@ class Pagination {
     this.studyfinderElement = studyfinderElement;
     this.paginationElement = studyfinderElement.querySelector(this.identifier.paginationContainer);
 
-    this.paginationElement.querySelectorAll(this.identifier.paginationLink).forEach(function(item) {
-      item.addEventListener('click', function(event) {
+    this.paginationElement.querySelectorAll(this.identifier.paginationLink).forEach(function (item) {
+      item.addEventListener('click', function (event) {
+        this.onClick(event);
         this.call(event);
       }.bind(this));
     }.bind(this));
-
-    this.onUpdate();
   }
 
   call(event) {
     event.preventDefault();
-
-    this.afterClick(event);
 
     let targetPage = event.target.getAttribute('data-target-page');
     let url = event.target.href;
@@ -46,39 +44,31 @@ class Pagination {
 
     UrlUtility.addOrUpdateHash('page', [targetPage]);
 
-    let ajaxCall = new Promise((resolve) => {
-      if (window.in2studyfinder.getInstance(instanceId).hasFilter) {
-        window.in2studyfinder.getInstance(instanceId).filter.call(targetPage);
-      } else {
-        LoaderUtility.enableLoader();
+    if (window.in2studyfinder.getInstance(instanceId).hasFilter) {
+      window.in2studyfinder.getInstance(instanceId).filter.call(targetPage);
+    } else {
+      LoaderUtility.enableLoader();
 
-        fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-        }).then((response) => {
-          return response.text();
-        }).then((html) => {
-          let tempElement = document.createElement('div');
-          tempElement.innerHTML = html;
-          this.studyfinderElement.innerHTML = tempElement.querySelector(this.identifier.container).innerHTML;
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }).then((response) => {
+        return response.text();
+      }).then((html) => {
+        let tempElement = document.createElement('div');
+        tempElement.innerHTML = html;
+        this.studyfinderElement.innerHTML = tempElement.querySelector(this.identifier.container).innerHTML;
 
-          LoaderUtility.disableLoader();
-          window.in2studyfinder.getInstance(instanceId).update(this.studyfinderElement);
-        });
-      }
-    });
-
-    ajaxCall.then((message) => {
-      this.afterLoad(event);
-    });
-
+        LoaderUtility.disableLoader();
+        window.in2studyfinder.getInstance(instanceId).update(this.studyfinderElement);
+      });
+    }
   };
 
-  onUpdate() {}
-  afterClick() {}
-  afterLoad() {}
+  onClick() {
+  }
 }
 
 export {Pagination}

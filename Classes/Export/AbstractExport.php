@@ -5,23 +5,18 @@ declare(strict_types=1);
 namespace In2code\In2studyfinder\Export;
 
 use In2code\In2studyfinder\Export\Configuration\ExportConfiguration;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 class AbstractExport implements ExportInterface
 {
     protected string $fileExtension = '';
-
-    /**
-     * @var Dispatcher
-     */
-    protected Dispatcher $signalSlotDispatcher;
+    protected EventDispatcherInterface $eventDispatcher;
 
     public function __construct()
     {
-        // @todo replace signal with psr 14 event
-        $this->signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
+        $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
     }
 
     public function export(ExportConfiguration $exportConfiguration): string

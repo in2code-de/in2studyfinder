@@ -13,12 +13,14 @@ use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
-use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 class PaginateViewHelper extends AbstractViewHelper
 {
+    /**
+     * @var bool
+     */
     protected $escapeOutput = false;
 
     public function initializeArguments(): void
@@ -45,7 +47,7 @@ class PaginateViewHelper extends AbstractViewHelper
         $templateVariableContainer->add($arguments['as'], [
             'pagination' => self::getPagination($arguments, $renderingContext),
             'paginator' => self::getPaginator($arguments, $renderingContext),
-            'name' => self::getName($arguments)
+            'name' => self::getName($arguments),
         ]);
         $output = $renderChildrenClosure();
         $templateVariableContainer->remove($arguments['as']);
@@ -77,26 +79,26 @@ class PaginateViewHelper extends AbstractViewHelper
         } else {
             throw new NotPaginatableException('Given object is not supported for pagination', 1634132847);
         }
+
         return GeneralUtility::makeInstance(
             $paginatorClass,
             $arguments['objects'],
             self::getPageNumber($arguments, $renderingContext),
-            $arguments['itemsPerPage']
+            (int)$arguments['itemsPerPage']
         );
     }
 
     protected static function getPageNumber(array $arguments, RenderingContextInterface $renderingContext): int
     {
-        $extensionName = $renderingContext->getControllerContext()->getRequest()->getControllerExtensionName();
-        $pluginName = $renderingContext->getControllerContext()->getRequest()->getPluginName();
-        $extensionService = GeneralUtility::makeInstance(ExtensionService::class);
-        $pluginNamespace = $extensionService->getPluginNamespace($extensionName, $pluginName);
-        $variables = GeneralUtility::_GET($pluginNamespace);
-        if ($variables !== null) {
-            if (!empty($variables[self::getName($arguments)]['currentPage'])) {
-                return (int)$variables[self::getName($arguments)]['currentPage'];
-            }
+        $request = $renderingContext->getRequest();
+        if (
+            !is_null($request) &&
+            $request->hasArgument(self::getName($arguments)) &&
+            array_key_exists('currentPage', $request->getArgument(self::getName($arguments)))
+        ) {
+            return (int)$request->getArgument(self::getName($arguments))['currentPage'];
         }
+
         return 1;
     }
 

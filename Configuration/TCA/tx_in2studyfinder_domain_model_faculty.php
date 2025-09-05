@@ -21,6 +21,7 @@ return [
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
         'delete' => 'deleted',
+        'sortby' => 'sorting',
         'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
@@ -31,7 +32,7 @@ return [
     ],
     'types' => [
         '0' => [
-            'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, --div--;EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime',
+            'showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime',
         ],
     ],
     'columns' => [

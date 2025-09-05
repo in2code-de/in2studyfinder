@@ -11,7 +11,12 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
-class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper
+/**
+ * @todo refactor
+ *
+ * this is currently the default select viewHelper with additional functionality
+ */
+class SelectViewHelper extends AbstractSelectViewHelper
 {
     public function initializeArguments(): void
     {
@@ -46,7 +51,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
         $updatedOptions = [];
         $optionsArgument = $this->arguments['options'];
         $settings = ExtensionUtility::getExtensionSettings('in2studyfinder');
-        if (ArrayUtility::isValidPath($settings, '/flexform/studyCourseDetailPage')) {
+        if (ArrayUtility::isValidPath($settings, 'flexform/studyCourseDetailPage')) {
             $pageUid = $settings['flexform']['studyCourseDetailPage'];
         }
 
@@ -121,7 +126,8 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
                 $additionalAttributes = $attributes['additionalAttributes'];
             }
 
-            $output .= $this->renderOptionTag((string)$value, $attributes['label'], $isSelected, $additionalAttributes) . LF;
+            $output .= $this->renderOptionTag((string)$value, $attributes['label'], $isSelected, $additionalAttributes)
+                . LF;
         }
 
         return $output;
@@ -136,8 +142,12 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
      * @param array $additionalAttributes array with additional attributes
      * @return string the rendered option tag
      */
-    protected function renderOptionTag($value, $label, $isSelected, $additionalAttributes = [])
-    {
+    protected function renderOptionTag(
+        string $value,
+        string $label,
+        bool $isSelected,
+        array $additionalAttributes = []
+    ): string {
         $output =
             '<option value="' . htmlspecialchars($value) . '" ' . $this->getAdditionalAttributesString(
                 $additionalAttributes
@@ -153,7 +163,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
      * @param array $additionalAttributes
      * @return string
      */
-    protected function getAdditionalAttributesString($additionalAttributes)
+    protected function getAdditionalAttributesString(array $additionalAttributes): string
     {
         $output = '';
 

@@ -6,6 +6,7 @@ namespace In2code\In2studyfinder\Service;
 
 use In2code\In2studyfinder\Domain\Model\StudyCourseInterface;
 use In2code\In2studyfinder\Utility\ExtensionUtility;
+use In2code\In2studyfinder\Utility\FrontendUtility;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -47,31 +48,61 @@ class FilterService extends AbstractService
     }
 
     /**
-     * removes not allowed keys empty values from searchOptions and updates the filter keys to the actual property path
+     * removes not allowed keys and empty values from searchOptions
      */
-    public function prepareSearchOptions(array $searchOptions): array
+    public function sanitizeSearch(array $searchOptions): array
     {
         // merge plugin restrictions to search options
         $searchOptions = array_merge($searchOptions, $this->getPluginFilterRestrictions());
         $this->disableFilterFrontendRenderingByPluginRestrictions();
 
         $filter = $this->getFilter();
-        // 1. remove not allowed keys
-        foreach ($searchOptions as $filterName => $filterValues) {
+        // remove not allowed keys
+        foreach (array_keys($searchOptions) as $filterName) {
             if (!array_key_exists($filterName, $filter)) {
                 unset($searchOptions[$filterName]);
             }
         }
 
-        // 2. remove empty values
-        $searchOptions = array_map('array_filter', $searchOptions);
-        $searchOptions = array_filter($searchOptions);
+        // remove empty values
+        foreach ($searchOptions as $optionName => $optionValue) {
+            if (empty($optionValue)) {
+                unset($searchOptions[$optionName]);
+            }
+        }
 
-        // 3. set filter propertyPath as filter array key
+        return $searchOptions;
+    }
+
+    /**
+     * updates the filter keys to the actual property path
+     */
+    public function resolveFilterPropertyPath($searchOptions): array
+    {
+        $filter = $this->getFilter();
+
         foreach ($searchOptions as $filterName => $filterValues) {
             $searchOptions[$filter[$filterName]['propertyPath']] = $filterValues;
             if ($filter[$filterName]['propertyPath'] !== $filterName) {
                 unset($searchOptions[$filterName]);
+            }
+        }
+
+        return $searchOptions;
+    }
+
+    public function loadOrSetPersistedFilter(array $searchOptions): array
+    {
+        if (!empty($searchOptions)) {
+            FrontendUtility::getTyposcriptFrontendController()
+                ->fe_user
+                ->setAndSaveSessionData('tx_in2studycourse_filter', array_filter($searchOptions));
+        } else {
+            $sessionData = FrontendUtility::getTyposcriptFrontendController()
+                ->fe_user
+                ->getSessionData('tx_in2studycourse_filter');
+            if (!empty($sessionData)) {
+                return (array)$sessionData;
             }
         }
 
@@ -175,11 +206,7 @@ class FilterService extends AbstractService
             $defaultQuerySettings->setStoragePageIds([$this->settings['settingsPid']]);
             $defaultQuerySettings->setLanguageOverlayMode(true);
 
-            // In TYPO3 11 repositories still need the Object Manager for initialization
-            // this will change with TYPO3 12
-            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-            $repository = $objectManager->get($repositoryClassName);
-
+            $repository = GeneralUtility::makeInstance($repositoryClassName);
             $repository->setDefaultQuerySettings($defaultQuerySettings);
 
             $this->filter[$filterName]['repository'] = $repositoryClassName;
@@ -215,7 +242,7 @@ class FilterService extends AbstractService
                     'propertyPath' => $filterProperties['propertyPath'],
                     'frontendLabel' => $this->buildFrontendLabel($filterProperties),
                     'disabledInFrontend' => $this->isFilterInFrontendVisible($filterProperties),
-                    'singleSelect' => $filterProperties['singleSelect']
+                    'singleSelect' => $filterProperties['singleSelect'] ?? ''
                 ];
 
                 switch ($filterProperties['type']) {
@@ -243,8 +270,10 @@ class FilterService extends AbstractService
 
     protected function getTypoScriptFilterConfiguration(): array
     {
-        if (is_array($this->settings['filters']) && !empty($this->settings['filters'])) {
-            return $this->settings['filters'];
+        $filters = $this->settings['filters'] ?? [];
+
+        if (is_array($filters) && !empty($filters)) {
+            return $filters;
         }
 
         $this->logger->error(

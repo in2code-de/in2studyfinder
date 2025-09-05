@@ -57,8 +57,11 @@ class Instance {
     if (this.element.querySelector(this.identifier.quickSelectContainer) !== null) {
       this.quickselect.update(studyfinderElement);
     }
+
+    this.onUpdate();
   }
 
+  onUpdate() {}
 }
 
 export {Instance}

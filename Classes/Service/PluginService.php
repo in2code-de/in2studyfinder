@@ -13,7 +13,7 @@ class PluginService extends AbstractService
     {
         $storagePids = [];
 
-        if (array_key_exists('pages', $pluginRecord) && $pluginRecord['pages'] !== '') {
+        if (array_key_exists('pages', $pluginRecord) && !empty($pluginRecord['pages'])) {
             $storagePids = GeneralUtility::intExplode(',', $pluginRecord['pages']);
 
             // add recursive pids if recursive is set in the plugin

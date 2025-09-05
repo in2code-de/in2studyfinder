@@ -8,17 +8,20 @@ use In2code\In2studyfinder\Domain\Model\AcademicDegree;
 use In2code\In2studyfinder\Domain\Model\Graduation;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use LogicException;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
- * Class UrlSegmentPostModifier
+ * @SuppressWarnings(PHPMD.Superglobals)
  */
 class UrlSegmentPostModifier
 {
     protected array $configuration = [];
+    protected int $courseId = -1;
+    protected int $academicDegree = -1;
 
     /**
      * @noinspection PhpUnusedParameterInspection
@@ -28,16 +31,16 @@ class UrlSegmentPostModifier
     public function extendWithGraduation(array $configuration, SlugHelper $slugHelper): string
     {
         $this->configuration = $configuration;
-        $graduationTitle = '';
 
-        if ($this->isNewRecord()) {
-            if (!empty($this->configuration['record']['academic_degree'])) {
-                $graduationTitle =
-                    $this->getGraduationTitle((int)$this->configuration['record']['academic_degree']);
-            }
-        } else {
-            $graduationTitle = $this->getGraduationTitle();
+        if (!$this->isUpgradeWizard() && !$this->isNewRecord()) {
+            $this->courseId = $this->getStudyCourseRecordIdentifier();
         }
+
+        if (!empty($this->configuration['record']['academic_degree'])) {
+            $this->academicDegree = (int)$this->configuration['record']['academic_degree'];
+        }
+
+        $graduationTitle = $this->getGraduationTitle();
 
         if (!empty($graduationTitle)) {
             $slug = $configuration['slug'] . '-' . $graduationTitle;
@@ -48,18 +51,15 @@ class UrlSegmentPostModifier
         return $slug;
     }
 
-    /**
-     * @throws \Doctrine\DBAL\DBALException
-     */
-    protected function getGraduationTitle(int $academicDegreeUid = -1): string
+    protected function getGraduationTitle(): string
     {
         $queryBuilder =
             GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(StudyCourse::TABLE);
 
         $queryBuilder->select(Graduation::TABLE . '.title');
 
-        if ($academicDegreeUid > 0) {
-            $queryBuilder
+        if ($this->academicDegree > 0) {
+            return (string)$queryBuilder
                 ->from(Graduation::TABLE)
                 ->leftJoin(
                     Graduation::TABLE,
@@ -70,8 +70,14 @@ class UrlSegmentPostModifier
                         AcademicDegree::TABLE . '.graduation'
                     )
                 )
-                ->where($queryBuilder->expr()->eq(AcademicDegree::TABLE . '.uid', $academicDegreeUid));
-        } else {
+                ->where(
+                    $queryBuilder->expr()->eq(AcademicDegree::TABLE . '.uid',
+                        $this->academicDegree
+                    )
+                )->executeQuery()->fetchOne();
+        }
+
+        if ($this->courseId > 0) {
             $queryBuilder->from(StudyCourse::TABLE)
                 ->leftJoin(
                     StudyCourse::TABLE,
@@ -92,45 +98,50 @@ class UrlSegmentPostModifier
                     )
                 )
                 ->where(
-                    $queryBuilder->expr()->eq(StudyCourse::TABLE . '.uid', $this->getStudyCourseRecordIdentifier())
+                    $queryBuilder->expr()->eq(StudyCourse::TABLE . '.uid', $this->courseId)
                 );
+
+            return (string)$queryBuilder->executeQuery()->fetchOne();
         }
 
-        return (string)$queryBuilder->execute()->fetchColumn();
+        return '';
+    }
+
+    private function isUpgradeWizard(): bool
+    {
+        // call via cli
+        if (http_response_code() === false) {
+            return true;
+        }
+
+        return !is_null(GeneralUtility::_GP('install')) &&
+            array_key_exists('action', GeneralUtility::_GP('install')) &&
+            GeneralUtility::_GP('install')['action'] === 'upgradeWizardsExecute';
     }
 
     protected function isNewRecord(): bool
     {
-        if ($this->isRecalculateSlug()) {
-            $recordUid = GeneralUtility::_GP('recordId');
-
-            if (!MathUtility::canBeInterpretedAsInteger($recordUid)) {
-                return true;
-            }
-        } else {
-            $data = GeneralUtility::_GP('data');
-            if (is_array($data) && key($data) === StudyCourse::TABLE) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->isRecalculateSlug() &&
+            !MathUtility::canBeInterpretedAsInteger($this->getRequest()->getParsedBody()['recordId']);
     }
 
     protected function getStudyCourseRecordIdentifier(): int
     {
-        if (!empty($this->configuration['record']['uid'])) {
-            $identifier = $this->configuration['record']['uid'];
-        } elseif ((int)GeneralUtility::_GP('recordId') > 0) {
-            $identifier = (int)GeneralUtility::_GP('recordId');
-        } else {
+        $identifier = $this->getRequest()->getParsedBody()['recordId'];
+        if (!MathUtility::canBeInterpretedAsInteger($identifier)) {
             throw new LogicException('No record identifier given', 1585056768);
         }
-        return $identifier;
+
+        return (int)$identifier;
     }
 
     protected function isRecalculateSlug(): bool
     {
-        return GeneralUtility::_GP('route') === '/ajax/record/slug/suggest';
+        return $this->getRequest()->getAttribute('route')->getPath() === '/ajax/record/slug/suggest';
+    }
+
+    private function getRequest(): ServerRequestInterface
+    {
+        return $GLOBALS['TYPO3_REQUEST'];
     }
 }
