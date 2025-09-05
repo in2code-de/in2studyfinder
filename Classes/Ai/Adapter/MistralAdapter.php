@@ -17,9 +17,6 @@ class MistralAdapter implements AIAdapterInterface
 
     private string $embeddingApiUrl;
 
-    /**
-     * @throws MissingApiKeyException
-     */
     public function __construct(
         iterable $tools,
         RequestFactory $requestFactory,
