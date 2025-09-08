@@ -168,6 +168,9 @@
 			<trans-unit id="chatbot.button.send">
 				<source>Send</source>
 			</trans-unit>
+			<trans-unit id="chatbot.button.clear">
+				<source>Clear History</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
