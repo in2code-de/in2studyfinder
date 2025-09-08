@@ -20,7 +20,7 @@ $pluginName = 'in2studyfinder_chatbot';
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
     '*',
-    'FILE:EXT:in2studyfinder/Configuration/FlexForms/FlexformStudyfinderChatbot.xml',
+    'FILE:EXT:in2studyfinder/Configuration/FlexForm/Plugin/Chatbot.xml',
     $pluginName
 );
 

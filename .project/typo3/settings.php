@@ -47,9 +47,11 @@ return [
             'offlineMode' => '0',
         ],
         'in2studyfinder' => [
+            'detailPid' => '5',
             'enableCategories' => '0',
             'enableGlobalData' => '0',
             'enablePersistentFilter' => '0',
+            'mistralApiKey' => '',
         ],
         'indexed_search' => [
             'catdoc' => '/usr/bin/',
