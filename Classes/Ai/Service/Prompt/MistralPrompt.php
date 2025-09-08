@@ -19,11 +19,11 @@ class MistralPrompt implements PromptInterface
             return (string)$pluginSettings['prompt']['default']['value'];
         }
 
-        if (isset($pluginSettings['prompt'][$siteLanguage->getTwoLetterIsoCode()]) === false) {
+        if (isset($pluginSettings['prompt'][$siteLanguage->getLocale()->getLanguageCode()]) === false) {
             return (string)$pluginSettings['prompt']['default']['value'];
         }
 
-        return (string)$pluginSettings['prompt'][$siteLanguage->getTwoLetterIsoCode()]['value'];
+        return (string)$pluginSettings['prompt'][$siteLanguage->getLocale()->getLanguageCode()]['value'];
     }
 
     /**
