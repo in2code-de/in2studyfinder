@@ -42,8 +42,7 @@
                             LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_db.xlf:chatbot.plugin.settings.topNResults
                         </label>
                         <config>
-                            <type>input</type>
-                            <eval>int</eval>
+                            <type>number</type>
                             <default>3</default>
                             <range>
                                 <lower>1</lower>
