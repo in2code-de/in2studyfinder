@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo 'run PHP Code Beautifier and Fixer:'
+ ./.build/vendor/bin/phpcbf

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo 'run PHP Code Sniffer:'
+ ./.build/vendor/bin/phpcs
+
+echo 'run PHP Mess Detector:'
+./.build/vendor/bin/phpmd ./Classes/ ansi .phpmd.xml

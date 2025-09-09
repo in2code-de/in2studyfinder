@@ -218,6 +218,10 @@
 				<source>Send</source>
 				<target>Senden</target>
 			</trans-unit>
+			<trans-unit id="chatbot.button.clear">
+				<source>Clear History</source>
+				<target>Verlauf löschen</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

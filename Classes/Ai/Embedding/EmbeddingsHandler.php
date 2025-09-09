@@ -28,21 +28,24 @@ class EmbeddingsHandler
     {
         $embeddings = [];
         foreach ($records as $record) {
-            $embeddings[$record['uid']] = $this->fetchEmbedding(
+            $embedding = $this->fetchEmbedding(
                 $record,
-                EmbeddingsConfiguration::getAllowedFields($tableName)
+                $this->getAllowedFields($tableName)
             );
+            if ($embedding !== null) {
+                $embeddings[$record['uid']] = $embedding;
+            }
         }
 
-        $this->embeddingRepository->save(array_filter($embeddings), $tableName);
+        $this->embeddingRepository->save($embeddings, $tableName);
     }
 
-    public function add(array $record, string $tableName)
+    public function add(array $record, string $tableName): void
     {
         $embeddings = $this->embeddingRepository->get($tableName);
         $embeddings[$record['uid']] = $this->fetchEmbedding(
             $record,
-            EmbeddingsConfiguration::getAllowedFields($tableName)
+            $this->getAllowedFields($tableName)
         );
         $this->embeddingRepository->save(array_filter($embeddings), $tableName);
     }
@@ -52,7 +55,7 @@ class EmbeddingsHandler
         $embeddings = $this->embeddingRepository->get($tableName);
         $embeddings[$record['uid']] = $this->fetchEmbedding(
             $record,
-            EmbeddingsConfiguration::getAllowedFields($tableName)
+            $this->getAllowedFields($tableName)
         );
         $this->embeddingRepository->save($embeddings, $tableName);
     }
@@ -91,5 +94,10 @@ class EmbeddingsHandler
             $texts[] = $record[$fieldName] ?? '';
         }
         return $texts;
+    }
+
+    protected function getAllowedFields(string $tableName): array
+    {
+        return EmbeddingsConfiguration::getAllowedFields($tableName);
     }
 }

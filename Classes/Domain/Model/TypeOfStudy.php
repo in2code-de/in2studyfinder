@@ -6,7 +6,7 @@ namespace In2code\In2studyfinder\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
-class TypeOfStudy extends AbstractEntity implements TypeOfStudyInterface
+class TypeOfStudy extends AbstractEntity
 {
     public const TABLE = 'tx_in2studyfinder_domain_model_typeofstudy';
 

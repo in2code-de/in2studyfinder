@@ -23,7 +23,7 @@ class ConfigurationService
     {
         $pid = (int)$this->getExtensionConfiguration('detailPid');
 
-        if ($pid === 0) {
+        if ($pid <= 0) {
             throw new Exception(
                 'Detail PID not found. Please configure it in the extension settings.',
                 1750159320

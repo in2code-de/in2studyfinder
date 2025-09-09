@@ -35,11 +35,11 @@ class CosineSimilarityService
     {
         $embeddings = $this->embeddingRepository->get($tableName);
 
-        // Check if $searchVectors is a single vector or multiple vectors
-        // If the first element is a number, it's a single vector
-        $isMultipleVectors = !empty($searchVectors) && !is_numeric(reset($searchVectors));
+        if (empty($searchVectors)) {
+            return [];
+        }
 
-        // Convert single vector to array of vectors for consistent processing
+        $isMultipleVectors = !is_numeric(reset($searchVectors));
         $vectorsArray = $isMultipleVectors ? $searchVectors : [$searchVectors];
 
         foreach ($embeddings as $index => $embedding) {
@@ -83,7 +83,14 @@ class CosineSimilarityService
             $normB += pow($vec2[$index], 2);
         }
 
-        return $dot / (sqrt($normA) * sqrt($normB));
+        $magnitude = sqrt($normA) * sqrt($normB);
+
+        // Handle division by zero when both vectors are zero vectors
+        if ($magnitude == 0) {
+            return 0.0;
+        }
+
+        return $dot / $magnitude;
     }
 
     private function sortBySimilarity(array $embeddings): array

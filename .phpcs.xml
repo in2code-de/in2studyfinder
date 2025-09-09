@@ -3,18 +3,12 @@
          name="PHPCS ruleset"
          xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd"
 >
-  <description>Test Classes and Tests. Config optimized for local CLO and CI/CD.</description>
-
-  <rule ref="PHPCompatibility"/>
-  <rule ref="PSR12"/>
-
-  <file>Classes</file>
-
-  <config name="testVersion" value="8.1-"/>
-
-  <arg name="extensions" value="php" />
-  <arg name="basepath" value="."/>
-  <arg name="colors"/>
-  <arg name="parallel" value="75"/>
-  <arg value="nps"/>
+    <description>Test Classes and Tests. Config optimized for local CLO and CI/CD.</description>
+    <rule ref="PSR12"/>
+    <file>Classes</file>
+    <arg name="extensions" value="php" />
+    <arg name="basepath" value="."/>
+    <arg name="colors"/>
+    <arg name="parallel" value="75"/>
+    <arg value="nps"/>
 </ruleset>

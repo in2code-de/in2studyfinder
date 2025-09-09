@@ -1,0 +1,9 @@
+mod.web_layout {
+  tt_content {
+    preview {
+      in2studyfinder_filter = EXT:in2studyfinder/Resources/Private/Templates/Backend/Preview/Filter.html
+      in2studyfinder_detail = EXT:in2studyfinder/Resources/Private/Templates/Backend/Preview/Detail.html
+      in2studyfinder_fastsearch = EXT:in2studyfinder/Resources/Private/Templates/Backend/Preview/FastSearch.html
+    }
+  }
+}

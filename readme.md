@@ -85,34 +85,33 @@ Version 8.x - 10.x
 * TYPO3 11.5
 * PHP 7.4 - 8.0
 
-Version 11.x and above
+Version 11.x - 12.x
 
-* TYPO3 12.4 and above
+* TYPO3 12.4
 * PHP 8.1 and above
 
+Version 13.x
+
+* TYPO3 13.4 and above
+* PHP 8.2 and above
 
 ## Events
 
-ManipulateCsvPropertyBeforeExport: this event allows the manipulation of values before they are exported to the CSV
+| event name                                | description                                                           |
+|-------------------------------------------|-----------------------------------------------------------------------|
+| ModifyDetailActionFluidVariablesEvent     | main event for fluid variable manipulation for the detail action      |
+| ModifyFastSearchActionFluidVariablesEvent | main event for fluid variable manipulation for the fast search action |
+| ModifyFilterActionFluidVariablesEvent     | main event for fluid variable manipulation for the filter action      |
 
-## Contribution
+## Migration
 
-Contributions are always welcome.
+* [Migrations from version 8 to 9](./Documentation/Migration/8to9.md)
+* [Migrations from version 9 to 10](./Documentation/Migration/9to10.md)
+* [Migrations from version 10 to 11](./Documentation/Migration/10to11.md)
+* [Migrations from version 11 to 12](./Documentation/Migration/11to12.md)
+* [Migrations from version 12 to 13](./Documentation/Migration/12to13.md)
 
-In order to ease the contributions, we provide a ddev setup.
-
-1) install ddev
-2) fork and clone project
-3) `cd my/project`
-4) `ddev start`
-5) `ddev initialize`
-6) open https://studyfinder.ddev.site/typo3/
-7) use `admin` and `password` for backend login
-
-Happy coding
-
-### Build Css and JavaScript
-
+## External used libraries
 Requirements: node.js >= 20, npm, nvm
 
 ```
@@ -237,10 +236,16 @@ ddev ssh
 * Q2: I need to import persons from an external service, but how?
 * A2: Please ask in2code for professional service or individual importers
 
+> :warning: **TYPO3 14 compatibility**\
+> See [EAP page (DE)](https://www.in2code.de/agentur/typo3-extensions/early-access-programm/)
+> or [EAP page (EN)](https://www.in2code.de/en/agency/typo3-extensions/early-access-program/) for more information how to
+> get access to a TYPO3 14 version
+
 ## Changelog
 
 | Version | Date       | State        | Description                                                                                                                                                                                                                                   |
 |---------|------------|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 13.0.0  | 2025-09-04 | [!!!]FEATURE | Add TYPO3 13 support, various code cleanups: [Commits](https://github.com/in2code-de/in2studyfinder/commits/13.0.0)                                                                                                                           |
 | 12.1.1  | 2025-08-25 | TASK         | Bump nodejs build dependencies. The nodejs modules used to build the JavaScript and CSS have been updated.                                                                                                                                    |
 | 12.1.0  | 2025-07-07 | FEATURE      | Allow backend sorting of filter items, set correct meta tag property type for keywords. For further information see: [Commits](https://github.com/in2code-de/in2studyfinder/commits/12.1.0)                                                   |
 | 12.0.2  | 2025-05-23 | BUGFIX       | Add missing release preparations                                                                                                                                                                                                              |
@@ -301,3 +306,148 @@ ddev ssh
 | 2.0.2   | 2017-06-12 | BUGFIX       | Fix number of requests on quickjump, change loading image with SVG                                                                                                                                                                            |
 | 2.0.1   | 2017-06-02 | BUGFIX       | Add a readme and license file                                                                                                                                                                                                                 |
 | 2.0.0   | 2017-05-31 | Task         | Initial free release on Github                                                                                                                                                                                                                |
+
+## Contribution
+
+Contributions are always welcome.
+
+*Pull requests** are welcome in general! Please note these requirements:
+
+* Unit Tests must still work
+* Behaviour Tests must still work
+* Describe how to test your pull request
+* TYPO3 coding guidelines must be respected
+
+- **Bugfixes**: Please describe what kind of bug your fix solve and give us feedback how to reproduce the issue. We're
+  going
+  to accept only bugfixes that can be reproduced.
+- **Features**: Not every feature is relevant for the bulk of the users. In addition: We don't want to make the
+  extension
+  even more complicated in usability for an edge case feature. Please discuss a new feature before.
+
+In order to ease the contributions, we provide a ddev setup.
+
+1) install ddev
+2) fork and clone project
+3) `cd my/project`
+4) `ddev start`
+5) `ddev initialize`
+6) open https://studyfinder.ddev.site/typo3/
+7) use `admin` and `password` for backend login
+
+Happy coding
+
+## Branches, TYPO3 Support, PHP Support
+
+| Version | TYPO3      | PHP       | Support/Development                                               | Branch   |
+|---------|------------|-----------|-------------------------------------------------------------------|----------|
+| 13      | 13 LTS     | 8.2 - 8.4 | Features, Bugfixes, Security Updates                              | master   |
+| 12, 11  | 12 LTS     | 8.1       | Bugfixes, Security Updates                                        | typo3-12 |
+| 9, 10   | 11 ELTS    | 7.4 - 8.0 | Security Updates - if you want feature backports ask for an offer | typo3-11 |
+| 8       | 11 ELTS    | 7.4       | Out of support                                                    | typo3-11 |
+| 7       | 9, 10 ELTS | 7.2       | Security Updates - if you want feature backports ask for an offer | typo3-09 |
+| 6.x     | 8, 9 ELTS  | 7.2       | Out of support                                                    | master   |
+| 5.x     | 7, 8       | 7.2       | Out of support                                                    | master   |
+| 4.x     | 6, 7, 8    | 7.0       | Out of support                                                    | master   |
+| 3.x     | 6, 7, 8    | 7.0       | Out of support                                                    | master   |
+
+### Build Css and JavaScript
+
+> DDEV:
+
+run command ```ddev build```
+
+> Native:
+
+Requirements: node.js, npm, nvm
+
+* cd Resources/Private && nvm use
+* npm install
+* npm run build:frontend
+
+### Javascript Events
+
+it is possible to execute your own javascript code on specific events.
+
+**Example:**
+
+```typo3_typoscript
+page.includeJSFooter.studyfinderExtenal = EXT:YOUREXTENSION/Resources/Public/JavaScript/extend.js
+```
+
+extend.js:
+
+```javascript
+if (window.in2studyfinder !== null) {
+    let in2studyfinder = window.in2studyfinder;
+    let instance = in2studyfinder.getInstance(0);
+
+    instance.pagination.onClick = function () {
+        console.log('onPaginationClick');
+    }
+
+    instance.filter.onClick = function () {
+        console.log('onFilterClick');
+    };
+
+    instance.onUpdate = function () {
+        console.log('onInstanceUpdate');
+    };
+}
+```
+
+#### API:
+
+**Studyfinder:**
+
+| function    | description                                                    |
+|-------------|----------------------------------------------------------------|
+| getInstance | returns the requested instance. Parameter instanceId (integer) |
+
+**Instance:**
+
+| event name | description                         |
+|------------|-------------------------------------|
+| onUpdate   | is executed after every fetch call. |
+
+**Filter:**
+
+| event name | description                               |
+|------------|-------------------------------------------|
+| onClick    | executed after the pagination link click. |
+
+**Quicksearch:**
+
+nothing yet.
+
+**Pagination:**
+
+| event name | description                               |
+|------------|-------------------------------------------|
+| onClick    | executed after the pagination link click. |
+
+### Testing
+
+#### Execute extension tests:
+
+| ddev command         | description                    |
+|----------------------|--------------------------------|
+| ddev test-all        | executes all extension tests   |
+| ddev test-unit       | executes only unit tests       |
+| ddev test-functional | executes only functional tests |
+
+### Code quality tools
+
+we use phpmd and phpcs for code quality checks.
+The quality checks will be executed automatic before a commit with a pre-commit hook.
+
+#### Automatic fixes with phpcbf
+
+Some violations can be fixed automatic with the phpcs fixer (phpcbf).
+For automatic fixes execute `ddev qa-php-fixer`
+
+#### Execute QA Tests:
+
+| ddev command | description                            |
+|--------------|----------------------------------------|
+| ddev qa-php  | executes phpcs and phpmd quality tools |

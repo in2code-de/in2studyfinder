@@ -1,0 +1,4 @@
+name: in2code/in2studyfinderDemoStyles
+label: In2studyfinder Demo Styles Site Set
+dependencies:
+  - in2code/in2studyfinder

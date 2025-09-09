@@ -1,1 +1,0 @@
-define([],function(){var e={toggleClassForElement:function(e,n){e.classList.contains(n)?e.classList.remove(n):e.classList.add(n)},hideElement:function(e){e.style.display="none"},showElement:function(e){e.style.display="inline-block"},showElementAsBlock:function(e){e.style.display="block"},removeStyles:function(e){e.removeAttribute("style")}};return e});

@@ -6,7 +6,7 @@ namespace In2code\In2studyfinder\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
-class CourseLanguage extends AbstractEntity implements CourseLanguageInterface
+class CourseLanguage extends AbstractEntity
 {
     public const TABLE = 'tx_in2studyfinder_domain_model_courselanguage';
 

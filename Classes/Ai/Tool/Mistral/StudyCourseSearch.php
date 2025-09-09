@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace In2code\In2studyfinder\Ai\Tool\Mistral;
 
-use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\Driver\Exception;
+use Doctrine\DBAL\Exception;
 use In2code\In2studyfinder\Ai\Adapter\MistralAdapter;
 use In2code\In2studyfinder\Ai\Embedding\Service\CosineSimilarityService;
 use In2code\In2studyfinder\Exception\FileNotFoundException;
@@ -64,12 +63,10 @@ class StudyCourseSearch implements ToolInterface
     }
 
     /**
-     * @throws DBALException
-     * @throws Exception
-     * @throws MissingArgumentException
      * @throws FileNotFoundException
      * @throws InvalidVectorException
-     * @throws \Exception
+     * @throws MissingArgumentException
+     * @throws \Doctrine\DBAL\Exception
      */
     public function execute(array $arguments, array $pluginSettings)
     {
@@ -80,22 +77,8 @@ class StudyCourseSearch implements ToolInterface
         $searchVector = $this->getSearchTermsAsVectors($searchTerms);
 
         $amount = (int)($pluginSettings['topNResults'] ?? 3);
-        $studyCourses = $this->cosineSimilarityService->getTopNResults($searchVector, StudyCourse::TABLE, $amount);
-
-        // Query database for study course details
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable(StudyCourse::TABLE);
-
-        $studyCourses = $queryBuilder->select('uid', 'title', 'description', 'sys_language_uid')
-            ->from(StudyCourse::TABLE)
-            ->where(
-                $queryBuilder->expr()->in(
-                    'uid',
-                    array_column($studyCourses, 'uid')
-                )
-            )
-            ->executeQuery()
-            ->fetchAllAssociative();
+        $studyCourseVectors = $this->cosineSimilarityService->getTopNResults($searchVector, StudyCourse::TABLE, $amount);
+        $studyCourses = $this->getStudyCourses($studyCourseVectors);
 
         // Add URLs to study courses
         foreach ($studyCourses as $index => $studyCourse) {
@@ -107,6 +90,30 @@ class StudyCourseSearch implements ToolInterface
         }
 
         return $studyCourses;
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function getStudyCourses(array $studyCourseVectors): array
+    {
+        if ($studyCourseVectors === []) {
+            return [];
+        }
+
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable(StudyCourse::TABLE);
+
+        return $queryBuilder->select('uid', 'title', 'description', 'sys_language_uid')
+            ->from(StudyCourse::TABLE)
+            ->where(
+                $queryBuilder->expr()->in(
+                    'uid',
+                    array_column($studyCourseVectors, 'uid')
+                )
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
     }
 
     /**

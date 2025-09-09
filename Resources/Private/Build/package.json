@@ -1,0 +1,25 @@
+{
+  "name": "in2studyfinder",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "build:frontend": "webpack"
+  },
+  "author": "in2code.de",
+  "license": "GPL2",
+  "devDependencies": {
+    "@babel/core": "^7.28.0",
+    "@babel/preset-env": "^7.28.0",
+    "@babel/register": "^7.27.1",
+    "babel-loader": "^10.0.0",
+    "file-loader": "^6.2.0",
+    "sass": "^1.89",
+    "sass-loader": "^16.0.5",
+    "webpack": "^5.101.0",
+    "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "tom-select": "^2.4"
+  }
+}
