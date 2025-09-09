@@ -1,0 +1,6 @@
+"tx_in2studyfinder_domain_model_studycourse"
+,"uid","title","description","sys_language_uid","hidden","deleted"
+,1,"Computer Science","Bachelor of Science in Computer Science",0,0,0
+,2,"Mechanical Engineering","Master of Engineering in Mechanical Engineering",0,0,0
+,3,"Physics","Bachelor of Science in Physics",0,0,0
+,4,"Informatik","Bachelor of Science in Informatik",1,0,0

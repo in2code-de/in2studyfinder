@@ -59,6 +59,7 @@ class ChatService
 
     protected function getRequestBody(ServerRequestInterface $request): array
     {
-        return json_decode($request->getBody()->getContents(), true);
+        $decoded = json_decode($request->getBody()->getContents(), true);
+        return is_array($decoded) ? $decoded : [];
     }
 }
