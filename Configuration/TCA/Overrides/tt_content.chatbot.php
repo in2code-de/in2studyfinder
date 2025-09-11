@@ -7,7 +7,9 @@ $pluginName = 'in2studyfinder_chatbot';
     'in2studyfinder',
     'Chatbot',
     $ll . 'chatbot.plugin.title',
-    'EXT:in2studyfinder/Resources/Public/Icons/chatbot.svg'
+    'in2studyfinder-plugin-icon',
+        'Studyfinder',
+        $ll . 'chatbot.plugin.description'
 );
 
 
