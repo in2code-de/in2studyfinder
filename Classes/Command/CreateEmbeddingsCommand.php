@@ -64,7 +64,7 @@ class CreateEmbeddingsCommand extends Command
             return $queryBuilder
                 ->select('uid', 'title', 'teaser')
                 ->from(StudyCourse::TABLE)
-                ->execute()
+                ->executeQuery()
                 ->fetchAllAssociative();
         } catch (Throwable $throwable) {
             $this->logger->error('Error fetching studycourses: ' . $throwable);
