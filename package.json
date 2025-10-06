@@ -1,0 +1,14 @@
+{
+  "devDependencies": {
+    "pa11y-ci": "^4.0.1"
+  },
+  "scripts": {
+    "pa11y:all": "pa11y-ci --reporter json -c .pa11yci > reports/pa11y-summary.json",
+    "pa11y:list": "pa11y-ci --reporter json -c .pa11y.defaults.json https://in2studyfinder.ddev.site/listen-ansicht > reports/listenansicht.json",
+    "pa11y:detail": "pa11y-ci --reporter json -c .pa11y.defaults.json \"https://in2studyfinder.ddev.site/detail-ansicht?tx_in2studyfinder_detail%5Baction%5D=detail&tx_in2studyfinder_detail%5Bcontroller%5D=StudyCourse&tx_in2studyfinder_detail%5BstudyCourse%5D=66&cHash=7cf0de4736ca4c051482fa9b0a9610f7\" > reports/detailansicht.json",
+    "pa11y:academic": "pa11y-ci --reporter json -c .pa11y.defaults.json https://in2studyfinder.ddev.site/filter-academic-degree > reports/filter-academic.json",
+    "pa11y:faculty": "pa11y-ci --reporter json -c .pa11y.defaults.json https://in2studyfinder.ddev.site/listen-ansicht-1 > reports/filter-faculty.json",
+    "pa11y:noresults": "pa11y-ci --reporter json -c .pa11y.defaults.json \"https://in2studyfinder.ddev.site/listen-ansicht#courseLanguage=12&faculty=4\" > reports/noresults.json",
+    "pa11y:search": "pa11y-ci --reporter json -c .pa11y.defaults.json https://in2studyfinder.ddev.site/fast-search > reports/search.json"
+  }
+}
