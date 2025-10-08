@@ -451,3 +451,98 @@ For automatic fixes execute `ddev qa-php-fixer`
 | ddev command | description                            |
 |--------------|----------------------------------------|
 | ddev qa-php  | executes phpcs and phpmd quality tools |
+
+## Accessibility Testing with Pa11y and HTML-Validate
+
+To ensure compliance with accessibility standards (WCAG 2.2 / BITV 2.0), this project integrates automated accessibility testing using Pa11y CLI and HTML-Validate.
+Both tools can be run via npm scripts and generate structured JSON reports in the /a11y-reports/ directory.
+
+### Report Directory Structure
+a11y-reports/
+├── pa11y/                  # Individual reports for each tested view
+│   ├── pa11y-summary.json
+│   ├── your-view.json
+│   └── ...
+├── htmlvalidate/           # Static HTML validation reports
+│   └── htmlvalidate-report.json
+└── full-a11y-reports/      # Combined merged report (Pa11y + HTML-Validate)
+    └── full-a11y-report.json
+
+### Installation
+
+Run npm installation in the project root:
+
+`npm install`
+
+
+The required development dependencies are defined in the `package.json`:
+
+`
+"devDependencies": {
+"pa11y-ci": "^4.0.1",
+"html-validate": "^9.7.1"
+}
+`
+
+### Running the Tests
+
+Before running the tests, define the URLs and file paths that the tools should check.
+Then run:
+
+`npm run test:a11y`
+
+
+This command performs a complete accessibility check (Pa11y + HTML-Validate) and produces a merged report located at
+`a11y-reports/full-a11y-reports/full-a11y-report.json.
+
+### Pa11y Setup
+
+Pa11y runs using the configuration defined in .pa11yci.
+You can specify the URLs of the views to be tested with the npm script `pa11y:all`.
+
+For testing individual views, update the URLs in the npm scripts within `package.json`.
+Custom settings for these single-view tests can be found and modified in `.pa11y.defaults.json`.
+
+Pa11y provides extensive configuration options — see the official documentation for details:
+[www.github.com/pa11y/pa11y-ci](https://github.com/pa11y/pa11y-ci)
+
+**Default settings for this project:**
+
+`{
+"runners": ["axe"],
+"reporter": "json",
+"timeout": 30000,
+"ignore": ["color-contrast"]
+}`
+
+### HTML-Validate Testing Setup
+
+The HTML-Validate command and file paths are defined in `package.json`.
+By default, the validation checks all Fluid template files within the following path:
+
+`Resources/Private/{Layouts,Partials,Templates}/**/*.html`
+
+
+**Default settings for this project:**
+in `.htmlvalidate.json`
+`
+{
+"extends": ["html-validate:a11y"],
+"rules": {
+"heading-level": "error",
+"input-missing-label": "error",
+"long-title": "warn"
+}
+}`
+
+
+The configuration extends the built-in a11y preset, which already includes most accessibility-related rules.
+Additional custom rules were added to ensure all WCAG-relevant issues are covered.
+
+For more details, see:
+
+[HTML-Validate Rule Presets](https://html-validate.org/rules/presets.html?utm_source=chatgpt.com)
+
+[HTML-Validate Source Repository](https://gitlab.com/html-validate/html-validate/-/tree/master/src/config/presets)
+
+
