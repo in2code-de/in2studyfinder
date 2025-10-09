@@ -108,6 +108,9 @@
 			<trans-unit id="filter">
 				<source>Filter</source>
 			</trans-unit>
+			<trans-unit id="showFilter">
+				<source>Show Filter Options</source>
+			</trans-unit>
 			<trans-unit id="filter.reset">
 				<source>reset Filter</source>
 			</trans-unit>
@@ -161,6 +164,10 @@
 			</trans-unit>
 			<trans-unit id="pleaseSelectCourse">
 				<source>Select degree program or enter keyword</source>
+			</trans-unit>
+			<trans-unit id="studyCourseSelect">
+				<source>Select degree program: </source>
+				<target>Studiengang auswählen:</target>
 			</trans-unit>
 		</body>
 	</file>

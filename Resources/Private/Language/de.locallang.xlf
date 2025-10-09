@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" product-name="in2studyfinder">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" product-name="in2studyfinder">
 		<header/>
 		<body>
 			<trans-unit id="studycourse">
@@ -138,6 +138,10 @@
 			<trans-unit id="filter">
 				<source>Filter</source>
 			</trans-unit>
+			<trans-unit id="showFilter">
+				<source>Show Filter Options</source>
+				<target>Filterbereich anzeigen</target>
+			</trans-unit>
 			<trans-unit id="filter.reset">
 				<source>reset Filter</source>
 				<target>Filter zurücksetzen</target>
@@ -209,6 +213,10 @@
 			<trans-unit id="pleaseSelectCourse">
 				<source>Select degree program or enter keyword</source>
 				<target>Studiengang wählen oder Suchbegriff eingeben</target>
+			</trans-unit>
+			<trans-unit id="studyCourseSelect">
+				<source>Select degree program: </source>
+				<target>Studiengang auswählen:</target>
 			</trans-unit>
 		</body>
 	</file>

@@ -3,11 +3,13 @@
 				name="in2studyfinder-filter">
 
 	<button type="button"
+					aria-label="{f:translate(key:'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:showFilter')}"
 					class="c-in2studyfinder-filter__button c-in2studyfinder-filter__button--show js-in2studyfinder-filter-button-show">
 		<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:filter"/>
 	</button>
 
 	<button type="button"
+					aria-label="{f:translate(key:'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:filter.reset')}"
 					class="c-in2studyfinder-filter__button c-in2studyfinder-filter__button--reset u-in2studyfinder-hide js-in2studyfinder-filter-button-reset">
 		<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:filter.reset"/>
 	</button>
@@ -35,8 +37,8 @@
 	</div>
 
 	<f:comment>
-		Required for the ajax functionality!
-		DO NOT REMOVE!
+		<!--Required for the ajax functionality!
+		DO NOT REMOVE! -->
 	</f:comment>
 	<f:form.hidden name="pluginInformation[pluginUid]" value="{data.uid}"/>
 	<f:form.hidden name="pluginInformation[pid]" value="{data.pid}"/>
