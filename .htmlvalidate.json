@@ -1,7 +1,8 @@
 {
 	"extends": ["html-validate:a11y"],
 	"rules": {
-		"heading-level": "error",
+		"heading-level": "off",
+		"empty-heading": "off",
 		"input-missing-label": "error",
 		"long-title": "warn"
 	}

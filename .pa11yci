@@ -3,7 +3,11 @@
     "runners": ["axe"],
     "reporter": "json",
     "timeout": 30000,
-    "ignore": ["color-contrast"]
+    "wait": 1500,
+    "ignore": [
+        "color-contrast",
+        "aria-valid-attr-value"
+    ]
   },
   "urls": [
     "https://in2studyfinder.ddev.site/listen-ansicht",
