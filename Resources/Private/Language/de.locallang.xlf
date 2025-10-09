@@ -218,6 +218,9 @@
 				<source>Select degree program: </source>
 				<target>Studiengang auswählen:</target>
 			</trans-unit>
+			<trans-unit id="openPage">
+				<source>Open Page</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
