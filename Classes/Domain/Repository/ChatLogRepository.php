@@ -22,6 +22,27 @@ class ChatLogRepository
             ->executeStatement();
     }
 
+    public function findByUid(int $uid): array|null
+    {
+        try {
+            $result = $this->queryBuilder->select('*')
+                ->from('tx_in2studyfinder_chat_log')
+                ->where(
+                    $this->queryBuilder->expr()->eq(
+                        'uid',
+                        $this->queryBuilder->createNamedParameter($uid)
+                    )
+                )
+                ->executeQuery()
+                ->fetchAssociative();
+        } catch (Exception $e) {
+            $this->logger->error('Error fetching chat log: ' . $e->getMessage());
+            return null;
+        }
+
+        return is_array($result) ? $result : null;
+    }
+
     public function findBySessionIdentifier(string $sessionIdentifier): array|null
     {
         try {
@@ -41,6 +62,31 @@ class ChatLogRepository
         }
 
         return is_array($result) ? $result : null;
+    }
+
+    public function findOnPage(int $pageUid): array|null
+    {
+        try {
+            return $this->queryBuilder->select('log.*')
+                ->from('tx_in2studyfinder_chat_log', 'log')
+                ->innerJoin(
+                    'log',
+                    'tt_content',
+                    'c',
+                    $this->queryBuilder->expr()->eq('c.uid', 'log.plugin_id')
+                )
+                ->where(
+                    $this->queryBuilder->expr()->eq(
+                        'c.pid',
+                        $this->queryBuilder->createNamedParameter($pageUid)
+                    )
+                )
+                ->executeQuery()
+                ->fetchAllAssociative();
+        } catch (Exception $e) {
+            $this->logger->error('Error fetching chat log: ' . $e->getMessage());
+            return [];
+        }
     }
 
     public function update(array $logEntry): void

@@ -8,6 +8,7 @@ use In2code\In2studyfinder\Domain\Repository\ChatLogRepository;
 use In2code\In2studyfinder\Service\FeSessionService;
 use LogicException;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 class HistoryLogService
@@ -39,6 +40,33 @@ class HistoryLogService
         $this->chatLogRepository->update($logEntry);
     }
 
+    public function findOnPageSortedByPlugins(int $pageId): array
+    {
+        $groupedLogs = [];
+        $chatLogs = $this->chatLogRepository->findOnPage($pageId);
+
+        foreach ($chatLogs as $chatLog) {
+            if (isset($chatLog['plugin_id']) === false) {
+                continue;
+            }
+
+            if (isset($groupedLogs[$chatLog['plugin_id']]) === false) {
+                $plugin = BackendUtility::getRecord('tt_content', $chatLog['plugin_id']);
+                $groupedLogs[$chatLog['plugin_id']] = $plugin;
+            }
+
+            $groupedLogs[$chatLog['plugin_id']]['logs'][] = $this->decodeMessages($chatLog);
+        }
+
+        return $groupedLogs;
+    }
+
+    public function findByUid(int $logId): ?array
+    {
+        $chatLog = $this->chatLogRepository->findByUid($logId);
+        return $chatLog === null ? null : $this->decodeMessages($chatLog);
+    }
+
     protected function getPluginId(ServerRequestInterface $request): int
     {
         /** @var ContentObjectRenderer $contentObject */
@@ -50,5 +78,12 @@ class HistoryLogService
         }
 
         return (int)$pluginId;
+    }
+
+    protected function decodeMessages(array $logEntry): array
+    {
+        $messages = json_decode($logEntry['messages'] ?? '[]', true);
+        $logEntry['messages'] = $messages;
+        return $logEntry;
     }
 }

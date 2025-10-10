@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" product-name="in2studyfinder">
+        <header/>
+        <body>
+            <trans-unit id="mlang_tabs_tab">
+                <target>Studiengangsfinder Chatbot</target>
+            </trans-unit>
+            <trans-unit id="mlang_labels_tabdescr">
+                <target>Protokolle des In2studyfinder-Chatbots anzeigen</target>
+            </trans-unit>
+            <trans-unit id="list.title.with_page">
+                <target>Chat-Protokolle für Seite: %s (ID: %s)</target>
+            </trans-unit>
+            <trans-unit id="list.title.no_page">
+                <target>Chat-Protokolle - Keine Seite ausgewählt</target>
+            </trans-unit>
+            <trans-unit id="list.info.title">
+                <target>Information</target>
+            </trans-unit>
+            <trans-unit id="list.info.select_page">
+                <target>Bitte wählen Sie eine Seite aus dem Seitenbaum aus, um Chat-Protokolle für diese spezifische Seite anzuzeigen.</target>
+            </trans-unit>
+            <trans-unit id="list.table.session_id">
+                <target>Sitzungs-ID</target>
+            </trans-unit>
+            <trans-unit id="list.table.created">
+                <target>Erstellt</target>
+            </trans-unit>
+			<trans-unit id="list.table.messages">
+				<target>Nachrichten</target>
+			</trans-unit>
+            <trans-unit id="list.table.actions">
+                <target>Aktionen</target>
+            </trans-unit>
+            <trans-unit id="list.action.view_details">
+                <target>Details anzeigen</target>
+            </trans-unit>
+            <trans-unit id="list.no_logs.title">
+                <target>Keine Chat-Protokolle gefunden</target>
+            </trans-unit>
+            <trans-unit id="list.no_logs.message">
+                <target>Für die ausgewählte Seite "%s" wurden keine Chat-Protokolle gefunden.</target>
+            </trans-unit>
+            <trans-unit id="show.title">
+                <target>Chat-Protokoll Details - ID: %s</target>
+            </trans-unit>
+            <trans-unit id="show.back_to_list">
+                <target>Zurück zur Liste</target>
+            </trans-unit>
+            <trans-unit id="show.session_id">
+                <target>Sitzungs-ID:</target>
+            </trans-unit>
+            <trans-unit id="show.created">
+                <target>Erstellt:</target>
+            </trans-unit>
+            <trans-unit id="show.plugin_id">
+                <target>Plugin-ID (Seite):</target>
+            </trans-unit>
+            <trans-unit id="show.total_messages">
+                <target>Nachrichten gesamt:</target>
+            </trans-unit>
+            <trans-unit id="show.chat_messages">
+                <target>Chat-Nachrichten</target>
+            </trans-unit>
+            <trans-unit id="show.user_message">
+                <target>#%s Benutzer</target>
+            </trans-unit>
+            <trans-unit id="show.assistant_response">
+                <target>#%s KI Assistent</target>
+            </trans-unit>
+            <trans-unit id="show.no_messages.title">
+                <target>Keine Nachrichten</target>
+            </trans-unit>
+            <trans-unit id="show.no_messages.description">
+                <target>Dieses Chat-Protokoll enthält keine Nachrichten oder die Nachrichten konnten nicht dekodiert werden.</target>
+            </trans-unit>
+            <trans-unit id="show.not_found.title">
+                <target>Chat-Protokoll nicht gefunden</target>
+            </trans-unit>
+            <trans-unit id="show.not_found.message">
+                <target>Das angeforderte Chat-Protokoll konnte nicht gefunden werden.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
