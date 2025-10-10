@@ -120,6 +120,31 @@ a {
   }
 }
 
+.skip-link {
+    background: $primaryColor;
+    color: $white;
+    display: inline-block;
+    left: 0;
+    opacity: 1;
+    margin: 16px;
+    padding: 0.8rem;
+    position: fixed;
+    text-decoration: underline;
+    top: -100px;
+    transition: top 0.3s ease-in-out;
+}
+
+.skip-link:focus {
+    color: $white;
+    top: 0;
+}
+
+.skip-link[hidden] {
+    display: none;
+}
+
+
+
 /*
 Preformatted text
 

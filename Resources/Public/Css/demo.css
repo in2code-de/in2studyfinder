@@ -1800,6 +1800,29 @@ a:hover {
   text-decoration: underline;
 }
 
+.skip-link {
+  background: #0E5814;
+  color: #ffffff;
+  display: inline-block;
+  left: 0;
+  opacity: 1;
+  margin: 16px;
+  padding: 0.8rem;
+  position: fixed;
+  text-decoration: underline;
+  top: -100px;
+  transition: top 0.3s ease-in-out;
+}
+
+.skip-link:focus {
+  color: #ffffff;
+  top: 0;
+}
+
+.skip-link[hidden] {
+  display: none;
+}
+
 /*
 Preformatted text
 
@@ -1887,7 +1910,7 @@ fieldset {
   border-color: rgba(34, 36, 38, 0.5);
 }
 .c-in2studyfinder-filter__button {
-  background: #4c0;
+  background: #0E5814;
   border: none;
   border-radius: 0;
   color: #ffffff;
@@ -1900,7 +1923,7 @@ fieldset {
   transition: background 0.2s ease;
 }
 .c-in2studyfinder-filter__button:hover {
-  background: #226600;
+  background: black;
 }
 .c-in2studyfinder-filter__sections {
   border-top: 1px solid #ddd;
@@ -1922,7 +1945,7 @@ fieldset {
   width: 100%;
 }
 .c-in2studyfinder-filter__legend:hover:before {
-  background: #4c0;
+  background: #0E5814;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 .c-in2studyfinder-filter__legend:before {
@@ -1953,7 +1976,7 @@ fieldset {
   right: -12px;
 }
 .c-in2studyfinder-filter__legend.opened:before {
-  background: #4c0;
+  background: #0E5814;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 .c-in2studyfinder-filter__legend.opened:after {
@@ -1986,7 +2009,7 @@ fieldset {
   #COMPONENTS-LIST
 \*------------------------------------*/
 .in2studyfinder__button {
-  background: #4c0;
+  background: #0E5814;
   border: none;
   border-radius: 0;
   color: #ffffff;
@@ -1999,7 +2022,7 @@ fieldset {
   transition: background 0.2s ease;
 }
 .in2studyfinder__button:hover {
-  background: #226600;
+  background: black;
   text-decoration: none;
 }
 .in2studyfinder__checkbox {
@@ -2051,7 +2074,7 @@ fieldset {
 }
 .in2studyfinder__checkbox-label:before {
   content: "";
-  color: #4c0;
+  color: #0E5814;
   position: absolute;
   top: 1px;
   left: 0;
@@ -2061,7 +2084,7 @@ fieldset {
   text-align: center;
 }
 .in2studyfinder__checkbox-label:after {
-  background-color: #4c0;
+  background-color: #0E5814;
   top: 4px;
   left: 3px;
   width: 11px;
@@ -2102,7 +2125,7 @@ fieldset {
   font-weight: bold;
 }
 .in2studyfinder__item-title {
-  color: #4c0;
+  color: #0E5814;
   font-size: 14px;
   font-weight: bold;
   margin-bottom: 0;
@@ -2112,10 +2135,10 @@ fieldset {
   margin-top: 0;
 }
 .in2studyfinder__item-link {
-  color: #4c0;
+  color: #0E5814;
 }
 .in2studyfinder__item-link--cta {
-  background: #4c0;
+  background: #0E5814;
   border: none;
   border-radius: 0;
   color: #ffffff;
@@ -2129,7 +2152,7 @@ fieldset {
   display: table;
 }
 .in2studyfinder__item-link--cta:hover {
-  background: #226600;
+  background: black;
   text-decoration: none;
 }
 @media all and (min-width: 768px) {
@@ -2143,7 +2166,7 @@ fieldset {
   display: flex;
   width: 1.5em;
   height: 1.5em;
-  background: #4c0;
+  background: #0E5814;
   border-radius: 50%;
   color: #fff;
   margin: 1rem auto 0;
@@ -2197,7 +2220,7 @@ fieldset {
 }
 .in2studyfinder__content-box-head h3 {
   border-bottom: 1px solid currentColor;
-  color: #4c0;
+  color: #0E5814;
   font-size: 1.2em;
   font-weight: normal;
   letter-spacing: 0.05em;
@@ -2226,13 +2249,13 @@ fieldset {
   margin-right: 15px;
 }
 .in2studyfinder__pagebrowser a:hover {
-  color: #4c0;
+  color: #0E5814;
 }
 .in2studyfinder__pagebrowser-page:last-child {
   margin-right: 0;
 }
 .in2studyfinder__pagebrowser-page.current {
-  color: #4c0;
+  color: #0E5814;
   font-size: 18px;
   font-weight: bold;
 }
