@@ -3,6 +3,7 @@
 	"rules": {
 		"heading-level": "off",
 		"empty-heading": "off",
+		"no-dup-id": "off",
 		"input-missing-label": "error",
 		"long-title": "warn"
 	}
