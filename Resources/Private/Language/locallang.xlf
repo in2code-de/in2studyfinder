@@ -167,11 +167,15 @@
 			</trans-unit>
 			<trans-unit id="studyCourseSelect">
 				<source>Select degree program: </source>
-				<target>Studiengang auswählen:</target>
 			</trans-unit>
 			<trans-unit id="openPage">
 				<source>Open Page</source>
-				<target>Seite öffnen</target>
+			</trans-unit>
+			<trans-unit id="skipToResults">
+				<source>Skip to results</source>
+			</trans-unit>
+			<trans-unit id="skipToContent">
+				<source>Skip to Content</source>
 			</trans-unit>
 		</body>
 	</file>

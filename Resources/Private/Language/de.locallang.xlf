@@ -220,6 +220,15 @@
 			</trans-unit>
 			<trans-unit id="openPage">
 				<source>Open Page</source>
+				<target>Seite öffnen</target>
+			</trans-unit>
+			<trans-unit id="skipToResults">
+				<source>Skip to results</source>
+				<target>Zu den Ergebnissen springen</target>
+			</trans-unit>
+			<trans-unit id="skipToContent">
+				<source>Skip to Content</source>
+				<target>Zum Inhalt springen</target>
 			</trans-unit>
 		</body>
 	</file>

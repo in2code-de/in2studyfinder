@@ -1,21 +1,29 @@
 <f:layout name="Default"/>
 
+
 <f:section name="main">
 	<div class="in2studyfinder__view-list">
+
+			<f:link.page section="results" class="skip-link" additionalAttributes="{hidden: 'hidden'}">
+				<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:skipToResults"/>
+			</f:link.page>
 
 		<f:flashMessages/>
 		<f:render partial="StudyCourse/List/Filter" arguments="{_all}"/>
 
 		<div class="l-content">
-			<f:render partial="StudyCourse/List/QuickSearch" arguments="{_all}"/>
-			<f:if condition="{studyCourses}">
-				<f:then>
-					<f:render partial="StudyCourse/List/StudyCourseList" arguments="{_all}"/>
-				</f:then>
-				<f:else>
-					<f:render partial="StudyCourse/List/NoStudyCourses" arguments="{_all}"/>
-				</f:else>
-			</f:if>
+			<div id="results">
+				<f:render partial="StudyCourse/List/QuickSearch" arguments="{_all}"/>
+				<f:if condition="{studyCourses}">
+					<f:then>
+						<f:render partial="StudyCourse/List/StudyCourseList" arguments="{_all}"/>
+					</f:then>
+					<f:else>
+						<f:render partial="StudyCourse/List/NoStudyCourses" arguments="{_all}"/>
+					</f:else>
+				</f:if>
+			</div>
 		</div>
 	</div>
 </f:section>
+

@@ -258,6 +258,21 @@ class Filter {
     // toggle button Visibility
     this.filterElement.querySelector(this.identifier.showFilterButton).classList.toggle(this.identifier.hideElement.substring(1));
     this.filterElement.querySelector(this.identifier.hideFilterButton).classList.toggle(this.identifier.hideElement.substring(1));
+
+    // add skip filter link
+    const skipToResults = document.querySelector('.skip-link[href="#results"]');
+    if (skipToResults) {
+      //show skip link when filter is open
+      const filterIsOpen = !this.filterElement
+        .querySelector(this.identifier.hideFilterButton)
+        .classList.contains(this.identifier.hideElement.substring(1));
+
+      if (filterIsOpen) {
+        skipToResults.removeAttribute('hidden');
+      } else {
+        skipToResults.setAttribute('hidden', 'hidden');
+      }
+    }
   }
 
   resetAllFilter() {
