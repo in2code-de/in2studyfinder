@@ -28,3 +28,15 @@ services:
 
   In2code\In2studyfinder\Hooks\EmbeddingsMonitor:
     public: true
+
+  querybuilder.tx_in2studyfinder_chatlog:
+    class: 'TYPO3\CMS\Core\Database\Query\QueryBuilder'
+    factory:
+      - '@TYPO3\CMS\Core\Database\ConnectionPool'
+      - 'getQueryBuilderForTable'
+    arguments:
+      - 'tx_in2studyfinder_chat_log'
+
+  In2code\In2studyfinder\Domain\Repository\ChatLogRepository:
+    arguments:
+      $queryBuilder: '@querybuilder.tx_in2studyfinder_chatlog'

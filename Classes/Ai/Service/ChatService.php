@@ -14,18 +14,11 @@ class ChatService
 {
     protected const SESSION_KEY = 'history';
 
-    protected PromptInterface $prompt;
-    protected MistralAdapter $mistralAdapter;
-    protected FeSessionService $feSessionService;
-
     public function __construct(
-        MistralAdapter $mistralAdapter,
-        PromptInterface $prompt,
-        FeSessionService $feSessionService
+        protected MistralAdapter $mistralAdapter,
+        protected PromptInterface $prompt,
+        protected FeSessionService $feSessionService
     ) {
-        $this->mistralAdapter = $mistralAdapter;
-        $this->feSessionService = $feSessionService;
-        $this->prompt = $prompt;
     }
 
     public function chat(ServerRequestInterface $request, array $pluginSettings): array

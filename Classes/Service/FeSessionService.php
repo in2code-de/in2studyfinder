@@ -29,4 +29,14 @@ class FeSessionService
 
         return $frontendUser->getKey('ses', $key);
     }
+
+    public function getSessionIdentifier(ServerRequestInterface $request): ?string
+    {
+        $frontendUser = $request->getAttribute('frontend.user');
+        if (!$frontendUser instanceof FrontendUserAuthentication) {
+            return null;
+        }
+
+        return $frontendUser->getSession()->getIdentifier();
+    }
 }
