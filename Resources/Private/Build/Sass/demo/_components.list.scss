@@ -35,7 +35,10 @@
     height: 17px;
 
     &:focus + label {
-        outline: $black solid 1px;
+        outline: 2px solid $focusOutline;
+        outline-offset: 1px;
+        border-radius: 3px;
+        transition: outline-color 0.2s ease-in-out;
     }
 
     &:checked + .in2studyfinder__checkbox-label {
@@ -135,7 +138,7 @@
 
   &__item-title{
     color: $primaryColor;
-    font-size: 14px;
+    font-size: 18px;
     font-weight: bold;
     margin-bottom: 0;
     text-transform: none;

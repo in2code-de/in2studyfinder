@@ -143,6 +143,19 @@ a {
     display: none;
 }
 
+/* tab focus styling*/
+
+:where(a, button, [role="button"], input, select, textarea) {
+    outline: none;
+}
+
+:where(a, button, [tabindex], input, select, textarea):focus-visible {
+    outline: 3px solid $focusOutline;
+    outline-offset: 1px;
+    border-radius: 3px;
+    transition: outline-color 0.2s ease-in-out;
+}
+
 
 
 /*
