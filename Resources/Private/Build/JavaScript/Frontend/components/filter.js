@@ -76,7 +76,53 @@ class Filter {
 
     // set eventListener for filter checkboxes
     this.setFilterCheckboxEventListener();
+
+    // handle keyboard navigation for radio buttons
+    this.filterElement.addEventListener('keydown', function (keyboardEvent) {
+      const target = keyboardEvent.target;
+      if (target.type === 'radio') {
+        const radios = Array.from(this.filterElement.querySelectorAll(`input[name="${target.name}"]`)
+        );
+        const currentIndex = radios.indexOf(target);
+        // navigation to previous item with arrows left or up
+        if (['ArrowLeft', 'ArrowUp'].includes(keyboardEvent.code)) {
+          keyboardEvent.preventDefault();
+          const previous = radios[currentIndex - 1] || radios[radios.length - 1];
+          previous.focus();
+        }
+        // navigation to next Item with arrows right or down
+        if (['ArrowRight', 'ArrowDown'].includes(keyboardEvent.code)) {
+          keyboardEvent.preventDefault();
+          const next = radios[currentIndex + 1] || radios[0];
+          next.focus();
+        }
+        // select with space key
+        if (['Space', 'Spacebar'].includes(keyboardEvent.code)) {
+          keyboardEvent.preventDefault();
+          target.checked = true;
+
+          // if "all" filter button run resetFilter Function
+          if (target.classList.contains(this.identifier.filterShowAllCheckbox.substring(1))) {
+            this.onClick(keyboardEvent);
+            const filterContainer = target.closest(this.identifier.filterOptionContainer);
+            this.resetFilter(filterContainer);
+          } //every other filter button
+          else if (target.classList.contains(this.identifier.filterRadio.substring(1)) ||
+            target.classList.contains(this.identifier.filterCheckbox.substring(1))) {
+            const showAllCheckbox = target
+              .closest(this.identifier.filterOptionContainer)
+              .querySelector(this.identifier.filterShowAllCheckbox);
+            this.onClick(keyboardEvent);
+            showAllCheckbox.checked = false;
+            showAllCheckbox.disabled = false;
+          }
+          this.call();
+        }
+      }
+    }.bind(this));
   }
+
+
 
   prepareFilter() {
     this.prepareCheckboxes();
