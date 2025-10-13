@@ -1,13 +1,13 @@
 <li class="in2studyfinder__item" data-in2studyfinder-course-uid="{studyCourse.uid}">
-	<h2 class="in2studyfinder__item-title">
-		<f:link.action action="detail" pageUid="{settings.flexform.studyCourseDetailPage}" arguments="{studyCourse : studyCourse}" class="in2studyfinder__item-link">
+	<h3 class="in2studyfinder__item-title">
+		<f:link.action action="detail" pageUid="{settings.flexform.studyCourseDetailPage}" arguments="{studyCourse : studyCourse}" class="in2studyfinder__item-link" additionalAttributes="{aria-label: '{f:translate(key: \'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:studyCourseLink\')}'}">
 			{studyCourse.title} - {studyCourse.academicDegree.degree}
 		</f:link.action>
-	</h2>
+	</h3>
 	<div class="in2studyfinder__item-text">
 		<f:format.html>{studyCourse.teaser}</f:format.html>
 	</div>
-	<f:link.action action="detail" pageUid="{settings.flexform.studyCourseDetailPage}" arguments="{studyCourse : studyCourse}" class="in2studyfinder__item-link in2studyfinder__item-link--cta">
+	<f:link.action action="detail" pageUid="{settings.flexform.studyCourseDetailPage}" arguments="{studyCourse : studyCourse}" class="in2studyfinder__item-link in2studyfinder__item-link--cta" additionalAttributes="{aria-label: '{f:translate(key: \'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:studyCourseLink\')}'}">
 		<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:readMore"/>
 	</f:link.action>
 </li>

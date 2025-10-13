@@ -114,6 +114,9 @@
 			<trans-unit id="filter.reset">
 				<source>reset Filter</source>
 			</trans-unit>
+			<trans-unit id="filterRegion">
+				<source>Filter Area</source>
+			</trans-unit>
 			<trans-unit id="all">
 				<source>all</source>
 			</trans-unit>
@@ -176,6 +179,18 @@
 			</trans-unit>
 			<trans-unit id="skipToContent">
 				<source>Skip to Content</source>
+			</trans-unit>
+			<trans-unit id="studyCourseLink">
+				<source>Link to Study Course</source>
+			</trans-unit>
+			<trans-unit id="mainContent">
+				<source>Main Content</source>
+			</trans-unit>
+			<trans-unit id="fastSearch">
+				<source>Fast Search</source>
+			</trans-unit>
+			<trans-unit id="results">
+				<source>Results</source>
 			</trans-unit>
 		</body>
 	</file>

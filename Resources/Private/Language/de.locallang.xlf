@@ -146,6 +146,10 @@
 				<source>reset Filter</source>
 				<target>Filter zurücksetzen</target>
 			</trans-unit>
+			<trans-unit id="filterRegion">
+				<source>Filter Area</source>
+				<target>Filterbereich</target>
+			</trans-unit>
 			<trans-unit id="all">
 				<source>all</source>
 				<target>Alle</target>
@@ -229,6 +233,22 @@
 			<trans-unit id="skipToContent">
 				<source>Skip to Content</source>
 				<target>Zum Inhalt springen</target>
+			</trans-unit>
+			<trans-unit id="studyCourseLink">
+				<source>Link to Study Course</source>
+				<target>Link zum Studiengang</target>
+			</trans-unit>
+			<trans-unit id="mainContent">
+				<source>Main Content</source>
+				<target>Hauptinhalt</target>
+			</trans-unit>
+			<trans-unit id="fastSearch">
+				<source>Fast Search</source>
+				<target>Schnelle Suche</target>
+			</trans-unit>
+			<trans-unit id="results">
+				<source>Results</source>
+				<target>Ergebnisse</target>
 			</trans-unit>
 		</body>
 	</file>
