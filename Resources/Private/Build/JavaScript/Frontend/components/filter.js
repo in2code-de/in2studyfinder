@@ -17,6 +17,7 @@ class Filter {
       filterShowAllCheckbox: '.js-in2studyfinder-checkbox-all',
       filterRadio: '.js-in2studyfinder-radio',
       filterLegend: '.js-in2studyfinder-filter-legend',
+      filterLegendButton: '.js-in2studyfinder-filter-legend-button',
       hideElement: '.u-in2studyfinder-hide',
     }
     this.filter = [];
@@ -66,27 +67,31 @@ class Filter {
     this.filterElement.querySelector(this.identifier.showFilterButton).addEventListener('click', function (event) {
       this.toggleFilterVisibility(event);
 
-      // After opening the filter, focus moves to the first category
+      // After opening the filter, focus moves to the first category legend button
       setTimeout(() => {
         const firstFilterSection = this.filterElement.querySelector(this.identifier.filterSection + ':not(' + this.identifier.hideElement + ')');
         if (firstFilterSection) {
-          firstFilterSection.focus();
+          const legendButton = firstFilterSection.querySelector(this.identifier.filterLegendButton);
+          if (legendButton) {
+            legendButton.focus();
+          }
         }
       }, 100);
     }.bind(this));
 
     this.filterElement.querySelectorAll(this.identifier.filterSection).forEach(function (fieldSet) {
-      // Visibility toggle of filter sections
-      fieldSet.querySelector(this.identifier.filterLegend).addEventListener('click', function (event) {
-        event.target.nextElementSibling.classList.toggle(this.identifier.hideElement.substring(1));
-      }.bind(this));
+      const legendButton = fieldSet.querySelector(this.identifier.filterLegendButton);
+      const filterOptions = fieldSet.querySelector(this.identifier.filterOptionContainer);
 
-      // Tab navigation for filter
-      fieldSet.addEventListener('keypress', function (event) {
-        if (event.which === 13) {
-          event.target.querySelector(this.identifier.filterLegend).click();
-        }
-      }.bind(this));
+      if (legendButton && filterOptions) {
+        // Visibility toggle of filter sections
+        legendButton.addEventListener('click', function (event) {
+          event.preventDefault();
+          const isExpanded = legendButton.getAttribute('aria-expanded') === 'true';
+          legendButton.setAttribute('aria-expanded', !isExpanded);
+          filterOptions.classList.toggle(this.identifier.hideElement.substring(1));
+        }.bind(this));
+      }
     }.bind(this));
 
     // Set eventListener for filter checkboxes
@@ -96,22 +101,45 @@ class Filter {
     this.filterElement.addEventListener('keydown', function (keyboardEvent) {
       const target = keyboardEvent.target;
       if (target.type === 'radio' || target.type === 'checkbox') {
-        const radios = Array.from(this.filterElement.querySelectorAll(`input[name="${target.name}"]`));
-        const currentIndex = radios.indexOf(target);
+        const inputs = Array.from(this.filterElement.querySelectorAll(`input[name="${target.name}"]`));
+        const currentIndex = inputs.indexOf(target);
+        const isRadio = target.type === 'radio';
 
         // Navigation to previous item with arrows left or up
         if (['ArrowLeft', 'ArrowUp'].includes(keyboardEvent.code)) {
           keyboardEvent.preventDefault();
-          const previous = radios[currentIndex - 1] || radios[radios.length - 1];
+          const previous = inputs[currentIndex - 1] || inputs[inputs.length - 1];
           previous.focus();
+
+          // For radio buttons, also check the element on arrow key navigation
+          if (isRadio && !previous.classList.contains(this.identifier.filterShowAllCheckbox.substring(1))) {
+            previous.checked = true;
+            // Trigger filter action
+            const showAllCheckbox = previous.closest(this.identifier.filterOptionContainer).querySelector(this.identifier.filterShowAllCheckbox);
+            showAllCheckbox.checked = false;
+            showAllCheckbox.disabled = false;
+            this.saveFocusContext(previous);
+            this.call();
+          }
         }
         // Navigation to next item with arrows right or down
         if (['ArrowRight', 'ArrowDown'].includes(keyboardEvent.code)) {
           keyboardEvent.preventDefault();
-          const next = radios[currentIndex + 1] || radios[0];
+          const next = inputs[currentIndex + 1] || inputs[0];
           next.focus();
+
+          // For radio buttons, also check the element on arrow key navigation
+          if (isRadio && !next.classList.contains(this.identifier.filterShowAllCheckbox.substring(1))) {
+            next.checked = true;
+            // Trigger filter action
+            const showAllCheckbox = next.closest(this.identifier.filterOptionContainer).querySelector(this.identifier.filterShowAllCheckbox);
+            showAllCheckbox.checked = false;
+            showAllCheckbox.disabled = false;
+            this.saveFocusContext(next);
+            this.call();
+          }
         }
-        // Select with space key
+        // Select with space key (for checkboxes and special handling)
         if (['Space', 'Spacebar'].includes(keyboardEvent.code)) {
           keyboardEvent.preventDefault();
           target.checked = true;
@@ -130,8 +158,8 @@ class Filter {
                 this.filterElement.querySelector(this.identifier.showFilterButton).focus();
               }, 50);
             } else {
-              // Other filters still active: focus moves to parent fieldset
-              this.focusType = 'fieldset';
+              // Other filters still active: focus moves to parent legend
+              this.focusType = 'legend';
               this.lastFocusedElement = {
                 filterGroup: filterContainer.closest('[data-filtergroup]')?.getAttribute('data-filtergroup')
               };
@@ -167,8 +195,12 @@ class Filter {
       this.filter.forEach(function (filterName) {
         let filterFieldset = this.filterElement.querySelector('[data-filtergroup="' + filterName + '"]');
         let filter = filterFieldset.querySelector(this.identifier.filterOptionContainer);
+        let legendButton = filterFieldset.querySelector(this.identifier.filterLegendButton);
 
         filter.classList.toggle(this.identifier.hideElement.substring(1));
+        if (legendButton) {
+          legendButton.setAttribute('aria-expanded', 'true');
+        }
       }.bind(this));
     }
   }
@@ -227,11 +259,14 @@ class Filter {
     if (this.focusType === 'showButton') {
       targetElement = this.filterElement.querySelector(this.identifier.showFilterButton);
     }
-    // Focus on fieldset when clicking "all" button with other filters still active
-    else if (this.focusType === 'fieldset' && this.lastFocusedElement) {
+    // Focus on legend button when clicking "all" button with other filters still active
+    else if (this.focusType === 'legend' && this.lastFocusedElement) {
       const { filterGroup } = this.lastFocusedElement;
       if (filterGroup) {
-        targetElement = this.filterElement.querySelector(`[data-filtergroup="${filterGroup}"]`);
+        const fieldset = this.filterElement.querySelector(`[data-filtergroup="${filterGroup}"]`);
+        if (fieldset) {
+          targetElement = fieldset.querySelector(this.identifier.filterLegendButton);
+        }
       }
     }
     // Keep focus on filter option when it's not "all"
@@ -272,6 +307,8 @@ class Filter {
     }
 
     LoaderUtility.enableLoader();
+    // Announce loading to screen readers
+    this.announceToScreenReader('loading');
 
     fetch('/index.php?id=' + pid + '&L=' + language + '&type=1308171055' + paginationArgument, {
       method: 'POST',
@@ -291,6 +328,9 @@ class Filter {
 
       LoaderUtility.disableLoader();
       window.in2studyfinder.getInstance(instanceId).update(this.studyfinderElement);
+
+      // Announce results update to screen readers
+      this.announceFilterResults();
     });
   }
 
@@ -438,6 +478,9 @@ class Filter {
     for (let i = 0; i < filterSection.length; i++) {
       this.resetFilter(filterSection[i]);
     }
+
+    // Announce filter reset to screen readers
+    this.announceToScreenReader('filterReset');
   }
 
   resetFilter(filterSection) {
@@ -476,6 +519,73 @@ class Filter {
     }
 
     return status;
+  }
+
+  /**
+   * Announce filter or result changes to screen readers via aria-live region
+   *
+   * @param {string} messageType - Type of message: 'loading', 'filterApplied', 'filterReset', 'resultsUpdated', 'noResults'
+   */
+  announceToScreenReader(messageType) {
+    const feedbackElement = this.studyfinderElement.querySelector('#filter-feedback');
+    if (!feedbackElement) return;
+
+    let message = '';
+    const dataAttr = `data-${messageType.replace(/([A-Z])/g, '-$1').toLowerCase()}-text`;
+    message = feedbackElement.getAttribute(dataAttr) || '';
+
+    // Clear first to ensure change detection
+    feedbackElement.textContent = '';
+
+    // Use setTimeout to ensure the clear is processed before setting new text
+    setTimeout(() => {
+      feedbackElement.textContent = message;
+    }, 100);
+  }
+
+  /**
+   * Announce filter results with count to screen readers
+   * This is called after the DOM has been updated with new results
+   */
+  announceFilterResults() {
+    const feedbackElement = this.studyfinderElement.querySelector('#filter-feedback');
+    if (!feedbackElement) return;
+
+    // Get the count from the updated DOM
+    const itemCountElement = this.studyfinderElement.querySelector('.in2studyfinder__item-count p');
+    const noResultsElement = this.studyfinderElement.querySelector('.in2studyfinder__no-results');
+
+    let message = '';
+
+    if (noResultsElement) {
+      // No results case
+      message = feedbackElement.getAttribute('data-no-results-text') || '';
+    } else if (itemCountElement) {
+      // Extract count from the item count text
+      const countText = itemCountElement.textContent.trim();
+      const countMatch = countText.match(/^\d+/);
+
+      if (countMatch) {
+        const count = parseInt(countMatch[0], 10);
+        if (count === 1) {
+          message = feedbackElement.getAttribute('data-results-count-single') || '';
+        } else {
+          const template = feedbackElement.getAttribute('data-results-count-multiple') || '';
+          message = template.replace('%s', count);
+        }
+      } else {
+        // Fallback to generic results updated message
+        message = feedbackElement.getAttribute('data-results-updated-text') || '';
+      }
+    }
+
+    // Clear first to ensure change detection
+    feedbackElement.textContent = '';
+
+    // Use setTimeout to ensure the clear is processed before setting new text
+    setTimeout(() => {
+      feedbackElement.textContent = message;
+    }, 100);
   }
 
   onClick() {

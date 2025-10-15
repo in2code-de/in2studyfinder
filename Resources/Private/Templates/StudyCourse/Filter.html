@@ -10,16 +10,27 @@
 
 
 			<div class="l-content">
-				<section id="results" aria-label="results">
-						<f:render partial="StudyCourse/List/QuickSearch" arguments="{_all}"/>
-						<f:if condition="{studyCourses}">
-							<f:then>
-								<f:render partial="StudyCourse/List/StudyCourseList" arguments="{_all}"/>
-							</f:then>
-							<f:else>
-								<f:render partial="StudyCourse/List/NoStudyCourses" arguments="{_all}"/>
-							</f:else>
-						</f:if>
+
+				<section id="results" aria-label="{f:translate(key:'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:results')}">
+					<f:comment><!-- Screen reader feedback region for filter and result changes --></f:comment>
+					<div id="filter-feedback" aria-live="polite" aria-atomic="true" class="sr-only"
+						data-loading-text="{f:translate(key:'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:screenreader.loading')}"
+						data-filter-applied-text="{f:translate(key:'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:screenreader.filterApplied')}"
+						data-filter-reset-text="{f:translate(key:'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:screenreader.filterReset')}"
+						data-results-updated-text="{f:translate(key:'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:screenreader.resultsUpdated')}"
+						data-no-results-text="{f:translate(key:'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:screenreader.noResults')}"
+						data-results-count-single="{f:translate(key:'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:screenreader.resultsCount.single')}"
+						data-results-count-multiple="{f:translate(key:'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:screenreader.resultsCount.multiple')}"></div>
+
+					<f:render partial="StudyCourse/List/QuickSearch" arguments="{_all}"/>
+					<f:if condition="{studyCourses}">
+						<f:then>
+							<f:render partial="StudyCourse/List/StudyCourseList" arguments="{_all}"/>
+						</f:then>
+						<f:else>
+							<f:render partial="StudyCourse/List/NoStudyCourses" arguments="{_all}"/>
+						</f:else>
+					</f:if>
 				</section>
 			</div>
 		</div>

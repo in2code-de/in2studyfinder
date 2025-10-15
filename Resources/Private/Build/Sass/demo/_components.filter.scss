@@ -93,7 +93,6 @@ fieldset {
   }
 
   &__legend {
-    cursor: pointer;
     float:left;
     font-size: 14px;
     font-weight: bold;
@@ -103,50 +102,68 @@ fieldset {
     display: block;
     width: 100%;
 
-    &:hover{
-      &:before {
-        background: $primaryColor;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    &-button {
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+      font: inherit;
+      color: inherit;
+      cursor: pointer;
+      text-align: left;
+      width: 100%;
+      position: relative;
+
+      &:focus {
+        outline: 2px solid $primaryColor;
+        outline-offset: 2px;
       }
-    }
 
-    &:before {
-      content: '';
-      display: inline-block;
-      position: absolute;
-      top: 0;
-      opacity: 1;
-      border-radius: 50%;
-      background: $lightgrey;
-      height: 24px;
-      width: 24px;
-      right: -6px;
-      transition: background .2s ease, box-shadow .2s ease;
-      box-shadow: 0 2px 4px rgba(0,0,0,0);
-    }
+      &:hover {
+        &:before {
+          background: $primaryColor;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+      }
 
-    &:after {
-      content: '+';
-      color: $white;
-      display: inline-block;
-      position: absolute;
-      top: 0;
-      font-size: 1.5em;
-      font-weight: normal;
-      line-height: 1;
-      height: 24px;
-      width: 24px;
-      right: -12px;
-    }
-
-    &.opened {
       &:before {
-        background: $primaryColor;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        content: '';
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        opacity: 1;
+        border-radius: 50%;
+        background: $lightgrey;
+        height: 24px;
+        width: 24px;
+        right: -6px;
+        transition: background .2s ease, box-shadow .2s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0);
       }
 
       &:after {
-        content: '–';
+        content: '+';
+        color: $white;
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        font-size: 1.5em;
+        font-weight: normal;
+        line-height: 1;
+        height: 24px;
+        width: 24px;
+        right: -12px;
+      }
+
+      &[aria-expanded="true"] {
+        &:before {
+          background: $primaryColor;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        &:after {
+          content: '–';
+        }
       }
     }
   }

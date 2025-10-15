@@ -19,10 +19,13 @@
 		<f:for each="{filters}" as="filterType" key="filterTypeName">
 			<f:if condition="!{filterType.disabledInFrontend}">
 				<fieldset class="c-in2studyfinder-filter__section js-in2studyfinder-filter-section u-in2studyfinder-hide"
-									data-filtergroup="{filterTypeName}" tabindex="0">
+									data-filtergroup="{filterTypeName}">
 
 					<legend class="c-in2studyfinder-filter__legend js-in2studyfinder-filter-legend">
-						{filterType.frontendLabel}
+						<button type="button" class="c-in2studyfinder-filter__legend-button js-in2studyfinder-filter-legend-button"
+										aria-expanded="false">
+							{filterType.frontendLabel}
+						</button>
 					</legend>
 
 					<div class="c-in2studyfinder-filter__options js-in2studyfinder-filter-options u-in2studyfinder-hide">

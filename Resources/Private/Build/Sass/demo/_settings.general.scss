@@ -124,19 +124,18 @@ a {
     background: $primaryColor;
     color: $white;
     display: inline-block;
-    left: 0;
+    top: -100px;
+    left: 10px;
     opacity: 1;
     margin: 16px;
     padding: 0.8rem;
     position: fixed;
     text-decoration: underline;
-    top: -100px;
     transition: top 0.3s ease-in-out;
 }
 
-.skip-link:focus {
-    color: $white;
-    top: 0;
+.skip-link:not([hidden]):focus {
+    top: 10px;
 }
 
 .skip-link[hidden] {
@@ -154,6 +153,18 @@ a {
     outline-offset: 1px;
     border-radius: 3px;
     transition: outline-color 0.2s ease-in-out;
+}
+
+/* Class for screenreader feedback*/
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
 }
 
 
