@@ -18,12 +18,15 @@ class Filter {
       filterRadio: '.js-in2studyfinder-radio',
       filterLegend: '.js-in2studyfinder-filter-legend',
       hideElement: '.u-in2studyfinder-hide',
-
     }
     this.filter = [];
     this.studyfinderElement = pluginContainer;
     this.filterElement = pluginContainer.querySelector(this.identifier.filterContainer);
     this.openFilterOnLoad = true;
+
+    // Focus management for accessibility
+    this.lastFocusedElement = null;
+    this.focusType = null;
   }
 
   init() {
@@ -41,32 +44,44 @@ class Filter {
     this.filterElement = studyfinderElement.querySelector(this.identifier.filterContainer);
     this.setEventListener();
     this.prepareFilter();
+
+    // Restore focus after AJAX call
+    this.restoreFocus();
   }
 
   setEventListener() {
-    // hide filter button
+    // Hide filter button / reset button
     this.filterElement.querySelector(this.identifier.hideFilterButton).addEventListener('click', function (event) {
       if (this.filter.length === 0) {
         this.toggleFilterVisibility();
       } else {
+        // After reset, focus moves to "show filter" button
+        this.focusType = 'showButton';
         this.resetAllFilter(event);
         this.call();
       }
     }.bind(this));
 
-    // show filter button
+    // Show filter button
     this.filterElement.querySelector(this.identifier.showFilterButton).addEventListener('click', function (event) {
       this.toggleFilterVisibility(event);
+
+      // After opening the filter, focus moves to the first category
+      setTimeout(() => {
+        const firstFilterSection = this.filterElement.querySelector(this.identifier.filterSection + ':not(' + this.identifier.hideElement + ')');
+        if (firstFilterSection) {
+          firstFilterSection.focus();
+        }
+      }, 100);
     }.bind(this));
 
-
     this.filterElement.querySelectorAll(this.identifier.filterSection).forEach(function (fieldSet) {
-      // visibility toggle of filter sections
+      // Visibility toggle of filter sections
       fieldSet.querySelector(this.identifier.filterLegend).addEventListener('click', function (event) {
         event.target.nextElementSibling.classList.toggle(this.identifier.hideElement.substring(1));
       }.bind(this));
 
-      // tab navigation for filter
+      // Tab navigation for filter
       fieldSet.addEventListener('keypress', function (event) {
         if (event.which === 13) {
           event.target.querySelector(this.identifier.filterLegend).click();
@@ -74,39 +89,56 @@ class Filter {
       }.bind(this));
     }.bind(this));
 
-    // set eventListener for filter checkboxes
+    // Set eventListener for filter checkboxes
     this.setFilterCheckboxEventListener();
 
-    // handle keyboard navigation for radio buttons
+    // Handle keyboard navigation for radio buttons and checkboxes
     this.filterElement.addEventListener('keydown', function (keyboardEvent) {
       const target = keyboardEvent.target;
-      if (target.type === 'radio') {
-        const radios = Array.from(this.filterElement.querySelectorAll(`input[name="${target.name}"]`)
-        );
+      if (target.type === 'radio' || target.type === 'checkbox') {
+        const radios = Array.from(this.filterElement.querySelectorAll(`input[name="${target.name}"]`));
         const currentIndex = radios.indexOf(target);
-        // navigation to previous item with arrows left or up
+
+        // Navigation to previous item with arrows left or up
         if (['ArrowLeft', 'ArrowUp'].includes(keyboardEvent.code)) {
           keyboardEvent.preventDefault();
           const previous = radios[currentIndex - 1] || radios[radios.length - 1];
           previous.focus();
         }
-        // navigation to next Item with arrows right or down
+        // Navigation to next item with arrows right or down
         if (['ArrowRight', 'ArrowDown'].includes(keyboardEvent.code)) {
           keyboardEvent.preventDefault();
           const next = radios[currentIndex + 1] || radios[0];
           next.focus();
         }
-        // select with space key
+        // Select with space key
         if (['Space', 'Spacebar'].includes(keyboardEvent.code)) {
           keyboardEvent.preventDefault();
           target.checked = true;
 
-          // if "all" filter button run resetFilter Function
+          // Focus handling for "all" filter button
           if (target.classList.contains(this.identifier.filterShowAllCheckbox.substring(1))) {
             this.onClick(keyboardEvent);
             const filterContainer = target.closest(this.identifier.filterOptionContainer);
             this.resetFilter(filterContainer);
-          } //every other filter button
+
+            // Check if other filters are still active
+            if (this.filter.length === 0) {
+              // No filters left: close mask and focus moves to "show filter" button
+              this.toggleFilterVisibility();
+              setTimeout(() => {
+                this.filterElement.querySelector(this.identifier.showFilterButton).focus();
+              }, 50);
+            } else {
+              // Other filters still active: focus moves to parent fieldset
+              this.focusType = 'fieldset';
+              this.lastFocusedElement = {
+                filterGroup: filterContainer.closest('[data-filtergroup]')?.getAttribute('data-filtergroup')
+              };
+              this.call();
+            }
+          }
+          // Every other filter button
           else if (target.classList.contains(this.identifier.filterRadio.substring(1)) ||
             target.classList.contains(this.identifier.filterCheckbox.substring(1))) {
             const showAllCheckbox = target
@@ -115,19 +147,20 @@ class Filter {
             this.onClick(keyboardEvent);
             showAllCheckbox.checked = false;
             showAllCheckbox.disabled = false;
+
+            // Keep focus on the selected filter element
+            this.saveFocusContext(target);
+            this.call();
           }
-          this.call();
         }
       }
     }.bind(this));
   }
 
-
-
   prepareFilter() {
     this.prepareCheckboxes();
 
-    // open selected filter sections
+    // Open selected filter sections
     if (this.filter.length > 0 && this.openFilterOnLoad) {
       this.toggleFilterVisibility();
 
@@ -159,8 +192,69 @@ class Filter {
           this.filter.splice(index, 1);
         }
       }
-
     }.bind(this));
+  }
+
+  /**
+   * Store context of the focused element before AJAX call
+   *
+   * @param {HTMLElement} element - The filter input element to save
+   */
+  saveFocusContext(element) {
+    if (!element) return;
+
+    this.focusType = 'input';
+    this.lastFocusedElement = {
+      filterGroup: element.closest('[data-filtergroup]')?.getAttribute('data-filtergroup'),
+      value: element.value,
+      type: element.type,
+      name: element.name
+    };
+  }
+
+  /**
+   * Restore focus after AJAX update
+   *
+   * After DOM is rebuilt by AJAX, this method restores focus to the previously
+   * focused element to maintain context for keyboard and screen reader users.
+   */
+  restoreFocus() {
+    if (!this.lastFocusedElement && !this.focusType) return;
+
+    let targetElement = null;
+
+    // Focus on "show filter" button after reset
+    if (this.focusType === 'showButton') {
+      targetElement = this.filterElement.querySelector(this.identifier.showFilterButton);
+    }
+    // Focus on fieldset when clicking "all" button with other filters still active
+    else if (this.focusType === 'fieldset' && this.lastFocusedElement) {
+      const { filterGroup } = this.lastFocusedElement;
+      if (filterGroup) {
+        targetElement = this.filterElement.querySelector(`[data-filtergroup="${filterGroup}"]`);
+      }
+    }
+    // Keep focus on filter option when it's not "all"
+    else if (this.focusType === 'input' && this.lastFocusedElement) {
+      const { filterGroup, value, type, name } = this.lastFocusedElement;
+      if (filterGroup) {
+        const fieldset = this.filterElement.querySelector(`[data-filtergroup="${filterGroup}"]`);
+        if (fieldset) {
+          targetElement = fieldset.querySelector(`input[type="${type}"][name="${name}"][value="${value}"]`);
+        }
+      }
+    }
+
+    // Set focus
+    if (targetElement) {
+      setTimeout(() => {
+        targetElement.focus();
+      }, 100);
+    }
+
+    // Reset context
+    this.lastFocusedElement = null;
+    this.focusType = null;
   }
 
   call(paginationPage) {
@@ -225,7 +319,7 @@ class Filter {
     selectionString = selectionString.slice(0, -1);
 
     if (paginationPage && parseInt(paginationPage) > 1) {
-      selectionString += 'page=' + paginationPage;
+      selectionString += '&page=' + paginationPage;
     }
 
     if (selectionString !== '') {
@@ -240,12 +334,12 @@ class Filter {
     let page = 1;
 
     hashArguments.forEach(function (hashArgument) {
-      // if argument page is set
+      // If argument page is set
       if (hashArgument.name === 'page') {
         page = hashArgument.values[0];
       } else {
         if (this.filterElement.querySelector('[data-filtergroup="' + hashArgument.name + '"]') !== null) {
-          // set the selected filters
+          // Set the selected filters
           let filterFieldset = this.filterElement.querySelector('[data-filtergroup="' + hashArgument.name + '"]');
           let checkboxes = filterFieldset.querySelectorAll('input[type=checkbox],input[type=radio]');
           let status = false;
@@ -272,43 +366,60 @@ class Filter {
         let target = evt.target;
 
         if (target.tagName === 'INPUT') {
-          // if a show all checkbox is clicked
+          // Focus handling for "all" filter
           if (target.classList.contains(this.identifier.filterShowAllCheckbox.substring(1))) {
             this.onClick(evt);
             let filterContainer = target.closest(this.identifier.filterOptionContainer);
             this.resetFilter(filterContainer);
-          }
 
-          // if a specific filter checkbox is clicked
-          if (target.classList.contains(this.identifier.filterCheckbox.substring(1)) || target.classList.contains(this.identifier.filterRadio.substring(1))) {
+            // Check if other filters are active
+            if (this.filter.length === 0) {
+              // No filters left: close mask and focus moves to "show filter" button
+              this.toggleFilterVisibility();
+              setTimeout(() => {
+                this.filterElement.querySelector(this.identifier.showFilterButton).focus();
+              }, 50);
+            } else {
+              // Other filters still active: focus moves to parent fieldset
+              this.focusType = 'fieldset';
+              this.lastFocusedElement = {
+                filterGroup: filterContainer.closest('[data-filtergroup]')?.getAttribute('data-filtergroup')
+              };
+              this.call();
+            }
+          }
+          // Every other filter button
+          else if (target.classList.contains(this.identifier.filterCheckbox.substring(1)) || target.classList.contains(this.identifier.filterRadio.substring(1))) {
             let showAllCheckbox = target.closest(this.identifier.filterOptionContainer).querySelector(this.identifier.filterShowAllCheckbox);
             this.onClick(evt);
             showAllCheckbox.checked = false;
             showAllCheckbox.disabled = false;
-          }
 
-          this.call();
+            // Keep focus on the selected element
+            this.saveFocusContext(target);
+            this.call();
+          }
         }
       }.bind(this)
     );
   }
 
   toggleFilterVisibility() {
-    // toggle fieldset Visibility
+    // Toggle fieldset visibility
     let filterFieldSets = this.filterElement.querySelectorAll(this.identifier.filterSection);
 
     for (let i = 0; i < filterFieldSets.length; i++) {
       filterFieldSets[i].classList.toggle(this.identifier.hideElement.substring(1));
     }
 
-    // toggle button Visibility
+    // Toggle button visibility
     this.filterElement.querySelector(this.identifier.showFilterButton).classList.toggle(this.identifier.hideElement.substring(1));
     this.filterElement.querySelector(this.identifier.hideFilterButton).classList.toggle(this.identifier.hideElement.substring(1));
 
-    // add skip filter link
+    // Add skip filter link
     const skipToResults = document.querySelector('.skip-link[href="#results"]');
     if (skipToResults) {
-      //show skip link when filter is open
+      // Show skip link when filter is open
       const filterIsOpen = !this.filterElement
         .querySelector(this.identifier.hideFilterButton)
         .classList.contains(this.identifier.hideElement.substring(1));
@@ -348,10 +459,10 @@ class Filter {
   }
 
   /**
-   * checks if a given filter element is set
+   * Check if a given filter element has any option selected
    *
-   * @param filterOptionContainer
-   * @returns {boolean}
+   * @param {HTMLElement} filterOptionContainer - The filter container element
+   * @returns {boolean} True if at least one option is selected
    */
   isFilterSet(filterOptionContainer) {
     let status = false;
