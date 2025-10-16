@@ -1804,23 +1804,46 @@ a:hover {
   background: #0E5814;
   color: #ffffff;
   display: inline-block;
-  left: 0;
+  top: -100px;
+  left: 10px;
   opacity: 1;
   margin: 16px;
   padding: 0.8rem;
   position: fixed;
   text-decoration: underline;
-  top: -100px;
   transition: top 0.3s ease-in-out;
 }
 
-.skip-link:focus {
-  color: #ffffff;
-  top: 0;
+.skip-link:not([hidden]):focus {
+  top: 10px;
 }
 
 .skip-link[hidden] {
   display: none;
+}
+
+/* tab focus styling*/
+:where(a, button, [role=button], input, select, textarea) {
+  outline: none;
+}
+
+:where(a, button, [tabindex], input, select, textarea):focus-visible {
+  outline: 3px solid #0057FF;
+  outline-offset: 1px;
+  border-radius: 3px;
+  transition: outline-color 0.2s ease-in-out;
+}
+
+/* Class for screenreader feedback*/
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
 }
 
 /*
@@ -1934,7 +1957,6 @@ fieldset {
   padding: 1rem 1rem 0;
 }
 .c-in2studyfinder-filter__legend {
-  cursor: pointer;
   float: left;
   font-size: 14px;
   font-weight: bold;
@@ -1944,11 +1966,28 @@ fieldset {
   display: block;
   width: 100%;
 }
-.c-in2studyfinder-filter__legend:hover:before {
+.c-in2studyfinder-filter__legend-button {
+  background: none;
+  border: none;
+  padding: 4px 40px 4px 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  position: relative;
+}
+.c-in2studyfinder-filter__legend-button:focus-visible {
+  outline: 3px solid #0057FF;
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+.c-in2studyfinder-filter__legend-button:hover:before {
   background: #0E5814;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
-.c-in2studyfinder-filter__legend:before {
+.c-in2studyfinder-filter__legend-button:before {
   content: "";
   display: inline-block;
   position: absolute;
@@ -1958,11 +1997,11 @@ fieldset {
   background: #ddd;
   height: 24px;
   width: 24px;
-  right: -6px;
+  right: 6px;
   transition: background 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0);
 }
-.c-in2studyfinder-filter__legend:after {
+.c-in2studyfinder-filter__legend-button:after {
   content: "+";
   color: #ffffff;
   display: inline-block;
@@ -1973,13 +2012,13 @@ fieldset {
   line-height: 1;
   height: 24px;
   width: 24px;
-  right: -12px;
+  right: 0;
 }
-.c-in2studyfinder-filter__legend.opened:before {
+.c-in2studyfinder-filter__legend-button[aria-expanded=true]:before {
   background: #0E5814;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
-.c-in2studyfinder-filter__legend.opened:after {
+.c-in2studyfinder-filter__legend-button[aria-expanded=true]:after {
   content: "–";
 }
 .c-in2studyfinder-filter__options {
@@ -2037,7 +2076,10 @@ fieldset {
   height: 17px;
 }
 .in2studyfinder__checkbox:focus + label {
-  outline: #000000 solid 1px;
+  outline: 2px solid #0057FF;
+  outline-offset: 1px;
+  border-radius: 3px;
+  transition: outline-color 0.2s ease-in-out;
 }
 .in2studyfinder__checkbox:checked + .in2studyfinder__checkbox-label:after {
   content: "";
@@ -2126,7 +2168,7 @@ fieldset {
 }
 .in2studyfinder__item-title {
   color: #0E5814;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: bold;
   margin-bottom: 0;
   text-transform: none;
@@ -2234,8 +2276,8 @@ fieldset {
   #COMPONENTS-PAGINATION
 \*------------------------------------*/
 .in2studyfinder__pagebrowser {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 24px;
+  margin-bottom: 24px;
   text-align: center;
   list-style: none;
 }
@@ -2246,17 +2288,16 @@ fieldset {
   color: currentColor;
   font-size: 18px;
   font-weight: bold;
-  margin-right: 15px;
 }
 .in2studyfinder__pagebrowser a:hover {
   color: #0E5814;
 }
 .in2studyfinder__pagebrowser-page:last-child {
-  margin-right: 0;
+  margin-right: 24px;
 }
 .in2studyfinder__pagebrowser-page.current {
   color: #0E5814;
-  font-size: 18px;
+  font-size: 22px;
   font-weight: bold;
 }
 
