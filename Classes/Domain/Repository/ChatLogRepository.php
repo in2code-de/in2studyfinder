@@ -6,8 +6,11 @@ namespace In2code\In2studyfinder\Domain\Repository;
 
 use Doctrine\DBAL\Exception;
 use LogicException;
+use PDO;
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 class ChatLogRepository
 {
@@ -103,7 +106,17 @@ class ChatLogRepository
             );
 
         foreach ($logEntry as $key => $value) {
-            $this->queryBuilder->set($key, $this->queryBuilder->createNamedParameter($value));
+            $type = Connection::PARAM_STR;
+            if (MathUtility::canBeInterpretedAsInteger($value) === true) {
+                $type = Connection::PARAM_INT;
+            }
+
+            $this->queryBuilder->set(
+                $key,
+                $this->queryBuilder->createNamedParameter($value),
+                true,
+                $type
+            );
         }
 
         $this->queryBuilder->executeStatement();

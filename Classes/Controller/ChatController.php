@@ -23,14 +23,17 @@ class ChatController extends ActionController
     public function indexAction(): ResponseInterface
     {
         $this->chatService->deleteHistory($this->request);
+        $this->view->assignMultiple([
+            'data' => $this->request->getAttribute('currentContentObject')->data,
+        ]);
         return $this->htmlResponse();
     }
 
-    public function chatAction(): ResponseInterface
+    public function chatAction(int $uid): ResponseInterface
     {
         try {
             $messages = $this->chatService->chat($this->request, $this->settings);
-            $this->historyLogService->logHistory($messages, $this->request);
+            $this->historyLogService->logHistory($messages, $this->request, $uid);
             $message = end($messages)['content'] ?? '';
             return $this->jsonResponse(json_encode(['success' => true, 'message' => $message]));
         } catch (ClientException $exception) {

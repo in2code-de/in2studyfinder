@@ -19,7 +19,7 @@ class HistoryLogService
     ) {
     }
 
-    public function logHistory(array $messages, ServerRequestInterface $serverRequest): void
+    public function logHistory(array $messages, ServerRequestInterface $serverRequest, int $pluginUid): void
     {
         $sessionIdentifier = $this->feSessionService->getSessionIdentifier($serverRequest);
         $logEntry = $this->chatLogRepository->findBySessionIdentifier($sessionIdentifier);
@@ -29,7 +29,7 @@ class HistoryLogService
                 'session_id' => $sessionIdentifier,
                 'messages' => json_encode($messages),
                 'crdate' => time(),
-                'plugin_id' => $this->getPluginId($serverRequest),
+                'plugin_id' => $pluginUid,
             ];
 
             $this->chatLogRepository->create($logEntry);
@@ -65,19 +65,6 @@ class HistoryLogService
     {
         $chatLog = $this->chatLogRepository->findByUid($logId);
         return $chatLog === null ? null : $this->decodeMessages($chatLog);
-    }
-
-    protected function getPluginId(ServerRequestInterface $request): int
-    {
-        /** @var ContentObjectRenderer $contentObject */
-        $contentObjectRenderer = $request->getAttribute('currentContentObject');
-        $pluginId = $contentObjectRenderer?->data['uid'] ?? null;
-
-        if ($pluginId === null) {
-            throw new LogicException('Could not find plugin id', 1760097459);
-        }
-
-        return (int)$pluginId;
     }
 
     protected function decodeMessages(array $logEntry): array
