@@ -4,9 +4,9 @@ import path from "path";
 // Path Configuration
 const CONFIG = {
   paths: {
-    pa11y: "a11y-reports/pa11y/pa11y-summary.json",
-    htmlvalidate: "a11y-reports/htmlvalidate/htmlvalidate-report.json",
-    output: "a11y-reports/full-a11y-reports/full-a11y-report.json"
+    pa11y: "reports/pa11y/pa11y-summary.json",
+    htmlvalidate: "reports/htmlvalidate/htmlvalidate-report.json",
+    output: "reports/full-a11y-reports/full-a11y-report.json"
   }
 };
 
@@ -71,7 +71,6 @@ function deduplicateIssues(issueArrays) {
   return Array.from(uniqueMap.values());
 }
 
-// secure file reading with error handling
 function loadJSON(filePath) {
   try {
     return JSON.parse(fs.readFileSync(filePath, "utf-8"));
@@ -101,17 +100,17 @@ function mergeA11yReports() {
     };
 
     // Output
-    const outputDir = path.dirname(CONFIG.paths.output); // The path.dirname() method returns the directory name of a path,
-    fs.mkdirSync(outputDir, { recursive: true }); //Synchronously creates a directory. Returns undefined, or if recursive is true, the first directory path created. This is the synchronous version of fs.mkdir().
-    fs.writeFileSync(CONFIG.paths.output, JSON.stringify(report, null, 2)); //The JSON. stringify() static method converts a JavaScript value to a JSON string, optionally replacing values
+    const outputDir = path.dirname(CONFIG.paths.output);
+    fs.mkdirSync(outputDir, { recursive: true });
+    fs.writeFileSync(CONFIG.paths.output, JSON.stringify(report, null, 2));
 
-    console.log(`✅ Combined report written: ${CONFIG.paths.output}`);
-    console.log(`📊 Total unique issues: ${mergedIssues.length}`);
-    console.log(`📁 Breakdown: Pa11y = ${pa11yIssues.length}, html-validate = ${htmlIssues.length}`);
+    console.log(`Combined report written: ${CONFIG.paths.output}`);
+    console.log(`Total unique issues: ${mergedIssues.length}`);
+    console.log(`Breakdown: Pa11y = ${pa11yIssues.length}, html-validate = ${htmlIssues.length}`);
 
   } catch (err) {
     console.error("Error merging reports:", err.message);
-    process.exit(1); //The process.exit() method instructs Node.js to terminate the process synchronously with an exit status of code
+    process.exit(1);
   }
 }
 
