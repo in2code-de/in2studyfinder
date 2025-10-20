@@ -51,9 +51,9 @@ Listview at Uni Ulm:
 #### Links
 
 * Live examples:
-    * https://www.tum.de/studium/studienangebot/
-    * https://www.uni-ulm.de/studium/studieren-an-der-uni-ulm/studiengaenge/
-    * https://www.th-owl.de/studium/angebote/studiengaenge/
+  * https://www.tum.de/studium/studienangebot/
+  * https://www.uni-ulm.de/studium/studieren-an-der-uni-ulm/studiengaenge/
+  * https://www.th-owl.de/studium/angebote/studiengaenge/
 * See full description (german only) under: https://www.in2code.de/produkte/studiengangsfinder/
 * Interest in an extension or interface connection? Contact us: <a href="mailto:sandra.pohl@in2code.de">
   sandra.pohl@in2code.de</a>
@@ -97,8 +97,9 @@ Version 13.x
 
 ## Events
 
+
 | event name                                | description                                                           |
-|-------------------------------------------|-----------------------------------------------------------------------|
+| ----------------------------------------- | --------------------------------------------------------------------- |
 | ModifyDetailActionFluidVariablesEvent     | main event for fluid variable manipulation for the detail action      |
 | ModifyFastSearchActionFluidVariablesEvent | main event for fluid variable manipulation for the fast search action |
 | ModifyFilterActionFluidVariablesEvent     | main event for fluid variable manipulation for the filter action      |
@@ -112,6 +113,7 @@ Version 13.x
 * [Migrations from version 12 to 13](./Documentation/Migration/12to13.md)
 
 ## External used libraries
+
 Requirements: node.js >= 20, npm, nvm
 
 ```
@@ -138,6 +140,7 @@ page.includeJSFooter.studyfinderExtenal = EXT:YOUREXTENSION/Resources/Public/Jav
 ```
 
 extend.js:
+
 ```javascript
 if (window.in2studyfinder !== null) {
     let in2studyfinder = window.in2studyfinder;
@@ -161,21 +164,24 @@ if (window.in2studyfinder !== null) {
 
 **Studyfinder:**
 
+
 | function    | description                                                    |
-|-------------|----------------------------------------------------------------|
+| ----------- | -------------------------------------------------------------- |
 | getInstance | returns the requested instance. Parameter instanceId (integer) |
 
 **Instance:**
 
-| event name                                  | description                          |
-|---------------------------------------------|--------------------------------------|
-| onUpdate                                    | is executed after every fetch call.  |
+
+| event name | description                         |
+| ---------- | ----------------------------------- |
+| onUpdate   | is executed after every fetch call. |
 
 **Filter:**
 
-| event name                                  | description                               |
-|---------------------------------------------|-------------------------------------------|
-| onClick                                     | executed after the pagination link click. |
+
+| event name | description                               |
+| ---------- | ----------------------------------------- |
+| onClick    | executed after the pagination link click. |
 
 **Quicksearch:**
 
@@ -183,9 +189,10 @@ nothing yet.
 
 **Pagination:**
 
-| event name                                  | description                               |
-|---------------------------------------------|-------------------------------------------|
-| onClick                                     | executed after the pagination link click. |
+
+| event name | description                               |
+| ---------- | ----------------------------------------- |
+| onClick    | executed after the pagination link click. |
 
 ### Code quality tools
 
@@ -227,8 +234,7 @@ ddev ssh
 
 ### External used libraries
 
-    * https://tom-select.js.org/
-
+* https://tom-select.js.org/
 ## FAQ
 
 * Q1: Can I use fe_users or tt_address for the persons?
@@ -236,28 +242,29 @@ ddev ssh
 * Q2: I need to import persons from an external service, but how?
 * A2: Please ask in2code for professional service or individual importers
 
-> :warning: **TYPO3 14 compatibility**\
+> :warning: **TYPO3 14 compatibility**
 > See [EAP page (DE)](https://www.in2code.de/agentur/typo3-extensions/early-access-programm/)
 > or [EAP page (EN)](https://www.in2code.de/en/agency/typo3-extensions/early-access-program/) for more information how to
 > get access to a TYPO3 14 version
 
 ## Changelog
 
+
 | Version | Date       | State        | Description                                                                                                                                                                                                                                   |
-|---------|------------|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 13.0.0  | 2025-09-04 | [!!!]FEATURE | Add TYPO3 13 support, various code cleanups: [Commits](https://github.com/in2code-de/in2studyfinder/commits/13.0.0)                                                                                                                           |
+| ------- | ---------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 13.0.0  | 2025-09-04 | [!!!]FEATURE | Add TYPO3 13 support, various code cleanups:[Commits](https://github.com/in2code-de/in2studyfinder/commits/13.0.0)                                                                                                                            |
 | 12.1.1  | 2025-08-25 | TASK         | Bump nodejs build dependencies. The nodejs modules used to build the JavaScript and CSS have been updated.                                                                                                                                    |
-| 12.1.0  | 2025-07-07 | FEATURE      | Allow backend sorting of filter items, set correct meta tag property type for keywords. For further information see: [Commits](https://github.com/in2code-de/in2studyfinder/commits/12.1.0)                                                   |
+| 12.1.0  | 2025-07-07 | FEATURE      | Allow backend sorting of filter items, set correct meta tag property type for keywords. For further information see:[Commits](https://github.com/in2code-de/in2studyfinder/commits/12.1.0)                                                    |
 | 12.0.2  | 2025-05-23 | BUGFIX       | Add missing release preparations                                                                                                                                                                                                              |
 | 12.0.1  | 2025-05-23 | BUGFIX       | Fix ajax requests in non default language                                                                                                                                                                                                     |
-| 12.0.0  | 2025-02-10 | [!!!]TASK    | Update JavaScript event handling, Minor bugfixes, for further information see: [Commits](https://github.com/in2code-de/in2studyfinder/commits/12.0.0)                                                                                         |
+| 12.0.0  | 2025-02-10 | [!!!]TASK    | Update JavaScript event handling, Minor bugfixes, for further information see:[Commits](https://github.com/in2code-de/in2studyfinder/commits/12.0.0)                                                                                          |
 | 11.0.0  | 2023-11-24 | [!!!]FEATURE | Add TYPO3 12 support                                                                                                                                                                                                                          |
 | 10.0.0  | 2023-07-11 | [!!!]BUGFIX  | prevent javascript exception while paginate if no filter is present in the current template                                                                                                                                                   |
-| 9.0.4   | 2023-01-20 | BUGFIX       | Minor bugfixes, for further information see: [Commits](https://github.com/in2code-de/in2studyfinder/commits/9.0.4)                                                                                                                            |
-| 9.0.3   | 2023-01-09 | BUGFIX       | Minor bugfixes, for further information see: [Commits](https://github.com/in2code-de/in2studyfinder/commits/9.0.3)                                                                                                                            |
-| 9.0.2   | 2023-01-09 | BUGFIX       | Minor bugfixes, for further information see: [Commits](https://github.com/in2code-de/in2studyfinder/commits/9.0.2)                                                                                                                            |
-| 9.0.1   | 2022-11-28 | BUGFIX       | Minor bugfixes, for further information see: [Commits](https://github.com/in2code-de/in2studyfinder/commits/9.0.1)                                                                                                                            |
-| 9.0.0   | 2022-11-22 | [!!!]FEATURE | Add PHP8 support, add php code quality tools, complete javascript overhaul (no requirement of jQuery anymore) see [Migration from 8 to 9](./Documentation/Migration/8to9.md) for further information                                          |
+| 9.0.4   | 2023-01-20 | BUGFIX       | Minor bugfixes, for further information see:[Commits](https://github.com/in2code-de/in2studyfinder/commits/9.0.4)                                                                                                                             |
+| 9.0.3   | 2023-01-09 | BUGFIX       | Minor bugfixes, for further information see:[Commits](https://github.com/in2code-de/in2studyfinder/commits/9.0.3)                                                                                                                             |
+| 9.0.2   | 2023-01-09 | BUGFIX       | Minor bugfixes, for further information see:[Commits](https://github.com/in2code-de/in2studyfinder/commits/9.0.2)                                                                                                                             |
+| 9.0.1   | 2022-11-28 | BUGFIX       | Minor bugfixes, for further information see:[Commits](https://github.com/in2code-de/in2studyfinder/commits/9.0.1)                                                                                                                             |
+| 9.0.0   | 2022-11-22 | [!!!]FEATURE | Add PHP8 support, add php code quality tools, complete javascript overhaul (no requirement of jQuery anymore) see[Migration from 8 to 9](./Documentation/Migration/8to9.md) for further information                                           |
 | 8.0.3   | 2022-10-14 | BUGFIX       | Fix export problem "Cannot unpack array with string keys" by passing values from signal to slot                                                                                                                                               |
 | 8.0.2   | 2022-07-18 | BUGFIX       | change makeCategorizable to the new category TCA type "category", fix default course object in the detail view if the course class is overwritten                                                                                             |
 | 8.0.1   | 2022-06-03 | BUGFIX       | prevent "must not be accessed before initialization" exception if the caching is disabled                                                                                                                                                     |
@@ -339,8 +346,9 @@ Happy coding
 
 ## Branches, TYPO3 Support, PHP Support
 
+
 | Version | TYPO3      | PHP       | Support/Development                                               | Branch   |
-|---------|------------|-----------|-------------------------------------------------------------------|----------|
+| ------- | ---------- | --------- | ----------------------------------------------------------------- | -------- |
 | 13      | 13 LTS     | 8.2 - 8.4 | Features, Bugfixes, Security Updates                              | master   |
 | 12, 11  | 12 LTS     | 8.1       | Bugfixes, Security Updates                                        | typo3-12 |
 | 9, 10   | 11 ELTS    | 7.4 - 8.0 | Security Updates - if you want feature backports ask for an offer | typo3-11 |
@@ -374,7 +382,6 @@ it is possible to execute your own javascript code on specific events.
 ```typo3_typoscript
 page.includeJSFooter.studyfinderExtenal = EXT:YOUREXTENSION/Resources/Public/JavaScript/extend.js
 ```
-
 extend.js:
 
 ```javascript
@@ -395,25 +402,27 @@ if (window.in2studyfinder !== null) {
     };
 }
 ```
-
 #### API:
 
 **Studyfinder:**
 
+
 | function    | description                                                    |
-|-------------|----------------------------------------------------------------|
+| ----------- | -------------------------------------------------------------- |
 | getInstance | returns the requested instance. Parameter instanceId (integer) |
 
 **Instance:**
 
+
 | event name | description                         |
-|------------|-------------------------------------|
+| ---------- | ----------------------------------- |
 | onUpdate   | is executed after every fetch call. |
 
 **Filter:**
 
+
 | event name | description                               |
-|------------|-------------------------------------------|
+| ---------- | ----------------------------------------- |
 | onClick    | executed after the pagination link click. |
 
 **Quicksearch:**
@@ -422,16 +431,18 @@ nothing yet.
 
 **Pagination:**
 
+
 | event name | description                               |
-|------------|-------------------------------------------|
+| ---------- | ----------------------------------------- |
 | onClick    | executed after the pagination link click. |
 
 ### Testing
 
 #### Execute extension tests:
 
+
 | ddev command         | description                    |
-|----------------------|--------------------------------|
+| -------------------- | ------------------------------ |
 | ddev test-all        | executes all extension tests   |
 | ddev test-unit       | executes only unit tests       |
 | ddev test-functional | executes only functional tests |
@@ -448,24 +459,27 @@ For automatic fixes execute `ddev qa-php-fixer`
 
 #### Execute QA Tests:
 
+
 | ddev command | description                            |
-|--------------|----------------------------------------|
+| ------------ | -------------------------------------- |
 | ddev qa-php  | executes phpcs and phpmd quality tools |
 
 ## Accessibility Testing with Pa11y and HTML-Validate
 
 To ensure compliance with accessibility standards (WCAG 2.2 / BITV 2.0), this project integrates automated accessibility testing using Pa11y CLI and HTML-Validate.
-Both tools can be run via npm scripts and generate structured JSON reports in the /a11y-reports/ directory.
+Both tools can be run via npm scripts and generate structured JSON reports in the accessibility/reports/ directory.
 
 ### Report Directory Structure
-a11y-reports/
-├── pa11y/                  # Individual reports for each tested view
-│   ├── pa11y-summary.json
-│   ├── your-view.json
-│   └── ...
-├── htmlvalidate/           # Static HTML validation reports
-│   └── htmlvalidate-report.json
-└── full-a11y-reports/      # Combined merged report (Pa11y + HTML-Validate)
+
+accessibility/
+├──reports/
+    ├── pa11y/                  # Individual reports for each tested view
+    │   ├── pa11y-summary.json
+    │   ├── your-view.json
+    │   └── ...
+    ├── htmlvalidate/           # Static HTML validation reports
+    │   └── htmlvalidate-report.json
+    └── full-a11y-reports/      # Combined merged report (Pa11y + HTML-Validate)
     └── full-a11y-report.json
 
 ### Installation
@@ -474,26 +488,19 @@ Run npm installation in the project root:
 
 `npm install`
 
+The required development dependencies are defined in the `accessibility/package.json`:
 
-The required development dependencies are defined in the `package.json`:
-
-`
-"devDependencies": {
-"pa11y-ci": "^4.0.1",
-"html-validate": "^9.7.1"
-}
-`
+`"devDependencies": { "pa11y-ci": "^4.0.1", "html-validate": "^9.7.1" }`
 
 ### Running the Tests
 
 Before running the tests, define the URLs and file paths that the tools should check.
-Then run:
+Then go to accessibility directory and run:
 
 `npm run test:a11y`
 
-
 This command performs a complete accessibility check (Pa11y + HTML-Validate) and produces a merged report located at
-`a11y-reports/full-a11y-reports/full-a11y-report.json.
+`accessibility/reports/full-a11y-reports/full-a11y-report.json.
 
 ### Pa11y Setup
 
@@ -508,33 +515,18 @@ Pa11y provides extensive configuration options — see the official documentatio
 
 **Default settings for this project:**
 
-`{
-"runners": ["axe"],
-"reporter": "json",
-"timeout": 30000,
-"ignore": ["color-contrast"]
-}`
+`{ "runners": ["axe"], "reporter": "json", "timeout": 30000, "ignore": ["color-contrast"] }`
 
 ### HTML-Validate Testing Setup
 
 The HTML-Validate command and file paths are defined in `package.json`.
 By default, the validation checks all Fluid template files within the following path:
 
-`Resources/Private/{Layouts,Partials,Templates}/**/*.html`
-
+`../Resources/Private/{Layouts,Partials,Templates}/**/*.html`
 
 **Default settings for this project:**
 in `.htmlvalidate.json`
-`
-{
-"extends": ["html-validate:a11y"],
-"rules": {
-"heading-level": "error",
-"input-missing-label": "error",
-"long-title": "warn"
-}
-}`
-
+` { "extends": ["html-validate:a11y"], "rules": { "heading-level": "error", "input-missing-label": "error", "long-title": "warn" } }`
 
 The configuration extends the built-in a11y preset, which already includes most accessibility-related rules.
 Additional custom rules were added to ensure all WCAG-relevant issues are covered.
@@ -544,5 +536,3 @@ For more details, see:
 [HTML-Validate Rule Presets](https://html-validate.org/rules/presets.html?utm_source=chatgpt.com)
 
 [HTML-Validate Source Repository](https://gitlab.com/html-validate/html-validate/-/tree/master/src/config/presets)
-
-
