@@ -12,7 +12,7 @@
     "pa11y:faculty": "pa11y-ci --reporter json -c .pa11y.defaults.json https://in2studyfinder.ddev.site/filter-fakultaeten > reports/pa11y/filter-faculty.json",
     "pa11y:noresults": "pa11y-ci --reporter json -c .pa11y.defaults.json \"https://in2studyfinder.ddev.site/listen-ansicht#courseLanguage=12&faculty=4\" > reports/pa11y/noresults.json",
     "pa11y:search": "pa11y-ci --reporter json -c .pa11y.defaults.json https://in2studyfinder.ddev.site/fast-search > reports/pa11y/search.json",
-    "validate:html": "npx html-validate '../Resources/Private/{Layouts,Partials,Templates}/**/*.html' --formatter json > reports/htmlvalidate/htmlvalidate-report.json",
+    "validate:html": "npx html-validate --config .htmlvalidate.json '../Resources/Private/{Layouts,Partials,Templates}/**/*.html' --formatter json > reports/htmlvalidate/htmlvalidate-report.json",
     "a11y:merge": "node scripts/merge-a11y-reports.js",
     "test:a11y": "npm run validate:html; npm run pa11y:all; npm run a11y:merge"
   }
