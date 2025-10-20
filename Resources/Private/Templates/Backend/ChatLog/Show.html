@@ -38,7 +38,7 @@
 									<p>
 										<f:if condition="{chatLog.messages}">
 											<f:then>
-												<span class="badge badge-success">{f:count(subject: chatLog.messages)}</span>
+												<span class="badge badge-info">{f:count(subject: chatLog.messages)}</span>
 											</f:then>
 											<f:else>
 												<span class="badge badge-secondary">0</span>
@@ -59,7 +59,7 @@
 								</div>
 								<div class="card-body">
 									<f:for each="{chatLog.messages}" as="message" iteration="iteration">
-										<div class="card mb-2">
+										<div class="card mb-2{f:if(condition: '{message.role} != \'user\'', then: ' text-bg-info')}">
 											<div class="card-header" data-card-widget="collapse">
 												<h4 class="card-title">
 													<f:if condition="{message.role} == 'user'">
@@ -72,7 +72,7 @@
 													</f:if>
 												</h4>
 											</div>
-											<div class="card-body">
+											<div class="card-body{f:if(condition: '{message.role} == \'user\'', then: ' text-end')}">
 												<f:comment>!!! Untrusted content !!!</f:comment>
 												<f:sanitize.html>
 													<f:format.nl2br>{message.content}</f:format.nl2br>

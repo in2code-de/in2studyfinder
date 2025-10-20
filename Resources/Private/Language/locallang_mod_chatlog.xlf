@@ -55,7 +55,7 @@
                 <source>Created:</source>
             </trans-unit>
             <trans-unit id="show.plugin_id">
-                <source>Plugin ID (Page):</source>
+                <source>Plugin ID:</source>
             </trans-unit>
             <trans-unit id="show.total_messages">
                 <source>Total Messages:</source>

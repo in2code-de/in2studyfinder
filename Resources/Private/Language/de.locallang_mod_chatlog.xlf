@@ -55,7 +55,7 @@
                 <target>Erstellt:</target>
             </trans-unit>
             <trans-unit id="show.plugin_id">
-                <target>Plugin-ID (Seite):</target>
+                <target>Plugin-ID:</target>
             </trans-unit>
             <trans-unit id="show.total_messages">
                 <target>Nachrichten gesamt:</target>
