@@ -84,6 +84,7 @@ class ChatLogRepository
                         $this->queryBuilder->createNamedParameter($pageUid)
                     )
                 )
+                ->orderBy('log.crdate', 'DESC')
                 ->executeQuery()
                 ->fetchAllAssociative();
         } catch (Exception $e) {
