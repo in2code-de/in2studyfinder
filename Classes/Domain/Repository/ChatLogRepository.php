@@ -6,11 +6,8 @@ namespace In2code\In2studyfinder\Domain\Repository;
 
 use Doctrine\DBAL\Exception;
 use LogicException;
-use PDO;
 use Psr\Log\LoggerInterface;
-use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 class ChatLogRepository
 {
@@ -46,7 +43,7 @@ class ChatLogRepository
         return is_array($result) ? $result : null;
     }
 
-    public function findBySessionIdentifier(string $sessionIdentifier): array|null
+    public function findBySessionAndPluginIdentifier(string $sessionIdentifier, int $pluginUid): array|null
     {
         try {
             $result = $this->queryBuilder->select('*')
@@ -55,6 +52,12 @@ class ChatLogRepository
                     $this->queryBuilder->expr()->eq(
                         'session_id',
                         $this->queryBuilder->createNamedParameter($sessionIdentifier)
+                    )
+                )
+                ->andWhere(
+                    $this->queryBuilder->expr()->eq(
+                        'plugin_id',
+                        $this->queryBuilder->createNamedParameter($pluginUid)
                     )
                 )
                 ->executeQuery()
@@ -93,33 +96,19 @@ class ChatLogRepository
         }
     }
 
-    public function update(array $logEntry): void
+    public function updateMessages(array $logEntry): void
     {
         $entryId = $logEntry['uid'] ?? throw new LogicException('Entry ID is missing', 1760096136);
-        unset($logEntry['uid']);
+        $messages = $logEntry['messages'] ?? throw new LogicException('Messages are missing', 1760957170);
 
         $this->queryBuilder->update('tx_in2studyfinder_chat_log')
+            ->set('messages', $messages)
             ->where(
                 $this->queryBuilder->expr()->eq(
                     'uid',
                     $this->queryBuilder->createNamedParameter($entryId)
                 )
-            );
-
-        foreach ($logEntry as $key => $value) {
-            $type = Connection::PARAM_STR;
-            if (MathUtility::canBeInterpretedAsInteger($value) === true) {
-                $type = Connection::PARAM_INT;
-            }
-
-            $this->queryBuilder->set(
-                $key,
-                $this->queryBuilder->createNamedParameter($value),
-                true,
-                $type
-            );
-        }
-
-        $this->queryBuilder->executeStatement();
+            )
+            ->executeStatement();
     }
 }

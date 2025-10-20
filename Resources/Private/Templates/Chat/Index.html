@@ -27,7 +27,7 @@
 				<div class="chatbot-input">
 					<textarea class="chatbot-input" data-chatbot-input placeholder="{f:translate(key:'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:chatbot.textarea.placeholder')}" rows="1"></textarea>
 					<button class="chatbot-send" data-chatbot-send><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:chatbot.button.send"/></button>
-					<button class="delete-btn" data-action-url="{f:uri.action(action: 'deleteHistory', pageType: 1749648666, absolute: 1)}" data-chatbot-delete title="Delete conversation"><core:icon identifier="actions-delete" /></button>
+					<button class="delete-btn" data-action-url="{f:uri.action(action: 'deleteHistory', pageType: 1749648666, absolute: 1, arguments: {uid: data.uid})})}" data-chatbot-delete title="Delete conversation"><core:icon identifier="actions-delete" /></button>
 				</div>
 			</div>
 		</div>
@@ -56,7 +56,7 @@
 				</div>
 
 				<div class="chatbot-search-actions">
-					<button class="chatbot-search-clear-btn" data-action-url="{f:uri.action(action: 'deleteHistory', pageType: 1749648666, absolute: 1)}" data-chatbot-delete title="Clear search history">
+					<button class="chatbot-search-clear-btn" data-action-url="{f:uri.action(action: 'deleteHistory', pageType: 1749648666, absolute: 1, arguments: {uid: data.uid})})}" data-chatbot-delete title="Clear search history">
 						<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:chatbot.button.clear"/>
 					</button>
 				</div>

@@ -22,9 +22,10 @@ class ChatController extends ActionController
 
     public function indexAction(): ResponseInterface
     {
-        $this->chatService->deleteHistory($this->request);
+        $data = $this->request->getAttribute('currentContentObject')->data;
+        $this->chatService->deleteHistory($this->request, (int)($data['uid'] ?? 0));
         $this->view->assignMultiple([
-            'data' => $this->request->getAttribute('currentContentObject')->data,
+            'data' => $data,
         ]);
         return $this->htmlResponse();
     }
@@ -32,7 +33,7 @@ class ChatController extends ActionController
     public function chatAction(int $uid): ResponseInterface
     {
         try {
-            $messages = $this->chatService->chat($this->request, $this->settings);
+            $messages = $this->chatService->chat($this->request, $this->settings, $uid);
             $this->historyLogService->logHistory($messages, $this->request, $uid);
             $message = end($messages)['content'] ?? '';
             return $this->jsonResponse(json_encode(['success' => true, 'message' => $message]));
@@ -45,9 +46,9 @@ class ChatController extends ActionController
         }
     }
 
-    public function deleteHistoryAction(): ResponseInterface
+    public function deleteHistoryAction(int $uid): ResponseInterface
     {
-        $this->chatService->deleteHistory($this->request);
+        $this->chatService->deleteHistory($this->request, $uid);
         return $this->jsonResponse(json_encode(['success' => true]));
     }
 }

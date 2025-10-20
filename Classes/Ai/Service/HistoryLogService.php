@@ -6,10 +6,8 @@ namespace In2code\In2studyfinder\Ai\Service;
 
 use In2code\In2studyfinder\Domain\Repository\ChatLogRepository;
 use In2code\In2studyfinder\Service\FeSessionService;
-use LogicException;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 class HistoryLogService
 {
@@ -22,7 +20,7 @@ class HistoryLogService
     public function logHistory(array $messages, ServerRequestInterface $serverRequest, int $pluginUid): void
     {
         $sessionIdentifier = $this->feSessionService->getSessionIdentifier($serverRequest);
-        $logEntry = $this->chatLogRepository->findBySessionIdentifier($sessionIdentifier);
+        $logEntry = $this->chatLogRepository->findBySessionAndPluginIdentifier($sessionIdentifier, $pluginUid);
 
         if ($logEntry === null) {
             $logEntry = [
@@ -36,8 +34,8 @@ class HistoryLogService
             return;
         }
 
-        $logEntry['messages'] = json_encode(array_merge(json_decode($logEntry['messages'], true), $messages));
-        $this->chatLogRepository->update($logEntry);
+        $logEntry['messages'] = json_encode($messages);
+        $this->chatLogRepository->updateMessages($logEntry);
     }
 
     public function findOnPageSortedByPlugins(int $pageId): array
