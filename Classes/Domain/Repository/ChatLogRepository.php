@@ -7,6 +7,7 @@ namespace In2code\In2studyfinder\Domain\Repository;
 use Doctrine\DBAL\Exception;
 use LogicException;
 use Psr\Log\LoggerInterface;
+use Throwable;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
 class ChatLogRepository
@@ -110,5 +111,22 @@ class ChatLogRepository
                 )
             )
             ->executeStatement();
+    }
+
+    public function deleteByUid(int $uid): void
+    {
+        try {
+            $this->queryBuilder->delete('tx_in2studyfinder_chat_log')
+                ->where(
+                    $this->queryBuilder->expr()->eq(
+                        'uid',
+                        $this->queryBuilder->createNamedParameter($uid)
+                    )
+                )
+                ->executeStatement();
+        } catch (Throwable $e) {
+            $this->logger->error('Error deleting chat log: ' . $e->getMessage());
+            throw $e;
+        }
     }
 }

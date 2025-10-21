@@ -15,6 +15,7 @@ return [
             \In2code\In2studyfinder\Controller\Backend\ChatLogController::class => [
                 'list',
                 'show',
+                'delete',
             ],
         ],
     ],

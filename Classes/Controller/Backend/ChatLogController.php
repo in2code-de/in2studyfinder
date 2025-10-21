@@ -8,6 +8,7 @@ use In2code\In2studyfinder\Ai\Service\HistoryLogService;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 class ChatLogController extends ActionController
@@ -49,5 +50,32 @@ class ChatLogController extends ActionController
         ]);
 
         return $moduleTemplate->renderResponse('Backend/ChatLog/Show.html');
+    }
+
+    public function deleteAction(): ResponseInterface
+    {
+        $logId = (int)($this->request->getArgument('logId') ?? 0);
+
+        if ($logId === 0) {
+            $this->addFlashMessage(
+                'Invalid log ID provided.',
+                'Error',
+                ContextualFeedbackSeverity::ERROR
+            );
+            return $this->redirect('list');
+        }
+
+        try {
+            $this->historyLogService->deleteByUid($logId);
+            $this->addFlashMessage('Chat log entry has been successfully deleted.', 'Success');
+        } catch (\Exception $e) {
+            $this->addFlashMessage(
+                'An error occurred while deleting the chat log entry: ' . $e->getMessage(),
+                'Error',
+                ContextualFeedbackSeverity::ERROR
+            );
+        }
+
+        return $this->redirect('list');
     }
 }

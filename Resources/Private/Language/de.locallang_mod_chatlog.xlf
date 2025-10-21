@@ -36,6 +36,9 @@
             <trans-unit id="list.action.view_details">
                 <target>Details anzeigen</target>
             </trans-unit>
+            <trans-unit id="list.action.delete">
+                <target>Löschen</target>
+            </trans-unit>
             <trans-unit id="list.no_logs.title">
                 <target>Keine Chat-Protokolle gefunden</target>
             </trans-unit>

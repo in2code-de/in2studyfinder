@@ -13,6 +13,9 @@
 								<f:link.action action="list" class="btn btn-sm btn-secondary">
 									<i class="fas fa-arrow-left"></i> <f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:show.back_to_list" />
 								</f:link.action>
+								<f:link.action action="delete" arguments="{logId: chatLog.uid}" class="btn btn-sm btn-danger t3js-modal-trigger">
+									<f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:list.action.delete"/>
+								</f:link.action>
 							</div>
 						</div>
 						<div class="card-body">
@@ -103,7 +106,7 @@
 								<f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:show.not_found.message" />
 							</div>
 							<f:link.action action="list" class="btn btn-primary">
-								<i class="fas fa-arrow-left"></i> <f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:show.back_to_list" />
+								<f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:show.back_to_list" />
 							</f:link.action>
 						</div>
 					</div>

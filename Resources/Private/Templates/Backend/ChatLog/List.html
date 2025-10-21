@@ -1,5 +1,6 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
+<f:flashMessages />
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-12">
@@ -78,9 +79,13 @@
 												action="show"
 												arguments="{logId: chatLog.uid}"
 												class="btn btn-sm btn-primary">
-												<i class="fas fa-eye"></i>
-												<f:translate
-													id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:list.action.view_details"/>
+												<f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:list.action.view_details"/>
+											</f:link.action>
+											<f:link.action
+												action="delete"
+												arguments="{logId: chatLog.uid}"
+												class="btn btn-sm btn-danger t3js-modal-trigger">
+												<f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:list.action.delete"/>
 											</f:link.action>
 										</td>
 									</tr>

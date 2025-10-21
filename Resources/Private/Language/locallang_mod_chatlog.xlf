@@ -36,6 +36,9 @@
             <trans-unit id="list.action.view_details">
                 <source>View Details</source>
             </trans-unit>
+			<trans-unit id="list.action.delete">
+				<source>Delete</source>
+			</trans-unit>
             <trans-unit id="list.no_logs.title">
                 <source>No Chat Logs Found</source>
             </trans-unit>

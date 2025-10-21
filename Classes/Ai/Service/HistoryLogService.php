@@ -65,6 +65,11 @@ class HistoryLogService
         return $chatLog === null ? null : $this->decodeMessages($chatLog);
     }
 
+    public function deleteByUid(int $logId): void
+    {
+        $this->chatLogRepository->deleteByUid($logId);
+    }
+
     protected function decodeMessages(array $logEntry): array
     {
         $messages = json_decode($logEntry['messages'] ?? '[]', true);
