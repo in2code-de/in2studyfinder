@@ -49,6 +49,6 @@ class ChatController extends ActionController
     public function deleteHistoryAction(int $uid): ResponseInterface
     {
         $this->chatService->deleteHistory($this->request, $uid);
-        return $this->jsonResponse(json_encode(['success' => true]));
+        return $this->redirect('index');
     }
 }
