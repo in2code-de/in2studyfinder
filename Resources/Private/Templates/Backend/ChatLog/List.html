@@ -1,0 +1,114 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<f:flashMessages />
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-12">
+			<h3>
+				<f:if condition="{page.uid} > 0">
+					<f:then>
+						<f:translate
+							id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:list.title.with_page"
+							arguments="{0: page.title, 1: page.uid}"/>
+					</f:then>
+					<f:else>
+						<f:translate
+							id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:list.title.no_page"/>
+					</f:else>
+				</f:if>
+			</h3>
+
+			<f:if condition="{page.uid} == 0">
+				<div class="alert alert-info">
+					<h5><i class="icon fas fa-info"></i>
+						<f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:list.info.title"/>
+					</h5>
+					<f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:list.info.select_page"/>
+				</div>
+			</f:if>
+
+			<f:if condition="{page.uid} > 0">
+				<f:for each="{groupedLogs}" as="plugin">
+					<div class="card">
+						<div class="card-body table-responsive p-0">
+							<table class="table table-hover text-nowrap">
+								<thead>
+								<tr>
+									<th class="border-0 pe-0">
+										<f:if condition="{plugin.header}">
+											<f:then>
+												<span class="h4">{plugin.header} ({plugin.uid})</span>
+											</f:then>
+											<f:else>
+												<span class="h4">(No-title) ({plugin.uid})</span>
+											</f:else>
+										</f:if>
+									</th>
+								</tr>
+								<tr>
+									<th>
+										<f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:list.table.session_id"/>
+									</th>
+									<th>
+										<f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:list.table.messages"/>
+									</th>
+									<th>
+										<f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:list.table.created"/>
+									</th>
+									<th>
+										<f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:list.table.actions"/>
+									</th>
+								</tr>
+								</thead>
+								<tbody>
+								<f:for each="{plugin.logs}" as="chatLog">
+									<tr>
+										<td>
+											<code class="text-sm">{chatLog.session_id -> f:format.crop(maxCharacters: 20)}</code>
+										</td>
+										<td>
+											<span class="badge badge-info">
+												{f:count(subject: chatLog.messages)}
+											</span>
+										</td>
+										<td>
+											<f:format.date format="Y-m-d H:i:s">{chatLog.crdate}</f:format.date>
+										</td>
+										<td>
+											<f:link.action
+												action="show"
+												arguments="{logId: chatLog.uid}"
+												class="btn btn-sm btn-primary">
+												<f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:list.action.view_details"/>
+											</f:link.action>
+											<f:link.action
+												action="delete"
+												arguments="{logId: chatLog.uid}"
+												class="btn btn-sm btn-danger t3js-modal-trigger">
+												<f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:list.action.delete"/>
+											</f:link.action>
+										</td>
+									</tr>
+								</f:for>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</f:for>
+				<f:if condition="!{groupedLogs}">
+					<div class="alert alert-warning">
+						<h5><i class="icon fas fa-exclamation-triangle"></i>
+							<f:translate
+								id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:list.no_logs.title"/>
+						</h5>
+						<f:translate
+							id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:list.no_logs.message"
+							arguments="{0: page.title}"/>
+					</div>
+				</f:if>
+			</f:if>
+		</div>
+	</div>
+</div>
+
+</html>

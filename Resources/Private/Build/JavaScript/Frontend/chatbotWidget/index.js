@@ -41,7 +41,6 @@ class MistralChatbot {
         const sendBtn = this.chatbotWidget.querySelector('[data-chatbot-send]');
         const input = this.chatbotWidget.querySelector('[data-chatbot-input]');
         const toggle = this.chatbotWidget.querySelector('[data-chatbot-toggle]');
-        const deleteBtn = this.chatbotWidget.querySelector('[data-chatbot-delete]');
         const defaultPromptsContainer = this.chatbotWidget.querySelector('[data-defaultprompts]');
 
         // Initialize default prompts
@@ -64,18 +63,6 @@ class MistralChatbot {
             const isMinimized = this.ui.toggleChat();
             this.storage.saveMinimizedState(isMinimized);
         });
-
-        if (deleteBtn) {
-            deleteBtn.addEventListener('click', () => {
-              const deleteUrl = deleteBtn.getAttribute('data-action-url');
-              if (!deleteUrl) {
-                console.error('Delete URL is missing from the data-action-url attribute');
-                return;
-              }
-
-              this.messaging.deleteHistory(deleteUrl);
-            });
-        }
     }
 
     initDefaultPrompts(container, input) {

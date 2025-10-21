@@ -255,7 +255,6 @@ studyFinderAiChatbot {
     config {
         additionalHeaders.10.header = Content-Type: application/json
         additionalHeaders.10.replace = 1
-        no_cache = 1
         disableAllHeaderCode = 1
         disablePrefixComment = 1
         xhtml_cleaning = 0
@@ -263,14 +262,11 @@ studyFinderAiChatbot {
         debug = 0
     }
 
-    10 = USER
+    10 = EXTBASEPLUGIN
     10 {
-        userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+        cache.lifetime = 0
         extensionName = In2studyfinder
         pluginName = Chatbot
-        vendorName = In2code
-        controller = Chat
-        action = chat
     }
 }
 

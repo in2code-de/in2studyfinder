@@ -1,0 +1,119 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-12">
+			<f:if condition="{chatLog}">
+				<f:then>
+					<!-- Chat Log Header -->
+					<div class="card">
+						<div class="card-header">
+							<h3 class="card-title"><f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:show.title" arguments="{0: chatLog.uid}" /></h3>
+							<div class="card-tools">
+								<f:link.action action="list" class="btn btn-sm btn-secondary">
+									<i class="fas fa-arrow-left"></i> <f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:show.back_to_list" />
+								</f:link.action>
+								<f:link.action action="delete" arguments="{logId: chatLog.uid}" class="btn btn-sm btn-danger t3js-modal-trigger">
+									<f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:list.action.delete"/>
+								</f:link.action>
+							</div>
+						</div>
+						<div class="card-body">
+							<div class="row">
+								<div class="col-md-6">
+									<strong><f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:show.session_id" /></strong>
+									<p><code>{chatLog.session_id}</code></p>
+								</div>
+								<div class="col-md-6">
+									<strong><f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:show.created" /></strong>
+									<p>
+										<f:format.date format="Y-m-d H:i:s">{chatLog.crdate}</f:format.date>
+									</p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<strong><f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:show.plugin_id" /></strong>
+									<p>{chatLog.plugin_id}</p>
+								</div>
+								<div class="col-md-6">
+									<strong><f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:show.total_messages" /></strong>
+									<p>
+										<f:if condition="{chatLog.messages}">
+											<f:then>
+												<span class="badge badge-info">{f:count(subject: chatLog.messages)}</span>
+											</f:then>
+											<f:else>
+												<span class="badge badge-secondary">0</span>
+											</f:else>
+										</f:if>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Messages -->
+					<f:if condition="{chatLog.messages}">
+						<f:then>
+							<div class="card mt-3">
+								<div class="card-header">
+									<h4 class="card-title"><f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:show.chat_messages" /></h4>
+								</div>
+								<div class="card-body">
+									<f:for each="{chatLog.messages}" as="message" iteration="iteration">
+										<div class="card mb-2{f:if(condition: '{message.role} != \'user\'', then: ' text-bg-info')}">
+											<div class="card-header" data-card-widget="collapse">
+												<h4 class="card-title">
+													<f:if condition="{message.role} == 'user'">
+														<f:then>
+															<i class="fas fa-user text-primary"></i> <f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:show.user_message" arguments="{0: iteration.cycle}" />
+														</f:then>
+														<f:else>
+															<i class="fas fa-robot text-success"></i> <f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:show.assistant_response" arguments="{0: iteration.cycle}" />
+														</f:else>
+													</f:if>
+												</h4>
+											</div>
+											<div class="card-body{f:if(condition: '{message.role} == \'user\'', then: ' text-end')}">
+												<f:comment>!!! Untrusted content !!!</f:comment>
+												<f:sanitize.html>
+													<f:format.nl2br>{message.content}</f:format.nl2br>
+												</f:sanitize.html>
+											</div>
+										</div>
+									</f:for>
+								</div>
+							</div>
+						</f:then>
+						<f:else>
+							<div class="card mt-3">
+								<div class="card-body">
+									<div class="alert alert-info">
+										<h5><i class="icon fas fa-info"></i> <f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:show.no_messages.title" /></h5>
+										<f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:show.no_messages.description" />
+									</div>
+								</div>
+							</div>
+						</f:else>
+					</f:if>
+				</f:then>
+				<f:else>
+					<div class="card">
+						<div class="card-body">
+							<div class="alert alert-danger">
+								<h5><i class="icon fas fa-ban"></i> <f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:show.not_found.title" /></h5>
+								<f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:show.not_found.message" />
+							</div>
+							<f:link.action action="list" class="btn btn-primary">
+								<f:translate id="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:show.back_to_list" />
+							</f:link.action>
+						</div>
+					</div>
+				</f:else>
+			</f:if>
+		</div>
+	</div>
+</div>
+
+</html>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" product-name="in2studyfinder">
+        <header/>
+        <body>
+            <trans-unit id="mlang_tabs_tab">
+                <source>Studyfinder Chatbot</source>
+            </trans-unit>
+            <trans-unit id="mlang_labels_tabdescr">
+                <source>View logs from the In2studyfinder chatbot</source>
+            </trans-unit>
+            <trans-unit id="list.title.with_page">
+                <source>Chat Logs for Page: %s (ID: %s)</source>
+            </trans-unit>
+            <trans-unit id="list.title.no_page">
+                <source>Chat Logs - No Page Selected</source>
+            </trans-unit>
+            <trans-unit id="list.info.title">
+                <source>Information</source>
+            </trans-unit>
+            <trans-unit id="list.info.select_page">
+                <source>Please select a page from the page tree to view chat logs for that specific page.</source>
+            </trans-unit>
+            <trans-unit id="list.table.session_id">
+                <source>Session ID</source>
+            </trans-unit>
+            <trans-unit id="list.table.created">
+                <source>Created</source>
+            </trans-unit>
+            <trans-unit id="list.table.messages">
+                <source>Messages</source>
+            </trans-unit>
+            <trans-unit id="list.table.actions">
+                <source>Actions</source>
+            </trans-unit>
+            <trans-unit id="list.action.view_details">
+                <source>View Details</source>
+            </trans-unit>
+			<trans-unit id="list.action.delete">
+				<source>Delete</source>
+			</trans-unit>
+            <trans-unit id="list.no_logs.title">
+                <source>No Chat Logs Found</source>
+            </trans-unit>
+            <trans-unit id="list.no_logs.message">
+                <source>No chat logs were found for the selected page "%s".</source>
+            </trans-unit>
+            <trans-unit id="show.title">
+                <source>Chat Log Details - ID: %s</source>
+            </trans-unit>
+            <trans-unit id="show.back_to_list">
+                <source>Back to List</source>
+            </trans-unit>
+            <trans-unit id="show.session_id">
+                <source>Session ID:</source>
+            </trans-unit>
+            <trans-unit id="show.created">
+                <source>Created:</source>
+            </trans-unit>
+            <trans-unit id="show.plugin_id">
+                <source>Plugin ID:</source>
+            </trans-unit>
+            <trans-unit id="show.total_messages">
+                <source>Total Messages:</source>
+            </trans-unit>
+            <trans-unit id="show.chat_messages">
+                <source>Chat Messages</source>
+            </trans-unit>
+            <trans-unit id="show.user_message">
+                <source>#%s User</source>
+            </trans-unit>
+            <trans-unit id="show.assistant_response">
+                <source>#%s AI Assistant</source>
+            </trans-unit>
+            <trans-unit id="show.no_messages.title">
+                <source>No Messages</source>
+            </trans-unit>
+            <trans-unit id="show.no_messages.description">
+                <source>This chat log contains no messages or the messages could not be decoded.</source>
+            </trans-unit>
+            <trans-unit id="show.not_found.title">
+                <source>Chat Log Not Found</source>
+            </trans-unit>
+            <trans-unit id="show.not_found.message">
+                <source>The requested chat log could not be found.</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -496,3 +496,20 @@ CREATE TABLE tx_in2studyfinder_studycourse_admissionrequirement_mm
     KEY uid_local (uid_local),
     KEY uid_foreign (uid_foreign)
 );
+
+#
+# Table structure for table 'tx_in2studyfinder_chat_log'
+#
+CREATE TABLE tx_in2studyfinder_chat_log
+(
+	uid int(11) NOT NULL auto_increment,
+	crdate int(11) unsigned DEFAULT '0' NOT NULL,
+
+	session_id varchar(190) DEFAULT '' NOT NULL,
+	plugin_id int(11) DEFAULT 0 NOT NULL,
+	messages text DEFAULT '' NOT NULL,
+
+	PRIMARY KEY (uid),
+	KEY session (session_id),
+	KEY plugin (plugin_id)
+);

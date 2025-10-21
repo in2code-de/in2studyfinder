@@ -14,47 +14,45 @@ class ChatService
 {
     protected const SESSION_KEY = 'history';
 
-    protected PromptInterface $prompt;
-    protected MistralAdapter $mistralAdapter;
-    protected FeSessionService $feSessionService;
-
     public function __construct(
-        MistralAdapter $mistralAdapter,
-        PromptInterface $prompt,
-        FeSessionService $feSessionService
+        protected MistralAdapter $mistralAdapter,
+        protected PromptInterface $prompt,
+        protected FeSessionService $feSessionService
     ) {
-        $this->mistralAdapter = $mistralAdapter;
-        $this->feSessionService = $feSessionService;
-        $this->prompt = $prompt;
     }
 
-    public function chat(ServerRequestInterface $request, array $pluginSettings): array
+    public function chat(ServerRequestInterface $request, array $pluginSettings, int $pluginUid): array
     {
         $message = $this->getRequestBody($request)['message'] ?? throw new InvalidArgumentException('Message is missing', 1749708782);
 
-        $history = $this->getHistory($request, $pluginSettings);
+        $history = $this->getHistory($request, $pluginSettings, $pluginUid);
         $history[] = ['role' => 'user', 'content' => $message];
 
         $messages = $this->mistralAdapter->sendMessage($history, $pluginSettings);
-        $this->feSessionService->saveToSession(self::SESSION_KEY, $messages, $request);
+        $this->feSessionService->saveToSession($this->getSessionKey($pluginUid), $messages, $request);
 
         return $messages;
     }
 
-    public function deleteHistory(ServerRequestInterface $request): void
+    public function deleteHistory(ServerRequestInterface $request, int $pluginUid): void
     {
-        $this->feSessionService->saveToSession(self::SESSION_KEY, null, $request);
+        $this->feSessionService->saveToSession($this->getSessionKey($pluginUid), null, $request);
     }
 
-    protected function getHistory(ServerRequestInterface $request, array $pluginSettings): array
+    protected function getHistory(ServerRequestInterface $request, array $pluginSettings, int $pluginUid): array
     {
-        $history = $this->feSessionService->getFromSession(self::SESSION_KEY, $request);
+        $history = $this->feSessionService->getFromSession($this->getSessionKey($pluginUid), $request);
 
         if (!is_array($history) || $history === []) {
             $history[] = ['role' => 'system', 'content' => $this->prompt->getLocalizedPrompt($pluginSettings)];
         }
 
         return $history;
+    }
+
+    protected function getSessionKey(int $pluginUid): string
+    {
+        return self::SESSION_KEY . '_' . $pluginUid;
     }
 
     protected function getRequestBody(ServerRequestInterface $request): array

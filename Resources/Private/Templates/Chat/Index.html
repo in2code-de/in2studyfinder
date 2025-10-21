@@ -7,7 +7,7 @@
 
 <f:if condition="{settings.isWidget}">
 	<f:then>
-		<div class="chatbotwidget-container" data-chatbot-container-widget data-chatbot-url="{f:uri.action(action: 'chat', pageType: 1749648666, absolute: 1)}">
+		<div class="chatbotwidget-container" data-chatbot-container-widget data-chatbot-url="{f:uri.action(action: 'chat', pageType: 1749648666, absolute: 1, arguments: {uid: data.uid})}">
 			<div class="chatbot-header">
 				<h2>{settings.chatbotName -> f:or(alternative: 'ChatBot Assistant')} <span class="status-indicator"></span></h2>
 				<button class="toggle-btn" data-chatbot-toggle>−</button>
@@ -27,13 +27,13 @@
 				<div class="chatbot-input">
 					<textarea class="chatbot-input" data-chatbot-input placeholder="{f:translate(key:'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:chatbot.textarea.placeholder')}" rows="1"></textarea>
 					<button class="chatbot-send" data-chatbot-send><f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:chatbot.button.send"/></button>
-					<button class="delete-btn" data-action-url="{f:uri.action(action: 'deleteHistory', pageType: 1749648666, absolute: 1)}" data-chatbot-delete title="Delete conversation"><core:icon identifier="actions-delete" /></button>
+					<f:link.action action="deleteHistory" pageType="1749648666" arguments="{uid: data.uid}" class="delete-btn" title="Delete conversation"><core:icon identifier="actions-delete" /></f:link.action>
 				</div>
 			</div>
 		</div>
 	</f:then>
 	<f:else>
-		<div class="chatbot-search-container" data-chatbot-container data-chatbot-url="{f:uri.action(action: 'chat', pageType: 1749648666, absolute: 1)}">
+		<div class="chatbot-search-container" data-chatbot-container data-chatbot-url="{f:uri.action(action: 'chat', pageType: 1749648666, absolute: 1, arguments: {uid: data.uid})}">
 			<div class="chatbot-search-header">
 				<h3 class="chatbot-search-title">{settings.chatbotName -> f:or(alternative: 'ChatBot Assistant')}</h3>
 				<button class="chatbot-hidden-toggle" data-chatbot-toggle style="display: none;">−</button>
@@ -56,9 +56,9 @@
 				</div>
 
 				<div class="chatbot-search-actions">
-					<button class="chatbot-search-clear-btn" data-action-url="{f:uri.action(action: 'deleteHistory', pageType: 1749648666, absolute: 1)}" data-chatbot-delete title="Clear search history">
+					<f:link.action action="deleteHistory" pageType="1749648666" arguments="{uid: data.uid}" class="chatbot-search-clear-btn">
 						<f:translate key="LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:chatbot.button.clear"/>
-					</button>
+					</f:link.action>
 				</div>
 			</div>
 		</div>
