@@ -11,6 +11,18 @@ class Quickselect {
     this.settings = {
       maxOptions: null,
       searchField: ['text', 'keywords'],
+      onInitialize: function() {
+        //get origin aria-label
+        const originalSelect = this.input;
+        const ariaLabel = originalSelect.getAttribute('aria-label');
+
+        if (ariaLabel) {
+          // set aria-label to rendered input
+          this.control_input.setAttribute('aria-label', ariaLabel);
+          // set label to invisible input
+          this.input.setAttribute('aria-label', ariaLabel);
+        }
+      },
       onDropdownOpen: function() {
        this.clear(); // prevents the "preselect" bug of firefox 106
       },

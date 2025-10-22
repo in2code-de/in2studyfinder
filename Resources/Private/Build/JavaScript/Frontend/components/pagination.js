@@ -48,6 +48,8 @@ class Pagination {
       window.in2studyfinder.getInstance(instanceId).filter.call(targetPage);
     } else {
       LoaderUtility.enableLoader();
+      // Announce loading to screen readers
+      this.announceToScreenReader('loading');
 
       fetch(url, {
         method: 'POST',
@@ -63,9 +65,70 @@ class Pagination {
 
         LoaderUtility.disableLoader();
         window.in2studyfinder.getInstance(instanceId).update(this.studyfinderElement);
+
+        // Announce results update to screen readers
+        this.announceResultsUpdate();
       });
     }
   };
+
+  /**
+   * Announce loading or result changes to screen readers via aria-live region
+   *
+   * @param {string} messageType - Type of message: 'loading' or 'resultsUpdated'
+   */
+  announceToScreenReader(messageType) {
+    const feedbackElement = this.studyfinderElement.querySelector('#filter-feedback');
+    if (!feedbackElement) return;
+
+    let message = '';
+    const dataAttr = `data-${messageType.replace(/([A-Z])/g, '-$1').toLowerCase()}-text`;
+    message = feedbackElement.getAttribute(dataAttr) || '';
+
+    // Clear first to ensure change detection
+    feedbackElement.textContent = '';
+
+    // Use setTimeout to ensure the clear is processed before setting new text
+    setTimeout(() => {
+      feedbackElement.textContent = message;
+    }, 100);
+  }
+
+  /**
+   * Announce results update with current page info to screen readers
+   */
+  announceResultsUpdate() {
+    const feedbackElement = this.studyfinderElement.querySelector('#filter-feedback');
+    if (!feedbackElement) return;
+
+    // Get the count from the updated DOM
+    const itemCountElement = this.studyfinderElement.querySelector('.in2studyfinder__item-count p');
+
+    if (itemCountElement) {
+      const countText = itemCountElement.textContent.trim();
+      const countMatch = countText.match(/^\d+/);
+
+      if (countMatch) {
+        const count = parseInt(countMatch[0], 10);
+        let message = '';
+
+        if (count === 1) {
+          message = feedbackElement.getAttribute('data-results-count-single') || '';
+        } else {
+          const template = feedbackElement.getAttribute('data-results-count-multiple') || '';
+          message = template.replace('%s', count);
+        }
+
+        // Clear first to ensure change detection
+        feedbackElement.textContent = '';
+
+        // Use setTimeout to ensure the clear is processed before setting new text
+        setTimeout(() => {
+          feedbackElement.textContent = message;
+        }, 100);
+      }
+    }
+  }
 
   onClick() {
   }

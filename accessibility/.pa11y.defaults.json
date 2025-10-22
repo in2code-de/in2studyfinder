@@ -1,0 +1,12 @@
+{
+	"defaults": {
+		"runners": ["axe"],
+		"reporter": "json",
+		"timeout": 30000,
+		"wait": 1500,
+		"ignore": [
+			"color-contrast",
+			"aria-valid-attr-value"
+		]
+	}
+}

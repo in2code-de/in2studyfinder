@@ -5,6 +5,7 @@
 				pluginName="Pi2"
 				pageUid="{settings.flexform.studyCourseDetailPage}">
 
+
 	<in2studyfinder:form.select property="uid"
 															name="studyCourse"
 															optionLabelField="titleWithAcademicDegree"
@@ -12,6 +13,7 @@
 															prependOptionLabel="{f:translate(key:'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:pleaseSelectCourse')}"
 															options="{studyCourses}"
 															additionalOptionAttributes="{data-keywords: 'metaKeywords'}"
+															additionalAttributes="{ 'aria-label': '{f:translate(key:\'LLL:EXT:in2studyfinder/Resources/Private/Language/locallang.xlf:studyCourseSelect\')}' }"
 															class="c-in2studyfinder-quick-search__select js-in2studyfinder-select"
 															tabindex="0"
 															detailPageUid="{settings.flexform.studyCourseDetailPage}"

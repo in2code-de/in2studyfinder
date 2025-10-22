@@ -108,8 +108,14 @@
 			<trans-unit id="filter">
 				<source>Filter</source>
 			</trans-unit>
+			<trans-unit id="showFilter">
+				<source>Show Filter Options</source>
+			</trans-unit>
 			<trans-unit id="filter.reset">
 				<source>reset Filter</source>
+			</trans-unit>
+			<trans-unit id="filterRegion">
+				<source>Filter Area</source>
 			</trans-unit>
 			<trans-unit id="all">
 				<source>all</source>
@@ -161,6 +167,51 @@
 			</trans-unit>
 			<trans-unit id="pleaseSelectCourse">
 				<source>Select degree program or enter keyword</source>
+			</trans-unit>
+			<trans-unit id="studyCourseSelect">
+				<source>Select degree program: </source>
+			</trans-unit>
+			<trans-unit id="openPage">
+				<source>Open Page</source>
+			</trans-unit>
+			<trans-unit id="skipToResults">
+				<source>Skip to results</source>
+			</trans-unit>
+			<trans-unit id="skipToContent">
+				<source>Skip to Content</source>
+			</trans-unit>
+			<trans-unit id="studyCourseLink">
+				<source>Link to Study Course</source>
+			</trans-unit>
+			<trans-unit id="mainContent">
+				<source>Main Content</source>
+			</trans-unit>
+			<trans-unit id="fastSearch">
+				<source>Fast Search</source>
+			</trans-unit>
+			<trans-unit id="results">
+				<source>Results</source>
+			</trans-unit>
+			<trans-unit id="screenreader.loading">
+				<source>Loading results, please wait...</source>
+			</trans-unit>
+			<trans-unit id="screenreader.filterApplied">
+				<source>Filter applied.</source>
+			</trans-unit>
+			<trans-unit id="screenreader.filterReset">
+				<source>All filters have been reset.</source>
+			</trans-unit>
+			<trans-unit id="screenreader.resultsUpdated">
+				<source>Results updated.</source>
+			</trans-unit>
+			<trans-unit id="screenreader.noResults">
+				<source>No study courses match your filter criteria.</source>
+			</trans-unit>
+			<trans-unit id="screenreader.resultsCount.single">
+				<source>Found 1 study course.</source>
+			</trans-unit>
+			<trans-unit id="screenreader.resultsCount.multiple">
+				<source>Found %s study courses.</source>
 			</trans-unit>
 		</body>
 	</file>

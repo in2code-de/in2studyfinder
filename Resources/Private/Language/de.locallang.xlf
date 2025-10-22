@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" product-name="in2studyfinder">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" product-name="in2studyfinder">
 		<header/>
 		<body>
 			<trans-unit id="studycourse">
@@ -138,9 +138,17 @@
 			<trans-unit id="filter">
 				<source>Filter</source>
 			</trans-unit>
+			<trans-unit id="showFilter">
+				<source>Show Filter Options</source>
+				<target>Filterbereich anzeigen</target>
+			</trans-unit>
 			<trans-unit id="filter.reset">
 				<source>reset Filter</source>
 				<target>Filter zurücksetzen</target>
+			</trans-unit>
+			<trans-unit id="filterRegion">
+				<source>Filter Area</source>
+				<target>Filterbereich</target>
 			</trans-unit>
 			<trans-unit id="all">
 				<source>all</source>
@@ -209,6 +217,66 @@
 			<trans-unit id="pleaseSelectCourse">
 				<source>Select degree program or enter keyword</source>
 				<target>Studiengang wählen oder Suchbegriff eingeben</target>
+			</trans-unit>
+			<trans-unit id="studyCourseSelect">
+				<source>Select degree program: </source>
+				<target>Studiengang auswählen:</target>
+			</trans-unit>
+			<trans-unit id="openPage">
+				<source>Open Page</source>
+				<target>Seite öffnen</target>
+			</trans-unit>
+			<trans-unit id="skipToResults">
+				<source>Skip to results</source>
+				<target>Zu den Ergebnissen springen</target>
+			</trans-unit>
+			<trans-unit id="skipToContent">
+				<source>Skip to Content</source>
+				<target>Zum Inhalt springen</target>
+			</trans-unit>
+			<trans-unit id="studyCourseLink">
+				<source>Link to Study Course</source>
+				<target>Link zum Studiengang</target>
+			</trans-unit>
+			<trans-unit id="mainContent">
+				<source>Main Content</source>
+				<target>Hauptinhalt</target>
+			</trans-unit>
+			<trans-unit id="fastSearch">
+				<source>Fast Search</source>
+				<target>Schnelle Suche</target>
+			</trans-unit>
+			<trans-unit id="results">
+				<source>Results</source>
+				<target>Ergebnisse</target>
+			</trans-unit>
+			<trans-unit id="screenreader.loading">
+				<source>Loading results, please wait...</source>
+				<target>Lade Ergebnisse, bitte warten...</target>
+			</trans-unit>
+			<trans-unit id="screenreader.filterApplied">
+				<source>Filter applied.</source>
+				<target>Filter angewendet.</target>
+			</trans-unit>
+			<trans-unit id="screenreader.filterReset">
+				<source>All filters have been reset.</source>
+				<target>Alle Filter wurden zurückgesetzt.</target>
+			</trans-unit>
+			<trans-unit id="screenreader.resultsUpdated">
+				<source>Results updated.</source>
+				<target>Ergebnisse aktualisiert.</target>
+			</trans-unit>
+			<trans-unit id="screenreader.noResults">
+				<source>No study courses match your filter criteria.</source>
+				<target>Keine Studiengänge entsprechen Ihren Filterkriterien.</target>
+			</trans-unit>
+			<trans-unit id="screenreader.resultsCount.single">
+				<source>Found 1 study course.</source>
+				<target>1 Studiengang gefunden.</target>
+			</trans-unit>
+			<trans-unit id="screenreader.resultsCount.multiple">
+				<source>Found %s study courses.</source>
+				<target>%s Studiengänge gefunden.</target>
 			</trans-unit>
 		</body>
 	</file>

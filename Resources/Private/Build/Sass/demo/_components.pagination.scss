@@ -5,8 +5,8 @@
 .in2studyfinder {
   &__pagebrowser {
     margin: {
-      top: 20px;
-      bottom: 20px;
+      top: 24px;
+      bottom: 24px;
     };
     text-align: center;
     list-style: none;
@@ -21,7 +21,6 @@
         size: 18px;
         weight: bold;
       };
-      margin-right: 15px;
 
       &:hover {
         color: $primaryColor;
@@ -31,13 +30,13 @@
 
   &__pagebrowser-page {
     &:last-child {
-      margin-right: 0;
+      margin-right: 24px;
     }
 
     &.current {
       color: $primaryColor;
       font: {
-          size: 18px;
+          size: 22px;
           weight: bold;
       };
     }
