@@ -5,11 +5,17 @@ declare(strict_types=1);
 namespace In2code\In2studyfinder\Controller\Backend;
 
 use In2code\In2studyfinder\Ai\Service\HistoryLogService;
+use In2code\Lux\Backend\Buttons\NavigationGroupButton;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\Buttons\GenericButton;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class ChatLogController extends ActionController
 {
@@ -17,6 +23,7 @@ class ChatLogController extends ActionController
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
         private readonly HistoryLogService $historyLogService,
         private readonly PageRepository $pageRepository,
+        private readonly IconFactory $iconFactory,
     ) {
     }
 
@@ -49,6 +56,26 @@ class ChatLogController extends ActionController
             'logId' => $logId
         ]);
 
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $deleteButton = GeneralUtility::makeInstance(GenericButton::class)
+            ->setTag('a')
+            ->setTitle(LocalizationUtility::translate('LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:list.action.delete' ))
+            ->setLabel(LocalizationUtility::translate('LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:list.action.delete' ))
+            ->setHref($this->uriBuilder->reset()->setArguments(['logId' => $logId])->uriFor('delete'))
+            ->setClasses('btn btn-sm btn-danger t3js-modal-trigger')
+            ->setIcon($this->iconFactory->getIcon('actions-delete'))
+            ->setShowLabelText(true);
+        $closeButton = GeneralUtility::makeInstance(GenericButton::class)
+            ->setTag('a')
+            ->setTitle(LocalizationUtility::translate('LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:show.back_to_list' ))
+            ->setLabel(LocalizationUtility::translate('LLL:EXT:in2studyfinder/Resources/Private/Language/locallang_mod_chatlog.xlf:show.back_to_list' ))
+            ->setHref($this->uriBuilder->reset()->uriFor('list'))
+            ->setClasses('btn btn-sm btn-secondary')
+            ->setIcon($this->iconFactory->getIcon('actions-close'))
+            ->setShowLabelText(true);
+
+        $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
+        $buttonBar->addButton($deleteButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
         return $moduleTemplate->renderResponse('Backend/ChatLog/Show.html');
     }
 
