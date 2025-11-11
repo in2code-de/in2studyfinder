@@ -7,7 +7,7 @@ $pluginName = 'in2studyfinder_chatbot';
     'in2studyfinder',
     'Chatbot',
     $ll . 'chatbot.plugin.title',
-    'in2studyfinder-chatbot-icon',
+    'in2studyfinder-plugin-icon',
         'Studyfinder',
         $ll . 'chatbot.plugin.description'
 );
@@ -26,4 +26,4 @@ $pluginName = 'in2studyfinder_chatbot';
     $pluginName
 );
 
-$GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'][$pluginName] = 'in2studyfinder-chatbot-icon';
+$GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'][$pluginName] = 'in2studyfinder-plugin-icon';
