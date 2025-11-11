@@ -18,6 +18,21 @@ The chatbot plugin uses Mistral AI to help users find study courses based on the
 
 ## Configuration
 
+### Feature Toggle
+
+The chatbot functionality can be controlled using the `ai_chatbot` feature toggle. This feature is enabled by default but can be disabled if needed.
+
+To disable the chatbot feature, add the following to your `ext_localconf.php` or `AdditionalConfiguration.php`:
+
+```php
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['ai_chatbot'] = false;
+```
+
+When the feature toggle is disabled:
+- The chatbot plugin will not be available in the content element wizard
+- Existing chatbot content elements will not render
+- The chatbot API endpoints will return appropriate error responses
+
 ### API Key Setup
 
 1. Go to the TYPO3 backend and navigate to **Admin Tools > Settings > Extension Configuration**.

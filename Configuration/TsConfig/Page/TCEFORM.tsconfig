@@ -1,0 +1,4 @@
+# Hide ai plugin if feature toggle "ai_chatbot" is disabled
+[feature("ai_chatbot") == false]
+  TCEFORM.tt_content.CType.removeItems := addToList(in2studyfinder_chatbot)
+[END]

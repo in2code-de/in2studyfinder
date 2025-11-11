@@ -1,0 +1,4 @@
+# Hide logging backend module if feature toggle "ai_chatbot" is disabled
+[feature("ai_chatbot") == false]
+  options.hideModules := addToList(web_in2studyfinder_chatlog)
+[END]

@@ -68,3 +68,6 @@ if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations
         ]
     ];
 }
+
+// register feature toggle
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['ai_chatbot'] ??= true;

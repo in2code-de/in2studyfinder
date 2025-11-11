@@ -1,1 +1,2 @@
 @import 'EXT:in2studyfinder/Configuration/TsConfig/Page/PluginPreview.tsconfig'
+@import 'EXT:in2studyfinder/Configuration/TsConfig/Page/TCEFORM.tsconfig'
