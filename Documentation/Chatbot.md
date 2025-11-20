@@ -71,6 +71,22 @@ This command will:
    - **Welcome Message**: Customize the welcome message shown when the chat is opened.
 5. Save and close the content element.
 
+### Screenshots
+
+Below are a few screenshots to help you identify the relevant places in TYPO3 and see what the chatbot looks like on the frontend:
+
+1. Plugin settings in the content element (Backend)
+
+   ![Chatbot plugin settings in TYPO3 content element](Images/screenshot_chatbot_plugin_settings.png)
+
+2. Chatbot backend module overview
+
+   ![Chatbot backend module](Images/screenshot_chatbot_be_module.png)
+
+3. Frontend chatbot widget
+
+   ![Frontend chatbot widget](Images/screenshot_chatbot_frontend.png)
+
 ## Customization
 1. the system prompt can be overwritten via typoscript `plugin.tx_in2studyfinder_chatbot.settings.prompt.{languageTwoLetterIsoCode}`
 2. To add a speakable Url for the chatbot api endpoint add the following snippet to your `siteconfiguration`:
