@@ -94,7 +94,7 @@ class PaginateViewHelper extends AbstractViewHelper
         $variables = GeneralUtility::_GET($pluginNamespace);
         if ($variables !== null) {
             if (!empty($variables[self::getName($arguments)]['currentPage'])) {
-                return (int)$variables[self::getName($arguments)]['currentPage'];
+                return max((int)$variables[self::getName($arguments)]['currentPage'], 1);
             }
         }
         return 1;
