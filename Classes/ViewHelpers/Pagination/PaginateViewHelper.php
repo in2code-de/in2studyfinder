@@ -96,7 +96,7 @@ class PaginateViewHelper extends AbstractViewHelper
             $request->hasArgument(self::getName($arguments)) &&
             array_key_exists('currentPage', $request->getArgument(self::getName($arguments)))
         ) {
-            return (int)$request->getArgument(self::getName($arguments))['currentPage'];
+            return max((int)$request->getArgument(self::getName($arguments))['currentPage'], 1);
         }
 
         return 1;
