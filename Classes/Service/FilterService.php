@@ -64,6 +64,7 @@ class FilterService extends AbstractService
         }
 
         // 2. remove empty values
+        $searchOptions = array_filter($searchOptions, 'is_array');
         $searchOptions = array_map('array_filter', $searchOptions);
         $searchOptions = array_filter($searchOptions);
 
