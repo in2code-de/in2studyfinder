@@ -77,9 +77,10 @@ class StudyCourseController extends ActionController
             $this->filterService->resolveFilterPropertyPath($searchOptions)
         );
 
-        $currentPage = $this->request->hasArgument('currentPage')
-            ? (int)$this->request->getArgument('currentPage')
-            : 1;
+        $currentPage = 1;
+        if ($this->request->hasArgument('currentPage')) {
+            $currentPage = max((int)$this->request->getArgument('currentPage'), 1);
+        }
 
         $itemsPerPage = (int)($this->settings['pagination']['itemsPerPage'] ?? 10);
         $maximumLinks = (int)($this->settings['pagination']['maximumNumberOfLinks'] ?? 15);
