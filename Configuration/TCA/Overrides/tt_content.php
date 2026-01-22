@@ -15,16 +15,19 @@ $plugins = [
     'filter' => [
         'name' => 'Filter',
         'title' => $languagePrefix . 'plugin.pi1',
+        'description' => $languagePrefix . 'plugin.pi1.description',
         'flexForm' => $flexFormFolder . 'Filter.xml',
     ],
     'detail' => [
         'name' => 'Detail',
         'title' => $languagePrefix . 'plugin.pi2',
+        'description' => $languagePrefix . 'plugin.pi2.description',
         'flexForm' => $flexFormFolder . 'Detail.xml',
     ],
     'fastsearch' => [
         'name' => 'Fastsearch',
         'title' => $languagePrefix . 'plugin.fastSearch',
+        'description' => $languagePrefix . 'plugin.fastSearch.description',
         'flexForm' => $flexFormFolder . 'FastSearch.xml',
     ],
 ];
@@ -36,7 +39,7 @@ foreach ($plugins as $plugin) {
         $plugin['title'],
         'in2studyfinder-plugin-icon',
         'Studyfinder',
-        'Meine tolle beschreibung!'
+        $plugin['description']
     );
 
     ExtensionManagementUtility::addToAllTCAtypes(

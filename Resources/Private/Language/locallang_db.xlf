@@ -12,6 +12,19 @@
 			<trans-unit id="plugin.pi2">
 				<source>Studyfinder Detail view</source>
 			</trans-unit>
+			<trans-unit id="plugin.pi1.description">
+				<source>Displays degree programmes in a list view with filter</source>
+			</trans-unit>
+			Zeigt Studiengänge in einer Listenansicht mit Filter an
+
+			<trans-unit id="plugin.pi2.description">
+				<source>Displays the detailed view of a degree programme</source>
+			</trans-unit>
+			Zeigt die Detailansicht eines Studiengangs an
+			<trans-unit id="plugin.fastSearch.description">
+				<source>Only displays the quick selection (Select field) for degree programmes</source>
+			</trans-unit>
+			Zeigt nur die Schnellauswahl (Select Feld) für Studiengänge an
 
 			<trans-unit id="studycourse">
 				<source>Study Course</source>
