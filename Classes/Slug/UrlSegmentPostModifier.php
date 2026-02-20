@@ -122,12 +122,12 @@ class UrlSegmentPostModifier
     protected function isNewRecord(): bool
     {
         return $this->isRecalculateSlug() &&
-            !MathUtility::canBeInterpretedAsInteger($this->getRequest()->getParsedBody()['recordId']);
+            !MathUtility::canBeInterpretedAsInteger($this->getStudyCourseRecordIdentifier());
     }
 
     protected function getStudyCourseRecordIdentifier(): int
     {
-        $identifier = $this->getRequest()->getParsedBody()['recordId'];
+        $identifier = $this->getRequest()->getParsedBody()['recordId'] ?? $this->configuration['record']['uid'];
         if (!MathUtility::canBeInterpretedAsInteger($identifier)) {
             throw new LogicException('No record identifier given', 1585056768);
         }
