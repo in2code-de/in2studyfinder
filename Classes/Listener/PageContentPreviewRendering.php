@@ -22,7 +22,7 @@ final class PageContentPreviewRendering
     ) {
     }
 
-    #[AsEventListener]
+    #[AsEventListener(before: 'typo3-backend/fluid-preview/content')]
     public function __invoke(PageContentPreviewRenderingEvent $event): void
     {
         $record = $event->getRecord();
