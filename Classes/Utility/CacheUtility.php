@@ -13,7 +13,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 class CacheUtility
 {
-    public const CACHE_NAME = 'in2studyfinder';
+    public const string CACHE_NAME = 'in2studyfinder';
 
     /**
      * Adds cache tags to page cache

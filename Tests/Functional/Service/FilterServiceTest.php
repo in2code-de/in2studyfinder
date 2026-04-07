@@ -19,6 +19,7 @@ class FilterServiceTest extends FunctionalTestCase
      */
     protected $subject;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

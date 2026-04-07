@@ -25,6 +25,7 @@ class SelectViewHelper extends AbstractSelectViewHelper
     {
         parent::__construct();
     }
+    #[\Override]
     public function initializeArguments(): void
     {
         parent::initializeArguments();
@@ -52,6 +53,7 @@ class SelectViewHelper extends AbstractSelectViewHelper
      * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
+    #[\Override]
     protected function getOptions(): array
     {
         $originalOptions = parent::getOptions();
@@ -112,6 +114,7 @@ class SelectViewHelper extends AbstractSelectViewHelper
         return $updatedOptions;
     }
 
+    #[\Override]
     protected function renderOptionTags($options): string
     {
         $output = '';
@@ -145,6 +148,7 @@ class SelectViewHelper extends AbstractSelectViewHelper
      * @param array $additionalAttributes array with additional attributes
      * @return string the rendered option tag
      */
+    #[\Override]
     protected function renderOptionTag(
         string $value,
         string $label,

@@ -164,8 +164,9 @@ class StudyCourseController extends ActionController
 
     /**
      * @param StudyCourse|null $studyCourse
+     * @return ResponseInterface
      */
-    public function detailAction(StudyCourse $studyCourse = null): ResponseInterface
+    public function detailAction(?StudyCourse $studyCourse = null): ResponseInterface
     {
         if ($studyCourse !== null) {
             $this->courseService->setPageTitleAndMetadata($studyCourse);

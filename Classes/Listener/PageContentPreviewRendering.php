@@ -13,12 +13,12 @@ use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-final class PageContentPreviewRendering
+final readonly class PageContentPreviewRendering
 {
     public function __construct(
-        protected readonly FlexFormService $flexFormService,
-        protected readonly SiteFinder $siteFinder,
-        protected readonly ExtensionSettingsInterface $extensionSettings
+        protected FlexFormService $flexFormService,
+        protected SiteFinder $siteFinder,
+        protected ExtensionSettingsInterface $extensionSettings
     ) {
     }
 

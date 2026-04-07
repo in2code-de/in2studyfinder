@@ -13,6 +13,7 @@ class CheckboxViewHelper extends AbstractFormFieldViewHelper
      */
     protected $tagName = 'input';
 
+    #[\Override]
     public function initializeArguments(): void
     {
         parent::initializeArguments();
@@ -50,6 +51,7 @@ class CheckboxViewHelper extends AbstractFormFieldViewHelper
     /**
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
+    #[\Override]
     public function render(): string
     {
         $checked = $this->arguments['checked'];

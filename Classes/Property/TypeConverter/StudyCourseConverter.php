@@ -46,11 +46,12 @@ class StudyCourseConverter extends PersistentObjectConverter
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
+    #[\Override]
     public function convertFrom(
         $source,
         string $targetType,
         array $convertedChildProperties = [],
-        PropertyMappingConfigurationInterface $configuration = null
+        ?PropertyMappingConfigurationInterface $configuration = null
     ): ?object {
         return parent::convertFrom($source, $this->targetType, $convertedChildProperties, $configuration);
     }

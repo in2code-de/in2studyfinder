@@ -28,6 +28,7 @@ abstract class AbstractSelectViewHelper extends AbstractFormFieldViewHelper
      */
     protected $selectedValue;
 
+    #[\Override]
     public function initializeArguments(): void
     {
         parent::initializeArguments();
@@ -46,6 +47,7 @@ abstract class AbstractSelectViewHelper extends AbstractFormFieldViewHelper
         $this->registerArgument('required', 'boolean', 'If set no empty value is allowed.', false, false);
     }
 
+    #[\Override]
     public function render(): string
     {
         if ($this->arguments['required']) {
@@ -207,7 +209,7 @@ abstract class AbstractSelectViewHelper extends AbstractFormFieldViewHelper
      * @param mixed $value Value to check for
      * @return bool True if the value should be marked as selected.
      */
-    protected function isSelected($value): bool
+    protected function isSelected(mixed $value): bool
     {
         $selectedValue = $this->getSelectedValue();
         if ($value === $selectedValue || (string)$value === $selectedValue) {
@@ -251,10 +253,9 @@ abstract class AbstractSelectViewHelper extends AbstractFormFieldViewHelper
     /**
      * Get the option value for an object
      *
-     * @param mixed $valueElement
      * @return string @todo: Does not always return string ...
      */
-    protected function getOptionValueScalar($valueElement)
+    protected function getOptionValueScalar(mixed $valueElement)
     {
         if (is_object($valueElement)) {
             if ($this->hasArgument('optionValueField')) {

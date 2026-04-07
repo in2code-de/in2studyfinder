@@ -8,7 +8,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 class GlobalData extends AbstractEntity
 {
-    public const TABLE = 'tx_in2studyfinder_domain_model_globaldata';
+    public const string TABLE = 'tx_in2studyfinder_domain_model_globaldata';
 
     protected string $title = '';
 

@@ -8,5 +8,5 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 class TtContent extends AbstractEntity
 {
-    public const TABLE = 'tt_content';
+    public const string TABLE = 'tt_content';
 }

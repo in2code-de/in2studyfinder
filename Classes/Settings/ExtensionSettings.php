@@ -17,12 +17,13 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 #[AsAlias(ExtensionSettingsInterface::class)]
 class ExtensionSettings implements ExtensionSettingsInterface
 {
-    public const EXTENSION_KEY = 'in2studyfinder';
+    public const string EXTENSION_KEY = 'in2studyfinder';
 
     public function __construct(protected readonly ConfigurationManagerInterface $configurationManager)
     {
     }
 
+    #[\Override]
     public function getTypoScriptSettings(): array
     {
         $typoScriptConfiguration = $this->getFullTypoScriptConfiguration();
@@ -32,8 +33,10 @@ class ExtensionSettings implements ExtensionSettingsInterface
 
             return $typoScriptSetup['plugin']['tx_in2studyfinder']['settings'] ?? [];
         }
+        return [];
     }
 
+    #[\Override]
     public function getConfiguredStoragePids(array $pluginRecord = []): array
     {
         $typoScriptSettings = $this->getTypoScriptSettings();
@@ -61,6 +64,7 @@ class ExtensionSettings implements ExtensionSettingsInterface
         return $this->getStoragePidsByConfiguration($configuration);
     }
 
+    #[\Override]
     public static function isEnableGlobalData(): bool
     {
         $extConfigTemplatesSettings = self::getExtConfTemplateSettings();
@@ -68,6 +72,7 @@ class ExtensionSettings implements ExtensionSettingsInterface
         return isset($extConfigTemplatesSettings['enableGlobalData']) && $extConfigTemplatesSettings['enableGlobalData'] === '1';
     }
 
+    #[\Override]
     public static function isCategorisationEnabled(): bool
     {
         $extConfigTemplatesSettings = self::getExtConfTemplateSettings();
@@ -75,6 +80,7 @@ class ExtensionSettings implements ExtensionSettingsInterface
         return isset($extConfigTemplatesSettings['enableCategories']) && $extConfigTemplatesSettings['enableCategories'] === '1';
     }
 
+    #[\Override]
     public static function isPersistentFilterEnabled(): bool
     {
         $extConfigTemplatesSettings = self::getExtConfTemplateSettings();
@@ -128,7 +134,7 @@ class ExtensionSettings implements ExtensionSettingsInterface
         try {
             $configuration = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get(self::EXTENSION_KEY);
             return ($configuration ?? []);
-        } catch (ExtensionConfigurationExtensionNotConfiguredException | ExtensionConfigurationPathDoesNotExistException $e) {
+        } catch (ExtensionConfigurationExtensionNotConfiguredException | ExtensionConfigurationPathDoesNotExistException) {
             return [];
         }
     }

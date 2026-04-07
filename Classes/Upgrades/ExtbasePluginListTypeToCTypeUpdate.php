@@ -9,6 +9,7 @@ use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 #[UpgradeWizard('in2studyfinderPluginListTypeToCTypeUpdate')]
 final class ExtbasePluginListTypeToCTypeUpdate extends \TYPO3\CMS\Install\Updates\AbstractListTypeToCTypeUpdate
 {
+    #[\Override]
     protected function getListTypeToCTypeMapping(): array
     {
         return [
@@ -18,11 +19,13 @@ final class ExtbasePluginListTypeToCTypeUpdate extends \TYPO3\CMS\Install\Update
         ];
     }
 
+    #[\Override]
     public function getTitle(): string
     {
         return 'Migrates in2studyfinder plugins';
     }
 
+    #[\Override]
     public function getDescription(): string
     {
         return 'Migrates in2studyfinder_pi1, in2studyfinder_pi2, in2studyfinder_fastsearch from list_type to CType.';
