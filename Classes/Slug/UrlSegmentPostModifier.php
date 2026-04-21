@@ -7,7 +7,6 @@ namespace In2code\In2studyfinder\Slug;
 use In2code\In2studyfinder\Domain\Model\AcademicDegree;
 use In2code\In2studyfinder\Domain\Model\Graduation;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
-use LogicException;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
@@ -33,7 +32,7 @@ class UrlSegmentPostModifier
         $this->configuration = $configuration;
 
         if (!$this->isUpgradeWizard() && !$this->isNewRecord()) {
-            $this->courseId = $this->getStudyCourseRecordIdentifier();
+            $this->courseId = $this->resolveStudyCourseRecordIdentifier();
         }
 
         if (!empty($this->configuration['record']['academic_degree'])) {
@@ -71,7 +70,8 @@ class UrlSegmentPostModifier
                     )
                 )
                 ->where(
-                    $queryBuilder->expr()->eq(AcademicDegree::TABLE . '.uid',
+                    $queryBuilder->expr()->eq(
+                        AcademicDegree::TABLE . '.uid',
                         $this->academicDegree
                     )
                 )->executeQuery()->fetchOne();
@@ -121,23 +121,29 @@ class UrlSegmentPostModifier
 
     protected function isNewRecord(): bool
     {
-        return $this->isRecalculateSlug() &&
-            !MathUtility::canBeInterpretedAsInteger($this->getStudyCourseRecordIdentifier());
+        return $this->resolveStudyCourseRecordIdentifier() <= 0;
     }
 
-    protected function getStudyCourseRecordIdentifier(): int
+    private function resolveStudyCourseRecordIdentifier(): int
     {
-        $identifier = $this->getRequest()->getParsedBody()['recordId'] ?? $this->configuration['record']['uid'];
-        if (!MathUtility::canBeInterpretedAsInteger($identifier)) {
-            throw new LogicException('No record identifier given', 1585056768);
+        $parsedBodyId = $this->getRequest()->getParsedBody()['recordId'] ?? null;
+        if (MathUtility::canBeInterpretedAsInteger($parsedBodyId) && (int)$parsedBodyId > 0) {
+            return (int)$parsedBodyId;
         }
 
-        return (int)$identifier;
-    }
+        $uid = $this->configuration['record']['uid'] ?? null;
+        if (MathUtility::canBeInterpretedAsInteger($uid) && (int)$uid > 0) {
+            return (int)$uid;
+        }
 
-    protected function isRecalculateSlug(): bool
-    {
-        return $this->getRequest()->getAttribute('route')->getPath() === '/ajax/record/slug/suggest';
+        $editParams = $this->getRequest()->getQueryParams()['edit'][StudyCourse::TABLE] ?? [];
+        foreach ($editParams as $recordId => $action) {
+            if ($action !== 'new' && MathUtility::canBeInterpretedAsInteger($recordId) && (int)$recordId > 0) {
+                return (int)$recordId;
+            }
+        }
+
+        return 0;
     }
 
     private function getRequest(): ServerRequestInterface
