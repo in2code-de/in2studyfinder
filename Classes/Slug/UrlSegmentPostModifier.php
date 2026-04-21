@@ -7,7 +7,6 @@ namespace In2code\In2studyfinder\Slug;
 use In2code\In2studyfinder\Domain\Model\AcademicDegree;
 use In2code\In2studyfinder\Domain\Model\Graduation;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
-use LogicException;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
@@ -19,13 +18,12 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 class UrlSegmentPostModifier
 {
     protected array $configuration = [];
+    protected int $courseId = -1;
+    protected int $academicDegree = -1;
+
     public function __construct(private readonly ConnectionPool $connectionPool)
     {
     }
-
-    protected int $courseId = -1;
-
-    protected int $academicDegree = -1;
 
     /**
      * @noinspection PhpUnusedParameterInspection
@@ -37,7 +35,7 @@ class UrlSegmentPostModifier
         $this->configuration = $configuration;
 
         if (!$this->isUpgradeWizard() && !$this->isNewRecord()) {
-            $this->courseId = $this->getStudyCourseRecordIdentifier();
+            $this->courseId = $this->resolveStudyCourseRecordIdentifier();
         }
 
         if (!empty($this->configuration['record']['academic_degree'])) {
@@ -120,25 +118,32 @@ class UrlSegmentPostModifier
         $installParams = $request->getParsedBody()['install'] ?? $request->getQueryParams()['install'] ?? null;
         return is_array($installParams) && ($installParams['action'] ?? null) === 'upgradeWizardsExecute';
     }
+
     protected function isNewRecord(): bool
     {
-        return $this->isRecalculateSlug() &&
-            !MathUtility::canBeInterpretedAsInteger($this->getRequest()->getParsedBody()['recordId']);
+        return $this->resolveStudyCourseRecordIdentifier() <= 0;
     }
 
-    protected function getStudyCourseRecordIdentifier(): int
+    private function resolveStudyCourseRecordIdentifier(): int
     {
-        $identifier = $this->getRequest()->getParsedBody()['recordId'];
-        if (!MathUtility::canBeInterpretedAsInteger($identifier)) {
-            throw new LogicException('No record identifier given', 1585056768);
+        $parsedBodyId = $this->getRequest()->getParsedBody()['recordId'] ?? null;
+        if (MathUtility::canBeInterpretedAsInteger($parsedBodyId) && (int)$parsedBodyId > 0) {
+            return (int)$parsedBodyId;
         }
 
-        return (int)$identifier;
-    }
+        $uid = $this->configuration['record']['uid'] ?? null;
+        if (MathUtility::canBeInterpretedAsInteger($uid) && (int)$uid > 0) {
+            return (int)$uid;
+        }
 
-    protected function isRecalculateSlug(): bool
-    {
-        return $this->getRequest()->getAttribute('route')->getPath() === '/ajax/record/slug/suggest';
+        $editParams = $this->getRequest()->getQueryParams()['edit'][StudyCourse::TABLE] ?? [];
+        foreach ($editParams as $recordId => $action) {
+            if ($action !== 'new' && MathUtility::canBeInterpretedAsInteger($recordId) && (int)$recordId > 0) {
+                return (int)$recordId;
+            }
+        }
+
+        return 0;
     }
 
     private function getRequest(): ServerRequestInterface
