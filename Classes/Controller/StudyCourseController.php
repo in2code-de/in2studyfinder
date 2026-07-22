@@ -181,7 +181,7 @@ class StudyCourseController extends ActionController
             $this->view->assignMultiple($event->getFluidVariables());
         } else {
             $studyCourseListPage = $this->settings['flexform']['studyCourseListPage'] ?? '';
-            return $this->redirect('filterAction', null, null, null, $studyCourseListPage);
+            return $this->redirect('filterAction', null, null, null, (int)$studyCourseListPage);
         }
 
         return $this->htmlResponse();
