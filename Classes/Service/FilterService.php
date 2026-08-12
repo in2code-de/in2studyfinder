@@ -209,7 +209,7 @@ class FilterService
 
         if (class_exists($repositoryClassName)) {
             $defaultQuerySettings = GeneralUtility::makeInstance(QuerySettingsInterface::class);
-            $defaultQuerySettings->setStoragePageIds([$this->settings['settingsPid']]);
+            $defaultQuerySettings->setStoragePageIds($this->extensionSettings->getConfiguredStoragePids());
             $languageAspect = $defaultQuerySettings->getLanguageAspect();
             $languageAspect = new LanguageAspect($languageAspect->getId(), $languageAspect->getContentId(), LanguageAspect::OVERLAYS_MIXED);
             $defaultQuerySettings->setLanguageAspect($languageAspect);
