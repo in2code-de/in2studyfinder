@@ -73,6 +73,9 @@ CREATE TABLE tx_in2studyfinder_domain_model_studycourse
 
 	url_segment              varchar(255) DEFAULT '' NOT NULL,
 
+	hio_id                   int(11) unsigned    DEFAULT '0'    NOT NULL,
+	hio_context              varchar(255) DEFAULT '' NOT NULL,
+
 	categories               int(11) unsigned    DEFAULT '0'    NOT NULL,
 
 	tstamp                   int(11) unsigned    DEFAULT '0'    NOT NULL,
