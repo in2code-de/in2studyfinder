@@ -8,6 +8,7 @@ use In2code\In2studyfinder\Domain\Model\AcademicDegree;
 use In2code\In2studyfinder\Domain\Model\Graduation;
 use In2code\In2studyfinder\Domain\Model\StudyCourse;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -15,6 +16,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * @SuppressWarnings(PHPMD.Superglobals)
  */
+#[Autoconfigure(public: true)]
 class UrlSegmentPostModifier
 {
     protected array $configuration = [];
